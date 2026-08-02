@@ -59,6 +59,16 @@ The Tools section is organised into four equipment categories: **Pumps**,
 
 To add a fifth category, copy any `.tool-cat` block and change the heading.
 
+## Caching
+
+Assets in `/assets/` use **stable filenames**, so `_headers` deliberately sets a
+short `max-age=300, must-revalidate` rather than a long immutable cache. A long
+immutable cache would mean edits to `site.css` never reach anyone holding a
+cached copy.
+
+If assets are ever renamed with a content hash (`site.a3f9c1.css`), switch back
+to `max-age=31536000, immutable` — that is the only case where it is safe.
+
 ## Known maintenance debt
 
 The design tokens exist in two places: `assets/site.css` and inline inside each tool. This is deliberate — it keeps tools portable — but it means **a palette change requires editing every tool by hand**. Budget for that when the design changes.

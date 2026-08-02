@@ -11,5 +11,15 @@
   Permissions-Policy: geolocation=(), microphone=(), camera=(), interest-cohort=()
   Content-Security-Policy: default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'; object-src 'none'
 
+# Assets use stable filenames (site.css, allan-dones.jpg) rather than
+# content-hashed ones, so they must NOT be cached immutably — an edit would
+# never reach anyone who already holds a cached copy.
+#
+# max-age=300 + must-revalidate: browsers revalidate after 5 minutes and
+# Cloudflare answers with a 304 when unchanged, so the bandwidth saving is
+# retained without the staleness trap.
+#
+# If assets are ever content-hashed (site.a3f9c1.css), restore:
+#   Cache-Control: public, max-age=31536000, immutable
 /assets/*
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=300, must-revalidate
