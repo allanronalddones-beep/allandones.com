@@ -1,4 +1,4 @@
-# Deploying allandones.com
+# Deploying allanronalddones.com
 
 Static site. No build step, no backend, no dependencies. Whatever is in this folder is the site.
 
@@ -16,14 +16,14 @@ Static site. No build step, no backend, no dependencies. Whatever is in this fol
 
 ## Recommended: Cloudflare Pages
 
-1. Register **allandones.com** at Cloudflare Registrar (at-cost pricing, no renewal markup).
+1. Register **allanronalddones.com** at Cloudflare Registrar (at-cost pricing, no renewal markup).
 2. Push this folder to a private GitHub repo.
 3. Cloudflare dashboard → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**.
 4. Build settings:
    - Framework preset: **None**
    - Build command: *(leave empty)*
    - Build output directory: `/`
-5. Deploy, then **Custom domains** → add `allandones.com` and `www.allandones.com`.
+5. Deploy, then **Custom domains** → add `allanronalddones.com` and `www.allanronalddones.com`.
 6. Confirm HTTPS is active (automatic) and that `www` redirects to apex.
 
 Drag-and-drop upload also works if you'd rather skip Git — same dashboard, "Upload assets".
@@ -34,10 +34,10 @@ Works, with one loss: **GitHub Pages ignores `_headers`**, so you get no CSP or 
 
 ## Post-deploy checks
 
-- [ ] `https://allandones.com/` loads over HTTPS
+- [ ] `https://allanronalddones.com/` loads over HTTPS
 - [ ] Tools card opens the pump tool
 - [ ] Back-link in the tool returns to the site root
-- [ ] `https://allandones.com/nonsense` shows the styled 404
+- [ ] `https://allanronalddones.com/nonsense` shows the styled 404
 - [ ] `robots.txt` and `sitemap.xml` resolve
 - [ ] Paste the URL into LinkedIn or WhatsApp — confirm the preview card shows title and description
 - [ ] Open the AFEO verify link and confirm the register record displays correctly
