@@ -1,0 +1,12 @@
+# Normalise line endings — keep LF in the repo so server-parsed files
+# (_headers, robots.txt, sitemap.xml) are never committed with CRLF.
+* text=auto eol=lf
+
+# Binary assets — never touch
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.webp binary
+*.ico binary
+*.pdf binary
+*.docx binary

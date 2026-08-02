@@ -1,0 +1,20 @@
+# OS / sync artifacts
+Thumbs.db
+desktop.ini
+.DS_Store
+$RECYCLE.BIN/
+*.tmp
+
+# Editor
+.vscode/
+.idea/
+.obsidian/
+
+# Node (if tooling is added later)
+node_modules/
+npm-debug.log*
+*.log
+
+# Local build scratch
+*.pdf
+page-*.jpg

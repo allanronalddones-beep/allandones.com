@@ -1,0 +1,891 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vertical Pump Evaluation Tool | Allan Ronald Dones</title>
+<meta name="description" content="Vertical Pump Evaluation Tool — total differential head at impeller centerline and brake horsepower calculator, with vendor TDH/BHP sufficiency check.">
+<meta name="author" content="Allan Ronald Dones">
+<link rel="canonical" href="https://allandones.com/tools/vertical-pump-evaluation.html">
+
+<!-- Social preview (shown when the link is shared from the main site) -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://allandones.com/tools/vertical-pump-evaluation.html">
+<meta property="og:title" content="Vertical Pump Evaluation Tool">
+<meta property="og:site_name" content="Allan Ronald Dones — Rotating Equipment Engineering">
+<meta property="og:description" content="Calculate total differential head at impeller centerline and brake horsepower for a vertical pump, and verify a vendor's proposed TDH and BHP against the actual system requirement.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vertical Pump Evaluation Tool">
+<meta name="twitter:description" content="Calculate TDH at impeller centerline and BHP for a vertical pump, and check a vendor's proposal against the system requirement.">
+
+<!-- Inline SVG favicon — keeps the page self-contained (no separate .ico request) -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a2472'/%3E%3Crect x='22' y='8' width='20' height='16' rx='3' fill='%2322d3ee'/%3E%3Crect x='28' y='24' width='8' height='14' fill='%232f7ef0'/%3E%3Cellipse cx='32' cy='40' rx='13' ry='4' fill='%235b9dfa'/%3E%3Cellipse cx='32' cy='47' rx='12' ry='4' fill='%235b9dfa'/%3E%3Cpolygon points='24,52 40,52 36,60 28,60' fill='%237ea8dd'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --navy-950:#050b1a;
+    --navy-900:#08132b;
+    --navy-800:#0c1c3f;
+    --navy-700:#0f2551;
+    --blue-600:#1450c9;
+    --blue-500:#1565d8;
+    --blue-400:#2f7ef0;
+    --blue-300:#5b9dfa;
+    --cyan-400:#22d3ee;
+    --cyan-300:#67e8f9;
+    --text-primary:#eaf1ff;
+    --text-secondary:#a9bde0;
+    --text-muted:#6f84ab;
+    --card-bg:rgba(6,16,40,0.82);
+    --card-border:rgba(91,157,250,0.22);
+    --card-border-strong:rgba(103,232,249,0.4);
+    --ok-500:#22c55e;
+    --ok-300:#86efac;
+    --bad-500:#ef4444;
+    --bad-300:#fca5a5;
+    --radius:14px;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Segoe UI', 'Inter', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    color:var(--text-primary);
+    background:var(--navy-950);
+    min-height:100vh;
+    line-height:1.5;
+  }
+
+  /* ---------- Layered background: base wash → animated waves → optional photo ---------- */
+
+  /* 1. Vivid blue base wash */
+  .bg-base{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    background:
+      radial-gradient(1200px 800px at 12% -8%, rgba(47,126,240,0.55), transparent 62%),
+      radial-gradient(1000px 700px at 108% 8%, rgba(34,211,238,0.34), transparent 58%),
+      radial-gradient(900px 900px at 50% 115%, rgba(21,101,216,0.42), transparent 60%),
+      linear-gradient(180deg, #06122e 0%, #0d2a63 40%, #071431 100%);
+    background-color:#06122e;
+  }
+
+  /* 2. Animated wave field */
+  .bg-waves{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    overflow:hidden;
+  }
+  .bg-waves svg{
+    width:100%;
+    height:100%;
+    display:block;
+  }
+  .wv path{ will-change:transform; }
+  .wv1{ animation:driftL 52s linear infinite; }
+  .wv2{ animation:driftR 43s linear infinite; }
+  .wv3{ animation:driftL 36s linear infinite; }
+  .wv4{ animation:driftR 29s linear infinite; }
+  .wv5{ animation:driftL 23s linear infinite; }
+
+  @keyframes driftL{
+    from{ transform:translateX(0); }
+    to  { transform:translateX(-1440px); }
+  }
+  @keyframes driftR{
+    from{ transform:translateX(-1440px); }
+    to  { transform:translateX(0); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .wv1,.wv2,.wv3,.wv4,.wv5{ animation:none; }
+  }
+
+  /* ---------- Back-link to main site ---------- */
+  /* CHANGE THIS HREF when the main site URL is known — see the <a class="back-link"> in the body. */
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    margin-bottom:26px;
+    font-size:13px;
+    font-weight:600;
+    color:var(--text-secondary);
+    text-decoration:none;
+    border:1px solid var(--card-border);
+    background:rgba(6,16,40,0.62);
+    padding:7px 15px 7px 12px;
+    border-radius:999px;
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    transition:color .15s, border-color .15s, background .15s;
+  }
+  .back-link:hover, .back-link:focus-visible{
+    color:#fff;
+    border-color:var(--cyan-400);
+    background:rgba(6,16,40,0.9);
+  }
+  .back-link svg{ width:15px; height:15px; flex:0 0 15px; }
+
+  .wrap{
+    position:relative;
+    z-index:1;
+    max-width:1180px;
+    margin:0 auto;
+    padding:40px 24px 80px;
+  }
+
+  header.hero{
+    text-align:center;
+    margin-bottom:40px;
+    padding-bottom:28px;
+    border-bottom:1px solid rgba(91,157,250,0.16);
+  }
+  .kicker{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:12.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--cyan-300);
+    background:rgba(34,211,238,0.08);
+    border:1px solid rgba(34,211,238,0.25);
+    padding:6px 14px;
+    border-radius:999px;
+    margin-bottom:18px;
+  }
+  .kicker svg{width:14px;height:14px;}
+  h1{
+    font-size:clamp(28px,4vw,42px);
+    margin:0 0 10px;
+    font-weight:700;
+    letter-spacing:-0.01em;
+    background:linear-gradient(90deg, #fff 0%, var(--blue-300) 55%, var(--cyan-300) 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .subtitle{
+    color:var(--text-secondary);
+    font-size:16px;
+    max-width:640px;
+    margin:0 auto 4px;
+  }
+  .byline{
+    color:var(--text-muted);
+    font-size:13px;
+    margin-top:14px;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:24px;
+    align-items:start;
+  }
+  @media (max-width:960px){ .grid{grid-template-columns:1fr;} }
+
+  .card{
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
+    border-radius:var(--radius);
+    padding:24px 26px;
+    margin-bottom:22px;
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    box-shadow:0 8px 32px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+  .card h2{
+    margin:0 0 4px;
+    font-size:16px;
+    font-weight:700;
+    letter-spacing:.02em;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .card h2 .num{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:24px;height:24px;
+    border-radius:7px;
+    background:linear-gradient(135deg, var(--blue-500), var(--cyan-400));
+    color:#04101f;
+    font-size:12.5px;
+    font-weight:800;
+  }
+  .card .hint{
+    color:var(--text-muted);
+    font-size:12.5px;
+    margin:0 0 18px;
+    padding-left:34px;
+  }
+
+  .field-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin-bottom:14px;
+  }
+  .field-row.single{grid-template-columns:1fr;}
+  @media (max-width:560px){ .field-row{grid-template-columns:1fr;} }
+
+  label{
+    display:block;
+    font-size:12.5px;
+    color:var(--text-secondary);
+    margin-bottom:6px;
+    font-weight:600;
+  }
+  label .unit{
+    color:var(--cyan-300);
+    font-weight:500;
+    font-size:11.5px;
+  }
+  .note-inline{
+    color:var(--text-muted);
+    font-size:11px;
+    display:block;
+    margin-top:3px;
+    font-weight:400;
+  }
+
+  input[type="number"], select{
+    width:100%;
+    background:rgba(5,14,32,0.65);
+    border:1px solid rgba(91,157,250,0.25);
+    color:var(--text-primary);
+    padding:10px 12px;
+    border-radius:9px;
+    font-size:14.5px;
+    font-family:inherit;
+    transition:border-color .15s, box-shadow .15s;
+  }
+  input[type="number"]:focus, select:focus{
+    outline:none;
+    border-color:var(--cyan-400);
+    box-shadow:0 0 0 3px rgba(34,211,238,0.15);
+  }
+  input[disabled]{
+    opacity:.4;
+    cursor:not-allowed;
+  }
+  select{cursor:pointer;}
+
+  .toggle-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:4px 0 18px;
+    padding-left:2px;
+  }
+  .toggle-row input{width:16px;height:16px;accent-color:var(--cyan-400);}
+  .toggle-row label{margin:0;font-size:13px;color:var(--text-secondary);font-weight:500;cursor:pointer;}
+
+  /* Results */
+  .result-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  @media (max-width:560px){ .result-grid{grid-template-columns:1fr;} }
+
+  .result-tile{
+    background:rgba(5,14,32,0.55);
+    border:1px solid rgba(91,157,250,0.18);
+    border-radius:10px;
+    padding:14px 16px;
+  }
+  .result-tile .rlabel{
+    font-size:11.5px;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    margin-bottom:6px;
+  }
+  .result-tile .rvalue{
+    font-size:22px;
+    font-weight:700;
+    color:#fff;
+    font-variant-numeric:tabular-nums;
+  }
+  .result-tile .rvalue .runit{
+    font-size:13px;
+    color:var(--blue-300);
+    font-weight:600;
+    margin-left:4px;
+  }
+  .result-tile.headline{
+    grid-column:1 / -1;
+    background:linear-gradient(135deg, rgba(21,101,216,0.28), rgba(34,211,238,0.12));
+    border:1px solid rgba(103,232,249,0.35);
+  }
+  .result-tile.headline .rvalue{font-size:30px;}
+
+  .divider-line{
+    border:none;
+    border-top:1px dashed rgba(91,157,250,0.2);
+    margin:18px 0;
+  }
+
+  /* Verdict */
+  .verdict-card{
+    border-radius:12px;
+    padding:16px 18px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    border:1px solid;
+    margin-bottom:12px;
+  }
+  .verdict-card.ok{ background:rgba(34,197,94,0.09); border-color:rgba(34,197,94,0.35); }
+  .verdict-card.bad{ background:rgba(239,68,68,0.09); border-color:rgba(239,68,68,0.35); }
+  .verdict-card.neutral{ background:rgba(111,132,171,0.08); border-color:rgba(111,132,171,0.25); }
+  .verdict-icon{
+    width:38px;height:38px;flex:0 0 38px;
+    border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:18px;font-weight:800;
+  }
+  .verdict-card.ok .verdict-icon{background:rgba(34,197,94,0.18);color:var(--ok-300);}
+  .verdict-card.bad .verdict-icon{background:rgba(239,68,68,0.18);color:var(--bad-300);}
+  .verdict-card.neutral .verdict-icon{background:rgba(111,132,171,0.18);color:var(--text-secondary);}
+  .verdict-text .vtitle{font-weight:700;font-size:14.5px;color:#fff;}
+  .verdict-text .vsub{font-size:12.5px;color:var(--text-secondary);margin-top:2px;}
+
+  /* Diagram */
+  .diagram-wrap{display:flex;justify-content:center;padding:6px 0 4px;}
+  svg.pump-diagram{max-width:100%;height:auto;}
+  svg.pump-diagram text{font-family:inherit;}
+
+  footer{
+    text-align:center;
+    margin-top:36px;
+    padding-top:22px;
+    border-top:1px solid rgba(91,157,250,0.14);
+    color:var(--text-muted);
+    font-size:12.5px;
+  }
+  footer a{color:var(--blue-300);text-decoration:none;}
+  footer a:hover{text-decoration:underline;}
+
+  .formula-strip{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:4px;
+  }
+  .formula-chip{
+    font-size:11.5px;
+    color:var(--text-secondary);
+    background:rgba(5,14,32,0.5);
+    border:1px solid rgba(91,157,250,0.18);
+    padding:5px 10px;
+    border-radius:7px;
+    font-family:'Cascadia Code','Consolas',monospace;
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-base"></div>
+
+<div class="bg-waves" aria-hidden="true">
+  <svg viewBox="0 0 2880 1200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="wg1" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#0a2472"/><stop offset="0.5" stop-color="#153a9e"/><stop offset="1" stop-color="#0a2472"/>
+      </linearGradient>
+      <linearGradient id="wg2" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#123f8f"/><stop offset="0.5" stop-color="#1450c9"/><stop offset="1" stop-color="#123f8f"/>
+      </linearGradient>
+      <linearGradient id="wg3" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#1450c9"/><stop offset="0.5" stop-color="#1c6ee0"/><stop offset="1" stop-color="#1450c9"/>
+      </linearGradient>
+      <linearGradient id="wg4" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#1565d8"/><stop offset="0.5" stop-color="#2f7ef0"/><stop offset="1" stop-color="#1565d8"/>
+      </linearGradient>
+      <linearGradient id="wg5" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#2f7ef0"/><stop offset="0.5" stop-color="#22d3ee"/><stop offset="1" stop-color="#2f7ef0"/>
+      </linearGradient>
+    </defs>
+
+    <g class="wv wv1" opacity="0.55">
+      <path fill="url(#wg1)" d="M0,200 C180,120 540,120 720,200 C900,280 1260,280 1440,200 C1620,120 1980,120 2160,200 C2340,280 2700,280 2880,200 C3060,120 3420,120 3600,200 C3780,280 4140,280 4320,200 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv2" opacity="0.48">
+      <path fill="url(#wg2)" d="M0,410 C180,315 540,315 720,410 C900,505 1260,505 1440,410 C1620,315 1980,315 2160,410 C2340,505 2700,505 2880,410 C3060,315 3420,315 3600,410 C3780,505 4140,505 4320,410 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv3" opacity="0.42">
+      <path fill="url(#wg3)" d="M0,620 C180,535 540,535 720,620 C900,705 1260,705 1440,620 C1620,535 1980,535 2160,620 C2340,705 2700,705 2880,620 C3060,535 3420,535 3600,620 C3780,705 4140,705 4320,620 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv4" opacity="0.34">
+      <path fill="url(#wg4)" d="M0,830 C180,725 540,725 720,830 C900,935 1260,935 1440,830 C1620,725 1980,725 2160,830 C2340,935 2700,935 2880,830 C3060,725 3420,725 3600,830 C3780,935 4140,935 4320,830 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv5" opacity="0.26">
+      <path fill="url(#wg5)" d="M0,1015 C180,940 540,940 720,1015 C900,1090 1260,1090 1440,1015 C1620,940 1980,940 2160,1015 C2340,1090 2700,1090 2880,1015 C3060,940 3420,940 3600,1015 C3780,1090 4140,1090 4320,1015 L4320,1200 L0,1200 Z"/>
+    </g>
+  </svg>
+</div>
+
+<div class="wrap">
+
+  <!-- Back to main site -->
+  <a class="back-link" href="/"
+     title="Back to allandones.com">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Allan Ronald Dones
+  </a>
+
+  <header class="hero">
+    <span class="kicker">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6M12 16v6M4.9 4.9l4.2 4.2M14.9 14.9l4.2 4.2M2 12h6M16 12h6M4.9 19.1l4.2-4.2M14.9 9.1l4.2-4.2"/></svg>
+      Rotating Equipment Engineering
+    </span>
+    <h1>Vertical Pump Evaluation Tool</h1>
+    <p class="subtitle">Total differential head at impeller centerline &amp; brake horsepower calculator — verify a vendor's proposed TDH and BHP against the actual system requirement.</p>
+    <p class="byline">Developed by Allan Ronald Dones — Senior Mechanical Engineer, Rotating Equipment Specialist</p>
+  </header>
+
+  <div class="grid">
+    <!-- LEFT COLUMN: INPUTS -->
+    <div>
+
+      <div class="card">
+        <h2><span class="num">1</span>Reference &amp; Installation Geometry</h2>
+        <p class="hint">Total lift is always added into TDH — it is physical elevation, independent of where the discharge pressure was measured.</p>
+
+        <div class="field-row single">
+          <div>
+            <label>Reference point of discharge pressure</label>
+            <select id="refPoint">
+              <option value="nozzle">Discharge nozzle centerline</option>
+              <option value="other">Other reference point</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="toggle-row">
+          <input type="checkbox" id="drumMounted">
+          <label for="drumMounted">Drum-mounted pump (pit slab thickness N/A — A2 becomes mounting flange thickness)</label>
+        </div>
+
+        <div class="field-row">
+          <div>
+            <label>A1 — Nozzle elevation <span class="unit">m</span>
+              <span class="note-inline">Top of soleplate to discharge centerline</span>
+            </label>
+            <input type="number" id="a1" step="any" value="0">
+          </div>
+          <div>
+            <label id="a2label">A2 — Soleplate thickness <span class="unit">m</span></label>
+            <input type="number" id="a2" step="any" value="0">
+          </div>
+        </div>
+        <div class="field-row">
+          <div>
+            <label id="a3label">A3 — Pit slab thickness <span class="unit">m</span>
+              <span class="note-inline">N/A for drum-mounted pumps</span>
+            </label>
+            <input type="number" id="a3" step="any" value="0">
+          </div>
+          <div>
+            <label>A4 — Pit depth <span class="unit">m</span>
+              <span class="note-inline">Bottom of slab to pit floor</span>
+            </label>
+            <input type="number" id="a4" step="any" value="0">
+          </div>
+        </div>
+        <div class="field-row">
+          <div>
+            <label>A5 — Lowest liquid level <span class="unit">m</span>
+              <span class="note-inline">Height of LLL above pit floor</span>
+            </label>
+            <input type="number" id="a5" step="any" value="0">
+          </div>
+          <div>
+            <label>Pipe losses <span class="unit">m</span></label>
+            <input type="number" id="pipeLoss" step="any" value="0">
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2><span class="num">2</span>Process Conditions</h2>
+        <p class="hint">Discharge pressure basis: measured at discharge nozzle centerline (per tool convention). Adjust input if your gauge reference differs.</p>
+
+        <div class="field-row">
+          <div>
+            <label>Specific gravity, SG</label>
+            <input type="number" id="sg" step="any" value="1.0">
+          </div>
+          <div>
+            <label>Capacity, Q <span class="unit">m³/hr</span></label>
+            <input type="number" id="q" step="any" value="0">
+          </div>
+        </div>
+        <div class="field-row">
+          <div>
+            <label>Suction pressure <span class="unit">barg</span></label>
+            <input type="number" id="psuc" step="any" value="0">
+          </div>
+          <div>
+            <label>Discharge pressure <span class="unit">barg</span></label>
+            <input type="number" id="pdis" step="any" value="0">
+          </div>
+        </div>
+        <div class="field-row single">
+          <div>
+            <label>Pump efficiency <span class="unit">%</span></label>
+            <input type="number" id="eff" step="any" value="70">
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2><span class="num">i</span>Elevation Diagram</h2>
+        <p class="hint">Values update live as you enter the geometry above.</p>
+        <div class="diagram-wrap">
+          <svg class="pump-diagram" width="480" height="395" viewBox="-20 0 365 300" role="img" aria-label="Vertical turbine pump elevation diagram">
+            <defs>
+              <linearGradient id="metal" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#5b9dfa"/>
+                <stop offset="1" stop-color="#22d3ee"/>
+              </linearGradient>
+              <linearGradient id="motorGrad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#0b5f70"/>
+                <stop offset="0.45" stop-color="#14a3b8"/>
+                <stop offset="1" stop-color="#0b5f70"/>
+              </linearGradient>
+              <linearGradient id="bowlGrad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#123f8f"/>
+                <stop offset="0.45" stop-color="#5b9dfa"/>
+                <stop offset="1" stop-color="#123f8f"/>
+              </linearGradient>
+              <linearGradient id="colGrad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#0f2551"/>
+                <stop offset="0.45" stop-color="#2f7ef0"/>
+                <stop offset="1" stop-color="#0f2551"/>
+              </linearGradient>
+            </defs>
+
+            <!-- ============ PUMP ASSEMBLY ============ -->
+            <!-- motor top cap -->
+            <rect x="112" y="8" width="36" height="7" rx="2" fill="#0b5f70"/>
+            <!-- motor body with cooling fins -->
+            <rect x="102" y="15" width="56" height="42" rx="3" fill="url(#motorGrad)"/>
+            <g stroke="#04303a" stroke-width="0.8" opacity="0.55">
+              <line x1="110" y1="17" x2="110" y2="55"/><line x1="117" y1="17" x2="117" y2="55"/>
+              <line x1="124" y1="17" x2="124" y2="55"/><line x1="136" y1="17" x2="136" y2="55"/>
+              <line x1="143" y1="17" x2="143" y2="55"/><line x1="150" y1="17" x2="150" y2="55"/>
+            </g>
+            <!-- terminal box -->
+            <rect x="126" y="27" width="14" height="13" rx="1.5" fill="#22d3ee" opacity="0.9"/>
+            <!-- motor support stool (open frame) -->
+            <rect x="108" y="57" width="44" height="36" fill="#0e6b58"/>
+            <rect x="113" y="63" width="12" height="22" rx="2" fill="#08132b"/>
+            <rect x="135" y="63" width="12" height="22" rx="2" fill="#08132b"/>
+            <!-- head shaft / coupling -->
+            <rect x="124" y="60" width="12" height="12" rx="1" fill="#d4a017"/>
+
+            <!-- discharge fitting (side outlet) -->
+            <rect x="152" y="72" width="30" height="16" rx="2" fill="url(#metal)"/>
+            <rect x="180" y="67" width="6" height="26" rx="1.5" fill="#5b9dfa"/>
+            <!-- discharge nozzle centreline marker -->
+            <line x1="130" y1="80" x2="188" y2="80" stroke="#67e8f9" stroke-width="0.9" stroke-dasharray="5 3"/>
+
+            <!-- soleplate / mounting plate -->
+            <rect x="92" y="99" width="76" height="11" rx="1" fill="url(#metal)" opacity="0.95"/>
+
+            <!-- pit slab (concrete) -->
+            <rect x="55" y="110" width="150" height="12" fill="#1450c9" opacity="0.62"/>
+
+            <!-- column pipe -->
+            <rect x="123" y="93" width="14" height="42" fill="url(#colGrad)"/>
+            <!-- lineshaft coupling detail -->
+            <rect x="120" y="135" width="20" height="9" rx="1.5" fill="#123f8f"/>
+            <rect x="124" y="144" width="12" height="14" fill="#e8eefc"/>
+            <rect x="124" y="149" width="12" height="4" fill="#ef4444"/>
+            <rect x="123" y="158" width="14" height="34" fill="url(#colGrad)"/>
+
+            <!-- pump bowls (multi-stage) -->
+            <g fill="url(#bowlGrad)">
+              <ellipse cx="130" cy="196" rx="18" ry="7"/>
+              <ellipse cx="130" cy="204" rx="18" ry="7"/>
+              <ellipse cx="130" cy="212" rx="18" ry="7"/>
+              <ellipse cx="130" cy="220" rx="18" ry="7"/>
+              <ellipse cx="130" cy="228" rx="17.5" ry="7"/>
+              <ellipse cx="130" cy="236" rx="17" ry="7"/>
+              <ellipse cx="130" cy="244" rx="16" ry="7"/>
+              <ellipse cx="130" cy="251" rx="14.5" ry="6.5"/>
+            </g>
+
+            <!-- bottom intake / suction head (tapered strainer cone) -->
+            <polygon points="118,257 142,257 134,282 126,282" fill="#7ea8dd" opacity="0.9"/>
+            <g stroke="#08132b" stroke-width="0.7" opacity="0.5">
+              <line x1="120" y1="264" x2="140" y2="264"/>
+              <line x1="122" y1="271" x2="138" y2="271"/>
+            </g>
+
+            <!-- ============ PIT STRUCTURE (drawn over pump edges) ============ -->
+            <line x1="70" y1="122" x2="70" y2="288" stroke="#2f7ef0" stroke-width="2"/>
+            <line x1="190" y1="122" x2="190" y2="288" stroke="#2f7ef0" stroke-width="2"/>
+            <line x1="70" y1="288" x2="190" y2="288" stroke="#2f7ef0" stroke-width="2"/>
+
+            <!-- liquid -->
+            <rect id="liqRect" x="71" y="240" width="118" height="47" fill="#22d3ee" opacity="0.18"/>
+            <line id="lllLine" x1="70" y1="240" x2="190" y2="240" stroke="#67e8f9" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <text id="lllText" x="185" y="236" fill="#67e8f9" font-size="9" font-weight="700" text-anchor="end">LLL</text>
+
+            <!-- ============ DIMENSION LABELS (left) ============ -->
+            <g stroke="#67e8f9" stroke-width="0.9" opacity="0.75">
+              <line x1="60" y1="80" x2="60" y2="99"/>
+              <line x1="56" y1="80" x2="64" y2="80"/><line x1="56" y1="99" x2="64" y2="99"/>
+              <line x1="60" y1="122" x2="60" y2="288"/>
+              <line x1="56" y1="122" x2="64" y2="122"/><line x1="56" y1="288" x2="64" y2="288"/>
+            </g>
+            <text id="a1Label" x="52" y="92" fill="#67e8f9" font-size="9.5" font-weight="700" text-anchor="end">A1: 0.00 m</text>
+            <text id="a2Label" x="52" y="107" fill="#67e8f9" font-size="9.5" font-weight="700" text-anchor="end">A2: 0.00 m</text>
+            <text id="a3Label" x="52" y="121" fill="#67e8f9" font-size="9.5" font-weight="700" text-anchor="end">A3: 0.00 m</text>
+            <text id="a4Label" x="52" y="200" fill="#67e8f9" font-size="9.5" font-weight="700" text-anchor="end">A4: 0.00 m</text>
+            <text id="a5Label" x="52" y="266" fill="#67e8f9" font-size="9.5" font-weight="700" text-anchor="end">A5: 0.00 m</text>
+
+            <!-- ============ PART LABELS (right) ============ -->
+            <g stroke="#ef4444" stroke-width="1.1" opacity="0.85">
+              <line x1="160" y1="34" x2="203" y2="34"/>
+              <line x1="188" y1="80" x2="203" y2="80"/>
+              <line x1="169" y1="104" x2="203" y2="104"/>
+              <line x1="196" y1="118" x2="203" y2="118"/>
+              <line x1="147" y1="228" x2="203" y2="228"/>
+              <line x1="140" y1="270" x2="203" y2="270"/>
+            </g>
+            <g fill="#eaf1ff" font-size="9.5">
+              <text x="208" y="31">Vertical solid shaft</text>
+              <text x="208" y="41">electric motor</text>
+              <text x="208" y="77">Fitting for</text>
+              <text x="208" y="87">discharge</text>
+              <text x="208" y="107" fill="#a9bde0">Soleplate</text>
+              <text x="208" y="121" fill="#a9bde0">Pit slab</text>
+              <text x="208" y="231">Pump &#8220;bowls&#8221;</text>
+              <text x="208" y="267">Bottom intake</text>
+              <text x="208" y="277">suction head</text>
+            </g>
+
+            <!-- ============ TOTAL LIFT BRACKET ============ -->
+            <line id="liftLine" x1="318" y1="80" x2="318" y2="240" stroke="#22d3ee" stroke-width="1.5"/>
+            <line x1="312" y1="80" x2="324" y2="80" stroke="#22d3ee" stroke-width="1.5"/>
+            <line id="liftCapBot" x1="312" y1="240" x2="324" y2="240" stroke="#22d3ee" stroke-width="1.5"/>
+            <text id="liftLabel" x="333" y="160" fill="#22d3ee" font-size="10" font-weight="700" transform="rotate(90 333 160)" text-anchor="middle">Total lift: 0.00 m</text>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN: RESULTS -->
+    <div>
+
+      <div class="card">
+        <h2><span class="num">✓</span>Calculated Requirement</h2>
+        <p class="hint">This is the head and power the system actually demands at the pump impeller.</p>
+
+        <div class="result-grid">
+          <div class="result-tile">
+            <div class="rlabel">Head at discharge centerline</div>
+            <div class="rvalue" id="outHdis">0.00<span class="runit">m</span></div>
+          </div>
+          <div class="result-tile">
+            <div class="rlabel">Total lift</div>
+            <div class="rvalue" id="outLift">0.00<span class="runit">m</span></div>
+          </div>
+
+          <div class="result-tile headline">
+            <div class="rlabel">Required TDH @ impeller (incl. pipe losses)</div>
+            <div class="rvalue" id="outTdh">0.00<span class="runit">m</span></div>
+          </div>
+
+          <div class="result-tile">
+            <div class="rlabel">Water horsepower, WHP</div>
+            <div class="rvalue" id="outWhp">0.00<span class="runit">kW</span></div>
+          </div>
+          <div class="result-tile headline">
+            <div class="rlabel">Required BHP</div>
+            <div class="rvalue" id="outBhp">0.00<span class="runit">kW</span></div>
+          </div>
+        </div>
+
+        <div class="formula-strip">
+          <span class="formula-chip">H = ΔP × 10.1972 / SG</span>
+          <span class="formula-chip">TDH = H + Lift + Losses</span>
+          <span class="formula-chip">WHP = Q·TDH·SG / 367.68</span>
+          <span class="formula-chip">BHP = WHP / Eff</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2><span class="num">3</span>Vendor Proposal (optional)</h2>
+        <p class="hint">Enter the vendor's quoted TDH/BHP to run the sufficiency check.</p>
+        <div class="field-row">
+          <div>
+            <label>Vendor's proposed TDH <span class="unit">m</span></label>
+            <input type="number" id="vTdh" step="any" placeholder="—">
+          </div>
+          <div>
+            <label>Vendor's proposed / rated BHP <span class="unit">kW</span></label>
+            <input type="number" id="vBhp" step="any" placeholder="—">
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2><span class="num">!</span>Vendor Sufficiency Check</h2>
+        <div id="verdictTdh" class="verdict-card neutral">
+          <div class="verdict-icon">—</div>
+          <div class="verdict-text">
+            <div class="vtitle">TDH — enter vendor value</div>
+            <div class="vsub">Waiting for vendor's proposed TDH</div>
+          </div>
+        </div>
+        <div id="verdictBhp" class="verdict-card neutral">
+          <div class="verdict-icon">—</div>
+          <div class="verdict-text">
+            <div class="vtitle">BHP — enter vendor value</div>
+            <div class="vsub">Waiting for vendor's proposed BHP</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    Vertical Pump Evaluation Tool — for engineering evaluation purposes. Verify all inputs against project-specific pump datasheets and P&amp;IDs before use in design decisions.<br>
+    © <span id="yr"></span> Allan Ronald Dones
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  const inputs = ['a1','a2','a3','a4','a5','pipeLoss','sg','q','psuc','pdis','eff','vTdh','vBhp'];
+  const M_PER_BAR = 100 / 9.807;      // bar -> m of head, per tool's original derivation
+  const WHP_CONST = 367.6828738426647;
+
+  function num(id){
+    const v = parseFloat($(id).value);
+    return isNaN(v) ? 0 : v;
+  }
+
+  function fmt(v, d){
+    if (!isFinite(v)) return '—';
+    return v.toLocaleString(undefined, {minimumFractionDigits:d, maximumFractionDigits:d});
+  }
+
+  function setVerdict(el, state, title, sub){
+    el.className = 'verdict-card ' + state;
+    el.querySelector('.verdict-icon').textContent = state === 'ok' ? '✓' : (state === 'bad' ? '✕' : '—');
+    el.querySelector('.vtitle').textContent = title;
+    el.querySelector('.vsub').textContent = sub;
+  }
+
+  function recalc(){
+    const drum = $('drumMounted').checked;
+    $('a3').disabled = drum;
+    $('a2label').innerHTML = drum
+      ? 'A2 — Mounting flange thickness <span class="unit">m</span>'
+      : 'A2 — Soleplate thickness <span class="unit">m</span>';
+    $('a3label').innerHTML = drum
+      ? 'A3 — Pit slab thickness <span class="unit">m</span><span class="note-inline">N/A — drum-mounted</span>'
+      : 'A3 — Pit slab thickness <span class="unit">m</span><span class="note-inline">N/A for drum-mounted pumps</span>';
+
+    const a1 = num('a1'), a2 = num('a2'), a3 = drum ? 0 : num('a3'), a4 = num('a4'), a5 = num('a5');
+    const pipeLoss = num('pipeLoss');
+    const sg = num('sg');
+    const q = num('q');
+    const psuc = num('psuc'), pdis = num('pdis');
+    const eff = num('eff');
+
+    const totalLift = a1 + a2 + a3 + (a4 - a5);
+    const dp = pdis - psuc;
+    const hDis = sg !== 0 ? (dp * M_PER_BAR) / sg : NaN;
+    const tdh = hDis + totalLift + pipeLoss;
+    const whp = (q * tdh * sg) / WHP_CONST;
+    const bhp = eff !== 0 ? whp / (eff / 100) : NaN;
+
+    $('outHdis').innerHTML = fmt(hDis, 2) + '<span class="runit">m</span>';
+    $('outLift').innerHTML = fmt(totalLift, 2) + '<span class="runit">m</span>';
+    $('outTdh').innerHTML = fmt(tdh, 2) + '<span class="runit">m</span>';
+    $('outWhp').innerHTML = fmt(whp, 2) + '<span class="runit">kW</span>';
+    $('outBhp').innerHTML = fmt(bhp, 2) + '<span class="runit">kW</span>';
+
+    // Diagram: scale liquid level to A5 vs A4 ratio (visual only, clamped)
+    const svgTop = 122, svgBottom = 288, nozzleY = 80;
+    const pitSpan = svgBottom - svgTop;
+    let lllFrac = (a4 > 0) ? Math.min(Math.max(a5 / a4, 0), 1) : 0.28;
+    const lllY = svgBottom - lllFrac * pitSpan;
+    $('lllLine').setAttribute('y1', lllY); $('lllLine').setAttribute('y2', lllY);
+    $('liqRect').setAttribute('y', lllY);
+    $('liqRect').setAttribute('height', Math.max(svgBottom - lllY, 2));
+    $('lllText').setAttribute('y', lllY - 4);
+    $('a5Label').setAttribute('y', Math.min((lllY + svgBottom) / 2 + 3, svgBottom - 4));
+
+    // Total lift bracket spans discharge nozzle CL down to LLL
+    $('liftLine').setAttribute('y2', lllY);
+    $('liftCapBot').setAttribute('y1', lllY);
+    $('liftCapBot').setAttribute('y2', lllY);
+    const liftMidY = (nozzleY + lllY) / 2;
+    $('liftLabel').setAttribute('y', liftMidY);
+    $('liftLabel').setAttribute('transform', `rotate(90 333 ${liftMidY})`);
+
+    $('a1Label').textContent = 'A1: ' + fmt(a1, 2) + ' m';
+    $('a2Label').textContent = 'A2: ' + fmt(a2, 2) + ' m';
+    $('a3Label').textContent = drum ? 'A3: N/A' : 'A3: ' + fmt(a3, 2) + ' m';
+    $('a4Label').textContent = 'A4: ' + fmt(a4, 2) + ' m';
+    $('a5Label').textContent = 'A5: ' + fmt(a5, 2) + ' m';
+    $('liftLabel').textContent = 'Total lift: ' + fmt(totalLift, 2) + ' m';
+
+    // Vendor sufficiency
+    const vTdhRaw = $('vTdh').value;
+    const vBhpRaw = $('vBhp').value;
+
+    if (vTdhRaw === '') {
+      setVerdict($('verdictTdh'), 'neutral', 'TDH — enter vendor value', 'Required TDH: ' + fmt(tdh,2) + ' m');
+    } else {
+      const vTdh = parseFloat(vTdhRaw);
+      const ok = vTdh >= tdh;
+      const margin = tdh !== 0 ? ((vTdh - tdh) / tdh * 100) : 0;
+      setVerdict($('verdictTdh'), ok ? 'ok' : 'bad',
+        ok ? 'TDH — Sufficient' : 'TDH — Insufficient',
+        `Vendor ${fmt(vTdh,2)} m vs required ${fmt(tdh,2)} m (${margin>=0?'+':''}${fmt(margin,1)}%)`);
+    }
+
+    if (vBhpRaw === '') {
+      setVerdict($('verdictBhp'), 'neutral', 'BHP — enter vendor value', 'Required BHP: ' + fmt(bhp,2) + ' kW');
+    } else {
+      const vBhp = parseFloat(vBhpRaw);
+      const ok = vBhp >= bhp;
+      const margin = bhp !== 0 ? ((vBhp - bhp) / bhp * 100) : 0;
+      setVerdict($('verdictBhp'), ok ? 'ok' : 'bad',
+        ok ? 'BHP — Sufficient' : 'BHP — Insufficient',
+        `Vendor ${fmt(vBhp,2)} kW vs required ${fmt(bhp,2)} kW (${margin>=0?'+':''}${fmt(margin,1)}%)`);
+    }
+  }
+
+  inputs.forEach(id => $(id).addEventListener('input', recalc));
+  $('drumMounted').addEventListener('change', recalc);
+  $('refPoint').addEventListener('change', recalc);
+
+  recalc();
+})();
+</script>
+
+</body>
+</html>
