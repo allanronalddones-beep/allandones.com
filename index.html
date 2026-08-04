@@ -23,7 +23,7 @@
 <meta name="twitter:description" content="Rotating equipment and mechanical packages for oil, gas, petrochemical and energy projects — FEED through procurement to commissioning.">
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a2472'/%3E%3Crect x='22' y='8' width='20' height='16' rx='3' fill='%2322d3ee'/%3E%3Crect x='28' y='24' width='8' height='14' fill='%232f7ef0'/%3E%3Cellipse cx='32' cy='40' rx='13' ry='4' fill='%235b9dfa'/%3E%3Cellipse cx='32' cy='47' rx='12' ry='4' fill='%235b9dfa'/%3E%3Cpolygon points='24,52 40,52 36,60 28,60' fill='%237ea8dd'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="assets/site.css?v=2">
+<link rel="stylesheet" href="assets/site.css?v=3">
 </head>
 <body>
 
@@ -648,6 +648,16 @@
           </div>
 
           <div class="gal-slide">
+            <video src="assets/projects/pump-casing-lift.mp4"
+                   poster="assets/projects/pump-casing-lift-poster.jpg"
+                   width="474" height="266"
+                   muted loop playsinline autoplay preload="metadata"
+                   aria-label="Double-suction split-case pump casing on timber blocks during site handling">
+            </video>
+            <div class="gal-cap"><div class="t">Double-suction split-case pump casing</div><div class="s">Site handling &#183; suction nozzle and volute</div></div>
+          </div>
+
+          <div class="gal-slide">
             <img src="assets/projects/on-site-04.jpg" width="1600" height="1220" loading="eager" fetchpriority="low" decoding="async"
                  alt="Allan Ronald Dones on site in hard hat, safety glasses and flame-resistant coveralls">
             <div class="gal-cap"><div class="t">On site</div><div class="s">Construction support and commissioning &#183; Qatar</div></div>
@@ -956,22 +966,47 @@ document.getElementById('yr').textContent = new Date().getFullYear();
     dots.appendChild(b);
   });
 
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function syncVideo(){
+    slides.forEach((s, k) => {
+      const v = s.querySelector('video');
+      if (!v) return;
+      if (k === i && !reduced){ v.play().catch(()=>{}); }
+      else { v.pause(); if (k !== i) v.currentTime = 0; }
+    });
+  }
+
   function go(k){
     i = (k + n) % n;
     track.style.transform = 'translateX(' + (-i * 100) + '%)';
     dots.querySelectorAll('.gal-dot').forEach((d, k2) => d.classList.toggle('on', k2 === i));
+    syncVideo();
   }
   function restart(){
     if (timer) clearInterval(timer);
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    timer = setInterval(() => go(i + 1), 6000);
+    const hasVideo = !!slides[i].querySelector('video');
+    timer = setInterval(() => go(i + 1), hasVideo ? 4200 : 6000);
   }
 
   document.getElementById('galPrev').addEventListener('click', () => { go(i - 1); restart(); });
   document.getElementById('galNext').addEventListener('click', () => { go(i + 1); restart(); });
   gal.addEventListener('mouseenter', () => timer && clearInterval(timer));
   gal.addEventListener('mouseleave', restart);
+  syncVideo();
   restart();
+})();
+
+/* ---------- Gallery video: reduced-motion fallback ----------
+   Playback is driven by the carousel (see syncVideo above). Here we only
+   handle the reduced-motion case: never autoplay, expose controls instead. */
+(function(){
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.querySelectorAll('.gal-slide video').forEach(v => {
+    v.removeAttribute('autoplay'); v.autoplay = false; v.pause();
+    v.setAttribute('controls','');
+  });
 })();
 
 /* ---------- Testimonials: show grid only when populated ---------- */

@@ -571,3 +571,9 @@ button.btn[disabled]{ opacity:.55; cursor:not-allowed; }
   text-transform:uppercase; color:var(--cyan-300); margin-bottom:5px;
 }
 .proj-note b{ color:var(--text-primary); font-weight:600; }
+
+/* Video slides share the image sizing so the carousel stays uniform */
+.gal-slide video{
+  width:100%; height:clamp(220px,38vw,420px);
+  object-fit:cover; display:block; background:var(--navy-900);
+}
