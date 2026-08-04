@@ -615,12 +615,38 @@
     <div class="card" style="padding:14px;margin-bottom:22px;">
       <!-- GALLERY: add slides to .gal-track below. Each slide:
            <div class="gal-slide"><img src="assets/projects/NAME.jpg" alt="..."
-                width="1600" height="900" loading="lazy" decoding="async">
+                width="1600" height="900" loading="eager" fetchpriority="low" decoding="async">
              <div class="gal-cap"><div class="t">Title</div><div class="s">Sector · Country · Year</div></div>
            </div>
            The carousel activates automatically once slides exist. -->
       <div class="gallery" id="gallery" hidden>
-        <div class="gal-track" id="galTrack"></div>
+        <div class="gal-track" id="galTrack">
+
+          <div class="gal-slide">
+            <img src="assets/projects/pump-skids-01.jpg" width="1600" height="1200" loading="eager" fetchpriority="low" decoding="async"
+                 alt="Packaged triplex plunger pump units on fabricated skids in a workshop">
+            <div class="gal-cap"><div class="t">Packaged triplex plunger pump units</div><div class="s">Workshop assembly &#183; motor, gearbox and pump on a common bunded skid</div></div>
+          </div>
+
+          <div class="gal-slide">
+            <img src="assets/projects/pump-skids-02.jpg" width="1600" height="1200" loading="eager" fetchpriority="low" decoding="async"
+                 alt="Multiple packaged pump skids awaiting pre-delivery inspection">
+            <div class="gal-cap"><div class="t">Pre-delivery inspection</div><div class="s">Multiple identical skids &#183; consistency of build across a package order</div></div>
+          </div>
+
+          <div class="gal-slide">
+            <img src="assets/projects/pump-skid-test-03.jpg" width="1600" height="1200" loading="eager" fetchpriority="low" decoding="async"
+                 alt="Packaged pump skid connected to a test rig with pulsation dampener and discharge piping">
+            <div class="gal-cap"><div class="t">Performance and mechanical run test</div><div class="s">Skid rigged to the test loop &#183; the stage where acceptance is signed</div></div>
+          </div>
+
+          <div class="gal-slide">
+            <img src="assets/projects/on-site-04.jpg" width="1600" height="2844" loading="eager" fetchpriority="low" decoding="async"
+                 alt="Allan Ronald Dones on site">
+            <div class="gal-cap"><div class="t">On site</div><div class="s">Construction support and commissioning</div></div>
+          </div>
+
+        </div>
         <button class="gal-btn gal-prev" id="galPrev" aria-label="Previous image" type="button">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg>
         </button>
@@ -632,7 +658,7 @@
 
       <div class="gal-empty" id="galEmpty">
         <div class="big">Project gallery</div>
-        <div>Images to follow. Only material cleared for publication will appear here.</div>
+        <div>Images to follow.</div>
       </div>
     </div>
 
