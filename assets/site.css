@@ -189,7 +189,7 @@ section + section{ border-top:1px solid rgba(91,157,250,0.13); }
   content:''; width:4px; height:22px; border-radius:2px;
   background:linear-gradient(180deg,var(--cyan-400),var(--blue-500)); flex:0 0 4px;
 }
-.sec-head p{ color:var(--text-muted); font-size:14px; margin:0; padding-left:15px; max-width:660px; }
+.sec-head p{ color:var(--text-primary); font-size:14px; margin:0; padding-left:15px; max-width:660px; }
 
 /* ---------- Cards ---------- */
 .card{
@@ -444,7 +444,7 @@ a:focus-visible, button:focus-visible{
 .gallery{ position:relative; overflow:hidden; border-radius:var(--radius); }
 .gal-track{ display:flex; transition:transform .55s cubic-bezier(.4,0,.2,1); }
 .gal-slide{ min-width:100%; position:relative; }
-.gal-slide img{ width:100%; height:clamp(220px,38vw,420px); object-fit:cover; display:block; }
+.gal-slide img{ width:100%; height:clamp(260px,44vw,480px); object-fit:contain; display:block; background:var(--navy-900); }
 .gal-cap{
   position:absolute; left:0; right:0; bottom:0; padding:34px 22px 16px;
   background:linear-gradient(180deg,transparent,rgba(5,11,26,0.92));
@@ -574,6 +574,6 @@ button.btn[disabled]{ opacity:.55; cursor:not-allowed; }
 
 /* Video slides share the image sizing so the carousel stays uniform */
 .gal-slide video{
-  width:100%; height:clamp(220px,38vw,420px);
-  object-fit:cover; display:block; background:var(--navy-900);
+  width:100%; height:clamp(260px,44vw,480px);
+  object-fit:contain; display:block; background:var(--navy-900);
 }
