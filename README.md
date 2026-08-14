@@ -11,7 +11,7 @@ index.html                            Main page (single page, anchored sections)
 404.html                              Not-found page
 assets/site.css                       Shared stylesheet — site pages only
 assets/allan-dones.jpg                Portrait (480×480)
-tools/vertical-pump-evaluation.html   Self-contained engineering tool
+tools/*.html                          Self-contained engineering tools, one file each
 robots.txt  sitemap.xml  _headers     Crawler, sitemap, security headers
 DEPLOY.md                             Deployment and maintenance guide
 ```

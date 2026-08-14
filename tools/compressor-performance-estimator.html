@@ -1,0 +1,1683 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compressor Performance Estimator — Centrifugal &amp; Reciprocating | Allan Ronald Dones</title>
+<meta name="description" content="Single-stage centrifugal and reciprocating compressor performance estimator — polytropic head, discharge temperature, gas and shaft power, impeller sizing, volumetric efficiency and cylinder bore. Every parameter shown in SI and English units side by side.">
+<meta name="author" content="Allan Ronald Dones">
+<link rel="canonical" href="https://allanronalddones.com/tools/compressor-performance-estimator">
+
+<!-- Social preview (shown when the link is shared from the main site) -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://allanronalddones.com/tools/compressor-performance-estimator">
+<meta property="og:title" content="Compressor Performance Estimator — Centrifugal &amp; Reciprocating">
+<meta property="og:site_name" content="Allan Ronald Dones — Rotating Equipment Engineering">
+<meta property="og:description" content="Estimate single-stage centrifugal and reciprocating compressor performance — head, discharge temperature, power, impeller sizing and cylinder bore — with SI and English units shown side by side.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Compressor Performance Estimator">
+<meta name="twitter:description" content="Single-stage centrifugal and reciprocating compressor performance estimation, dual-unit SI / English.">
+
+<!-- Inline SVG favicon — keeps the page self-contained (no separate .ico request) -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a2472'/%3E%3Ccircle cx='32' cy='32' r='16' fill='none' stroke='%232f7ef0' stroke-width='3'/%3E%3Cpath d='M32 32 L32 14 A18 18 0 0 1 47 23 Z' fill='%2322d3ee'/%3E%3Cpath d='M32 32 L47 41 A18 18 0 0 1 17 41 Z' fill='%235b9dfa'/%3E%3Cpath d='M32 32 L17 23 A18 18 0 0 1 32 14 Z' fill='%23177fe0'/%3E%3Ccircle cx='32' cy='32' r='4' fill='%23eaf1ff'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --navy-950:#050b1a;
+    --navy-900:#08132b;
+    --navy-800:#0c1c3f;
+    --navy-700:#0f2551;
+    --blue-600:#1450c9;
+    --blue-500:#1565d8;
+    --blue-400:#2f7ef0;
+    --blue-300:#5b9dfa;
+    --cyan-400:#22d3ee;
+    --cyan-300:#67e8f9;
+    --text-primary:#eaf1ff;
+    --text-secondary:#a9bde0;
+    --text-muted:#6f84ab;
+    --card-bg:rgba(6,16,40,0.82);
+    --card-border:rgba(91,157,250,0.22);
+    --card-border-strong:rgba(103,232,249,0.4);
+    --ok-500:#22c55e;
+    --ok-300:#86efac;
+    --bad-500:#ef4444;
+    --bad-300:#fca5a5;
+    --warn-300:#fcd34d;
+    --radius:14px;
+    /* Input / output cell tinting mirrors the source workbook's colour key:
+       yellow = user input, green = calculated output. */
+    --in-bg:rgba(252,211,77,0.09);
+    --in-border:rgba(252,211,77,0.32);
+    --out-bg:rgba(34,197,94,0.07);
+    /* The two unit halves of every table are tinted apart so the divide reads
+       at a glance: SI on the left, English on the right. */
+    --si-tint:rgba(47,126,240,0.05);
+    --eng-tint:rgba(34,211,238,0.035);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Segoe UI', 'Inter', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    color:var(--text-primary);
+    background:var(--navy-950);
+    min-height:100vh;
+    line-height:1.5;
+  }
+
+  /* ---------- Layered background: base wash → animated waves ---------- */
+
+  .bg-base{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    background:
+      radial-gradient(1200px 800px at 12% -8%, rgba(47,126,240,0.55), transparent 62%),
+      radial-gradient(1000px 700px at 108% 8%, rgba(34,211,238,0.34), transparent 58%),
+      radial-gradient(900px 900px at 50% 115%, rgba(21,101,216,0.42), transparent 60%),
+      linear-gradient(180deg, #06122e 0%, #0d2a63 40%, #071431 100%);
+    background-color:#06122e;
+  }
+
+  .bg-waves{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    overflow:hidden;
+  }
+  .bg-waves svg{ width:100%; height:100%; display:block; }
+  .wv path{ will-change:transform; }
+  .wv1{ animation:driftL 52s linear infinite; }
+  .wv2{ animation:driftR 43s linear infinite; }
+  .wv3{ animation:driftL 36s linear infinite; }
+  .wv4{ animation:driftR 29s linear infinite; }
+  .wv5{ animation:driftL 23s linear infinite; }
+
+  @keyframes driftL{
+    from{ transform:translateX(0); }
+    to  { transform:translateX(-1440px); }
+  }
+  @keyframes driftR{
+    from{ transform:translateX(-1440px); }
+    to  { transform:translateX(0); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .wv1,.wv2,.wv3,.wv4,.wv5{ animation:none; }
+  }
+
+  /* ---------- Back-link to main site ---------- */
+  /* href="/" is site-root relative — resolves correctly on any domain. */
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    margin-bottom:26px;
+    font-size:13px;
+    font-weight:600;
+    color:var(--text-secondary);
+    text-decoration:none;
+    border:1px solid var(--card-border);
+    background:rgba(6,16,40,0.62);
+    padding:7px 15px 7px 12px;
+    border-radius:999px;
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    transition:color .15s, border-color .15s, background .15s;
+  }
+  .back-link:hover, .back-link:focus-visible{
+    color:#fff;
+    border-color:var(--cyan-400);
+    background:rgba(6,16,40,0.9);
+  }
+  .back-link svg{ width:15px; height:15px; flex:0 0 15px; }
+
+  .wrap{
+    position:relative;
+    z-index:1;
+    max-width:1320px;
+    margin:0 auto;
+    padding:40px 24px 80px;
+  }
+
+  header.hero{
+    text-align:center;
+    margin-bottom:34px;
+    padding-bottom:26px;
+    border-bottom:1px solid rgba(91,157,250,0.16);
+  }
+  .kicker{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:12.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--cyan-300);
+    background:rgba(34,211,238,0.08);
+    border:1px solid rgba(34,211,238,0.25);
+    padding:6px 14px;
+    border-radius:999px;
+    margin-bottom:18px;
+  }
+  .kicker svg{width:14px;height:14px;}
+  h1{
+    font-size:clamp(26px,3.6vw,40px);
+    margin:0 0 10px;
+    font-weight:700;
+    letter-spacing:-0.01em;
+    background:linear-gradient(90deg, #fff 0%, var(--blue-300) 55%, var(--cyan-300) 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .subtitle{
+    color:var(--text-secondary);
+    font-size:16px;
+    max-width:760px;
+    margin:0 auto 4px;
+  }
+  .byline{
+    color:var(--text-muted);
+    font-size:13px;
+    margin-top:14px;
+  }
+
+  .card{
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
+    border-radius:var(--radius);
+    padding:22px 24px;
+    margin-bottom:22px;
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    box-shadow:0 8px 32px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+  .card h2{
+    margin:0 0 4px;
+    font-size:16px;
+    font-weight:700;
+    letter-spacing:.02em;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .card h2 .num{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:24px;height:24px;
+    flex:0 0 24px;
+    border-radius:7px;
+    background:linear-gradient(135deg, var(--blue-500), var(--cyan-400));
+    color:#04101f;
+    font-size:12.5px;
+    font-weight:800;
+  }
+  .card .hint{
+    color:var(--text-muted);
+    font-size:12.5px;
+    margin:0 0 18px;
+    padding-left:34px;
+  }
+  .card .hint a{color:var(--blue-300);}
+
+  .field-row{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    margin-bottom:14px;
+  }
+  .field-row.three{grid-template-columns:repeat(3,1fr);}
+  .field-row.two{grid-template-columns:repeat(2,1fr);}
+  @media (max-width:860px){ .field-row, .field-row.three{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:520px){ .field-row, .field-row.three, .field-row.two{grid-template-columns:1fr;} }
+
+  label{
+    display:block;
+    font-size:12.5px;
+    color:var(--text-secondary);
+    margin-bottom:6px;
+    font-weight:600;
+  }
+  .note-inline{
+    color:var(--text-muted);
+    font-size:11px;
+    display:block;
+    margin-top:3px;
+    font-weight:400;
+  }
+
+  input[type="number"], input[type="text"], select{
+    width:100%;
+    background:rgba(5,14,32,0.65);
+    border:1px solid rgba(91,157,250,0.25);
+    color:var(--text-primary);
+    padding:9px 11px;
+    border-radius:9px;
+    font-size:14px;
+    font-family:inherit;
+    transition:border-color .15s, box-shadow .15s;
+  }
+  input[type="number"]:focus, input[type="text"]:focus, select:focus{
+    outline:none;
+    border-color:var(--cyan-400);
+    box-shadow:0 0 0 3px rgba(34,211,238,0.15);
+  }
+  select{cursor:pointer;}
+
+  /* ---------- Toolbar ---------- */
+  .toolbar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .btn-row{display:flex;flex-wrap:wrap;gap:9px;}
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    border:1px solid var(--card-border);
+    background:rgba(6,16,40,0.62);
+    color:var(--text-secondary);
+    font:600 12.5px/1 inherit;
+    padding:9px 15px;
+    border-radius:9px;
+    cursor:pointer;
+    transition:color .15s, border-color .15s, background .15s;
+  }
+  .btn:hover{ color:#fff; border-color:var(--cyan-400); background:rgba(6,16,40,0.92); }
+  .btn svg{width:14px;height:14px;flex:0 0 14px;}
+
+  /* Per-machine control strip above each table */
+  .ctrl-strip{
+    display:flex;
+    flex-wrap:wrap;
+    gap:18px;
+    align-items:flex-end;
+    margin:0 0 16px;
+    padding:13px 15px;
+    background:rgba(5,14,32,0.5);
+    border:1px solid rgba(91,157,250,0.16);
+    border-radius:10px;
+  }
+  .ctrl-strip .fld{min-width:190px;}
+  .ctrl-strip label{margin-bottom:5px;}
+  .ctrl-strip select{padding:7px 9px;font-size:13px;}
+  .ctrl-strip .fld.narrow{min-width:104px;}
+
+  .legend{
+    display:flex;
+    flex-wrap:wrap;
+    gap:16px;
+    margin-top:16px;
+    padding-top:14px;
+    border-top:1px dashed rgba(91,157,250,0.18);
+    font-size:11.5px;
+    color:var(--text-muted);
+  }
+  .legend span{display:inline-flex;align-items:center;gap:7px;}
+  .swatch{display:inline-block;width:13px;height:13px;border-radius:3px;border:1px solid;flex:0 0 13px;}
+  .swatch.in{background:var(--in-bg);border-color:var(--in-border);}
+  .swatch.out{background:var(--out-bg);border-color:rgba(34,197,94,0.3);}
+  .swatch.si{background:var(--si-tint);border-color:rgba(47,126,240,0.35);}
+  .swatch.eng{background:var(--eng-tint);border-color:rgba(34,211,238,0.35);}
+
+  /* ---------- Dual-unit calculation table ---------- */
+  .table-scroll{
+    overflow-x:auto;
+    margin:0 -4px;
+    padding:0 4px 6px;
+  }
+  table.calc{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    font-size:12.5px;
+    font-variant-numeric:tabular-nums;
+  }
+  table.calc th, table.calc td{
+    border-bottom:1px solid rgba(91,157,250,0.13);
+    padding:6px 8px;
+    text-align:right;
+    white-space:nowrap;
+  }
+  /* Parameter column stays pinned while the unit halves scroll. */
+  table.calc th.pname, table.calc td.pname{
+    text-align:left;
+    position:sticky;
+    left:0;
+    z-index:2;
+    background:#08152f;
+    min-width:288px;
+    box-shadow:1px 0 0 rgba(91,157,250,0.18);
+    white-space:normal;
+  }
+  table.calc thead th{
+    position:sticky;
+    top:0;
+    z-index:3;
+    background:#0a1b3d;
+    color:var(--cyan-300);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    vertical-align:bottom;
+    padding:9px 8px;
+    border-bottom:1px solid rgba(103,232,249,0.28);
+  }
+  table.calc thead th.pname{ z-index:4; background:#0a1b3d; }
+  table.calc thead tr.grp th{
+    text-align:center;
+    font-size:11.5px;
+    letter-spacing:.16em;
+    padding:9px 8px;
+    border-bottom:1px solid rgba(103,232,249,0.2);
+  }
+  table.calc thead tr.grp th.gsi{ background:#0d2a63; color:#bcd4ff; }
+  table.calc thead tr.grp th.geng{ background:#0a2a4e; color:var(--cyan-300); }
+  table.calc thead th .csub{
+    display:block;
+    color:var(--text-muted);
+    font-weight:500;
+    font-size:10px;
+    text-transform:none;
+    letter-spacing:0;
+    margin-top:2px;
+  }
+  /* Column tinting — the visual split between the two unit systems. */
+  table.calc td.si, table.calc th.si{ background:var(--si-tint); }
+  table.calc td.eng, table.calc th.eng{ background:var(--eng-tint); }
+  /* The divide itself: a solid cyan rule down the first English column. */
+  table.calc td.divide, table.calc th.divide{
+    border-left:3px solid var(--cyan-400);
+  }
+
+  tr.sec td{
+    background:rgba(21,101,216,0.16);
+    color:var(--cyan-300);
+    font-weight:700;
+    font-size:11px;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    padding:7px 8px;
+  }
+  tr.sec td.pname{ background:#10245a; }
+
+  td.pname .sym{
+    display:inline-block;
+    min-width:46px;
+    padding-right:8px;
+    color:var(--cyan-300);
+    font-weight:700;
+    font-family:'Cascadia Code','Consolas',monospace;
+  }
+  td.pname .pdesc{ color:var(--text-secondary); }
+  td.pname sup{ color:var(--blue-300); font-size:9.5px; font-weight:700; }
+  td.pname .add{ color:var(--warn-300); font-weight:800; font-size:10px; }
+
+  td.u{
+    color:var(--text-muted);
+    font-size:10.5px;
+    text-align:left;
+    min-width:96px;
+    white-space:nowrap;
+  }
+  td.out{ color:#fff; font-weight:600; }
+  td.out.si{ background:linear-gradient(0deg, var(--out-bg), var(--out-bg)), var(--si-tint); }
+  td.out.eng{ background:linear-gradient(0deg, var(--out-bg), var(--out-bg)), var(--eng-tint); }
+  td.mirror{ color:var(--text-secondary); }
+  tr.hl td.out{ background:rgba(34,211,238,0.15); }
+  tr.hl td.pname{ background:#0d2450; }
+  td.flag-bad{ color:var(--bad-300) !important; }
+  td.flag-warn{ color:var(--warn-300) !important; }
+
+  table.calc input{
+    width:100%;
+    min-width:88px;
+    background:var(--in-bg);
+    border:1px solid var(--in-border);
+    color:var(--text-primary);
+    padding:5px 7px;
+    border-radius:6px;
+    font:600 12.5px/1.3 inherit;
+    text-align:right;
+    font-variant-numeric:tabular-nums;
+  }
+  table.calc input:focus{
+    outline:none;
+    border-color:var(--cyan-400);
+    box-shadow:0 0 0 2px rgba(34,211,238,0.18);
+  }
+  table.calc input:disabled{
+    background:rgba(91,157,250,0.05);
+    border-color:rgba(91,157,250,0.16);
+    color:var(--text-muted);
+    font-weight:500;
+  }
+
+  /* ---------- Summary tiles ---------- */
+  .summary{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    margin:0 0 18px;
+  }
+  @media (max-width:900px){ .summary{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:480px){ .summary{grid-template-columns:1fr;} }
+  .stile{
+    background:rgba(5,14,32,0.55);
+    border:1px solid rgba(91,157,250,0.18);
+    border-radius:10px;
+    padding:13px 15px;
+  }
+  .stile .rlabel{
+    font-size:10.5px;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    margin-bottom:5px;
+  }
+  .stile .rvalue{
+    font-size:19px;
+    font-weight:700;
+    color:#fff;
+    font-variant-numeric:tabular-nums;
+  }
+  .stile .rvalue .runit{
+    font-size:12px;
+    color:var(--blue-300);
+    font-weight:600;
+    margin-left:4px;
+  }
+  .stile .ralt{
+    font-size:12px;
+    color:var(--text-secondary);
+    font-variant-numeric:tabular-nums;
+    margin-top:3px;
+  }
+
+  /* ---------- Screening checks ---------- */
+  .chk-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+  @media (max-width:860px){ .chk-grid{grid-template-columns:1fr;} }
+  .chk-block{
+    background:rgba(5,14,32,0.5);
+    border:1px solid rgba(91,157,250,0.16);
+    border-radius:10px;
+    padding:13px 15px;
+  }
+  .chk-block h4{
+    margin:0 0 10px;
+    font-size:12px;
+    color:var(--cyan-300);
+    text-transform:uppercase;
+    letter-spacing:.07em;
+  }
+  ul.chk{ margin:0; padding:0; list-style:none; font-size:12.5px; }
+  ul.chk li{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    padding:6px 0;
+    border-bottom:1px dashed rgba(91,157,250,0.12);
+    color:var(--text-secondary);
+  }
+  ul.chk li:last-child{border-bottom:none;}
+  ul.chk li .ctext strong{color:#fff;font-weight:600;}
+  ul.chk li .cnote{display:block;color:var(--text-muted);font-size:11px;}
+
+  .badge{
+    display:inline-block;
+    padding:3px 9px;
+    border-radius:999px;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.05em;
+    border:1px solid;
+    white-space:nowrap;
+    flex:0 0 auto;
+    min-width:58px;
+    text-align:center;
+  }
+  .badge.ok{ background:rgba(34,197,94,0.13); border-color:rgba(34,197,94,0.42); color:var(--ok-300); }
+  .badge.bad{ background:rgba(239,68,68,0.13); border-color:rgba(239,68,68,0.42); color:var(--bad-300); }
+  .badge.warn{ background:rgba(252,211,77,0.12); border-color:rgba(252,211,77,0.4); color:var(--warn-300); }
+  .badge.neutral{ background:rgba(111,132,171,0.12); border-color:rgba(111,132,171,0.3); color:var(--text-secondary); }
+
+  /* ---------- Reference table ---------- */
+  table.ref{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    font-size:12.5px;
+    font-variant-numeric:tabular-nums;
+    min-width:600px;
+  }
+  table.ref th{
+    background:#0a1b3d;
+    color:var(--cyan-300);
+    font-size:10.5px;
+    font-weight:700;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    padding:9px;
+    text-align:left;
+    border-bottom:1px solid rgba(103,232,249,0.28);
+  }
+  table.ref td{
+    padding:8px 9px;
+    border-bottom:1px solid rgba(91,157,250,0.13);
+    color:var(--text-secondary);
+  }
+  table.ref td:first-child{color:#fff;font-weight:600;white-space:nowrap;}
+  table.ref code, ol.notes code, .formula-chip{
+    font-family:'Cascadia Code','Consolas',monospace;
+  }
+
+  /* ---------- Notes ---------- */
+  ol.notes{
+    margin:0;
+    padding-left:20px;
+    color:var(--text-secondary);
+    font-size:12.5px;
+  }
+  ol.notes li{ margin-bottom:9px; }
+  ol.notes code{
+    background:rgba(5,14,32,0.6);
+    border:1px solid rgba(91,157,250,0.18);
+    padding:1px 5px;
+    border-radius:5px;
+    font-size:11.5px;
+  }
+
+  .callout{
+    border-left:3px solid var(--cyan-400);
+    background:rgba(34,211,238,0.06);
+    border-radius:0 9px 9px 0;
+    padding:12px 15px;
+    font-size:12.5px;
+    color:var(--text-secondary);
+    margin-top:16px;
+  }
+  .callout strong{color:#fff;}
+
+  .formula-strip{
+    display:flex;
+    flex-wrap:wrap;
+    gap:9px;
+    margin-top:16px;
+  }
+  .formula-chip{
+    font-size:11.5px;
+    color:var(--text-secondary);
+    background:rgba(5,14,32,0.5);
+    border:1px solid rgba(91,157,250,0.18);
+    padding:5px 10px;
+    border-radius:7px;
+  }
+
+  footer{
+    text-align:center;
+    margin-top:36px;
+    padding-top:22px;
+    border-top:1px solid rgba(91,157,250,0.14);
+    color:var(--text-muted);
+    font-size:12.5px;
+  }
+  footer a{color:var(--blue-300);text-decoration:none;}
+  footer a:hover{text-decoration:underline;}
+
+  /* ---------- Print: flip to a light, ink-friendly calculation sheet ---------- */
+  @media print{
+    .bg-base,.bg-waves,.back-link,.btn-row,.no-print{display:none !important;}
+    body{background:#fff;color:#111;}
+    .wrap{max-width:none;padding:0;}
+    h1{color:#0a2472 !important;-webkit-text-fill-color:#0a2472;background:none;}
+    .subtitle,.byline,.card .hint,.legend{color:#444;}
+    .card{
+      background:#fff;border:1px solid #b9c6de;box-shadow:none;
+      break-inside:avoid;page-break-inside:avoid;margin-bottom:14px;padding:14px 16px;
+    }
+    .card h2{color:#0a2472;}
+    .card h2 .num{background:#0a2472;color:#fff;}
+    table.calc, table.ref{min-width:0;font-size:9.5px;}
+    table.calc th.pname, table.calc td.pname, table.calc thead th,
+    table.calc thead th.pname, table.ref th, tr.sec td.pname{
+      background:#eef2fa !important;color:#0a2472 !important;box-shadow:none;
+    }
+    table.calc thead tr.grp th.gsi, table.calc thead tr.grp th.geng{
+      background:#dde7f8 !important;color:#0a2472 !important;
+    }
+    table.calc td.si, table.calc th.si{background:#f7faff !important;}
+    table.calc td.eng, table.calc th.eng{background:#fbfdff !important;}
+    table.calc td.divide, table.calc th.divide{border-left:2px solid #0a2472;}
+    table.calc td, table.calc th, table.ref td, table.ref th{border-bottom:1px solid #ccd6e8;}
+    td.out,td.out.si,td.out.eng,tr.hl td.out,tr.sec td{background:#f3f7ff !important;color:#111 !important;}
+    td.pname .sym,td.pname .pdesc,td.u,td.mirror{color:#333 !important;}
+    td.flag-bad{color:#b91c1c !important;}
+    td.flag-warn{color:#92600a !important;}
+    table.calc input{background:#fff;border:1px solid #ccd6e8;color:#111;}
+    table.calc input:disabled{background:#f4f6fb;color:#555;}
+    .stile,.chk-block,.ctrl-strip{background:#f6f9ff;border-color:#ccd6e8;}
+    .stile .rvalue{color:#0a2472;}
+    .stile .ralt,ul.chk li{color:#333;}
+    .chk-block h4{color:#0a2472;}
+    .badge.ok{background:#dcfce7;color:#166534;border-color:#86efac;}
+    .badge.bad{background:#fee2e2;color:#991b1b;border-color:#fca5a5;}
+    .badge.warn{background:#fef3c7;color:#92600a;border-color:#fcd34d;}
+    .badge.neutral{background:#eef2fa;color:#334;border-color:#ccd6e8;}
+    ol.notes,.callout,footer,.formula-chip{color:#333;}
+    .callout,.formula-chip{background:#f3f7ff;}
+    .table-scroll{overflow:visible;}
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-base"></div>
+
+<div class="bg-waves" aria-hidden="true">
+  <svg viewBox="0 0 2880 1200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="wg1" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#0a2472"/><stop offset="0.5" stop-color="#153a9e"/><stop offset="1" stop-color="#0a2472"/>
+      </linearGradient>
+      <linearGradient id="wg2" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#123f8f"/><stop offset="0.5" stop-color="#1450c9"/><stop offset="1" stop-color="#123f8f"/>
+      </linearGradient>
+      <linearGradient id="wg3" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#1450c9"/><stop offset="0.5" stop-color="#1c6ee0"/><stop offset="1" stop-color="#1450c9"/>
+      </linearGradient>
+      <linearGradient id="wg4" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#1565d8"/><stop offset="0.5" stop-color="#2f7ef0"/><stop offset="1" stop-color="#1565d8"/>
+      </linearGradient>
+      <linearGradient id="wg5" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#2f7ef0"/><stop offset="0.5" stop-color="#22d3ee"/><stop offset="1" stop-color="#2f7ef0"/>
+      </linearGradient>
+    </defs>
+
+    <g class="wv wv1" opacity="0.55">
+      <path fill="url(#wg1)" d="M0,200 C180,120 540,120 720,200 C900,280 1260,280 1440,200 C1620,120 1980,120 2160,200 C2340,280 2700,280 2880,200 C3060,120 3420,120 3600,200 C3780,280 4140,280 4320,200 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv2" opacity="0.48">
+      <path fill="url(#wg2)" d="M0,410 C180,315 540,315 720,410 C900,505 1260,505 1440,410 C1620,315 1980,315 2160,410 C2340,505 2700,505 2880,410 C3060,315 3420,315 3600,410 C3780,505 4140,505 4320,410 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv3" opacity="0.42">
+      <path fill="url(#wg3)" d="M0,620 C180,535 540,535 720,620 C900,705 1260,705 1440,620 C1620,535 1980,535 2160,620 C2340,705 2700,705 2880,620 C3060,535 3420,535 3600,620 C3780,705 4140,705 4320,620 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv4" opacity="0.34">
+      <path fill="url(#wg4)" d="M0,830 C180,725 540,725 720,830 C900,935 1260,935 1440,830 C1620,725 1980,725 2160,830 C2340,935 2700,935 2880,830 C3060,725 3420,725 3600,830 C3780,935 4140,935 4320,830 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv5" opacity="0.26">
+      <path fill="url(#wg5)" d="M0,1015 C180,940 540,940 720,1015 C900,1090 1260,1090 1440,1015 C1620,940 1980,940 2160,1015 C2340,1090 2700,1090 2880,1015 C3060,940 3420,940 3600,1015 C3780,1090 4140,1090 4320,1015 L4320,1200 L0,1200 Z"/>
+    </g>
+  </svg>
+</div>
+
+<div class="wrap">
+
+  <!-- Back to main site -->
+  <a class="back-link" href="/" title="Back to allanronalddones.com">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Allan Ronald Dones
+  </a>
+
+  <header class="hero">
+    <span class="kicker">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6M12 16v6M4.9 4.9l4.2 4.2M14.9 14.9l4.2 4.2M2 12h6M16 12h6M4.9 19.1l4.2-4.2M14.9 9.1l4.2-4.2"/></svg>
+      Rotating Equipment Engineering
+    </span>
+    <h1>Compressor Performance Estimator</h1>
+    <p class="subtitle">Single-stage centrifugal and reciprocating compressor estimation — polytropic head, discharge temperature, gas and shaft power, impeller sizing, volumetric efficiency and cylinder bore. Every parameter is carried in <strong>SI units on the left</strong> and <strong>English units on the right</strong>, so the sheet reads the same whichever system the datasheet arrives in.</p>
+    <p class="byline">Developed by Allan Ronald Dones — Senior Mechanical Engineer, Rotating Equipment Specialist</p>
+  </header>
+
+  <!-- ============ 0 · IDENTIFICATION ============ -->
+  <div class="card">
+    <div class="toolbar">
+      <div style="font-size:12.5px;color:var(--text-secondary);max-width:520px;">
+        Enter a value on <em>either</em> side of the divide — the opposite unit system updates
+        automatically and the whole sheet recalculates.
+      </div>
+      <div class="btn-row no-print">
+        <button type="button" class="btn" id="btnSample">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg>
+          Load worked example
+        </button>
+        <button type="button" class="btn" id="btnCsv">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Export CSV
+        </button>
+        <button type="button" class="btn" id="btnPrint">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>
+          Print / Save PDF
+        </button>
+        <button type="button" class="btn" id="btnReset">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 2v6h6M3.5 15a9 9 0 1 0 2.1-9.4L3 8"/></svg>
+          Reset
+        </button>
+      </div>
+    </div>
+
+    <div class="field-row three" style="margin-top:20px;margin-bottom:0;">
+      <div>
+        <label>Project</label>
+        <input type="text" id="idProject" placeholder="Project name / number">
+      </div>
+      <div>
+        <label>Item no.</label>
+        <input type="text" id="idItem" placeholder="K-XXXXX A/B">
+      </div>
+      <div>
+        <label>Service / gas</label>
+        <input type="text" id="idService" placeholder="e.g. HP export gas compression">
+      </div>
+    </div>
+
+    <div class="legend">
+      <span><i class="swatch si"></i> SI units — left of the divide</span>
+      <span><i class="swatch eng"></i> English units — right of the divide</span>
+      <span><i class="swatch in"></i> Input field</span>
+      <span><i class="swatch out"></i> Calculated output</span>
+      <span><span class="badge neutral" style="min-width:0;padding:2px 7px;">+</span> Added — not in the source workbook</span>
+      <span>Everything runs in your browser — no data leaves this page.</span>
+    </div>
+  </div>
+
+  <!-- ============ 1 · CENTRIFUGAL ============ -->
+  <div class="card">
+    <h2><span class="num">1</span>Centrifugal Compressor — Single Stage Body</h2>
+    <p class="hint">Polytropic path. Each case column is independent — use them for the operating envelope (minimum, normal, maximum) or for alternative suction pressures.</p>
+
+    <div class="ctrl-strip no-print">
+      <div class="fld">
+        <label for="centBasis">Flow input basis</label>
+        <select id="centBasis">
+          <option value="vol">Standard volumetric flow (Nm³/h · MMSCFD)</option>
+          <option value="mass">Mass flow (kg/h · lb/min)</option>
+        </select>
+      </div>
+      <div class="fld narrow">
+        <label for="centCases">Cases</label>
+        <select id="centCases">
+          <option>1</option><option selected>2</option><option>3</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="summary" id="centSummary"></div>
+
+    <div class="table-scroll">
+      <table class="calc" id="centTable">
+        <thead id="centHead"></thead>
+        <tbody id="centBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ 2 · RECIPROCATING ============ -->
+  <div class="card">
+    <h2><span class="num">2</span>Reciprocating Compressor — Single Stage</h2>
+    <p class="hint">Adiabatic path by default (compression efficiency = 1), with the shaft power taken through a separate mechanical efficiency exactly as in the source sheet. Cylinder sizing assumes <strong>double-acting</strong> cylinders.</p>
+
+    <div class="ctrl-strip no-print">
+      <div class="fld">
+        <label for="recipBasis">Flow input basis</label>
+        <select id="recipBasis">
+          <option value="vol">Standard volumetric flow (Nm³/h · MMSCFD)</option>
+          <option value="mass">Mass flow (kg/h · lb/min)</option>
+        </select>
+      </div>
+      <div class="fld narrow">
+        <label for="recipCases">Cases</label>
+        <select id="recipCases">
+          <option selected>1</option><option>2</option><option>3</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="summary" id="recipSummary"></div>
+
+    <div class="table-scroll">
+      <table class="calc" id="recipTable">
+        <thead id="recipHead"></thead>
+        <tbody id="recipBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ 3 · SCREENING CHECKS ============ -->
+  <div class="card">
+    <h2><span class="num">3</span>Screening Checks</h2>
+    <p class="hint">Rules-of-thumb applied to the calculated results — a sanity filter for a selection study, <strong>not</strong> acceptance criteria. Nothing here is mandated by API 617 or API 618; the vendor's proposal and the purchase specification govern.</p>
+    <div class="chk-grid" id="checks"></div>
+  </div>
+
+  <!-- ============ 4 · METHOD ============ -->
+  <div class="card">
+    <h2><span class="num">4</span>Method &amp; Correlations</h2>
+    <p class="hint">Every relation below is evaluated internally in English units — the constants are English-based — and the SI column is a unit conversion of the result.</p>
+
+    <div class="table-scroll">
+      <table class="ref">
+        <thead>
+          <tr><th style="width:210px;">Quantity</th><th>Relation (English units)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Mass flow</td><td><code>W = SCFM · MW / 379.5</code> — 379.5 scf/lbmol at 14.696 psia and 60 °F</td></tr>
+          <tr><td>Inlet volume flow</td><td><code>Q<sub>s</sub> = W · (1545/MW) · Z<sub>s</sub> · T<sub>s</sub> / (144 · P<sub>s</sub>)</code></td></tr>
+          <tr><td>Pressure ratio</td><td><code>r = P<sub>d</sub> / P<sub>s</sub></code></td></tr>
+          <tr><td>Temperature exponent</td><td><code>M = ((k−1)/k) / η<sub>p</sub></code> — the polytropic exponent group (n−1)/n</td></tr>
+          <tr><td>Discharge temperature</td><td><code>T<sub>d</sub> = T<sub>s</sub> · r<sup>M</sup></code> (absolute)</td></tr>
+          <tr><td>Polytropic head</td><td><code>H<sub>p</sub> = Z<sub>avg</sub> · R · T<sub>s</sub> · (r<sup>M</sup> − 1) / M</code>, with <code>R = 1545/MW</code></td></tr>
+          <tr><td>Gas power</td><td><code>GHP = W · H<sub>p</sub> / (33 000 · η)</code> — η = polytropic efficiency (centrifugal) or mechanical efficiency (reciprocating)</td></tr>
+          <tr><td>Shaft power</td><td><code>BHP = GHP + mechanical loss allowance</code></td></tr>
+          <tr><td>Speed / impeller diameter</td><td><code>N = (1300/D) · √(H<sub>p</sub> / (n<sub>imp</sub> · μ))</code> — the constant 1300 is <code>720·√g/π</code>, so the relation is the exact restatement of <code>H<sub>stage</sub> = μ·u²/g</code> with D in inches</td></tr>
+          <tr><td>Flow coefficient</td><td><code>φ = 700 · Q<sub>avg</sub> / (N · D³)</code> — the constant 700 is <code>1728·4/π²</code>; Q<sub>avg</sub> is the mean of inlet and discharge volume flow</td></tr>
+          <tr><td>Tip speed <span class="add">+</span></td><td><code>u = π · D · N / 720</code> ft/s, with D in inches</td></tr>
+          <tr><td>Machine Mach no. <span class="add">+</span></td><td><code>M<sub>u</sub> = u / a</code>, <code>a = √(k · g<sub>c</sub> · Z<sub>s</sub> · R · T<sub>s</sub>)</code>, <code>g<sub>c</sub> = 32.174</code></td></tr>
+          <tr><td>Volumetric efficiency</td><td><code>VE = 1 + C − C · r<sup>(1/k)</sup></code> — clearance volume only, no valve or gas-passage losses</td></tr>
+          <tr><td>Cylinder bore</td><td><code>D<sub>cyl</sub> = √( 1728 · 4 · Q<sub>s</sub> / (S · N · π · 2 · n<sub>cyl</sub> · VE) )</code> — the factor 2 is the double-acting assumption</td></tr>
+          <tr><td>Piston speed</td><td><code>v<sub>p</sub> = 2 · N · S / 12</code> ft/min, with S in inches</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="formula-strip">
+      <span class="formula-chip">1 MMSCFD = 1 116.252 Nm³/h</span>
+      <span class="formula-chip">1 lb/min = 27.2155 kg/h</span>
+      <span class="formula-chip">1 ACFM = 1.699011 m³/h</span>
+      <span class="formula-chip">1 ft·lbf/lbm = 2.98907 J/kg</span>
+      <span class="formula-chip">1 hp = 0.74570 kW</span>
+    </div>
+  </div>
+
+  <!-- ============ NOTES ============ -->
+  <div class="card">
+    <h2><span class="num">§</span>Notes &amp; Conventions</h2>
+    <ol class="notes">
+      <li><strong>Scope — estimation, not selection.</strong> This is a single-stage screening calculation. It sizes nothing and guarantees nothing: it tells you roughly how much head, how much power, how hot the discharge runs and how big the machine has to be, which is what you need before a vendor is in the room. The certified vendor performance curve governs.</li>
+      <li><strong>Compressibility.</strong> Z<sub>s</sub> and Z<sub>d</sub> are entered, not calculated — take them from a process simulation or an equation of state at the actual suction and discharge conditions. The head relation uses their arithmetic mean, <code>Z<sub>avg</sub> = (Z<sub>s</sub> + Z<sub>d</sub>)/2</code>. Because Z<sub>d</sub> depends on the discharge temperature this calculation produces, a second pass with an updated Z<sub>d</sub> is worthwhile where the ratio is high.</li>
+      <li><strong>Constant k.</strong> A single ratio of specific heats is applied across the stage. For real gases at high pressure ratio, use the average of the suction and discharge values rather than the suction value alone.</li>
+      <li><strong>Rankine offset.</strong> Absolute temperature uses the source workbook's <code>°R = °F + 460</code> rather than the exact 459.67. The SI absolute column is converted from that same value so the two halves of the sheet stay consistent with each other; the effect on head and power is below 0.1%.</li>
+      <li><strong>Reciprocating efficiency.</strong> The source sheet sets the compression efficiency to 1 — an adiabatic path — and takes the shaft power through a separate mechanical efficiency in the power denominator. Both are exposed here. Leaving the compression efficiency at 1 reproduces the workbook exactly.</li>
+      <li><strong>Volumetric efficiency.</strong> The clearance-only expression neglects valve losses, gas passage losses and suction gas heating. Real machines typically run 3 to 8 percentage points below the value shown, so the calculated bore is on the optimistic side.</li>
+      <li><strong>Cylinder count.</strong> The bore relation assumes double-acting cylinders. For single-acting service, halve the cylinder count entered — or read the result as the bore of an equivalent double-acting machine.</li>
+      <li><strong>Empirical constants.</strong> The 1300 and 700 constants in the impeller relations are exact restatements of <code>720√g/π</code> and <code>1728·4/π²</code>, so they carry no hidden fudge factor. What they <em>do</em> carry is the assumption of a simple head coefficient μ applied identically to every impeller in the body.</li>
+      <li><strong>Deviation from the source workbook.</strong> Two rounded constants in the original — π taken as 3.1416 in the bore relation, and 3.281 ft/m in the piston speed conversion — are replaced here by their exact values. The difference is roughly 1 part in 10⁶. Everything else reproduces the workbook to the last digit.</li>
+      <li><strong>Discharge volume flow.</strong> Q<sub>d</sub> is evaluated rigorously as <code>Q<sub>s</sub> · (T<sub>d</sub> · Z<sub>d</sub> · P<sub>s</sub>) / (Z<sub>s</sub> · T<sub>s</sub> · P<sub>d</sub>)</code>, which is what the source sheet uses inside the flow coefficient. Where Z<sub>s</sub> = Z<sub>d</sub> this is identical to the sheet's separate <code>Q<sub>d</sub>/N = (Q<sub>s</sub>/N)·r<sup>M</sup>/r</code> row.</li>
+    </ol>
+
+    <div class="callout">
+      <strong>Not covered.</strong> Multi-stage or multi-section trains with intercooling and sidestreams, rotordynamics and lateral critical speeds, surge and stonewall limits, real-gas Schultz polytropic head corrections, rod loading and rod reversal, pulsation study requirements, and driver selection beyond the sizing margin. Each of those is a separate exercise.
+    </div>
+  </div>
+
+  <footer>
+    Compressor Performance Estimator — for engineering estimation purposes. Verify every input against the process datasheet and heat &amp; material balance, and confirm results against the vendor's certified selection before committing to an equipment size, a driver rating or a plot allocation.<br>
+    © <span id="yr"></span> Allan Ronald Dones
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  'use strict';
+  const $ = id => document.getElementById(id);
+  $('yr').textContent = new Date().getFullYear();
+
+  /* ==================================================================
+     UNIT CONVERSIONS
+
+     Every value is held internally in ENGLISH units — the correlations
+     are English-based, so that is the honest canonical form. The SI half
+     of each table is a conversion of the same number.
+
+       f  : SI value = English value × f
+       t  : 'temp' marks the one non-multiplicative conversion (°F ↔ °C)
+     ================================================================== */
+  const CONV = {
+    none:  {si:'—',            eng:'—',                f:1},
+    pct:   {si:'%',            eng:'%',                f:1},
+    rpm:   {si:'rpm',          eng:'rpm',              f:1},
+    press: {si:'bar a',        eng:'psia',             f:0.06894757},
+    temp:  {si:'°C',           eng:'°F',               t:'temp'},
+    tabs:  {si:'K',            eng:'°R',               f:5/9},
+    mass:  {si:'kg/h',         eng:'lb/min',           f:27.215542},
+    /* Nm³ (0 °C, 101.325 kPa) per scf (60 °F, 14.696 psia) = 0.45359237 · 22.414 / 379.5.
+       Deriving both from the same molar basis as the mass conversion keeps the
+       standard-volume and mass rows exactly consistent in molar terms. */
+    stdD:  {si:'Nm³/h',        eng:'MMSCFD',           f:1116.251579},
+    stdM:  {si:'Nm³/min',      eng:'SCFM',             f:0.0267900379},
+    act:   {si:'m³/h',         eng:'ACFM',             f:1.6990108},
+    actN:  {si:'m³/h per rpm', eng:'ACFM per rpm',     f:1.6990108},
+    head:  {si:'kJ/kg',        eng:'ft·lbf/lbm',       f:0.00298907},
+    power: {si:'kW',           eng:'hp',               f:0.74569987},
+    len:   {si:'mm',           eng:'in',               f:25.4},
+    vel:   {si:'m/s',          eng:'ft/s',             f:0.3048},
+    pspd:  {si:'m/s',          eng:'ft/min',           f:0.00508},
+    gasR:  {si:'kJ/kg·K',      eng:'ft·lbf/lbm·°R',    f:0.0053803205}
+  };
+
+  const toSI  = (v, c) => c.t === 'temp' ? (v - 32) / 1.8 : v * c.f;
+  const toENG = (v, c) => c.t === 'temp' ? v * 1.8 + 32   : v / c.f;
+
+  /* Physical / correlation constants, kept named so the code reads like the sheet. */
+  const R_UNIV   = 1545;     /* ft·lbf/(lbmol·°R)            */
+  const MOL_VOL  = 379.5;    /* scf/lbmol at 14.696 psia, 60 °F */
+  const R_OFFSET = 460;      /* °R = °F + 460 (workbook convention, see Note 4) */
+  const HP_CONV  = 33000;    /* ft·lbf/min per hp            */
+  const G_C      = 32.174;   /* lbm·ft/(lbf·s²)              */
+  const K_SPEED  = 1300;     /* 720·√g/π                     */
+  const K_PHI    = 700;      /* 1728·4/π²                    */
+
+  /* ==================================================================
+     ROW SPECIFICATIONS
+
+     kind : 'sec'  section band
+            'in'   editable on both sides (the two are mirrored)
+            'out'  calculated
+            'vol'  editable only when the flow basis is standard volumetric
+            'mass' editable only when the flow basis is mass flow
+     dec  : decimals — a number, or {si, eng} where the two differ
+     add  : true marks a row added here, absent from the source workbook
+     ================================================================== */
+
+  const CENT_ROWS = [
+    {kind:'sec',  label:'Flow'},
+    {kind:'vol',  k:'qstd',  sym:'Qs',   name:'Standard volumetric flow',         c:'stdD',  dec:{si:0, eng:4}},
+    {kind:'out',  k:'qscfm', sym:'Qs',   name:'Standard volumetric flow',         c:'stdM',  dec:{si:2, eng:1}},
+    {kind:'mass', k:'w',     sym:'W',    name:'Mass flow',                        c:'mass',  dec:{si:0, eng:2}},
+
+    {kind:'sec',  label:'Operating conditions'},
+    {kind:'in',   k:'ps',    sym:'Ps',   name:'Suction pressure',                 c:'press', dec:{si:3, eng:2}},
+    {kind:'in',   k:'pd',    sym:'Pd',   name:'Discharge pressure',               c:'press', dec:{si:3, eng:2}},
+    {kind:'in',   k:'ts',    sym:'Ts',   name:'Suction temperature',              c:'temp',  dec:2},
+    {kind:'out',  k:'tsAbs', sym:'Ts',   name:'Suction temperature, absolute',    c:'tabs',  dec:2},
+    {kind:'out',  k:'td',    sym:'Td',   name:'Discharge temperature',            c:'temp',  dec:2, hl:true, flag:'td_cent'},
+
+    {kind:'sec',  label:'Gas properties'},
+    {kind:'in',   k:'mw',    sym:'MW',   name:'Molecular weight',                 c:'none',  dec:4},
+    {kind:'in',   k:'kv',    sym:'k',    name:'Ratio of specific heats, Cp/Cv',   c:'none',  dec:4},
+    {kind:'in',   k:'zs',    sym:'Zs',   name:'Compressibility at suction',       c:'none',  dec:4},
+    {kind:'in',   k:'zd',    sym:'Zd',   name:'Compressibility at discharge',     c:'none',  dec:4},
+    {kind:'out',  k:'zavg',  sym:'Zavg', name:'Mean compressibility',             c:'none',  dec:4},
+    {kind:'out',  k:'rgas',  sym:'R',    name:'Gas constant',                     c:'gasR',  dec:{si:4, eng:3}},
+
+    {kind:'sec',  label:'Efficiency & machine data'},
+    {kind:'in',   k:'eta',   sym:'ηp',   name:'Polytropic efficiency',            c:'none',  dec:4},
+    {kind:'in',   k:'mu',    sym:'μ',    name:'Pressure (head) coefficient',      c:'none',  dec:4},
+    {kind:'in',   k:'nimp',  sym:'n',    name:'Number of impellers',              c:'none',  dec:0},
+    {kind:'in',   k:'dimp',  sym:'D',    name:'Impeller diameter',                c:'len',   dec:{si:1, eng:3}},
+    {kind:'in',   k:'nspd',  sym:'N',    name:'Operating speed',                  c:'rpm',   dec:0},
+    {kind:'in',   k:'lossP', sym:'—',    name:'Mechanical loss allowance',        c:'pct',   dec:2},
+    {kind:'in',   k:'mtrF',  sym:'—',    name:'Driver sizing factor',             c:'none',  dec:2},
+
+    {kind:'sec',  label:'Compression parameters'},
+    {kind:'out',  k:'r',     sym:'r',    name:'Pressure ratio',                   c:'none',  dec:4, flag:'ratio'},
+    {kind:'out',  k:'mExp',  sym:'M',    name:'Temperature exponent, (n−1)/n',    c:'none',  dec:5},
+    {kind:'out',  k:'qs',    sym:'Qs',   name:'Inlet volume flow',                c:'act',   dec:{si:1, eng:1}},
+    {kind:'out',  k:'qd',    sym:'Qd',   name:'Discharge volume flow',            c:'act',   dec:{si:1, eng:1}, add:true},
+
+    {kind:'sec',  label:'Head & power'},
+    {kind:'out',  k:'head',  sym:'Hp',   name:'Polytropic head',                  c:'head',  dec:{si:2, eng:0}, hl:true},
+    {kind:'out',  k:'headI', sym:'Hp/n', name:'Head per impeller',                c:'head',  dec:{si:2, eng:0}, add:true},
+    {kind:'out',  k:'ghp',   sym:'GHP',  name:'Gas power',                        c:'power', dec:2},
+    {kind:'out',  k:'loss',  sym:'—',    name:'Mechanical loss',                  c:'power', dec:2},
+    {kind:'out',  k:'bhp',   sym:'BHP',  name:'Shaft power',                      c:'power', dec:2, hl:true},
+    {kind:'out',  k:'motor', sym:'—',    name:'Driver rating at sizing factor',   c:'power', dec:2, hl:true},
+
+    {kind:'sec',  label:'Aerodynamic sizing'},
+    {kind:'out',  k:'ncalc', sym:'Ncalc',name:'Speed at the entered diameter',    c:'rpm',   dec:0},
+    {kind:'out',  k:'dcalc', sym:'Dcalc',name:'Diameter at the entered speed',    c:'len',   dec:{si:1, eng:3}},
+    {kind:'out',  k:'utip',  sym:'u',    name:'Impeller tip speed at N and D',    c:'vel',   dec:1, add:true, flag:'tip'},
+    {kind:'out',  k:'sonic', sym:'a',    name:'Inlet sonic velocity',             c:'vel',   dec:1, add:true},
+    {kind:'out',  k:'mach',  sym:'Mu',   name:'Machine Mach number, u/a',         c:'none',  dec:4, add:true, flag:'mach'},
+    {kind:'out',  k:'qsn',   sym:'Qs/N', name:'Inlet flow per rev',               c:'actN',  dec:{si:5, eng:5}},
+    {kind:'out',  k:'qdn',   sym:'Qd/N', name:'Discharge flow per rev',           c:'actN',  dec:{si:5, eng:5}},
+    {kind:'out',  k:'phi',   sym:'φ',    name:'Flow coefficient',                 c:'none',  dec:5, flag:'phi'}
+  ];
+
+  const RECIP_ROWS = [
+    {kind:'sec',  label:'Flow'},
+    {kind:'vol',  k:'qstd',  sym:'Qs',   name:'Standard volumetric flow',         c:'stdD',  dec:{si:0, eng:4}},
+    {kind:'out',  k:'qscfm', sym:'Qs',   name:'Standard volumetric flow',         c:'stdM',  dec:{si:2, eng:1}},
+    {kind:'mass', k:'w',     sym:'W',    name:'Mass flow',                        c:'mass',  dec:{si:0, eng:2}},
+
+    {kind:'sec',  label:'Operating conditions'},
+    {kind:'in',   k:'ps',    sym:'Ps',   name:'Suction pressure',                 c:'press', dec:{si:3, eng:2}},
+    {kind:'in',   k:'pd',    sym:'Pd',   name:'Discharge pressure',               c:'press', dec:{si:3, eng:2}},
+    {kind:'in',   k:'ts',    sym:'Ts',   name:'Suction temperature',              c:'temp',  dec:2},
+    {kind:'out',  k:'tsAbs', sym:'Ts',   name:'Suction temperature, absolute',    c:'tabs',  dec:2},
+    {kind:'out',  k:'td',    sym:'Td',   name:'Discharge temperature',            c:'temp',  dec:2, hl:true, flag:'td_recip'},
+
+    {kind:'sec',  label:'Gas properties'},
+    {kind:'in',   k:'mw',    sym:'MW',   name:'Molecular weight',                 c:'none',  dec:4},
+    {kind:'in',   k:'kv',    sym:'k',    name:'Ratio of specific heats, Cp/Cv',   c:'none',  dec:4},
+    {kind:'in',   k:'zs',    sym:'Zs',   name:'Compressibility at suction',       c:'none',  dec:4},
+    {kind:'in',   k:'zd',    sym:'Zd',   name:'Compressibility at discharge',     c:'none',  dec:4},
+    {kind:'out',  k:'zavg',  sym:'Zavg', name:'Mean compressibility',             c:'none',  dec:4},
+    {kind:'out',  k:'rgas',  sym:'R',    name:'Gas constant',                     c:'gasR',  dec:{si:4, eng:3}},
+
+    {kind:'sec',  label:'Efficiency & machine data'},
+    {kind:'in',   k:'etaP',  sym:'ηc',   name:'Compression efficiency',           c:'none',  dec:4},
+    {kind:'in',   k:'etaM',  sym:'ηm',   name:'Mechanical efficiency',            c:'none',  dec:4},
+    {kind:'in',   k:'lossA', sym:'—',    name:'Fixed power loss allowance',       c:'power', dec:2},
+    {kind:'in',   k:'nspd',  sym:'N',    name:'Operating speed',                  c:'rpm',   dec:0},
+    {kind:'in',   k:'ncyl',  sym:'ncyl', name:'Number of cylinders (double-acting)', c:'none', dec:0},
+    {kind:'in',   k:'strk',  sym:'S',    name:'Stroke',                           c:'len',   dec:{si:1, eng:4}},
+    {kind:'in',   k:'clr',   sym:'C',    name:'Clearance volume, fraction',       c:'none',  dec:4},
+
+    {kind:'sec',  label:'Compression parameters'},
+    {kind:'out',  k:'r',     sym:'r',    name:'Pressure ratio',                   c:'none',  dec:4, flag:'ratio'},
+    {kind:'out',  k:'mExp',  sym:'M',    name:'Temperature exponent, (n−1)/n',    c:'none',  dec:5},
+    {kind:'out',  k:'qs',    sym:'Qs',   name:'Inlet volume flow',                c:'act',   dec:{si:1, eng:1}},
+    {kind:'out',  k:'ve',    sym:'VE',   name:'Volumetric efficiency',            c:'none',  dec:4, flag:'ve'},
+
+    {kind:'sec',  label:'Head & power'},
+    {kind:'out',  k:'head',  sym:'Hp',   name:'Compression head',                 c:'head',  dec:{si:2, eng:0}, hl:true},
+    {kind:'out',  k:'ghp',   sym:'GHP',  name:'Gas power',                        c:'power', dec:2},
+    {kind:'out',  k:'bhp',   sym:'BHP',  name:'Shaft power',                      c:'power', dec:2, hl:true},
+
+    {kind:'sec',  label:'Cylinder sizing'},
+    {kind:'out',  k:'bore',  sym:'Dcyl', name:'Required cylinder bore',           c:'len',   dec:{si:1, eng:3}, hl:true},
+    {kind:'out',  k:'pspd',  sym:'vp',   name:'Piston speed',                     c:'pspd',  dec:{si:3, eng:1}, flag:'pspd'},
+    {kind:'out',  k:'disp',  sym:'PD',   name:'Swept piston displacement',        c:'act',   dec:{si:1, eng:1}, add:true}
+  ];
+
+  /* ==================================================================
+     STATE — all values in English units, indexed [key][caseIndex]
+     ================================================================== */
+  const MAXC = 3;
+
+  function blankVals(defaults){
+    const v = {};
+    Object.keys(defaults).forEach(k => {
+      v[k] = [];
+      for (let i = 0; i < MAXC; i++) v[k].push(defaults[k]);
+    });
+    return v;
+  }
+
+  /* Sensible starting points for the values that rarely change case to case.
+     Process data is deliberately left blank — it must come from the datasheet. */
+  const CENT_DEFAULTS = {
+    qstd:null, w:null, ps:null, pd:null, ts:null,
+    mw:null, kv:null, zs:1, zd:1,
+    eta:0.78, mu:0.5, nimp:1, dimp:null, nspd:null, lossP:1, mtrF:1.1
+  };
+  const RECIP_DEFAULTS = {
+    qstd:null, w:null, ps:null, pd:null, ts:null,
+    mw:null, kv:null, zs:1, zd:1,
+    etaP:1, etaM:0.85, lossA:0, nspd:null, ncyl:2, strk:null, clr:0.15
+  };
+
+  const ST = {
+    cent:  {rows:CENT_ROWS,  defaults:CENT_DEFAULTS,  basis:'vol', ncase:2, v:blankVals(CENT_DEFAULTS),
+            head:'centHead',  body:'centBody',  sum:'centSummary',  calc:calcCent,  title:'Centrifugal'},
+    recip: {rows:RECIP_ROWS, defaults:RECIP_DEFAULTS, basis:'vol', ncase:1, v:blankVals(RECIP_DEFAULTS),
+            head:'recipHead', body:'recipBody', sum:'recipSummary', calc:calcRecip, title:'Reciprocating'}
+  };
+
+  /* ==================================================================
+     CALCULATION ENGINES — English units throughout
+     ================================================================== */
+
+  /* Resolve the flow triplet from whichever basis is active. */
+  function resolveFlow(v, basis, mw){
+    let qstd = v.qstd, w = v.w, scfm;
+    if (basis === 'vol'){
+      scfm = qstd * 1e6 / 1440;
+      w    = scfm * mw / MOL_VOL;
+    } else {
+      scfm = w * MOL_VOL / mw;
+      qstd = scfm * 1440 / 1e6;
+    }
+    return {qstd:qstd, qscfm:scfm, w:w};
+  }
+
+  /* Shared thermodynamic core — everything both machine types compute. */
+  function core(v, basis, eta){
+    const o = {};
+    const mw = v.mw, k = v.kv;
+    const f = resolveFlow(v, basis, mw);
+    o.qstd = f.qstd; o.qscfm = f.qscfm; o.w = f.w;
+
+    o.tsAbs = v.ts + R_OFFSET;
+    o.zavg  = (v.zs + v.zd) / 2;
+    o.rgas  = R_UNIV / mw;
+    o.r     = v.pd / v.ps;
+    o.mExp  = ((k - 1) / k) / eta;
+
+    o.qs    = o.w * o.rgas * v.zs * o.tsAbs / (144 * v.ps);
+
+    const rM = Math.pow(o.r, o.mExp);
+    o.tdAbs = o.tsAbs * rM;
+    o.td    = o.tdAbs - R_OFFSET;
+    o.head  = o.zavg * o.rgas * o.tsAbs * ((rM - 1) / o.mExp);
+
+    /* Rigorous discharge volume flow — the form the source sheet uses inside φ. */
+    o.qd    = o.qs * (o.tdAbs * v.zd * v.ps) / (v.zs * o.tsAbs * v.pd);
+    return o;
+  }
+
+  function calcCent(v, basis){
+    const o = core(v, basis, v.eta);
+
+    o.ghp   = o.w * o.head / (HP_CONV * v.eta);
+    o.loss  = o.ghp * v.lossP / 100;
+    o.bhp   = o.ghp + o.loss;
+    o.motor = o.bhp * v.mtrF;
+
+    o.headI = o.head / v.nimp;
+    const stageTerm = Math.sqrt(o.head / (v.nimp * v.mu));
+    o.ncalc = (K_SPEED / v.dimp) * stageTerm;
+    o.dcalc = (K_SPEED / v.nspd) * stageTerm;
+
+    /* Tip speed and machine Mach number use the machine as entered (N and D). */
+    o.utip  = Math.PI * v.dimp * v.nspd / 720;
+    o.sonic = Math.sqrt(v.kv * G_C * v.zs * o.rgas * o.tsAbs);
+    o.mach  = o.utip / o.sonic;
+
+    o.qsn = o.qs / v.nspd;
+    o.qdn = o.qd / v.nspd;
+    o.phi = ((o.qs + o.qd) / 2 * K_PHI) / (v.nspd * Math.pow(o.dcalc, 3));
+    return o;
+  }
+
+  function calcRecip(v, basis){
+    const o = core(v, basis, v.etaP);
+
+    o.ghp  = o.w * o.head / (HP_CONV * v.etaM);
+    o.bhp  = o.ghp + v.lossA;
+
+    o.ve   = 1 + v.clr - v.clr * Math.pow(o.r, 1 / v.kv);
+    o.bore = Math.sqrt((1728 * 4 * o.qs) / (v.strk * v.nspd * Math.PI * 2 * v.ncyl) / o.ve);
+    o.pspd = 2 * v.nspd * v.strk / 12;
+    /* Swept displacement of the sized machine — the inlet flow divided by VE. */
+    o.disp = o.qs / o.ve;
+    return o;
+  }
+
+  /* Run a case, returning nulls rather than NaN/Infinity where inputs are missing. */
+  function runCase(m, i){
+    const st = ST[m];
+    const v = {};
+    let complete = true;
+    Object.keys(st.defaults).forEach(k => {
+      const x = st.v[k][i];
+      v[k] = x;
+      /* The inactive flow basis is derived, so its absence is not a gap. */
+      const skip = (k === 'w' && st.basis === 'vol') || (k === 'qstd' && st.basis === 'mass');
+      if (!skip && (x === null || x === undefined || !isFinite(x))) complete = false;
+    });
+    if (!complete) return null;
+    const o = st.calc(v, st.basis);
+    /* Echo the inputs so the renderer can read every row key from one object. */
+    Object.keys(v).forEach(k => { if (!(k in o)) o[k] = v[k]; });
+    let ok = true;
+    Object.keys(o).forEach(k => { if (typeof o[k] === 'number' && !isFinite(o[k])) ok = false; });
+    return ok ? o : null;
+  }
+
+  /* ==================================================================
+     RENDERING
+     ================================================================== */
+
+  function decOf(row, side){
+    const d = row.dec;
+    if (d === undefined) return 2;
+    return (typeof d === 'object') ? d[side] : d;
+  }
+
+  function fmt(v, d){
+    if (v === null || v === undefined || !isFinite(v)) return '—';
+    return v.toLocaleString('en-US', {minimumFractionDigits:d, maximumFractionDigits:d});
+  }
+
+  function isEditable(row, basis){
+    if (row.kind === 'in') return true;
+    if (row.kind === 'vol')  return basis === 'vol';
+    if (row.kind === 'mass') return basis === 'mass';
+    return false;
+  }
+
+  function buildTable(m){
+    const st = ST[m], n = st.ncase;
+    const cols = [];
+    for (let i = 0; i < n; i++) cols.push(i);
+
+    /* --- header: unit-system group band, then the case columns --- */
+    let h = '<tr class="grp"><th class="pname" rowspan="2">Parameter</th>' +
+            '<th class="gsi" colspan="' + (n + 1) + '">SI Units</th>' +
+            '<th class="geng divide" colspan="' + (n + 1) + '">English Units</th></tr>';
+    h += '<tr><th class="si">Unit</th>' +
+         cols.map(i => '<th class="si">Case ' + (i + 1) + '</th>').join('') +
+         '<th class="eng divide">Unit</th>' +
+         cols.map(i => '<th class="eng">Case ' + (i + 1) + '</th>').join('') +
+         '</tr>';
+    $(st.head).innerHTML = h;
+
+    /* --- body --- */
+    const span = 2 * (n + 1);
+    $(st.body).innerHTML = st.rows.map(row => {
+      if (row.kind === 'sec'){
+        return '<tr class="sec"><td class="pname">' + row.label + '</td>' +
+               '<td colspan="' + span + '"></td></tr>';
+      }
+      const c = CONV[row.c];
+      const edit = isEditable(row, st.basis);
+
+      const cell = (side, i, first) => {
+        const cls = side + (first ? ' divide' : '');
+        if (edit){
+          return '<td class="' + cls + '">' +
+                 '<input type="number" step="any" data-m="' + m + '" data-k="' + row.k +
+                 '" data-i="' + i + '" data-side="' + side + '"' +
+                 ' aria-label="' + row.name + ', case ' + (i + 1) + ', ' + c[side] + '"></td>';
+        }
+        return '<td class="out ' + cls + '" data-cell="' + m + '-' + row.k + '-' + i + '-' + side + '">—</td>';
+      };
+
+      const siCells  = '<td class="u si">' + c.si + '</td>' + cols.map(i => cell('si', i, false)).join('');
+      const engCells = '<td class="u eng divide">' + c.eng + '</td>' + cols.map(i => cell('eng', i, false)).join('');
+
+      return '<tr class="' + (row.hl ? 'hl' : '') + '">' +
+             '<td class="pname"><span class="sym">' + row.sym + '</span>' +
+             '<span class="pdesc">' + row.name + '</span>' +
+             (row.add ? ' <span class="add">+</span>' : '') + '</td>' +
+             siCells + engCells + '</tr>';
+    }).join('');
+
+    $(st.body).querySelectorAll('input').forEach(el => {
+      el.addEventListener('input', onInput);
+    });
+  }
+
+  /* Threshold flags. Each returns 'bad' | 'warn' | null for a calculated value. */
+  const FLAGS = {
+    ratio:    o => o.r    > 4.5  ? 'warn' : null,
+    td_cent:  o => o.td   > 350  ? 'bad'  : (o.td > 300 ? 'warn' : null),
+    td_recip: o => o.td   > 300  ? 'bad'  : (o.td > 275 ? 'warn' : null),
+    pspd:     o => o.pspd > 900  ? 'bad'  : (o.pspd > 800 ? 'warn' : null),
+    ve:       o => o.ve   < 0.60 ? 'bad'  : (o.ve < 0.70 ? 'warn' : null),
+    mach:     o => o.mach > 1.0  ? 'bad'  : (o.mach > 0.85 ? 'warn' : null),
+    tip:      o => o.utip > 1150 ? 'warn' : null,
+    phi:      o => (o.phi < 0.01 || o.phi > 0.15) ? 'warn' : null
+  };
+
+  function render(m){
+    const st = ST[m];
+    const results = [];
+    for (let i = 0; i < st.ncase; i++) results.push(runCase(m, i));
+
+    st.rows.forEach(row => {
+      if (row.kind === 'sec') return;
+      const c = CONV[row.c];
+      const edit = isEditable(row, st.basis);
+
+      for (let i = 0; i < st.ncase; i++){
+        const o = results[i];
+        ['si','eng'].forEach(side => {
+          const engVal = edit ? st.v[row.k][i] : (o ? o[row.k] : null);
+          const val = (engVal === null || engVal === undefined || !isFinite(engVal))
+                        ? null
+                        : (side === 'si' ? toSI(engVal, c) : engVal);
+
+          if (edit){
+            const el = document.querySelector(
+              'input[data-m="' + m + '"][data-k="' + row.k + '"][data-i="' + i + '"][data-side="' + side + '"]');
+            if (el && el !== document.activeElement){
+              el.value = (val === null) ? '' : round(val, decOf(row, side) + 2);
+            }
+          } else {
+            const td = document.querySelector(
+              '[data-cell="' + m + '-' + row.k + '-' + i + '-' + side + '"]');
+            if (td){
+              td.textContent = fmt(val, decOf(row, side));
+              td.classList.remove('flag-bad','flag-warn');
+              if (row.flag && o){
+                const f = FLAGS[row.flag] && FLAGS[row.flag](o);
+                if (f) td.classList.add('flag-' + f);
+              }
+            }
+          }
+        });
+      }
+    });
+
+    renderSummary(m, results);
+    return results;
+  }
+
+  function round(v, d){
+    const p = Math.pow(10, d);
+    return Math.round(v * p) / p;
+  }
+
+  function tile(label, engVal, conv, dSi, dEng){
+    const c = CONV[conv];
+    const si = (engVal === null || !isFinite(engVal)) ? null : toSI(engVal, c);
+    return '<div class="stile"><div class="rlabel">' + label + '</div>' +
+           '<div class="rvalue">' + fmt(si, dSi) + '<span class="runit">' + c.si + '</span></div>' +
+           '<div class="ralt">' + fmt(engVal, dEng) + ' ' + c.eng + '</div></div>';
+  }
+
+  function renderSummary(m, results){
+    const st = ST[m];
+    const o = results.find(x => x);      /* the first complete case drives the tiles */
+    const idx = results.indexOf(o) + 1;
+    if (!o){
+      $(st.sum).innerHTML =
+        '<div class="stile" style="grid-column:1/-1;"><div class="rlabel">' + st.title + '</div>' +
+        '<div class="ralt">Enter the process data and gas properties below — results appear here.</div></div>';
+      return;
+    }
+    const cap = '<div class="stile" style="grid-column:1/-1;padding:8px 15px;">' +
+                '<div class="rlabel">Summary shown for case ' + idx + '</div></div>';
+    let tiles;
+    if (m === 'cent'){
+      tiles = tile('Polytropic head', o.head, 'head', 2, 0) +
+              tile('Shaft power', o.bhp, 'power', 1, 1) +
+              tile('Discharge temperature', o.td, 'temp', 1, 1) +
+              tile('Driver rating', o.motor, 'power', 1, 1);
+    } else {
+      tiles = tile('Compression head', o.head, 'head', 2, 0) +
+              tile('Shaft power', o.bhp, 'power', 1, 1) +
+              tile('Discharge temperature', o.td, 'temp', 1, 1) +
+              tile('Cylinder bore', o.bore, 'len', 1, 3);
+    }
+    $(st.sum).innerHTML = (results.filter(x => x).length > 1 ? cap : '') + tiles;
+  }
+
+  /* ==================================================================
+     SCREENING CHECKS
+     ================================================================== */
+
+  const CHECKS = {
+    cent: [
+      {t:'Pressure ratio per body', n:'Above about 4.5 a single body normally needs intercooling or a second section.',
+       f:o => o.r > 4.5 ? ['warn', 'r = ' + fmt(o.r,2)] : ['ok', 'r = ' + fmt(o.r,2)]},
+      {t:'Discharge temperature', n:'Hydrocarbon service is commonly held to 175 °C / 350 °F; polymer-forming gases lower still.',
+       f:o => {
+         const c = toSI(o.td, CONV.temp);
+         const s = fmt(c,1) + ' °C / ' + fmt(o.td,1) + ' °F';
+         return o.td > 350 ? ['bad', s] : (o.td > 300 ? ['warn', s] : ['ok', s]);
+       }},
+      {t:'Machine Mach number', n:'u/a above roughly 0.85 pushes the impeller into transonic inlet relative velocities.',
+       f:o => {
+         const s = 'Mu = ' + fmt(o.mach,3);
+         return o.mach > 1.0 ? ['bad', s] : (o.mach > 0.85 ? ['warn', s] : ['ok', s]);
+       }},
+      {t:'Impeller tip speed', n:'Beyond about 350 m/s the impeller material and stress analysis become the constraint.',
+       f:o => {
+         const s = fmt(toSI(o.utip, CONV.vel),0) + ' m/s / ' + fmt(o.utip,0) + ' ft/s';
+         return o.utip > 1150 ? ['warn', s] : ['ok', s];
+       }},
+      {t:'Flow coefficient', n:'Outside roughly 0.01 to 0.15 the impeller is either very narrow (low efficiency) or very wide.',
+       f:o => {
+         const s = 'φ = ' + fmt(o.phi,4);
+         return (o.phi < 0.01 || o.phi > 0.15) ? ['warn', s] : ['ok', s];
+       }},
+      {t:'Speed consistency', n:'Entered speed against the speed the head and impeller count imply. A wide gap means the diameter, impeller count or head coefficient needs revisiting.',
+       f:(o,v) => {
+         const dev = (v.nspd - o.ncalc) / o.ncalc * 100;
+         const s = fmt(dev,1) + '% from Ncalc ' + fmt(o.ncalc,0) + ' rpm';
+         const a = Math.abs(dev);
+         return a > 25 ? ['bad', s] : (a > 10 ? ['warn', s] : ['ok', s]);
+       }}
+    ],
+    recip: [
+      {t:'Pressure ratio per stage', n:'Reciprocating stages are usually kept at or below about 4 to hold the discharge temperature and rod load down.',
+       f:o => o.r > 4 ? ['warn', 'r = ' + fmt(o.r,2)] : ['ok', 'r = ' + fmt(o.r,2)]},
+      {t:'Discharge temperature', n:'API 618 practice commonly caps lubricated cylinders near 150 °C / 300 °F, and lower for hydrogen-rich gas.',
+       f:o => {
+         const c = toSI(o.td, CONV.temp);
+         const s = fmt(c,1) + ' °C / ' + fmt(o.td,1) + ' °F';
+         return o.td > 300 ? ['bad', s] : (o.td > 275 ? ['warn', s] : ['ok', s]);
+       }},
+      {t:'Piston speed', n:'Above roughly 4.5 m/s / 900 fpm, valve and ring life shorten sharply on a slow-speed process machine.',
+       f:o => {
+         const s = fmt(toSI(o.pspd, CONV.pspd),2) + ' m/s / ' + fmt(o.pspd,0) + ' fpm';
+         return o.pspd > 900 ? ['bad', s] : (o.pspd > 800 ? ['warn', s] : ['ok', s]);
+       }},
+      {t:'Volumetric efficiency', n:'Below about 70% the cylinder is large for the duty. Remember the clearance-only value here is optimistic (Note 6).',
+       f:o => {
+         const s = fmt(o.ve * 100,1) + '%';
+         return o.ve < 0.60 ? ['bad', s] : (o.ve < 0.70 ? ['warn', s] : ['ok', s]);
+       }},
+      {t:'Cylinder bore', n:'Bores beyond about 600 mm / 24 in are at the large end of standard process-compressor frames.',
+       f:o => {
+         const s = fmt(toSI(o.bore, CONV.len),0) + ' mm / ' + fmt(o.bore,1) + ' in';
+         return o.bore > 24 ? ['warn', s] : ['ok', s];
+       }}
+    ]
+  };
+
+  function renderChecks(centRes, recipRes){
+    let html = '';
+    [['cent', centRes], ['recip', recipRes]].forEach(([m, results]) => {
+      const st = ST[m];
+      for (let i = 0; i < st.ncase; i++){
+        const o = results[i];
+        html += '<div class="chk-block"><h4>' + st.title + ' — case ' + (i + 1) + '</h4>';
+        if (!o){
+          html += '<ul class="chk"><li><span class="badge neutral">—</span>' +
+                  '<span class="ctext">Case not evaluated<span class="cnote">One or more inputs are still blank.</span></span></li></ul></div>';
+          continue;
+        }
+        const v = {}; Object.keys(st.defaults).forEach(k => v[k] = st.v[k][i]);
+        html += '<ul class="chk">' + CHECKS[m].map(chk => {
+          const [state, text] = chk.f(o, v);
+          const badge = state === 'ok' ? 'ok' : (state === 'bad' ? 'bad' : 'warn');
+          const word  = state === 'ok' ? 'OK' : (state === 'bad' ? 'REVIEW' : 'CHECK');
+          return '<li><span class="badge ' + badge + '">' + word + '</span>' +
+                 '<span class="ctext"><strong>' + chk.t + '</strong> — ' + text +
+                 '<span class="cnote">' + chk.n + '</span></span></li>';
+        }).join('') + '</ul></div>';
+      }
+    });
+    $('checks').innerHTML = html;
+  }
+
+  /* ==================================================================
+     EVENTS
+     ================================================================== */
+
+  function onInput(e){
+    const el = e.target;
+    const m = el.dataset.m, k = el.dataset.k, i = +el.dataset.i, side = el.dataset.side;
+    const row = ST[m].rows.find(r => r.k === k);
+    const c = CONV[row.c];
+    const txt = el.value.trim();
+    const raw = txt === '' ? null : parseFloat(txt);
+    ST[m].v[k][i] = (raw === null || !isFinite(raw)) ? null : (side === 'si' ? toENG(raw, c) : raw);
+    recalc();
+  }
+
+  function recalc(){
+    const centRes  = render('cent');
+    const recipRes = render('recip');
+    renderChecks(centRes, recipRes);
+  }
+
+  function rebuild(){
+    buildTable('cent');
+    buildTable('recip');
+    recalc();
+  }
+
+  /* Switching the flow basis must not lose the duty. Seed the newly-active
+     input from the value the outgoing basis derived — the conversion needs
+     only the molecular weight, so it works even on a half-filled sheet. */
+  function switchBasis(m, next){
+    const st = ST[m];
+    if (st.basis === next) return;
+    for (let i = 0; i < MAXC; i++){
+      const mw = st.v.mw[i];
+      if (mw === null || !isFinite(mw) || mw <= 0) continue;
+      const qstd = st.v.qstd[i], w = st.v.w[i];
+      if (next === 'mass'){
+        if (qstd !== null && isFinite(qstd)) st.v.w[i] = (qstd * 1e6 / 1440) * mw / MOL_VOL;
+      } else {
+        if (w !== null && isFinite(w)) st.v.qstd[i] = (w * MOL_VOL / mw) * 1440 / 1e6;
+      }
+    }
+    st.basis = next;
+    rebuild();
+  }
+
+  $('centBasis').addEventListener('change', e => switchBasis('cent', e.target.value));
+  $('recipBasis').addEventListener('change', e => switchBasis('recip', e.target.value));
+  $('centCases').addEventListener('change', e => { ST.cent.ncase  = +e.target.value; rebuild(); });
+  $('recipCases').addEventListener('change', e => { ST.recip.ncase = +e.target.value; rebuild(); });
+
+  /* ==================================================================
+     WORKED EXAMPLE
+
+     The three centrifugal cases and the reciprocating case of the source
+     workbook, in its English values. Loading it reproduces that sheet.
+     ================================================================== */
+  function loadSample(){
+    $('idProject').value = 'Worked example — source calculation sheet';
+    $('idItem').value    = 'K-1001 / K-2001';
+    $('idService').value = 'Gas gathering and export compression';
+
+    ST.cent.basis = 'vol';  ST.cent.ncase = 3;
+    ST.recip.basis = 'vol'; ST.recip.ncase = 1;
+    $('centBasis').value = 'vol';  $('centCases').value = '3';
+    $('recipBasis').value = 'vol'; $('recipCases').value = '1';
+
+    const c = ST.cent.v;
+    const set = (o, k, arr) => { for (let i = 0; i < MAXC; i++) o[k][i] = arr[i % arr.length]; };
+    set(c,'qstd',[67, 67, 67]);
+    set(c,'ps',  [169, 380, 880]);
+    set(c,'pd',  [402, 905, 2262]);
+    set(c,'ts',  [118.4]);
+    set(c,'mw',  [16.8]);
+    set(c,'kv',  [1.28]);
+    set(c,'zs',  [0.904]);
+    set(c,'zd',  [0.904]);
+    set(c,'eta', [0.824]);
+    set(c,'mu',  [0.5]);
+    set(c,'nimp',[4, 4, 6]);
+    set(c,'dimp',[16]);
+    set(c,'nspd',[7500]);
+    set(c,'lossP',[1]);
+    set(c,'mtrF',[1.1]);
+
+    const r = ST.recip.v;
+    set(r,'qstd',[20.615]);
+    set(r,'ps',  [2.613 * 14.5]);     /* the sheet's own bar → psia factor */
+    set(r,'pd',  [6.813 * 14.5]);
+    set(r,'ts',  [42.12 * 9 / 5 + 32]);
+    set(r,'mw',  [13.2868]);
+    set(r,'kv',  [1.297]);
+    set(r,'zs',  [0.9983]);
+    set(r,'zd',  [0.9998]);
+    set(r,'etaP',[1]);
+    set(r,'etaM',[0.78]);
+    set(r,'lossA',[100]);
+    set(r,'nspd',[375]);
+    set(r,'ncyl',[3]);
+    set(r,'strk',[280 / 25.4]);
+    set(r,'clr', [0.15]);
+
+    rebuild();
+  }
+
+  function reset(){
+    ['idProject','idItem','idService'].forEach(id => { $(id).value = ''; });
+    ST.cent.v  = blankVals(CENT_DEFAULTS);
+    ST.recip.v = blankVals(RECIP_DEFAULTS);
+    ST.cent.basis = 'vol';  ST.cent.ncase = 2;
+    ST.recip.basis = 'vol'; ST.recip.ncase = 1;
+    $('centBasis').value = 'vol';  $('centCases').value = '2';
+    $('recipBasis').value = 'vol'; $('recipCases').value = '1';
+    rebuild();
+  }
+
+  /* ==================================================================
+     CSV EXPORT — both machines, both unit systems, one file
+     ================================================================== */
+  function esc(s){
+    s = (s === null || s === undefined) ? '' : String(s);
+    return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }
+
+  function exportCsv(){
+    const lines = [];
+    lines.push(['Compressor Performance Estimator — allanronalddones.com'].map(esc).join(','));
+    lines.push(['Project', $('idProject').value].map(esc).join(','));
+    lines.push(['Item no.', $('idItem').value].map(esc).join(','));
+    lines.push(['Service / gas', $('idService').value].map(esc).join(','));
+    lines.push(['Generated', new Date().toISOString().slice(0,16).replace('T',' ')].map(esc).join(','));
+    lines.push('');
+
+    ['cent','recip'].forEach(m => {
+      const st = ST[m];
+      const results = [];
+      for (let i = 0; i < st.ncase; i++) results.push(runCase(m, i));
+
+      lines.push([st.title + ' compressor'].map(esc).join(','));
+      lines.push(['Flow basis', st.basis === 'vol' ? 'Standard volumetric' : 'Mass flow'].map(esc).join(','));
+
+      const hdr = ['Parameter','Symbol','SI unit'];
+      for (let i = 0; i < st.ncase; i++) hdr.push('SI — Case ' + (i + 1));
+      hdr.push('English unit');
+      for (let i = 0; i < st.ncase; i++) hdr.push('English — Case ' + (i + 1));
+      lines.push(hdr.map(esc).join(','));
+
+      st.rows.forEach(row => {
+        if (row.kind === 'sec'){ lines.push([row.label].map(esc).join(',')); return; }
+        const c = CONV[row.c];
+        const edit = isEditable(row, st.basis);
+        const raw = i => {
+          const o = results[i];
+          const e = edit ? st.v[row.k][i] : (o ? o[row.k] : null);
+          return (e === null || e === undefined || !isFinite(e)) ? null : e;
+        };
+        const cells = [row.name + (row.add ? ' (added)' : ''), row.sym, c.si];
+        for (let i = 0; i < st.ncase; i++){
+          const e = raw(i);
+          cells.push(e === null ? '' : round(toSI(e, c), decOf(row,'si')));
+        }
+        cells.push(c.eng);
+        for (let i = 0; i < st.ncase; i++){
+          const e = raw(i);
+          cells.push(e === null ? '' : round(e, decOf(row,'eng')));
+        }
+        lines.push(cells.map(esc).join(','));
+      });
+      lines.push('');
+    });
+
+    /* The BOM matters here — the unit labels carry °, ³ and ·, and Excel
+       misreads them as Latin-1 without it. */
+    const blob = new Blob(['﻿' + lines.join('\r\n')], {type:'text/csv;charset=utf-8;'});
+    const a = document.createElement('a');
+    const tag = ($('idItem').value || 'compressor').replace(/[^A-Za-z0-9_-]+/g, '-');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'compressor-performance-' + tag + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  }
+
+  $('btnSample').addEventListener('click', loadSample);
+  $('btnReset').addEventListener('click', reset);
+  $('btnCsv').addEventListener('click', exportCsv);
+  $('btnPrint').addEventListener('click', () => window.print());
+
+  rebuild();
+})();
+</script>
+</body>
+</html>

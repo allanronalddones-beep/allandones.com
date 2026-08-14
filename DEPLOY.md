@@ -8,10 +8,10 @@ Static site. No build step, no backend, no dependencies. Whatever is in this fol
 |---|---|
 | `index.html` | Main page |
 | `assets/site.css` | Shared stylesheet — **site pages only** |
-| `tools/vertical-pump-evaluation.html` | Self-contained tool. Carries its own CSS/JS on purpose |
+| `tools/*.html` | Self-contained tools. Each carries its own CSS/JS on purpose |
 | `404.html` | Not-found page |
 | `robots.txt` | Crawler directives + sitemap pointer |
-| `sitemap.xml` | Two URLs. **Add an entry whenever a tool is added** |
+| `sitemap.xml` | Home page + one URL per tool. **Add an entry whenever a tool is added** |
 | `_headers` | Security + caching headers. Cloudflare Pages / Netlify only |
 
 ## Recommended: Cloudflare Pages
@@ -35,7 +35,7 @@ Works, with one loss: **GitHub Pages ignores `_headers`**, so you get no CSP or 
 ## Post-deploy checks
 
 - [ ] `https://allanronalddones.com/` loads over HTTPS
-- [ ] Tools card opens the pump tool
+- [ ] Every tools card opens its tool
 - [ ] Back-link in the tool returns to the site root
 - [ ] `https://allanronalddones.com/nonsense` shows the styled 404
 - [ ] `robots.txt` and `sitemap.xml` resolve
