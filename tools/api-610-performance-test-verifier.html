@@ -1,0 +1,1791 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API 610 Pump Performance Test Result Verifier | Allan Ronald Dones</title>
+<meta name="description" content="API 610 11th Edition pump performance test result verifier — corrects witnessed shop-test data to rated speed and checks head, power and efficiency against the Table 16 performance tolerances.">
+<meta name="author" content="Allan Ronald Dones">
+<link rel="canonical" href="https://allanronalddones.com/tools/api-610-performance-test-verifier">
+
+<!-- Social preview (shown when the link is shared from the main site) -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://allanronalddones.com/tools/api-610-performance-test-verifier">
+<meta property="og:title" content="API 610 Pump Performance Test Result Verifier">
+<meta property="og:site_name" content="Allan Ronald Dones — Rotating Equipment Engineering">
+<meta property="og:description" content="Correct witnessed pump shop-test data to rated speed and verify head, power and efficiency against the API 610 11th Edition Table 16 performance tolerances.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="API 610 Pump Performance Test Result Verifier">
+<meta name="twitter:description" content="Verify witnessed pump performance test results against the API 610 11th Edition Table 16 tolerances.">
+
+<!-- Inline SVG favicon — keeps the page self-contained (no separate .ico request) -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a2472'/%3E%3Cpath d='M10 44 C22 44 26 20 34 20 C42 20 46 32 54 32' fill='none' stroke='%2322d3ee' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='34' cy='20' r='4.5' fill='%235b9dfa'/%3E%3Cpath d='M8 52h48' stroke='%232f7ef0' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M12 14v34' stroke='%232f7ef0' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --navy-950:#050b1a;
+    --navy-900:#08132b;
+    --navy-800:#0c1c3f;
+    --navy-700:#0f2551;
+    --blue-600:#1450c9;
+    --blue-500:#1565d8;
+    --blue-400:#2f7ef0;
+    --blue-300:#5b9dfa;
+    --cyan-400:#22d3ee;
+    --cyan-300:#67e8f9;
+    --text-primary:#eaf1ff;
+    --text-secondary:#a9bde0;
+    --text-muted:#6f84ab;
+    --card-bg:rgba(6,16,40,0.82);
+    --card-border:rgba(91,157,250,0.22);
+    --card-border-strong:rgba(103,232,249,0.4);
+    --ok-500:#22c55e;
+    --ok-300:#86efac;
+    --bad-500:#ef4444;
+    --bad-300:#fca5a5;
+    --warn-300:#fcd34d;
+    --radius:14px;
+    /* Input / output cell tinting mirrors the source workbook's colour key:
+       yellow = user input, green = calculated output. */
+    --in-bg:rgba(252,211,77,0.09);
+    --in-border:rgba(252,211,77,0.32);
+    --out-bg:rgba(34,197,94,0.07);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Segoe UI', 'Inter', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    color:var(--text-primary);
+    background:var(--navy-950);
+    min-height:100vh;
+    line-height:1.5;
+  }
+
+  /* ---------- Layered background: base wash → animated waves ---------- */
+
+  .bg-base{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    background:
+      radial-gradient(1200px 800px at 12% -8%, rgba(47,126,240,0.55), transparent 62%),
+      radial-gradient(1000px 700px at 108% 8%, rgba(34,211,238,0.34), transparent 58%),
+      radial-gradient(900px 900px at 50% 115%, rgba(21,101,216,0.42), transparent 60%),
+      linear-gradient(180deg, #06122e 0%, #0d2a63 40%, #071431 100%);
+    background-color:#06122e;
+  }
+
+  .bg-waves{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    overflow:hidden;
+  }
+  .bg-waves svg{ width:100%; height:100%; display:block; }
+  .wv path{ will-change:transform; }
+  .wv1{ animation:driftL 52s linear infinite; }
+  .wv2{ animation:driftR 43s linear infinite; }
+  .wv3{ animation:driftL 36s linear infinite; }
+  .wv4{ animation:driftR 29s linear infinite; }
+  .wv5{ animation:driftL 23s linear infinite; }
+
+  @keyframes driftL{
+    from{ transform:translateX(0); }
+    to  { transform:translateX(-1440px); }
+  }
+  @keyframes driftR{
+    from{ transform:translateX(-1440px); }
+    to  { transform:translateX(0); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .wv1,.wv2,.wv3,.wv4,.wv5{ animation:none; }
+  }
+
+  /* ---------- Back-link to main site ---------- */
+  /* href="/" is site-root relative — resolves correctly on any domain. */
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    margin-bottom:26px;
+    font-size:13px;
+    font-weight:600;
+    color:var(--text-secondary);
+    text-decoration:none;
+    border:1px solid var(--card-border);
+    background:rgba(6,16,40,0.62);
+    padding:7px 15px 7px 12px;
+    border-radius:999px;
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    transition:color .15s, border-color .15s, background .15s;
+  }
+  .back-link:hover, .back-link:focus-visible{
+    color:#fff;
+    border-color:var(--cyan-400);
+    background:rgba(6,16,40,0.9);
+  }
+  .back-link svg{ width:15px; height:15px; flex:0 0 15px; }
+
+  .wrap{
+    position:relative;
+    z-index:1;
+    max-width:1240px;
+    margin:0 auto;
+    padding:40px 24px 80px;
+  }
+
+  header.hero{
+    text-align:center;
+    margin-bottom:34px;
+    padding-bottom:26px;
+    border-bottom:1px solid rgba(91,157,250,0.16);
+  }
+  .kicker{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:12.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--cyan-300);
+    background:rgba(34,211,238,0.08);
+    border:1px solid rgba(34,211,238,0.25);
+    padding:6px 14px;
+    border-radius:999px;
+    margin-bottom:18px;
+  }
+  .kicker svg{width:14px;height:14px;}
+  h1{
+    font-size:clamp(26px,3.6vw,40px);
+    margin:0 0 10px;
+    font-weight:700;
+    letter-spacing:-0.01em;
+    background:linear-gradient(90deg, #fff 0%, var(--blue-300) 55%, var(--cyan-300) 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .subtitle{
+    color:var(--text-secondary);
+    font-size:16px;
+    max-width:720px;
+    margin:0 auto 4px;
+  }
+  .byline{
+    color:var(--text-muted);
+    font-size:13px;
+    margin-top:14px;
+  }
+
+  .card{
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
+    border-radius:var(--radius);
+    padding:22px 24px;
+    margin-bottom:22px;
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    box-shadow:0 8px 32px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+  .card h2{
+    margin:0 0 4px;
+    font-size:16px;
+    font-weight:700;
+    letter-spacing:.02em;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .card h2 .num{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:24px;height:24px;
+    flex:0 0 24px;
+    border-radius:7px;
+    background:linear-gradient(135deg, var(--blue-500), var(--cyan-400));
+    color:#04101f;
+    font-size:12.5px;
+    font-weight:800;
+  }
+  .card .hint{
+    color:var(--text-muted);
+    font-size:12.5px;
+    margin:0 0 18px;
+    padding-left:34px;
+  }
+  .card .hint a{color:var(--blue-300);}
+
+  .field-row{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    margin-bottom:14px;
+  }
+  .field-row.three{grid-template-columns:repeat(3,1fr);}
+  .field-row.two{grid-template-columns:repeat(2,1fr);}
+  @media (max-width:860px){ .field-row, .field-row.three{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:520px){ .field-row, .field-row.three, .field-row.two{grid-template-columns:1fr;} }
+
+  label{
+    display:block;
+    font-size:12.5px;
+    color:var(--text-secondary);
+    margin-bottom:6px;
+    font-weight:600;
+  }
+  label .unit{
+    color:var(--cyan-300);
+    font-weight:500;
+    font-size:11.5px;
+  }
+  .note-inline{
+    color:var(--text-muted);
+    font-size:11px;
+    display:block;
+    margin-top:3px;
+    font-weight:400;
+  }
+
+  input[type="number"], input[type="text"], select{
+    width:100%;
+    background:rgba(5,14,32,0.65);
+    border:1px solid rgba(91,157,250,0.25);
+    color:var(--text-primary);
+    padding:9px 11px;
+    border-radius:9px;
+    font-size:14px;
+    font-family:inherit;
+    transition:border-color .15s, box-shadow .15s;
+  }
+  input[type="number"]:focus, input[type="text"]:focus, select:focus{
+    outline:none;
+    border-color:var(--cyan-400);
+    box-shadow:0 0 0 3px rgba(34,211,238,0.15);
+  }
+  select{cursor:pointer;}
+  /* Inputs that feed a calculation carry the workbook's yellow key. */
+  input.keyed{ background:var(--in-bg); border-color:var(--in-border); }
+  input.keyed:focus{ border-color:var(--cyan-400); }
+
+  /* ---------- Toolbar: unit switch + actions ---------- */
+  .toolbar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .unit-switch{
+    display:inline-flex;
+    background:rgba(5,14,32,0.7);
+    border:1px solid rgba(91,157,250,0.25);
+    border-radius:999px;
+    padding:4px;
+    gap:4px;
+  }
+  .unit-switch button{
+    border:none;
+    background:transparent;
+    color:var(--text-secondary);
+    font:600 13px/1 inherit;
+    padding:9px 20px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:background .15s, color .15s;
+  }
+  .unit-switch button.active{
+    background:linear-gradient(135deg, var(--blue-500), var(--cyan-400));
+    color:#04101f;
+  }
+  .btn-row{display:flex;flex-wrap:wrap;gap:9px;}
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    border:1px solid var(--card-border);
+    background:rgba(6,16,40,0.62);
+    color:var(--text-secondary);
+    font:600 12.5px/1 inherit;
+    padding:9px 15px;
+    border-radius:9px;
+    cursor:pointer;
+    transition:color .15s, border-color .15s, background .15s;
+  }
+  .btn:hover{ color:#fff; border-color:var(--cyan-400); background:rgba(6,16,40,0.92); }
+  .btn svg{width:14px;height:14px;flex:0 0 14px;}
+
+  .legend{
+    display:flex;
+    flex-wrap:wrap;
+    gap:16px;
+    margin-top:16px;
+    padding-top:14px;
+    border-top:1px dashed rgba(91,157,250,0.18);
+    font-size:11.5px;
+    color:var(--text-muted);
+  }
+  .legend span{display:inline-flex;align-items:center;gap:7px;}
+  .swatch{display:inline-block;width:13px;height:13px;border-radius:3px;border:1px solid;flex:0 0 13px;}
+  .swatch.in{background:var(--in-bg);border-color:var(--in-border);}
+  .swatch.out{background:var(--out-bg);border-color:rgba(34,197,94,0.3);}
+  .swatch.fix{background:rgba(91,157,250,0.1);border-color:rgba(91,157,250,0.28);}
+
+  /* ---------- Data table ---------- */
+  .table-scroll{
+    overflow-x:auto;
+    margin:0 -4px;
+    padding:0 4px 6px;
+  }
+  table.calc{
+    width:100%;
+    min-width:1000px;
+    border-collapse:separate;
+    border-spacing:0;
+    font-size:12.5px;
+    font-variant-numeric:tabular-nums;
+  }
+  table.calc th, table.calc td{
+    border-bottom:1px solid rgba(91,157,250,0.13);
+    padding:6px 8px;
+    text-align:right;
+    white-space:nowrap;
+  }
+  table.calc th.pname, table.calc td.pname{
+    text-align:left;
+    position:sticky;
+    left:0;
+    z-index:2;
+    background:#08152f;
+    min-width:266px;
+    box-shadow:1px 0 0 rgba(91,157,250,0.18);
+    white-space:normal;
+  }
+  table.calc thead th{
+    position:sticky;
+    top:0;
+    z-index:3;
+    background:#0a1b3d;
+    color:var(--cyan-300);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    vertical-align:bottom;
+    padding:10px 8px;
+    border-bottom:1px solid rgba(103,232,249,0.28);
+  }
+  table.calc thead th.pname{ z-index:4; background:#0a1b3d; }
+  table.calc thead th .pcol{ display:block; color:#fff; font-size:12.5px; letter-spacing:0; text-transform:none; }
+  table.calc thead th .pnote{ display:block; color:var(--text-muted); font-weight:500; font-size:10px; text-transform:none; letter-spacing:0; margin-top:2px;}
+  table.calc thead th.rated{ background:#10306b; }
+
+  tr.sec td{
+    background:rgba(21,101,216,0.16);
+    color:var(--cyan-300);
+    font-weight:700;
+    font-size:11px;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    padding:7px 8px;
+  }
+  tr.sec td.pname{ background:#10245a; }
+
+  td.pname .sym{
+    display:inline-block;
+    min-width:44px;
+    padding-right:8px;
+    color:var(--cyan-300);
+    font-weight:700;
+    font-family:'Cascadia Code','Consolas',monospace;
+  }
+  td.pname .pdesc{ color:var(--text-secondary); }
+  td.pname .pu{ color:var(--text-muted); font-size:11px; }
+  td.pname sup{ color:var(--blue-300); font-size:9.5px; font-weight:700; }
+
+  td.out{ background:var(--out-bg); color:#fff; font-weight:600; }
+  td.fixed{ color:var(--text-muted); background:rgba(91,157,250,0.05); }
+  td.na{ color:var(--text-muted); }
+  td.flag-bad{ color:var(--bad-300); background:rgba(239,68,68,0.12); font-weight:700; }
+  td.flag-ok{ color:var(--ok-300); }
+  tr.hl td{ background:rgba(34,211,238,0.09); }
+  tr.hl td.pname{ background:#0d2450; }
+  tr.hl td.out{ background:rgba(34,211,238,0.16); }
+
+  table.calc input{
+    width:100%;
+    min-width:74px;
+    background:var(--in-bg);
+    border:1px solid var(--in-border);
+    color:var(--text-primary);
+    padding:5px 7px;
+    border-radius:6px;
+    font:600 12.5px/1.3 inherit;
+    text-align:right;
+    font-variant-numeric:tabular-nums;
+  }
+  table.calc input:focus{
+    outline:none;
+    border-color:var(--cyan-400);
+    box-shadow:0 0 0 2px rgba(34,211,238,0.18);
+  }
+  table.calc td.inactive{ opacity:.32; }
+
+  /* ---------- Verdict table ---------- */
+  table.res{
+    width:100%;
+    min-width:880px;
+    border-collapse:separate;
+    border-spacing:0;
+    font-size:12.5px;
+    font-variant-numeric:tabular-nums;
+  }
+  table.res th{
+    background:#0a1b3d;
+    color:var(--cyan-300);
+    font-size:10.5px;
+    font-weight:700;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    padding:10px 9px;
+    text-align:right;
+    border-bottom:1px solid rgba(103,232,249,0.28);
+  }
+  table.res th:first-child{text-align:left;}
+  table.res td{
+    padding:9px;
+    text-align:right;
+    border-bottom:1px solid rgba(91,157,250,0.13);
+    white-space:nowrap;
+  }
+  table.res td:first-child{text-align:left;color:var(--text-secondary);white-space:normal;min-width:190px;}
+  table.res td.crit{color:var(--text-muted);font-size:12px;}
+  table.res td.actual{color:#fff;font-weight:700;}
+  table.res input{
+    width:110px;
+    background:var(--in-bg);
+    border:1px solid var(--in-border);
+    color:var(--text-primary);
+    padding:6px 8px;
+    border-radius:7px;
+    font:600 12.5px/1.3 inherit;
+    text-align:right;
+  }
+  table.res input.tol{width:74px;}
+  table.res input:focus{outline:none;border-color:var(--cyan-400);box-shadow:0 0 0 2px rgba(34,211,238,0.18);}
+
+  .badge{
+    display:inline-block;
+    padding:4px 11px;
+    border-radius:999px;
+    font-size:10.5px;
+    font-weight:800;
+    letter-spacing:.05em;
+    border:1px solid;
+  }
+  .badge.ok{ background:rgba(34,197,94,0.13); border-color:rgba(34,197,94,0.42); color:var(--ok-300); }
+  .badge.bad{ background:rgba(239,68,68,0.13); border-color:rgba(239,68,68,0.42); color:var(--bad-300); }
+  .badge.neutral{ background:rgba(111,132,171,0.12); border-color:rgba(111,132,171,0.3); color:var(--text-secondary); }
+  .badge.info{ background:rgba(34,211,238,0.1); border-color:rgba(34,211,238,0.32); color:var(--cyan-300); }
+
+  /* ---------- Summary strip ---------- */
+  .summary{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    margin-bottom:18px;
+  }
+  @media (max-width:860px){ .summary{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:480px){ .summary{grid-template-columns:1fr;} }
+  .stile{
+    background:rgba(5,14,32,0.55);
+    border:1px solid rgba(91,157,250,0.18);
+    border-radius:10px;
+    padding:13px 15px;
+  }
+  .stile .rlabel{
+    font-size:10.5px;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    margin-bottom:5px;
+  }
+  .stile .rvalue{
+    font-size:20px;
+    font-weight:700;
+    color:#fff;
+    font-variant-numeric:tabular-nums;
+  }
+  .stile .rvalue .runit{
+    font-size:12px;
+    color:var(--blue-300);
+    font-weight:600;
+    margin-left:4px;
+  }
+  .stile.verdict-ok{ background:rgba(34,197,94,0.1); border-color:rgba(34,197,94,0.38); }
+  .stile.verdict-bad{ background:rgba(239,68,68,0.1); border-color:rgba(239,68,68,0.38); }
+
+  /* ---------- Appendix I: pipe lookup ---------- */
+  .pipe-out{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:12px;
+    background:rgba(5,14,32,0.55);
+    border:1px solid rgba(91,157,250,0.18);
+    border-radius:10px;
+    padding:13px 15px;
+    margin-top:4px;
+  }
+  .pipe-out .pv{font-size:19px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums;}
+  .pipe-out .pv small{font-size:12px;color:var(--blue-300);font-weight:600;margin-left:3px;}
+  .pipe-out .plbl{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;}
+
+  table.ref{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    font-size:12.5px;
+    font-variant-numeric:tabular-nums;
+    min-width:560px;
+  }
+  table.ref th{
+    background:#0a1b3d;
+    color:var(--cyan-300);
+    font-size:10.5px;
+    font-weight:700;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    padding:9px;
+    text-align:left;
+    border-bottom:1px solid rgba(103,232,249,0.28);
+  }
+  table.ref td{
+    padding:8px 9px;
+    border-bottom:1px solid rgba(91,157,250,0.13);
+    color:var(--text-secondary);
+  }
+  table.ref td:first-child{color:#fff;font-weight:600;}
+
+  /* ---------- Notes ---------- */
+  ol.notes{
+    margin:0;
+    padding-left:20px;
+    color:var(--text-secondary);
+    font-size:12.5px;
+  }
+  ol.notes li{ margin-bottom:9px; }
+  ol.notes code{
+    font-family:'Cascadia Code','Consolas',monospace;
+    background:rgba(5,14,32,0.6);
+    border:1px solid rgba(91,157,250,0.18);
+    padding:1px 5px;
+    border-radius:5px;
+    font-size:11.5px;
+  }
+
+  .callout{
+    border-left:3px solid var(--cyan-400);
+    background:rgba(34,211,238,0.06);
+    border-radius:0 9px 9px 0;
+    padding:12px 15px;
+    font-size:12.5px;
+    color:var(--text-secondary);
+    margin-top:16px;
+  }
+  .callout strong{color:#fff;}
+
+  .schem-wrap{display:flex;justify-content:center;padding:4px 0;overflow-x:auto;}
+  svg.loop{max-width:100%;height:auto;min-width:640px;}
+  svg.loop text{font-family:inherit;}
+
+  .formula-strip{
+    display:flex;
+    flex-wrap:wrap;
+    gap:9px;
+    margin-top:16px;
+  }
+  .formula-chip{
+    font-size:11.5px;
+    color:var(--text-secondary);
+    background:rgba(5,14,32,0.5);
+    border:1px solid rgba(91,157,250,0.18);
+    padding:5px 10px;
+    border-radius:7px;
+    font-family:'Cascadia Code','Consolas',monospace;
+  }
+
+  footer{
+    text-align:center;
+    margin-top:36px;
+    padding-top:22px;
+    border-top:1px solid rgba(91,157,250,0.14);
+    color:var(--text-muted);
+    font-size:12.5px;
+  }
+  footer a{color:var(--blue-300);text-decoration:none;}
+  footer a:hover{text-decoration:underline;}
+
+  /* ---------- Print: flip to a light, ink-friendly test report ---------- */
+  @media print{
+    .bg-base,.bg-waves,.back-link,.btn-row,.unit-switch,.no-print{display:none !important;}
+    body{background:#fff;color:#111;}
+    .wrap{max-width:none;padding:0;}
+    h1{color:#0a2472 !important;-webkit-text-fill-color:#0a2472;background:none;}
+    .subtitle,.byline,.card .hint,.legend{color:#444;}
+    .card{
+      background:#fff;border:1px solid #b9c6de;box-shadow:none;
+      break-inside:avoid;page-break-inside:avoid;margin-bottom:14px;padding:14px 16px;
+    }
+    .card h2{color:#0a2472;}
+    .card h2 .num{background:#0a2472;color:#fff;}
+    table.calc, table.res, table.ref{min-width:0;font-size:10px;}
+    table.calc th.pname, table.calc td.pname, table.calc thead th, table.calc thead th.pname,
+    table.res th, table.ref th, tr.sec td.pname{background:#eef2fa !important;color:#0a2472 !important;box-shadow:none;}
+    table.calc td, table.calc th, table.res td, table.res th, table.ref td, table.ref th{border-bottom:1px solid #ccd6e8;}
+    td.out,tr.hl td,tr.hl td.out,tr.sec td{background:#f3f7ff !important;color:#111 !important;}
+    td.pname .sym,td.pname .pdesc,td.pname .pu,table.res td:first-child{color:#333 !important;}
+    td.flag-bad{color:#b91c1c !important;background:#fee2e2 !important;}
+    table.calc input,table.res input{background:#fff;border:1px solid #ccd6e8;color:#111;}
+    .stile{background:#f6f9ff;border-color:#ccd6e8;}
+    .stile .rvalue{color:#0a2472;}
+    .badge.ok{background:#dcfce7;color:#166534;border-color:#86efac;}
+    .badge.bad{background:#fee2e2;color:#991b1b;border-color:#fca5a5;}
+    .badge.neutral,.badge.info{background:#eef2fa;color:#334;border-color:#ccd6e8;}
+    ol.notes,.callout,footer{color:#333;}
+    .callout{background:#f3f7ff;}
+    .table-scroll{overflow:visible;}
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-base"></div>
+
+<div class="bg-waves" aria-hidden="true">
+  <svg viewBox="0 0 2880 1200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="wg1" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#0a2472"/><stop offset="0.5" stop-color="#153a9e"/><stop offset="1" stop-color="#0a2472"/>
+      </linearGradient>
+      <linearGradient id="wg2" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#123f8f"/><stop offset="0.5" stop-color="#1450c9"/><stop offset="1" stop-color="#123f8f"/>
+      </linearGradient>
+      <linearGradient id="wg3" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#1450c9"/><stop offset="0.5" stop-color="#1c6ee0"/><stop offset="1" stop-color="#1450c9"/>
+      </linearGradient>
+      <linearGradient id="wg4" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#1565d8"/><stop offset="0.5" stop-color="#2f7ef0"/><stop offset="1" stop-color="#1565d8"/>
+      </linearGradient>
+      <linearGradient id="wg5" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#2f7ef0"/><stop offset="0.5" stop-color="#22d3ee"/><stop offset="1" stop-color="#2f7ef0"/>
+      </linearGradient>
+    </defs>
+
+    <g class="wv wv1" opacity="0.55">
+      <path fill="url(#wg1)" d="M0,200 C180,120 540,120 720,200 C900,280 1260,280 1440,200 C1620,120 1980,120 2160,200 C2340,280 2700,280 2880,200 C3060,120 3420,120 3600,200 C3780,280 4140,280 4320,200 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv2" opacity="0.48">
+      <path fill="url(#wg2)" d="M0,410 C180,315 540,315 720,410 C900,505 1260,505 1440,410 C1620,315 1980,315 2160,410 C2340,505 2700,505 2880,410 C3060,315 3420,315 3600,410 C3780,505 4140,505 4320,410 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv3" opacity="0.42">
+      <path fill="url(#wg3)" d="M0,620 C180,535 540,535 720,620 C900,705 1260,705 1440,620 C1620,535 1980,535 2160,620 C2340,705 2700,705 2880,620 C3060,535 3420,535 3600,620 C3780,705 4140,705 4320,620 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv4" opacity="0.34">
+      <path fill="url(#wg4)" d="M0,830 C180,725 540,725 720,830 C900,935 1260,935 1440,830 C1620,725 1980,725 2160,830 C2340,935 2700,935 2880,830 C3060,725 3420,725 3600,830 C3780,935 4140,935 4320,830 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv5" opacity="0.26">
+      <path fill="url(#wg5)" d="M0,1015 C180,940 540,940 720,1015 C900,1090 1260,1090 1440,1015 C1620,940 1980,940 2160,1015 C2340,1090 2700,1090 2880,1015 C3060,940 3420,940 3600,1015 C3780,1090 4140,1090 4320,1015 L4320,1200 L0,1200 Z"/>
+    </g>
+  </svg>
+</div>
+
+<div class="wrap">
+
+  <!-- Back to main site -->
+  <a class="back-link" href="/" title="Back to allanronalddones.com">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Allan Ronald Dones
+  </a>
+
+  <header class="hero">
+    <span class="kicker">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6M12 16v6M4.9 4.9l4.2 4.2M14.9 14.9l4.2 4.2M2 12h6M16 12h6M4.9 19.1l4.2-4.2M14.9 9.1l4.2-4.2"/></svg>
+      Rotating Equipment Engineering
+    </span>
+    <h1>API 610 Pump Performance Test Result Verifier</h1>
+    <p class="subtitle">Enter witnessed shop-test data across the API test points. The tool corrects every point to rated speed by the affinity laws and checks head, power and efficiency against the API 610 11th Edition Table 16 performance tolerances.</p>
+    <p class="byline">Developed by Allan Ronald Dones — Senior Mechanical Engineer, Rotating Equipment Specialist</p>
+  </header>
+
+  <!-- ============ 0 · IDENTIFICATION & UNITS ============ -->
+  <div class="card">
+    <div class="toolbar">
+      <div class="unit-switch" role="group" aria-label="Measurement system">
+        <button type="button" id="btnSI" class="active">SI Units</button>
+        <button type="button" id="btnENG">English Units</button>
+      </div>
+      <div class="btn-row no-print">
+        <button type="button" class="btn" id="btnSample">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg>
+          Load worked sample
+        </button>
+        <button type="button" class="btn" id="btnCsv">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Export CSV
+        </button>
+        <button type="button" class="btn" id="btnPrint">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>
+          Print / Save PDF
+        </button>
+        <button type="button" class="btn" id="btnReset">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 2v6h6M3.5 15a9 9 0 1 0 2.1-9.4L3 8"/></svg>
+          Reset
+        </button>
+      </div>
+    </div>
+
+    <div class="field-row three" style="margin-top:20px;margin-bottom:0;">
+      <div>
+        <label>Project</label>
+        <input type="text" id="idProject" placeholder="Project name / number">
+      </div>
+      <div>
+        <label>Item no.</label>
+        <input type="text" id="idItem" placeholder="P-XXXXX A/B">
+      </div>
+      <div>
+        <label>Service</label>
+        <input type="text" id="idService" placeholder="e.g. Cooling water circulation pump">
+      </div>
+    </div>
+
+    <div class="legend">
+      <span><i class="swatch in"></i> Input field</span>
+      <span><i class="swatch out"></i> Calculated output</span>
+      <span><i class="swatch fix"></i> Propagated from the common-input value</span>
+      <span>Everything runs in your browser — no data leaves this page.</span>
+    </div>
+  </div>
+
+  <!-- ============ 1 · COMMON INPUTS ============ -->
+  <div class="card">
+    <h2><span class="num">1</span>Common Inputs</h2>
+    <p class="hint">Values that apply to every test point. These are propagated across the columns of the data table below, exactly as in the source calculation sheet.</p>
+
+    <div class="field-row">
+      <div>
+        <label>Rs — Rated speed <span class="unit" data-u="speed">rpm</span>
+          <span class="note-inline">From the pump datasheet</span>
+        </label>
+        <input type="number" class="keyed" id="rs" step="any" placeholder="e.g. 2950">
+      </div>
+      <div>
+        <label>SPGR<sub>t</sub> — SG of test fluid
+          <span class="note-inline">Water = 1.0 (see Note 2)</span>
+        </label>
+        <input type="number" class="keyed" id="sgt" step="any" value="1">
+      </div>
+      <div>
+        <label>SPGR<sub>a</sub> — SG of actual process fluid
+          <span class="note-inline">Used to convert test power to service power</span>
+        </label>
+        <input type="number" class="keyed" id="sga" step="any" value="1">
+      </div>
+      <div>
+        <label>H<sub>s</sub> — Suction gauge elevation <span class="unit" data-u="elev">m</span>
+          <span class="note-inline">Enter 0 if not recorded (Note 4)</span>
+        </label>
+        <input type="number" class="keyed" id="hs" step="any" value="0">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div>
+        <label>H<sub>d</sub> — Discharge gauge elevation <span class="unit" data-u="elev">m</span>
+          <span class="note-inline">Enter 0 if not recorded (Note 4)</span>
+        </label>
+        <input type="number" class="keyed" id="hd" step="any" value="0">
+      </div>
+      <div>
+        <label>S<sub>i</sub> — Suction pipe ID <span class="unit" data-u="pipe">m</span>
+          <span class="note-inline">Enter 1 for both if unknown (Note 5)</span>
+        </label>
+        <input type="number" class="keyed" id="sid" step="any" value="1">
+      </div>
+      <div>
+        <label>D<sub>i</sub> — Discharge pipe ID <span class="unit" data-u="pipe">m</span>
+          <span class="note-inline">Enter 1 for both if unknown (Note 5)</span>
+        </label>
+        <input type="number" class="keyed" id="did" step="any" value="1">
+      </div>
+      <div>
+        <label>Datum elevation, H <span class="unit" data-u="elev">m</span>
+          <span class="note-inline">H = H<sub>d</sub> − H<sub>s</sub> (calculated)</span>
+        </label>
+        <input type="number" id="hDatum" disabled value="0">
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 2 · TEST POINT DATA ============ -->
+  <div class="card">
+    <h2><span class="num">2</span>Test Point Data &amp; Speed-Corrected Results</h2>
+    <p class="hint">Leave a column's test speed blank to omit that point. Column D (rated flow) is the reference for the Table 16 checks; column A (shut-off) supplies the shut-off head check.</p>
+
+    <div class="table-scroll">
+      <table class="calc">
+        <thead>
+          <tr id="headRow"></tr>
+        </thead>
+        <tbody id="calcBody"></tbody>
+      </table>
+    </div>
+
+    <div class="formula-strip">
+      <span class="formula-chip" id="fTdh">TDH = ΔP·100/(9.81·SPGRt) + H + ΔVh</span>
+      <span class="formula-chip">Qs = Q·(Rs/Ts)</span>
+      <span class="formula-chip">TDHs = TDH·(Rs/Ts)²</span>
+      <span class="formula-chip" id="fWhp">Whp = Qs·TDHs·SPGRa / 367.2</span>
+      <span class="formula-chip">BHP = P<sub>motor</sub>·(Rs/Ts)³·SPGRa</span>
+      <span class="formula-chip">η = 100·Whp / BHP</span>
+    </div>
+  </div>
+
+  <!-- ============ 3 · TABLE 16 VERIFICATION ============ -->
+  <div class="card">
+    <h2><span class="num">3</span>Test Results — API 610 11th Ed. Table 16</h2>
+    <p class="hint">Enter the vendor's quoted (guaranteed) values. Actuals are taken from the speed-corrected results above — head and power at rated flow (column D), shut-off head from column A.</p>
+
+    <div class="summary" id="summary">
+      <div class="stile"><div class="rlabel">Rated head — actual</div><div class="rvalue" id="sHead">—</div></div>
+      <div class="stile"><div class="rlabel">Rated power — actual</div><div class="rvalue" id="sPow">—</div></div>
+      <div class="stile"><div class="rlabel">Efficiency — actual</div><div class="rvalue" id="sEff">—</div></div>
+      <div class="stile" id="sVerdictTile"><div class="rlabel">Overall (Table 16)</div><div class="rvalue"><span class="badge neutral" id="sVerdict">AWAITING DATA</span></div></div>
+    </div>
+
+    <div class="table-scroll">
+      <table class="res">
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Quoted</th>
+            <th>Tolerance</th>
+            <th>Acceptable criteria</th>
+            <th>Actual</th>
+            <th>Deviation</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Head at rated capacity <span class="pu" data-u="head">(m)</span></td>
+            <td><input type="number" id="qHead" step="any" placeholder="—"></td>
+            <td class="crit">+3% / −3%</td>
+            <td class="crit" id="cHead">—</td>
+            <td class="actual" id="aHead">—</td>
+            <td id="dHead">—</td>
+            <td id="rHead"><span class="badge neutral">—</span></td>
+          </tr>
+          <tr>
+            <td>Head at shut-off <span class="pu" data-u="head">(m)</span></td>
+            <td><input type="number" id="qSO" step="any" placeholder="—"></td>
+            <td class="crit" id="tSO">—</td>
+            <td class="crit" id="cSO">—</td>
+            <td class="actual" id="aSO">—</td>
+            <td id="dSO">—</td>
+            <td id="rSO"><span class="badge neutral">—</span></td>
+          </tr>
+          <tr>
+            <td>Rated power <span class="pu" data-u="power">(kW)</span></td>
+            <td><input type="number" id="qPow" step="any" placeholder="—"></td>
+            <td class="crit">+4%</td>
+            <td class="crit" id="cPow">—</td>
+            <td class="actual" id="aPow">—</td>
+            <td id="dPow">—</td>
+            <td id="rPow"><span class="badge neutral">—</span></td>
+          </tr>
+          <tr>
+            <td>Rated efficiency (%)</td>
+            <td><input type="number" id="qEff" step="any" placeholder="—"></td>
+            <td class="crit">No tolerance stated</td>
+            <td class="crit">N/A</td>
+            <td class="actual" id="aEff">—</td>
+            <td id="dEff">—</td>
+            <td id="rEff"><span class="badge neutral">N/A</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <strong>Shut-off head band</strong> is selected from the <em>quoted rated head</em>, per Table 16:
+      <span id="soBandText">≤ 75 m → ±10% · &gt; 75 m to 300 m → ±8% · &gt; 300 m → ±5%</span>.
+      Power carries an upper limit only (+4%); a measured power below the quoted value is acceptable.
+    </div>
+  </div>
+
+  <!-- ============ 4 · MODIFIED TOLERANCE ============ -->
+  <div class="card">
+    <h2><span class="num">4</span>Modified Test Tolerance <span style="font-weight:500;font-size:12.5px;color:var(--text-muted);">— if contractually required</span></h2>
+    <p class="hint">Where the purchase order imposes tolerances tighter or looser than Table 16, enter them here as signed percentages (e.g. −2 and +2). Rows are only evaluated once both limits are entered.</p>
+
+    <div class="table-scroll">
+      <table class="res">
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Quoted</th>
+            <th>Lower tol. %</th>
+            <th>Upper tol. %</th>
+            <th>Acceptable criteria</th>
+            <th>Actual</th>
+            <th>Deviation</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Head at rated capacity <span class="pu" data-u="head">(m)</span></td>
+            <td class="crit" id="mqHead">—</td>
+            <td><input type="number" class="tol" id="mloHead" step="any" placeholder="−3"></td>
+            <td><input type="number" class="tol" id="mhiHead" step="any" placeholder="+3"></td>
+            <td class="crit" id="mcHead">—</td>
+            <td class="actual" id="maHead">—</td>
+            <td id="mdHead">—</td>
+            <td id="mrHead"><span class="badge neutral">—</span></td>
+          </tr>
+          <tr>
+            <td>Head at shut-off <span class="pu" data-u="head">(m)</span></td>
+            <td class="crit" id="mqSO">—</td>
+            <td><input type="number" class="tol" id="mloSO" step="any" placeholder="−8"></td>
+            <td><input type="number" class="tol" id="mhiSO" step="any" placeholder="+8"></td>
+            <td class="crit" id="mcSO">—</td>
+            <td class="actual" id="maSO">—</td>
+            <td id="mdSO">—</td>
+            <td id="mrSO"><span class="badge neutral">—</span></td>
+          </tr>
+          <tr>
+            <td>Rated power <span class="pu" data-u="power">(kW)</span><span class="note-inline">Upper limit only</span></td>
+            <td class="crit" id="mqPow">—</td>
+            <td class="crit">N/A</td>
+            <td><input type="number" class="tol" id="mhiPow" step="any" placeholder="+4"></td>
+            <td class="crit" id="mcPow">—</td>
+            <td class="actual" id="maPow">—</td>
+            <td id="mdPow">—</td>
+            <td id="mrPow"><span class="badge neutral">—</span></td>
+          </tr>
+          <tr>
+            <td>Rated efficiency (%)<span class="note-inline">Deviation in percentage points</span></td>
+            <td class="crit" id="mqEff">—</td>
+            <td><input type="number" class="tol" id="mloEff" step="any" placeholder="−2"></td>
+            <td><input type="number" class="tol" id="mhiEff" step="any" placeholder="+2"></td>
+            <td class="crit" id="mcEff">—</td>
+            <td class="actual" id="maEff">—</td>
+            <td id="mdEff">—</td>
+            <td id="mrEff"><span class="badge neutral">—</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ APPENDIX I · PIPE SCHEDULE ============ -->
+  <div class="card">
+    <h2><span class="num">I</span>Appendix I — Pipe Inside Diameter Quick Reference</h2>
+    <p class="hint">ASME B36.10M carbon-steel pipe. Pick a size and schedule, then push the inside diameter straight into the suction or discharge field above.</p>
+
+    <div class="field-row three" style="margin-bottom:12px;">
+      <div>
+        <label>Nominal pipe size</label>
+        <select id="pipeNps"></select>
+      </div>
+      <div>
+        <label>Schedule</label>
+        <select id="pipeSch"></select>
+      </div>
+      <div>
+        <label>&nbsp;</label>
+        <div class="btn-row no-print">
+          <button type="button" class="btn" id="btnApplyS">→ Suction ID</button>
+          <button type="button" class="btn" id="btnApplyD">→ Discharge ID</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="pipe-out">
+      <div><div class="plbl">Outside diameter</div><div class="pv" id="pipeOd">—</div></div>
+      <div><div class="plbl">Wall thickness</div><div class="pv" id="pipeWt">—</div></div>
+      <div><div class="plbl">Inside diameter</div><div class="pv" id="pipeId">—</div></div>
+      <div><div class="plbl">Flow area</div><div class="pv" id="pipeArea">—</div></div>
+    </div>
+  </div>
+
+  <!-- ============ APPENDIX II · TABLE 16 ============ -->
+  <div class="card">
+    <h2><span class="num">II</span>Appendix II — API 610 11th Ed. Table 16, Performance Tolerances</h2>
+    <p class="hint">The acceptance bands applied by this tool. Reproduced as an aid; the purchase order and the standard itself govern.</p>
+
+    <div class="table-scroll">
+      <table class="ref">
+        <thead>
+          <tr><th>Parameter</th><th>Condition</th><th>Tolerance</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Differential head</td><td>At rated flow</td><td>+3% / −3%</td></tr>
+          <tr><td>Head at shut-off</td><td>Rated head ≤ 75 m (250 ft)</td><td>+10% / −10%</td></tr>
+          <tr><td></td><td>Rated head &gt; 75 m to 300 m (250 ft to 1000 ft)</td><td>+8% / −8%</td></tr>
+          <tr><td></td><td>Rated head &gt; 300 m (1000 ft)</td><td>+5% / −5%</td></tr>
+          <tr><td>Power</td><td>At rated flow</td><td>+4% (upper limit only)</td></tr>
+          <tr><td>NPSH required</td><td>At rated flow</td><td>0% — no negative tolerance</td></tr>
+          <tr><td>Efficiency</td><td>At rated flow</td><td>No tolerance stated</td></tr>
+          <tr><td>Test speed</td><td>Sec. 8.3.3.3</td><td>Within ±3% of rated speed; results corrected to rated speed</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ APPENDIX III · TEST LOOP ============ -->
+  <div class="card">
+    <h2><span class="num">III</span>Appendix III — Typical Test Loop Schematic</h2>
+    <p class="hint">Where the instrument elevations H<sub>s</sub> and H<sub>d</sub> and the pipe inside diameters S<sub>i</sub> and D<sub>i</sub> are measured on a shop performance test loop.</p>
+
+    <div class="schem-wrap">
+      <svg class="loop" width="880" height="360" viewBox="0 0 880 360" role="img" aria-label="Typical pump shop performance test loop schematic">
+        <defs>
+          <linearGradient id="pipeG" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#5b9dfa"/><stop offset="0.5" stop-color="#2f7ef0"/><stop offset="1" stop-color="#123f8f"/>
+          </linearGradient>
+          <marker id="arw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#67e8f9"/>
+          </marker>
+        </defs>
+
+        <!-- ---- Reservoir / test tank ---- -->
+        <rect x="30" y="150" width="130" height="150" rx="4" fill="none" stroke="#2f7ef0" stroke-width="2.5"/>
+        <rect x="32" y="205" width="126" height="93" fill="#22d3ee" opacity="0.16"/>
+        <path d="M32 205 q16 -6 31.5 0 t31.5 0 t31.5 0 t31.5 0" fill="none" stroke="#67e8f9" stroke-width="1.6" opacity="0.85"/>
+        <text x="95" y="322" fill="#a9bde0" font-size="11.5" text-anchor="middle">Test reservoir</text>
+        <text x="95" y="336" fill="#6f84ab" font-size="10" text-anchor="middle">(water, SPGR 1.0)</text>
+
+        <!-- ---- Suction line ---- -->
+        <path d="M95 260 L95 245 L230 245 L230 215" fill="none" stroke="url(#pipeG)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M150 245 L200 245" fill="none" stroke="#67e8f9" stroke-width="1.6" marker-end="url(#arw)"/>
+
+        <!-- suction isolation valve -->
+        <g transform="translate(130,245)">
+          <path d="M-11,-9 L11,9 L11,-9 L-11,9 Z" fill="#0f2551" stroke="#5b9dfa" stroke-width="2"/>
+          <line x1="0" y1="-9" x2="0" y2="-16" stroke="#5b9dfa" stroke-width="2"/>
+          <line x1="-7" y1="-16" x2="7" y2="-16" stroke="#5b9dfa" stroke-width="2"/>
+        </g>
+        <text x="130" y="278" fill="#6f84ab" font-size="10" text-anchor="middle">Suction valve</text>
+
+        <!-- suction pressure gauge -->
+        <line x1="205" y1="245" x2="205" y2="196" stroke="#5b9dfa" stroke-width="2"/>
+        <circle cx="205" cy="186" r="14" fill="#08132b" stroke="#22d3ee" stroke-width="2"/>
+        <text x="205" y="190" fill="#67e8f9" font-size="10" font-weight="700" text-anchor="middle">Ps</text>
+        <text x="205" y="164" fill="#a9bde0" font-size="10.5" text-anchor="middle">Suction gauge</text>
+
+        <!-- ---- Pump + driver ---- -->
+        <circle cx="270" cy="215" r="28" fill="#0f2551" stroke="#22d3ee" stroke-width="2.5"/>
+        <polygon points="256,201 292,215 256,229" fill="#5b9dfa"/>
+        <text x="270" y="264" fill="#eaf1ff" font-size="11.5" font-weight="700" text-anchor="middle">Pump under test</text>
+        <line x1="270" y1="187" x2="270" y2="168" stroke="#d4a017" stroke-width="4"/>
+        <rect x="240" y="130" width="60" height="38" rx="4" fill="#0b5f70" stroke="#22d3ee" stroke-width="1.6"/>
+        <text x="270" y="154" fill="#eaf1ff" font-size="11" font-weight="700" text-anchor="middle">MOTOR</text>
+        <!-- wattmeter -->
+        <line x1="300" y1="149" x2="330" y2="149" stroke="#5b9dfa" stroke-width="2"/>
+        <circle cx="344" cy="149" r="14" fill="#08132b" stroke="#22d3ee" stroke-width="2"/>
+        <text x="344" y="153" fill="#67e8f9" font-size="9.5" font-weight="700" text-anchor="middle">kW</text>
+        <text x="344" y="127" fill="#a9bde0" font-size="10.5" text-anchor="middle">Power meter</text>
+
+        <!-- ---- Discharge line ---- -->
+        <path d="M298 215 L400 215 L400 245 L720 245 L720 208" fill="none" stroke="url(#pipeG)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M470 245 L520 245" fill="none" stroke="#67e8f9" stroke-width="1.6" marker-end="url(#arw)"/>
+
+        <!-- discharge pressure gauge -->
+        <line x1="370" y1="215" x2="370" y2="176" stroke="#5b9dfa" stroke-width="2"/>
+        <circle cx="370" cy="166" r="14" fill="#08132b" stroke="#22d3ee" stroke-width="2"/>
+        <text x="370" y="170" fill="#67e8f9" font-size="10" font-weight="700" text-anchor="middle">Pd</text>
+        <text x="370" y="200" fill="#a9bde0" font-size="10.5" text-anchor="start" transform="translate(14,-30)">Discharge gauge</text>
+
+        <!-- flow element -->
+        <rect x="540" y="230" width="52" height="30" rx="4" fill="#0f2551" stroke="#22d3ee" stroke-width="2"/>
+        <text x="566" y="250" fill="#67e8f9" font-size="11" font-weight="700" text-anchor="middle">FE</text>
+        <text x="566" y="280" fill="#6f84ab" font-size="10" text-anchor="middle">Flow meter (Q)</text>
+
+        <!-- throttle valve -->
+        <g transform="translate(660,245)">
+          <path d="M-11,-9 L11,9 L11,-9 L-11,9 Z" fill="#0f2551" stroke="#5b9dfa" stroke-width="2"/>
+          <line x1="0" y1="-9" x2="0" y2="-16" stroke="#5b9dfa" stroke-width="2"/>
+          <line x1="-7" y1="-16" x2="7" y2="-16" stroke="#5b9dfa" stroke-width="2"/>
+        </g>
+        <text x="660" y="280" fill="#6f84ab" font-size="10" text-anchor="middle">Throttle valve</text>
+
+        <!-- return to tank -->
+        <path d="M720 208 L720 120 L95 120 L95 150" fill="none" stroke="url(#pipeG)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="410" y="110" fill="#6f84ab" font-size="10.5" text-anchor="middle">Return line to reservoir</text>
+
+        <!-- ---- Datum & elevation dimensions ---- -->
+        <line x1="800" y1="215" x2="60" y2="215" stroke="#67e8f9" stroke-width="1" stroke-dasharray="7 5" opacity="0.55"/>
+        <text x="806" y="219" fill="#67e8f9" font-size="10" font-weight="700">Pump datum (Ⓒ)</text>
+
+        <g stroke="#22d3ee" stroke-width="1.4">
+          <line x1="838" y1="186" x2="838" y2="215"/>
+          <line x1="832" y1="186" x2="844" y2="186"/>
+          <line x1="832" y1="215" x2="844" y2="215"/>
+        </g>
+        <text x="852" y="204" fill="#22d3ee" font-size="10" font-weight="700">Hs</text>
+
+        <g stroke="#22d3ee" stroke-width="1.4">
+          <line x1="812" y1="166" x2="812" y2="215"/>
+          <line x1="806" y1="166" x2="818" y2="166"/>
+          <line x1="806" y1="215" x2="818" y2="215"/>
+        </g>
+        <text x="782" y="192" fill="#22d3ee" font-size="10" font-weight="700">Hd</text>
+
+        <!-- pipe ID callouts -->
+        <text x="150" y="232" fill="#a9bde0" font-size="10">Si — suction pipe ID</text>
+        <text x="430" y="236" fill="#a9bde0" font-size="10">Di — discharge pipe ID</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ============ NOTES ============ -->
+  <div class="card">
+    <h2><span class="num">§</span>Notes &amp; Conventions</h2>
+    <ol class="notes">
+      <li><strong>Test speed.</strong> Per API 610 11th Ed. Sec. 8.3.3.3, unless otherwise agreed the test speed shall be within 3% of the rated speed shown on the pump datasheet. Test results shall be corrected to rated speed. Any point outside that band is flagged red in the data table.</li>
+      <li><strong>Test fluid.</strong> Testing fluid for API pumps is water by default — use SPGR<sub>t</sub> = 1.0.</li>
+      <li><strong>Speed correction.</strong> The affinity laws are applied to every point: Q ∝ N, H ∝ N², P ∝ N³. Shaft power is then scaled by SPGR<sub>a</sub> so the result is the power the pump will draw on the actual process liquid.</li>
+      <li><strong>Datum elevation.</strong> This is the elevation to which NPSH values are referred. Use a positive value if the source is above the pump centreline, negative if below. If not specified, use 0 for both gauges.</li>
+      <li><strong>Test loop pipe size.</strong> If suction and discharge pipe sizes are not recorded, enter <code>1</code> for both — the two velocity heads then cancel and the differential velocity head ΔVh becomes zero, which is the correct assumption for equal-bore piping.</li>
+      <li><strong>Pipe schedule.</strong> See Appendix I for inside diameters, or measure the actual test-loop bore.</li>
+      <li><strong>Acceptance.</strong> See Appendix II for the Table 16 tolerances applied. The purchase order governs where it is more onerous than the standard.</li>
+      <li><strong>Specific-gravity handling.</strong> Differential head is derived from the measured differential pressure using the <em>test</em> fluid SG, and is then corrected for speed only — head is a property of the pump, not of the liquid, so it is not scaled by SPGR<sub>a</sub>. Hydraulic and shaft power are both scaled by SPGR<sub>a</sub>, which leaves efficiency independent of specific gravity as it must be. With water on both sides (SPGR<sub>t</sub> = SPGR<sub>a</sub> = 1) the results are identical to the source calculation sheet.</li>
+    </ol>
+
+    <div class="callout">
+      <strong>Scope.</strong> This verifier covers the Table 16 performance tolerances on head, power and efficiency. It does not evaluate NPSH testing, vibration acceptance, mechanical running test criteria, or the four-point curve shape requirements — those remain separate acceptance items on the shop test.
+    </div>
+  </div>
+
+  <footer>
+    API 610 Pump Performance Test Result Verifier — for engineering evaluation purposes. Verify all inputs against the project pump datasheets, the certified performance curve and the approved test procedure before accepting or rejecting a shop test.<br>
+    © <span id="yr"></span> Allan Ronald Dones
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  'use strict';
+  const $ = id => document.getElementById(id);
+  $('yr').textContent = new Date().getFullYear();
+
+  /* ------------------------------------------------------------------
+     Test points. Column letters A–G follow the source calculation sheet.
+     Index 0 = shut-off (supplies the shut-off head check).
+     Index 3 = rated flow (the reference for every rated-condition check).
+  ------------------------------------------------------------------ */
+  const POINTS = [
+    {col:'A', short:'Shut Off',      full:'Shut off'},
+    {col:'B', short:'Min. Cont.',    full:'Minimum continuous stable flow'},
+    {col:'C', short:'95–99% Qr',     full:'Between 95% and 99% of rated flow'},
+    {col:'D', short:'Rated Flow',    full:'Rated flow'},
+    {col:'E', short:'Qr–105% Qr',    full:'Between rated flow and 105% of rated flow'},
+    {col:'F', short:'≈ BEP',         full:'Approximately best efficiency point'},
+    {col:'G', short:'End of AOR',    full:'End of allowable operating region'}
+  ];
+  const RATED = 3, SHUTOFF = 0;
+
+  /* ------------------------------------------------------------------
+     Unit systems. Constants are those of the source calculation sheet:
+     g = 9.81 / 32.2, hydraulic power divisor 367.2 (kW) / 3960 (hp),
+     and 2.31 ft of head per psi in English units.
+  ------------------------------------------------------------------ */
+  const UNITS = {
+    si: {
+      speed:'rpm', flow:'m³/h', press:'barg', elev:'m', pipe:'m', area:'m²',
+      vel:'m/s', head:'m', power:'kW',
+      g:9.81, whpK:367.2,
+      soBands:[[300,5],[75,8],[0,10]],
+      soBandText:'≤ 75 m → ±10% · > 75 m to 300 m → ±8% · > 300 m → ±5%',
+      fTdh:'TDH = ΔP·100/(9.81·SPGRt) + H + ΔVh',
+      fWhp:'Whp = Qs·TDHs·SPGRa / 367.2',
+      pipeHint:'metres',
+      // Velocity from volumetric flow through the computed bore area.
+      vel_fn:(q, area) => q / (3600 * area),
+      area_fn:d => Math.PI * d * d / 4,
+      tdh_fn:(dp, sgt, H, dvh) => (100 * dp) / (9.81 * sgt) + H + dvh
+    },
+    eng: {
+      speed:'rpm', flow:'gpm', press:'psig', elev:'ft', pipe:'in', area:'in²',
+      vel:'ft/s', head:'ft', power:'hp',
+      g:32.2, whpK:3960,
+      soBands:[[1000,5],[250,8],[0,10]],
+      soBandText:'≤ 250 ft → ±10% · > 250 ft to 1000 ft → ±8% · > 1000 ft → ±5%',
+      fTdh:'TDH = 2.31·ΔP/SPGRt + H + ΔVh',
+      fWhp:'Whp = Qs·TDHs·SPGRa / 3960',
+      pipeHint:'inches',
+      // Standard 0.409·gpm/d² form — bore in inches, velocity in ft/s.
+      vel_fn:(q, area, d) => 0.409 * q / (d * d),
+      area_fn:d => Math.PI * d * d / 4,
+      tdh_fn:(dp, sgt, H, dvh) => 2.31 * dp / sgt + H + dvh
+    }
+  };
+  let sys = 'si';
+  const U = () => UNITS[sys];
+
+  /* ------------------------------------------------------------------
+     Row specification for the data table.
+     kind: 'sec' section band | 'in' per-point input | 'fix' propagated
+           common input | 'out' calculated.
+  ------------------------------------------------------------------ */
+  const ROWS = [
+    {kind:'sec', label:'Speed'},
+    {kind:'in',  key:'ts',   sym:'Ts',  name:'Test speed', unit:'speed'},
+    {kind:'fix', key:'rs',   sym:'Rs',  name:'Rated speed', unit:'speed'},
+    {kind:'out', key:'spd',  sym:'—',   name:'Test speed deviation from rated', unit:'%', dec:2, note:1, flag:'speed'},
+
+    {kind:'sec', label:'Specific gravity'},
+    {kind:'fix', key:'sgt',  sym:'SPGRt', name:'SG of test fluid', unit:'-', dec:3, note:2},
+    {kind:'fix', key:'sga',  sym:'SPGRa', name:'SG of actual fluid', unit:'-', dec:3},
+
+    {kind:'sec', label:'Pump capacity / flow'},
+    {kind:'in',  key:'q',    sym:'Q',   name:'Capacity (as tested)', unit:'flow'},
+    {kind:'out', key:'qs',   sym:'Qs',  name:'Capacity corrected to rated speed', unit:'flow', dec:2, note:3},
+    {kind:'out', key:'qpct', sym:'—',   name:'Test flow / rated flow', unit:'%', dec:1},
+
+    {kind:'sec', label:'Suction / discharge pressure'},
+    {kind:'in',  key:'ps',   sym:'Ps',  name:'Suction pressure (static)', unit:'press'},
+    {kind:'in',  key:'pd',   sym:'Pd',  name:'Discharge pressure (static)', unit:'press'},
+
+    {kind:'sec', label:'Datum elevation'},
+    {kind:'fix', key:'hs',   sym:'Hs',  name:'Elevation of suction gauge', unit:'elev', dec:3, note:4},
+    {kind:'fix', key:'hd',   sym:'Hd',  name:'Elevation of discharge gauge', unit:'elev', dec:3, note:4},
+    {kind:'out', key:'hdat', sym:'H',   name:'Datum elevation, Hd − Hs', unit:'elev', dec:3},
+
+    {kind:'sec', label:'Test loop pipe size'},
+    {kind:'fix', key:'sid',  sym:'Si',  name:'Suction pipe inside diameter', unit:'pipe', dec:4, note:5},
+    {kind:'fix', key:'did',  sym:'Di',  name:'Discharge pipe inside diameter', unit:'pipe', dec:4, note:5},
+    {kind:'out', key:'sa',   sym:'Sa',  name:'Suction pipe flow area', unit:'area', dec:5},
+    {kind:'out', key:'da',   sym:'Da',  name:'Discharge pipe flow area', unit:'area', dec:5},
+
+    {kind:'sec', label:'Velocity head'},
+    {kind:'out', key:'vs',   sym:'Vs',  name:'Suction velocity', unit:'vel', dec:3},
+    {kind:'out', key:'vd',   sym:'Vd',  name:'Discharge velocity', unit:'vel', dec:3},
+    {kind:'out', key:'vsh',  sym:'Vsh', name:'Suction velocity head', unit:'head', dec:4},
+    {kind:'out', key:'vdh',  sym:'Vdh', name:'Discharge velocity head', unit:'head', dec:4},
+    {kind:'out', key:'dvh',  sym:'ΔVh', name:'Differential velocity head', unit:'head', dec:4},
+
+    {kind:'sec', label:'Total dynamic head'},
+    {kind:'out', key:'tdh',  sym:'TDH', name:'Differential head (as tested)', unit:'head', dec:2},
+    {kind:'out', key:'tdhs', sym:'TDHs', name:'Differential head corrected to rated speed', unit:'head', dec:2, hl:true},
+
+    {kind:'sec', label:'Power & efficiency'},
+    {kind:'out', key:'whp',  sym:'Whp', name:'Hydraulic power at rated speed', unit:'power', dec:2},
+    {kind:'in',  key:'pm',   sym:'Pm',  name:'Measured power to motor (test fluid)', unit:'power'},
+    {kind:'out', key:'pmc',  sym:'Pmc', name:'Power to motor corrected to rated speed', unit:'power', dec:2},
+    {kind:'out', key:'bhp',  sym:'BHP', name:'Shaft power on process liquid', unit:'power', dec:2, hl:true},
+    {kind:'out', key:'eff',  sym:'η',   name:'Efficiency', unit:'%', dec:2, hl:true}
+  ];
+
+  const PER_POINT = ['ts','q','ps','pd','pm'];
+  const COMMON    = ['rs','sgt','sga','hs','hd','sid','did'];
+
+  /* ---------------- Build the table ---------------- */
+  function buildTable(){
+    const head = $('headRow');
+    head.innerHTML = '<th class="pname">Parameter</th>' +
+      POINTS.map((p,i) =>
+        '<th class="' + (i === RATED ? 'rated' : '') + '" title="' + p.full + '">' +
+        p.col + '<span class="pcol">' + p.short + '</span>' +
+        '<span class="pnote">' + (i === RATED ? 'reference' : '&nbsp;') + '</span></th>'
+      ).join('');
+
+    const body = $('calcBody');
+    body.innerHTML = ROWS.map(r => {
+      if (r.kind === 'sec'){
+        return '<tr class="sec"><td class="pname">' + r.label + '</td>' +
+               '<td colspan="' + POINTS.length + '"></td></tr>';
+      }
+      const cells = POINTS.map((p,i) => {
+        if (r.kind === 'in'){
+          return '<td data-cell="' + r.key + '-' + i + '">' +
+                 '<input type="number" step="any" data-k="' + r.key + '" data-i="' + i + '" aria-label="' + r.name + ' at ' + p.full + '"></td>';
+        }
+        if (r.kind === 'fix'){
+          return '<td class="fixed" id="c-' + r.key + '-' + i + '">—</td>';
+        }
+        return '<td class="out" id="c-' + r.key + '-' + i + '">—</td>';
+      }).join('');
+      const unitTxt = '<span class="pu" data-uslot="' + (r.unit || '') + '">' + unitLabel(r.unit) + '</span>';
+      return '<tr class="' + (r.hl ? 'hl' : '') + '">' +
+             '<td class="pname"><span class="sym">' + r.sym + '</span>' +
+             '<span class="pdesc">' + r.name + '</span> ' + unitTxt +
+             (r.note ? '<sup> ' + r.note + '</sup>' : '') + '</td>' + cells + '</tr>';
+    }).join('');
+
+    body.querySelectorAll('input').forEach(el => el.addEventListener('input', recalc));
+  }
+
+  function unitLabel(u){
+    if (!u || u === '-') return '';
+    if (u === '%') return '(%)';
+    return '(' + (U()[u] || u) + ')';
+  }
+
+  function refreshUnitLabels(){
+    document.querySelectorAll('[data-uslot]').forEach(el => {
+      el.textContent = unitLabel(el.getAttribute('data-uslot'));
+    });
+    document.querySelectorAll('[data-u]').forEach(el => {
+      const u = el.getAttribute('data-u');
+      el.textContent = el.classList.contains('pu') ? '(' + U()[u] + ')' : U()[u];
+    });
+    $('fTdh').textContent = U().fTdh;
+    $('fWhp').textContent = U().fWhp;
+    $('soBandText').textContent = U().soBandText;
+  }
+
+  /* ---------------- Helpers ---------------- */
+  function raw(el){ const v = el ? el.value.trim() : ''; return v === '' ? null : parseFloat(v); }
+  function numOr(v, d){ return (v === null || !isFinite(v)) ? d : v; }
+  function cellVal(key, i){
+    const el = document.querySelector('input[data-k="' + key + '"][data-i="' + i + '"]');
+    return raw(el);
+  }
+  function fmt(v, d){
+    if (v === null || v === undefined || !isFinite(v)) return '—';
+    return v.toLocaleString(undefined, {minimumFractionDigits:d, maximumFractionDigits:d});
+  }
+  function signed(v, d){
+    if (v === null || !isFinite(v)) return '—';
+    return (v >= 0 ? '+' : '') + fmt(v, d);
+  }
+  function badge(state, text){ return '<span class="badge ' + state + '">' + text + '</span>'; }
+
+  /* ---------------- Core calculation ---------------- */
+  let LAST = null;
+
+  function recalc(){
+    const u = U();
+    const g = {};
+    COMMON.forEach(k => { g[k] = raw($(k === 'sid' ? 'sid' : k === 'did' ? 'did' : k)); });
+
+    const rs  = g.rs;
+    const sgt = numOr(g.sgt, 1);
+    const sga = numOr(g.sga, 1);
+    const hs  = numOr(g.hs, 0);
+    const hd  = numOr(g.hd, 0);
+    const sid = g.sid;
+    const did = g.did;
+    const H   = hd - hs;
+    $('hDatum').value = isFinite(H) ? H.toFixed(3) : '';
+
+    const qRated = cellVal('q', RATED);
+    const pts = [];
+
+    for (let i = 0; i < POINTS.length; i++){
+      const ts = cellVal('ts', i);
+      const q  = cellVal('q', i);
+      const ps = cellVal('ps', i);
+      const pd = cellVal('pd', i);
+      const pm = cellVal('pm', i);
+      // A column is live only once its test speed is entered.
+      const active = ts !== null && ts > 0;
+
+      const p = {active:active, ts:ts, q:q, ps:ps, pd:pd, pm:pm, rs:rs, sgt:sgt, sga:sga,
+                 hs:hs, hd:hd, sid:sid, did:did, hdat:H};
+
+      if (active){
+        const r = (rs !== null && rs > 0) ? rs / ts : null;
+        p.spd = (rs !== null && rs > 0) ? (ts / rs) * 100 - 100 : null;
+
+        p.sa = (sid !== null && sid > 0) ? u.area_fn(sid) : null;
+        p.da = (did !== null && did > 0) ? u.area_fn(did) : null;
+
+        const qq = numOr(q, 0);
+        p.vs = (p.sa !== null) ? u.vel_fn(qq, p.sa, sid) : null;
+        p.vd = (p.da !== null) ? u.vel_fn(qq, p.da, did) : null;
+        p.vsh = (p.vs !== null) ? (p.vs * p.vs) / (2 * u.g) : null;
+        p.vdh = (p.vd !== null) ? (p.vd * p.vd) / (2 * u.g) : null;
+        p.dvh = (p.vsh !== null && p.vdh !== null) ? p.vdh - p.vsh : null;
+
+        const dp = (ps !== null && pd !== null) ? pd - ps : null;
+        p.tdh = (dp !== null && p.dvh !== null && sgt > 0) ? u.tdh_fn(dp, sgt, H, p.dvh) : null;
+
+        p.qs   = (q !== null && r !== null) ? q * r : null;
+        p.qpct = (q !== null && qRated !== null && qRated !== 0) ? (q / qRated) * 100 : null;
+        p.tdhs = (p.tdh !== null && r !== null) ? p.tdh * r * r : null;
+        p.whp  = (p.qs !== null && p.tdhs !== null) ? (p.qs * p.tdhs * sga) / u.whpK : null;
+        p.pmc  = (pm !== null && r !== null) ? pm * r * r * r : null;
+        p.bhp  = (p.pmc !== null) ? p.pmc * sga : null;
+        p.eff  = (p.whp !== null && p.bhp !== null && p.bhp !== 0) ? 100 * p.whp / p.bhp : null;
+      }
+      pts.push(p);
+    }
+
+    // ---- paint the data table ----
+    ROWS.forEach(r => {
+      if (r.kind === 'sec' || r.kind === 'in') return;
+      for (let i = 0; i < POINTS.length; i++){
+        const td = $('c-' + r.key + '-' + i);
+        if (!td) continue;
+        const p = pts[i];
+        let v = null;
+        if (r.kind === 'fix'){
+          v = p[r.key];
+          td.textContent = fmt(v, r.dec === undefined ? 2 : r.dec);
+          td.classList.toggle('inactive', !p.active);
+          continue;
+        }
+        v = p.active ? p[r.key] : null;
+        td.textContent = fmt(v, r.dec === undefined ? 2 : r.dec);
+        td.classList.remove('flag-bad', 'flag-ok');
+        td.classList.toggle('inactive', !p.active);
+        if (r.flag === 'speed' && v !== null && isFinite(v)){
+          td.classList.add(Math.abs(v) > 3 ? 'flag-bad' : 'flag-ok');
+        }
+      }
+    });
+    // Propagated common values need no per-point activity styling on Rs etc.
+    ROWS.filter(r => r.kind === 'fix').forEach(r => {
+      for (let i = 0; i < POINTS.length; i++){
+        const td = $('c-' + r.key + '-' + i);
+        if (td) td.classList.remove('inactive');
+      }
+    });
+
+    // ---- Table 16 verification ----
+    const aHead = pts[RATED].active ? pts[RATED].tdhs : null;
+    const aSO   = pts[SHUTOFF].active ? pts[SHUTOFF].tdhs : null;
+    const aPow  = pts[RATED].active ? pts[RATED].bhp : null;
+    const aEff  = pts[RATED].active ? pts[RATED].eff : null;
+
+    const qHead = raw($('qHead')), qSO = raw($('qSO')), qPow = raw($('qPow')), qEff = raw($('qEff'));
+
+    $('sHead').innerHTML = aHead === null ? '—' : fmt(aHead, 2) + '<span class="runit">' + u.head + '</span>';
+    $('sPow').innerHTML  = aPow  === null ? '—' : fmt(aPow, 2)  + '<span class="runit">' + u.power + '</span>';
+    $('sEff').innerHTML  = aEff  === null ? '—' : fmt(aEff, 2)  + '<span class="runit">%</span>';
+
+    const verdicts = [];
+
+    // Head at rated capacity: ±3%
+    verdicts.push(band('Head', qHead, aHead, -3, 3, 'cHead', 'aHead', 'dHead', 'rHead', 2, u.head));
+
+    // Head at shut-off: band selected from the quoted rated head
+    let b = 10;
+    if (qHead !== null && isFinite(qHead)){
+      for (const [thr, pct] of u.soBands){ if (qHead > thr){ b = pct; break; } }
+    }
+    $('tSO').textContent = qHead === null ? '—' : '+' + b + '% / −' + b + '%';
+    verdicts.push(band('SO', qSO, aSO, -b, b, 'cSO', 'aSO', 'dSO', 'rSO', 2, u.head));
+
+    // Rated power: +4%, upper limit only
+    verdicts.push(band('Pow', qPow, aPow, null, 4, 'cPow', 'aPow', 'dPow', 'rPow', 2, u.power));
+
+    // Efficiency: reported, no tolerance in Table 16
+    $('aEff').textContent = aEff === null ? '—' : fmt(aEff, 2);
+    $('dEff').textContent = (aEff === null || qEff === null) ? '—' : signed(aEff - qEff, 2) + ' pts';
+    $('rEff').innerHTML = badge('info', 'INFORMATION');
+
+    const decided = verdicts.filter(v => v !== null);
+    const vt = $('sVerdictTile');
+    vt.classList.remove('verdict-ok', 'verdict-bad');
+    if (!decided.length){
+      $('sVerdict').className = 'badge neutral';
+      $('sVerdict').textContent = 'AWAITING DATA';
+    } else if (decided.every(v => v)){
+      $('sVerdict').className = 'badge ok';
+      $('sVerdict').textContent = 'ACCEPTABLE';
+      vt.classList.add('verdict-ok');
+    } else {
+      $('sVerdict').className = 'badge bad';
+      $('sVerdict').textContent = 'NOT ACCEPTABLE';
+      vt.classList.add('verdict-bad');
+    }
+
+    // ---- Modified tolerance ----
+    $('mqHead').textContent = qHead === null ? '—' : fmt(qHead, 2);
+    $('mqSO').textContent   = qSO   === null ? '—' : fmt(qSO, 2);
+    $('mqPow').textContent  = qPow  === null ? '—' : fmt(qPow, 2);
+    $('mqEff').textContent  = qEff  === null ? '—' : fmt(qEff, 2);
+
+    band('mHead', qHead, aHead, raw($('mloHead')), raw($('mhiHead')), 'mcHead', 'maHead', 'mdHead', 'mrHead', 2, u.head, true);
+    band('mSO',   qSO,   aSO,   raw($('mloSO')),   raw($('mhiSO')),   'mcSO',   'maSO',   'mdSO',   'mrSO',   2, u.head, true);
+    band('mPow',  qPow,  aPow,  null,              raw($('mhiPow')),  'mcPow',  'maPow',  'mdPow',  'mrPow',  2, u.power, true);
+    effBand(qEff, aEff, raw($('mloEff')), raw($('mhiEff')));
+
+    LAST = {pts:pts, u:u, aHead:aHead, aSO:aSO, aPow:aPow, aEff:aEff,
+            qHead:qHead, qSO:qSO, qPow:qPow, qEff:qEff};
+  }
+
+  /* Evaluate one percentage-deviation row. Returns true/false, or null when
+     the row cannot be judged (missing quoted value, actual or tolerance). */
+  function band(tag, quoted, actual, lo, hi, cId, aId, dId, rId, dec, unit, optional){
+    const cEl = $(cId), aEl = $(aId), dEl = $(dId), rEl = $(rId);
+    aEl.textContent = actual === null ? '—' : fmt(actual, dec);
+
+    if (quoted === null || quoted === 0 || (optional && hi === null && lo === null)){
+      cEl.textContent = '—';
+      dEl.textContent = '—';
+      rEl.innerHTML = badge('neutral', '—');
+      return null;
+    }
+    const low  = lo === null ? null : quoted * (1 + lo / 100);
+    const high = hi === null ? null : quoted * (1 + hi / 100);
+    cEl.textContent = (low === null ? 'N/A' : fmt(low, dec)) + ' – ' + (high === null ? 'N/A' : fmt(high, dec));
+
+    if (actual === null){
+      dEl.textContent = '—';
+      rEl.innerHTML = badge('neutral', '—');
+      return null;
+    }
+    const dev = ((actual - quoted) / quoted) * 100;
+    dEl.textContent = signed(dev, 2) + '%';
+    const okLo = (lo === null) || dev >= lo;
+    const okHi = (hi === null) || dev <= hi;
+    const ok = okLo && okHi;
+    dEl.className = ok ? '' : 'flag-bad';
+    rEl.innerHTML = badge(ok ? 'ok' : 'bad', ok ? 'ACCEPTABLE' : 'NOT ACCEPTABLE');
+    return ok;
+  }
+
+  /* Efficiency is judged in percentage points, not as a percentage of itself. */
+  function effBand(quoted, actual, lo, hi){
+    const cEl = $('mcEff'), aEl = $('maEff'), dEl = $('mdEff'), rEl = $('mrEff');
+    aEl.textContent = actual === null ? '—' : fmt(actual, 2);
+    if (quoted === null || (lo === null && hi === null)){
+      cEl.textContent = '—'; dEl.textContent = '—';
+      rEl.innerHTML = badge('neutral', '—');
+      return;
+    }
+    cEl.textContent = (lo === null ? 'N/A' : fmt(quoted + lo, 2)) + ' – ' + (hi === null ? 'N/A' : fmt(quoted + hi, 2));
+    if (actual === null){
+      dEl.textContent = '—'; rEl.innerHTML = badge('neutral', '—');
+      return;
+    }
+    const dev = actual - quoted;
+    dEl.textContent = signed(dev, 2) + ' pts';
+    const ok = ((lo === null) || dev >= lo) && ((hi === null) || dev <= hi);
+    dEl.className = ok ? '' : 'flag-bad';
+    rEl.innerHTML = badge(ok ? 'ok' : 'bad', ok ? 'ACCEPTABLE' : 'NOT ACCEPTABLE');
+  }
+
+  /* ------------------------------------------------------------------
+     Appendix I — ASME B36.10M carbon steel pipe.
+     Stored as outside diameter and wall thickness in inches;
+     inside diameter is derived as OD − 2t.
+  ------------------------------------------------------------------ */
+  const PIPE = {
+    '1/2':   {od:0.840,  t:{'10':0.083,'40 (STD)':0.109,'80 (XS)':0.147,'160':0.187,'XXS':0.294}},
+    '3/4':   {od:1.050,  t:{'10':0.083,'40 (STD)':0.113,'80 (XS)':0.154,'160':0.218,'XXS':0.308}},
+    '1':     {od:1.315,  t:{'10':0.109,'40 (STD)':0.133,'80 (XS)':0.179,'160':0.250,'XXS':0.358}},
+    '1 1/4': {od:1.660,  t:{'10':0.109,'40 (STD)':0.140,'80 (XS)':0.191,'160':0.250,'XXS':0.382}},
+    '1 1/2': {od:1.900,  t:{'10':0.109,'40 (STD)':0.145,'80 (XS)':0.200,'160':0.281,'XXS':0.400}},
+    '2':     {od:2.375,  t:{'10':0.109,'40 (STD)':0.154,'80 (XS)':0.218,'160':0.344,'XXS':0.436}},
+    '2 1/2': {od:2.875,  t:{'10':0.120,'40 (STD)':0.203,'80 (XS)':0.276,'160':0.375,'XXS':0.552}},
+    '3':     {od:3.500,  t:{'10':0.120,'40 (STD)':0.216,'80 (XS)':0.300,'160':0.438,'XXS':0.600}},
+    '4':     {od:4.500,  t:{'10':0.120,'40 (STD)':0.237,'80 (XS)':0.337,'120':0.438,'160':0.531,'XXS':0.674}},
+    '5':     {od:5.563,  t:{'10':0.134,'40 (STD)':0.258,'80 (XS)':0.375,'120':0.500,'160':0.625,'XXS':0.750}},
+    '6':     {od:6.625,  t:{'10':0.134,'40 (STD)':0.280,'80 (XS)':0.432,'120':0.562,'160':0.719,'XXS':0.864}},
+    '8':     {od:8.625,  t:{'10':0.148,'20':0.250,'30':0.277,'40 (STD)':0.322,'60':0.406,'80 (XS)':0.500,'100':0.594,'120':0.719,'140':0.812,'160':0.906,'XXS':0.875}},
+    '10':    {od:10.750, t:{'10':0.165,'20':0.250,'30':0.307,'40 (STD)':0.365,'60 (XS)':0.500,'80':0.594,'100':0.719,'120':0.844,'140':1.000,'160':1.125}},
+    '12':    {od:12.750, t:{'10':0.180,'20':0.250,'30':0.330,'STD':0.375,'40':0.406,'XS':0.500,'60':0.562,'80':0.688,'100':0.844,'120':1.000,'140':1.125,'160':1.312}},
+    '14':    {od:14.000, t:{'10':0.250,'20':0.312,'30 (STD)':0.375,'40':0.438,'XS':0.500,'60':0.594,'80':0.750,'100':0.938,'120':1.094,'140':1.250,'160':1.406}},
+    '16':    {od:16.000, t:{'10':0.250,'20':0.312,'30 (STD)':0.375,'40 (XS)':0.500,'60':0.656,'80':0.844,'100':1.031,'120':1.219,'140':1.438,'160':1.594}},
+    '18':    {od:18.000, t:{'10':0.250,'20':0.312,'STD':0.375,'30':0.438,'XS':0.500,'40':0.562,'60':0.750,'80':0.938,'100':1.156,'120':1.375,'140':1.562,'160':1.781}},
+    '20':    {od:20.000, t:{'10':0.250,'20 (STD)':0.375,'30 (XS)':0.500,'40':0.594,'60':0.812,'80':1.031,'100':1.281,'120':1.500,'140':1.750,'160':1.969}},
+    '24':    {od:24.000, t:{'10':0.250,'20 (STD)':0.375,'XS':0.500,'30':0.562,'40':0.688,'60':0.969,'80':1.219,'100':1.531,'120':1.812,'140':2.062,'160':2.344}}
+  };
+
+  function fillNps(){
+    $('pipeNps').innerHTML = Object.keys(PIPE).map(k => '<option value="' + k + '">' + k + '"</option>').join('');
+    $('pipeNps').value = '6';
+    fillSch();
+  }
+  function fillSch(){
+    const nps = $('pipeNps').value;
+    const prev = $('pipeSch').value;
+    const keys = Object.keys(PIPE[nps].t);
+    $('pipeSch').innerHTML = keys.map(k => '<option value="' + k + '">Sch ' + k + '</option>').join('');
+    $('pipeSch').value = keys.indexOf(prev) >= 0 ? prev : (keys.indexOf('40 (STD)') >= 0 ? '40 (STD)' : keys[0]);
+    showPipe();
+  }
+  function pipeId(){
+    const nps = $('pipeNps').value, sch = $('pipeSch').value;
+    const od = PIPE[nps].od, t = PIPE[nps].t[sch];
+    return {od:od, t:t, id:od - 2 * t};
+  }
+  function showPipe(){
+    const p = pipeId();
+    const mm = 25.4;
+    if (sys === 'si'){
+      $('pipeOd').innerHTML  = fmt(p.od * mm, 1) + '<small>mm</small>';
+      $('pipeWt').innerHTML  = fmt(p.t * mm, 2) + '<small>mm</small>';
+      $('pipeId').innerHTML  = fmt(p.id * 0.0254, 4) + '<small>m</small>';
+      $('pipeArea').innerHTML = fmt(Math.PI * Math.pow(p.id * 0.0254, 2) / 4, 5) + '<small>m²</small>';
+    } else {
+      $('pipeOd').innerHTML  = fmt(p.od, 3) + '<small>in</small>';
+      $('pipeWt').innerHTML  = fmt(p.t, 3) + '<small>in</small>';
+      $('pipeId').innerHTML  = fmt(p.id, 3) + '<small>in</small>';
+      $('pipeArea').innerHTML = fmt(Math.PI * p.id * p.id / 4, 3) + '<small>in²</small>';
+    }
+  }
+  function applyPipe(target){
+    const p = pipeId();
+    $(target).value = sys === 'si' ? (p.id * 0.0254).toFixed(4) : p.id.toFixed(3);
+    recalc();
+  }
+
+  /* ---------------- Unit switching ---------------- */
+  /* Switching systems clears the numeric data rather than converting it —
+     a half-converted test record is more dangerous than an empty one. */
+  function setSys(next){
+    if (next === sys) return;
+    const hasData = [...document.querySelectorAll('#calcBody input')].some(el => el.value.trim() !== '');
+    if (hasData && !confirm('Switching measurement system clears the entered test data. Continue?')) return;
+    sys = next;
+    $('btnSI').classList.toggle('active', sys === 'si');
+    $('btnENG').classList.toggle('active', sys === 'eng');
+    clearNumbers();
+    // Equal-bore default: 1 in either system still zeroes the velocity head.
+    $('sid').value = '1'; $('did').value = '1';
+    refreshUnitLabels();
+    showPipe();
+    recalc();
+  }
+
+  function clearNumbers(){
+    document.querySelectorAll('#calcBody input').forEach(el => el.value = '');
+    ['rs','hs','hd','qHead','qSO','qPow','qEff',
+     'mloHead','mhiHead','mloSO','mhiSO','mhiPow','mloEff','mhiEff'].forEach(id => $(id).value = '');
+    $('sgt').value = '1'; $('sga').value = '1';
+    $('hs').value = '0';  $('hd').value = '0';
+  }
+
+  /* ---------------- Worked sample ---------------- */
+  /* An illustrative SI record only — not a real machine's test data. */
+  function loadSample(){
+    if (sys !== 'si'){ sys = 'eng'; setSys('si'); }
+    $('idProject').value = 'Sample — shop performance test';
+    $('idItem').value = 'P-1001 A';
+    $('idService').value = 'Cooling water circulation pump';
+    $('rs').value = '2965'; $('sgt').value = '1'; $('sga').value = '0.82';
+    $('hs').value = '0.5';  $('hd').value = '1.2';
+    $('sid').value = '0.2027'; $('did').value = '0.1541';
+
+    const data = {
+      ts: [2950, 2950, 2952, 2955, 2955, 2952, 2958],
+      q:  [0,    45,   142,  150,  156,  148,  172],
+      ps: [0.35, 0.34, 0.31, 0.30, 0.29, 0.30, 0.26],
+      pd: [8.90, 8.72, 8.16, 8.02, 7.83, 8.06, 7.24],
+      pm: [18.2, 26.4, 45.1, 46.8, 48.0, 46.3, 51.2]
+    };
+    Object.keys(data).forEach(k => {
+      data[k].forEach((v, i) => {
+        const el = document.querySelector('input[data-k="' + k + '"][data-i="' + i + '"]');
+        if (el) el.value = v;
+      });
+    });
+    $('qHead').value = '78.5';
+    $('qSO').value   = '88.0';
+    $('qPow').value  = '39.0';
+    $('qEff').value  = '76.0';
+    recalc();
+  }
+
+  /* ---------------- CSV export ---------------- */
+  function esc(s){
+    s = (s === null || s === undefined) ? '' : String(s);
+    return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }
+  function exportCsv(){
+    recalc();
+    const u = U();
+    const lines = [];
+    lines.push(['API 610 11th Ed. Pump Performance Test Result Verifier'].map(esc).join(','));
+    lines.push(['Project', $('idProject').value].map(esc).join(','));
+    lines.push(['Item', $('idItem').value].map(esc).join(','));
+    lines.push(['Service', $('idService').value].map(esc).join(','));
+    lines.push(['Units', sys === 'si' ? 'SI' : 'English'].map(esc).join(','));
+    lines.push('');
+    lines.push(['Symbol','Parameter','Units'].concat(POINTS.map(p => p.col + ' — ' + p.full)).map(esc).join(','));
+
+    ROWS.forEach(r => {
+      if (r.kind === 'sec'){ lines.push([r.label].map(esc).join(',')); return; }
+      const unit = (!r.unit || r.unit === '-') ? '' : (r.unit === '%' ? '%' : u[r.unit]);
+      const vals = POINTS.map((p, i) => {
+        if (r.kind === 'in'){
+          const v = cellVal(r.key, i);
+          return v === null ? '' : v;
+        }
+        const td = $('c-' + r.key + '-' + i);
+        const t = td ? td.textContent : '';
+        return t === '—' ? '' : t.replace(/,/g, '');
+      });
+      lines.push([r.sym, r.name, unit].concat(vals).map(esc).join(','));
+    });
+
+    lines.push('');
+    lines.push(['Test results — API 610 11th Ed. Table 16'].map(esc).join(','));
+    lines.push(['Parameter','Quoted','Tolerance','Acceptable criteria','Actual','Deviation','Result'].map(esc).join(','));
+    const rowsOut = [
+      ['Head at rated capacity (' + u.head + ')', $('qHead').value, '+3% / -3%', $('cHead').textContent, $('aHead').textContent, $('dHead').textContent, $('rHead').textContent],
+      ['Head at shut-off (' + u.head + ')',       $('qSO').value,   $('tSO').textContent, $('cSO').textContent, $('aSO').textContent, $('dSO').textContent, $('rSO').textContent],
+      ['Rated power (' + u.power + ')',           $('qPow').value,  '+4%', $('cPow').textContent, $('aPow').textContent, $('dPow').textContent, $('rPow').textContent],
+      ['Rated efficiency (%)',                    $('qEff').value,  'N/A', 'N/A', $('aEff').textContent, $('dEff').textContent, 'INFORMATION']
+    ];
+    rowsOut.forEach(r => lines.push(r.map(s => String(s).replace(/,/g, '')).map(esc).join(',')));
+    lines.push('');
+    lines.push(['Overall (Table 16)', $('sVerdict').textContent].map(esc).join(','));
+
+    const blob = new Blob(['﻿' + lines.join('\r\n')], {type:'text/csv;charset=utf-8;'});
+    const a = document.createElement('a');
+    const tag = ($('idItem').value || 'pump').replace(/[^A-Za-z0-9_-]+/g, '-');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'API610-performance-test-' + tag + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  }
+
+  /* ---------------- Wiring ---------------- */
+  buildTable();
+  fillNps();
+  refreshUnitLabels();
+
+  COMMON.forEach(id => $(id).addEventListener('input', recalc));
+  ['qHead','qSO','qPow','qEff','mloHead','mhiHead','mloSO','mhiSO','mhiPow','mloEff','mhiEff']
+    .forEach(id => $(id).addEventListener('input', recalc));
+
+  $('btnSI').addEventListener('click', () => setSys('si'));
+  $('btnENG').addEventListener('click', () => setSys('eng'));
+  $('pipeNps').addEventListener('change', fillSch);
+  $('pipeSch').addEventListener('change', showPipe);
+  $('btnApplyS').addEventListener('click', () => applyPipe('sid'));
+  $('btnApplyD').addEventListener('click', () => applyPipe('did'));
+  $('btnSample').addEventListener('click', loadSample);
+  $('btnCsv').addEventListener('click', exportCsv);
+  $('btnPrint').addEventListener('click', () => window.print());
+  $('btnReset').addEventListener('click', () => {
+    if (!confirm('Clear all entered data?')) return;
+    ['idProject','idItem','idService'].forEach(id => $(id).value = '');
+    clearNumbers();
+    $('sid').value = '1'; $('did').value = '1';
+    recalc();
+  });
+
+  recalc();
+})();
+</script>
+
+</body>
+</html>
