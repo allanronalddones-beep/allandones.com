@@ -1,0 +1,1712 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compressor FAD Site Conversion — Normal / ISO to Actual Site Conditions | Allan Ronald Dones</title>
+<meta name="description" content="Convert compressor Free Air Delivery quoted at ISO 1217 or normal reference conditions to actual site conditions — altitude, ambient temperature, humidity and inlet losses — and size the selection against the process requirement.">
+<meta name="author" content="Allan Ronald Dones">
+<link rel="canonical" href="https://allanronalddones.com/tools/compressor-fad-site-conversion">
+
+<!-- Social preview (shown when the link is shared from the main site) -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://allanronalddones.com/tools/compressor-fad-site-conversion">
+<meta property="og:title" content="Compressor FAD Site Conversion — Normal / ISO to Actual Site Conditions">
+<meta property="og:site_name" content="Allan Ronald Dones — Rotating Equipment Engineering">
+<meta property="og:description" content="Convert Free Air Delivery quoted at ISO 1217 or normal reference conditions to actual site conditions and check the selection against the process requirement.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Compressor FAD Site Conversion">
+<meta name="twitter:description" content="Normal / ISO Free Air Delivery converted to actual site conditions, with a selection sufficiency check.">
+
+<!-- Inline SVG favicon — keeps the page self-contained (no separate .ico request) -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a2472'/%3E%3Ccircle cx='32' cy='32' r='16' fill='none' stroke='%232f7ef0' stroke-width='3'/%3E%3Cpath d='M32 32 L32 14 A18 18 0 0 1 47 23 Z' fill='%2322d3ee'/%3E%3Cpath d='M32 32 L47 41 A18 18 0 0 1 17 41 Z' fill='%235b9dfa'/%3E%3Cpath d='M32 32 L17 23 A18 18 0 0 1 32 14 Z' fill='%23177fe0'/%3E%3Ccircle cx='32' cy='32' r='4' fill='%23eaf1ff'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --navy-950:#050b1a;
+    --navy-900:#08132b;
+    --navy-800:#0c1c3f;
+    --navy-700:#0f2551;
+    --blue-600:#1450c9;
+    --blue-500:#1565d8;
+    --blue-400:#2f7ef0;
+    --blue-300:#5b9dfa;
+    --cyan-400:#22d3ee;
+    --cyan-300:#67e8f9;
+    --text-primary:#eaf1ff;
+    --text-secondary:#a9bde0;
+    --text-muted:#6f84ab;
+    --card-bg:rgba(6,16,40,0.82);
+    --card-border:rgba(91,157,250,0.22);
+    --ok-500:#22c55e;
+    --ok-300:#86efac;
+    --bad-500:#ef4444;
+    --bad-300:#fca5a5;
+    --warn-300:#fcd34d;
+    --radius:14px;
+    /* Input / output cell tinting mirrors the source workbook's colour key:
+       yellow = user input, green = calculated output. */
+    --in-bg:rgba(252,211,77,0.09);
+    --in-border:rgba(252,211,77,0.32);
+    --out-bg:rgba(34,197,94,0.07);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Segoe UI', 'Inter', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    color:var(--text-primary);
+    background:var(--navy-950);
+    min-height:100vh;
+    line-height:1.5;
+  }
+
+  /* ---------- Layered background: base wash → animated waves ---------- */
+
+  .bg-base{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    background:
+      radial-gradient(1200px 800px at 12% -8%, rgba(47,126,240,0.55), transparent 62%),
+      radial-gradient(1000px 700px at 108% 8%, rgba(34,211,238,0.34), transparent 58%),
+      radial-gradient(900px 900px at 50% 115%, rgba(21,101,216,0.42), transparent 60%),
+      linear-gradient(180deg, #06122e 0%, #0d2a63 40%, #071431 100%);
+    background-color:#06122e;
+  }
+
+  .bg-waves{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    overflow:hidden;
+  }
+  .bg-waves svg{ width:100%; height:100%; display:block; }
+  .wv path{ will-change:transform; }
+  .wv1{ animation:driftL 52s linear infinite; }
+  .wv2{ animation:driftR 43s linear infinite; }
+  .wv3{ animation:driftL 36s linear infinite; }
+  .wv4{ animation:driftR 29s linear infinite; }
+  .wv5{ animation:driftL 23s linear infinite; }
+
+  @keyframes driftL{
+    from{ transform:translateX(0); }
+    to  { transform:translateX(-1440px); }
+  }
+  @keyframes driftR{
+    from{ transform:translateX(-1440px); }
+    to  { transform:translateX(0); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .wv1,.wv2,.wv3,.wv4,.wv5{ animation:none; }
+  }
+
+  /* ---------- Back-link to main site ---------- */
+  /* href="/" is site-root relative — resolves correctly on any domain. */
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    margin-bottom:26px;
+    font-size:13px;
+    font-weight:600;
+    color:var(--text-secondary);
+    text-decoration:none;
+    border:1px solid var(--card-border);
+    background:rgba(6,16,40,0.62);
+    padding:7px 15px 7px 12px;
+    border-radius:999px;
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    transition:color .15s, border-color .15s, background .15s;
+  }
+  .back-link:hover, .back-link:focus-visible{
+    color:#fff;
+    border-color:var(--cyan-400);
+    background:rgba(6,16,40,0.9);
+  }
+  .back-link svg{ width:15px; height:15px; flex:0 0 15px; }
+
+  .wrap{
+    position:relative;
+    z-index:1;
+    max-width:1320px;
+    margin:0 auto;
+    padding:40px 24px 80px;
+  }
+
+  header.hero{
+    text-align:center;
+    margin-bottom:34px;
+    padding-bottom:26px;
+    border-bottom:1px solid rgba(91,157,250,0.16);
+  }
+  .kicker{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:12.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--cyan-300);
+    background:rgba(34,211,238,0.08);
+    border:1px solid rgba(34,211,238,0.25);
+    padding:6px 14px;
+    border-radius:999px;
+    margin-bottom:18px;
+  }
+  .kicker svg{width:14px;height:14px;}
+  h1{
+    font-size:clamp(26px,3.6vw,40px);
+    margin:0 0 10px;
+    font-weight:700;
+    letter-spacing:-0.01em;
+    background:linear-gradient(90deg, #fff 0%, var(--blue-300) 55%, var(--cyan-300) 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .subtitle{
+    color:var(--text-secondary);
+    font-size:16px;
+    max-width:800px;
+    margin:0 auto 4px;
+  }
+  .byline{
+    color:var(--text-muted);
+    font-size:13px;
+    margin-top:14px;
+  }
+
+  .card{
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
+    border-radius:var(--radius);
+    padding:22px 24px;
+    margin-bottom:22px;
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    box-shadow:0 8px 32px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+  .card h2{
+    margin:0 0 4px;
+    font-size:16px;
+    font-weight:700;
+    letter-spacing:.02em;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .card h2 .num{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:24px;height:24px;
+    flex:0 0 24px;
+    border-radius:7px;
+    background:linear-gradient(135deg, var(--blue-500), var(--cyan-400));
+    color:#04101f;
+    font-size:12.5px;
+    font-weight:800;
+  }
+  .card .hint{
+    color:var(--text-muted);
+    font-size:12.5px;
+    margin:0 0 18px;
+    padding-left:34px;
+  }
+  .card .hint a{color:var(--blue-300);}
+
+  .field-row{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    margin-bottom:14px;
+  }
+  .field-row.three{grid-template-columns:repeat(3,1fr);}
+  .field-row.two{grid-template-columns:repeat(2,1fr);}
+  @media (max-width:860px){ .field-row, .field-row.three{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:520px){ .field-row, .field-row.three, .field-row.two{grid-template-columns:1fr;} }
+
+  label{
+    display:block;
+    font-size:12.5px;
+    color:var(--text-secondary);
+    margin-bottom:6px;
+    font-weight:600;
+  }
+  .note-inline{
+    color:var(--text-muted);
+    font-size:11px;
+    display:block;
+    margin-top:3px;
+    font-weight:400;
+  }
+
+  input[type="number"], input[type="text"], select{
+    width:100%;
+    background:rgba(5,14,32,0.65);
+    border:1px solid rgba(91,157,250,0.25);
+    color:var(--text-primary);
+    padding:9px 11px;
+    border-radius:9px;
+    font-size:14px;
+    font-family:inherit;
+    transition:border-color .15s, box-shadow .15s;
+  }
+  input[type="number"]:focus, input[type="text"]:focus, select:focus{
+    outline:none;
+    border-color:var(--cyan-400);
+    box-shadow:0 0 0 3px rgba(34,211,238,0.15);
+  }
+  select{cursor:pointer;}
+
+  /* ---------- Toolbar ---------- */
+  .toolbar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .btn-row{display:flex;flex-wrap:wrap;gap:9px;}
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    border:1px solid var(--card-border);
+    background:rgba(6,16,40,0.62);
+    color:var(--text-secondary);
+    font:600 12.5px/1 inherit;
+    padding:9px 15px;
+    border-radius:9px;
+    cursor:pointer;
+    transition:color .15s, border-color .15s, background .15s;
+  }
+  .btn:hover{ color:#fff; border-color:var(--cyan-400); background:rgba(6,16,40,0.92); }
+  .btn svg{width:14px;height:14px;flex:0 0 14px;}
+
+  /* Control strip above the calculation table */
+  .ctrl-strip{
+    display:flex;
+    flex-wrap:wrap;
+    gap:18px;
+    align-items:flex-end;
+    margin:0 0 16px;
+    padding:13px 15px;
+    background:rgba(5,14,32,0.5);
+    border:1px solid rgba(91,157,250,0.16);
+    border-radius:10px;
+  }
+  .ctrl-strip .fld{min-width:200px;}
+  .ctrl-strip label{margin-bottom:5px;}
+  .ctrl-strip select{padding:7px 9px;font-size:13px;}
+  .ctrl-strip .fld.narrow{min-width:104px;}
+
+  .legend{
+    display:flex;
+    flex-wrap:wrap;
+    gap:16px;
+    margin-top:16px;
+    padding-top:14px;
+    border-top:1px dashed rgba(91,157,250,0.18);
+    font-size:11.5px;
+    color:var(--text-muted);
+  }
+  .legend span{display:inline-flex;align-items:center;gap:7px;}
+  .swatch{display:inline-block;width:13px;height:13px;border-radius:3px;border:1px solid;flex:0 0 13px;}
+  .swatch.in{background:var(--in-bg);border-color:var(--in-border);}
+  .swatch.out{background:var(--out-bg);border-color:rgba(34,197,94,0.3);}
+  .swatch.key{background:rgba(34,211,238,0.15);border-color:rgba(34,211,238,0.45);}
+
+  /* ---------- Case calculation table ---------- */
+  .table-scroll{
+    overflow-x:auto;
+    margin:0 -4px;
+    padding:0 4px 6px;
+  }
+  table.calc{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    font-size:12.5px;
+    font-variant-numeric:tabular-nums;
+  }
+  table.calc th, table.calc td{
+    border-bottom:1px solid rgba(91,157,250,0.13);
+    padding:6px 8px;
+    text-align:right;
+    white-space:nowrap;
+  }
+  /* Parameter column stays pinned while the case columns scroll. */
+  table.calc th.pname, table.calc td.pname{
+    text-align:left;
+    position:sticky;
+    left:0;
+    z-index:2;
+    background:#08152f;
+    min-width:300px;
+    box-shadow:1px 0 0 rgba(91,157,250,0.18);
+    white-space:normal;
+  }
+  table.calc thead th{
+    position:sticky;
+    top:0;
+    z-index:3;
+    background:#0a1b3d;
+    color:var(--cyan-300);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    vertical-align:bottom;
+    padding:9px 8px;
+    border-bottom:1px solid rgba(103,232,249,0.28);
+    min-width:132px;
+  }
+  table.calc thead th.pname{ z-index:4; background:#0a1b3d; }
+  table.calc thead th.uhead{ min-width:100px; text-align:left; }
+  table.calc thead th input{
+    width:100%;
+    min-width:110px;
+    background:rgba(5,14,32,0.6);
+    border:1px solid rgba(91,157,250,0.28);
+    color:#fff;
+    padding:5px 7px;
+    border-radius:6px;
+    font:700 11.5px/1.3 inherit;
+    text-align:center;
+    text-transform:none;
+    letter-spacing:0;
+  }
+  table.calc thead th input:focus{
+    outline:none;
+    border-color:var(--cyan-400);
+    box-shadow:0 0 0 2px rgba(34,211,238,0.18);
+  }
+
+  tr.sec td{
+    background:rgba(21,101,216,0.16);
+    color:var(--cyan-300);
+    font-weight:700;
+    font-size:11px;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    padding:7px 8px;
+  }
+  tr.sec td.pname{ background:#10245a; }
+
+  td.pname .sym{
+    display:inline-block;
+    min-width:56px;
+    padding-right:8px;
+    color:var(--cyan-300);
+    font-weight:700;
+    font-family:'Cascadia Code','Consolas',monospace;
+  }
+  td.pname .pdesc{ color:var(--text-secondary); }
+
+  td.u{
+    color:var(--text-muted);
+    font-size:10.5px;
+    text-align:left;
+    min-width:100px;
+    white-space:nowrap;
+  }
+  td.out{ color:#fff; font-weight:600; background:var(--out-bg); }
+  tr.hl td.out{ background:rgba(34,211,238,0.15); }
+  tr.hl td.pname{ background:#0d2450; }
+  tr.hl td.pname .pdesc{ color:#fff; font-weight:600; }
+  td.flag-bad{ color:var(--bad-300) !important; }
+  td.flag-warn{ color:var(--warn-300) !important; }
+  td.flag-ok{ color:var(--ok-300) !important; }
+
+  table.calc input{
+    width:100%;
+    min-width:96px;
+    background:var(--in-bg);
+    border:1px solid var(--in-border);
+    color:var(--text-primary);
+    padding:5px 7px;
+    border-radius:6px;
+    font:600 12.5px/1.3 inherit;
+    text-align:right;
+    font-variant-numeric:tabular-nums;
+  }
+  table.calc input:focus{
+    outline:none;
+    border-color:var(--cyan-400);
+    box-shadow:0 0 0 2px rgba(34,211,238,0.18);
+  }
+  table.calc input:disabled{
+    background:rgba(91,157,250,0.05);
+    border-color:rgba(91,157,250,0.16);
+    color:var(--text-muted);
+    font-weight:500;
+  }
+
+  /* ---------- Per-case verdict cards ---------- */
+  .vgrid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:12px;
+    margin:0 0 20px;
+  }
+  .vcard{
+    background:rgba(5,14,32,0.55);
+    border:1px solid rgba(91,157,250,0.18);
+    border-radius:10px;
+    padding:14px 15px;
+  }
+  .vcard.ok{ border-color:rgba(34,197,94,0.4); }
+  .vcard.bad{ border-color:rgba(239,68,68,0.45); }
+  .vcard.warn{ border-color:rgba(252,211,77,0.4); }
+  .vcard .vhead{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:10px;
+  }
+  .vcard .vtitle{
+    font-size:12.5px;
+    font-weight:700;
+    color:#fff;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .vcard .vbig{
+    font-size:22px;
+    font-weight:700;
+    color:#fff;
+    font-variant-numeric:tabular-nums;
+    line-height:1.15;
+  }
+  .vcard .vbig .runit{
+    font-size:12px;
+    color:var(--blue-300);
+    font-weight:600;
+    margin-left:4px;
+  }
+  .vcard .vsub{
+    font-size:11.5px;
+    color:var(--text-muted);
+    margin-top:2px;
+  }
+  .vcard dl{
+    margin:12px 0 0;
+    padding-top:10px;
+    border-top:1px dashed rgba(91,157,250,0.16);
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:5px 10px;
+    font-size:11.5px;
+  }
+  .vcard dt{ color:var(--text-muted); }
+  .vcard dd{
+    margin:0;
+    color:var(--text-secondary);
+    font-variant-numeric:tabular-nums;
+    text-align:right;
+  }
+  .vcard dd strong{ color:#fff; font-weight:600; }
+
+  /* ---------- Screening checks ---------- */
+  .chk-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px; }
+  .chk-block{
+    background:rgba(5,14,32,0.5);
+    border:1px solid rgba(91,157,250,0.16);
+    border-radius:10px;
+    padding:13px 15px;
+  }
+  .chk-block h4{
+    margin:0 0 10px;
+    font-size:12px;
+    color:var(--cyan-300);
+    text-transform:uppercase;
+    letter-spacing:.07em;
+  }
+  ul.chk{ margin:0; padding:0; list-style:none; font-size:12.5px; }
+  ul.chk li{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    padding:6px 0;
+    border-bottom:1px dashed rgba(91,157,250,0.12);
+    color:var(--text-secondary);
+  }
+  ul.chk li:last-child{border-bottom:none;}
+  ul.chk li .ctext strong{color:#fff;font-weight:600;}
+  ul.chk li .cnote{display:block;color:var(--text-muted);font-size:11px;}
+
+  .badge{
+    display:inline-block;
+    padding:3px 9px;
+    border-radius:999px;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.05em;
+    border:1px solid;
+    white-space:nowrap;
+    flex:0 0 auto;
+    min-width:58px;
+    text-align:center;
+  }
+  .badge.ok{ background:rgba(34,197,94,0.13); border-color:rgba(34,197,94,0.42); color:var(--ok-300); }
+  .badge.bad{ background:rgba(239,68,68,0.13); border-color:rgba(239,68,68,0.42); color:var(--bad-300); }
+  .badge.warn{ background:rgba(252,211,77,0.12); border-color:rgba(252,211,77,0.4); color:var(--warn-300); }
+  .badge.neutral{ background:rgba(111,132,171,0.12); border-color:rgba(111,132,171,0.3); color:var(--text-secondary); }
+
+  /* ---------- Reference tables ---------- */
+  table.ref{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    font-size:12.5px;
+    font-variant-numeric:tabular-nums;
+    min-width:560px;
+  }
+  table.ref th{
+    background:#0a1b3d;
+    color:var(--cyan-300);
+    font-size:10.5px;
+    font-weight:700;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    padding:9px;
+    text-align:left;
+    border-bottom:1px solid rgba(103,232,249,0.28);
+  }
+  table.ref td{
+    padding:8px 9px;
+    border-bottom:1px solid rgba(91,157,250,0.13);
+    color:var(--text-secondary);
+  }
+  table.ref td:first-child{color:#fff;font-weight:600;white-space:nowrap;}
+  table.ref code, ol.notes code, .formula-chip{
+    font-family:'Cascadia Code','Consolas',monospace;
+  }
+
+  /* ---------- Notes ---------- */
+  ol.notes{
+    margin:0;
+    padding-left:20px;
+    color:var(--text-secondary);
+    font-size:12.5px;
+  }
+  ol.notes li{ margin-bottom:9px; }
+  ol.notes code{
+    background:rgba(5,14,32,0.6);
+    border:1px solid rgba(91,157,250,0.18);
+    padding:1px 5px;
+    border-radius:5px;
+    font-size:11.5px;
+  }
+
+  .callout{
+    border-left:3px solid var(--cyan-400);
+    background:rgba(34,211,238,0.06);
+    border-radius:0 9px 9px 0;
+    padding:12px 15px;
+    font-size:12.5px;
+    color:var(--text-secondary);
+    margin-top:16px;
+  }
+  .callout strong{color:#fff;}
+
+  .formula-strip{
+    display:flex;
+    flex-wrap:wrap;
+    gap:9px;
+    margin-top:16px;
+  }
+  .formula-chip{
+    font-size:11.5px;
+    color:var(--text-secondary);
+    background:rgba(5,14,32,0.5);
+    border:1px solid rgba(91,157,250,0.18);
+    padding:5px 10px;
+    border-radius:7px;
+  }
+
+  footer{
+    text-align:center;
+    margin-top:36px;
+    padding-top:22px;
+    border-top:1px solid rgba(91,157,250,0.14);
+    color:var(--text-muted);
+    font-size:12.5px;
+  }
+  footer a{color:var(--blue-300);text-decoration:none;}
+  footer a:hover{text-decoration:underline;}
+
+  /* ---------- Print: flip to a light, ink-friendly calculation sheet ---------- */
+  @media print{
+    .bg-base,.bg-waves,.back-link,.btn-row,.no-print{display:none !important;}
+    body{background:#fff;color:#111;}
+    .wrap{max-width:none;padding:0;}
+    h1{color:#0a2472 !important;-webkit-text-fill-color:#0a2472;background:none;}
+    .subtitle,.byline,.card .hint,.legend{color:#444;}
+    .card{
+      background:#fff;border:1px solid #b9c6de;box-shadow:none;
+      break-inside:avoid;page-break-inside:avoid;margin-bottom:14px;padding:14px 16px;
+    }
+    .card h2{color:#0a2472;}
+    .card h2 .num{background:#0a2472;color:#fff;}
+    table.calc, table.ref{min-width:0;font-size:9.5px;}
+    table.calc th.pname, table.calc td.pname, table.calc thead th,
+    table.calc thead th.pname, table.ref th, tr.sec td.pname{
+      background:#eef2fa !important;color:#0a2472 !important;box-shadow:none;
+    }
+    table.calc thead th input{background:#fff;border:1px solid #ccd6e8;color:#111;}
+    table.calc td, table.calc th, table.ref td, table.ref th{border-bottom:1px solid #ccd6e8;}
+    td.out,tr.hl td.out,tr.sec td{background:#f3f7ff !important;color:#111 !important;}
+    tr.hl td.pname .pdesc{color:#0a2472 !important;}
+    td.pname .sym,td.pname .pdesc,td.u{color:#333 !important;}
+    td.flag-bad{color:#b91c1c !important;}
+    td.flag-warn{color:#92600a !important;}
+    td.flag-ok{color:#166534 !important;}
+    table.calc input{background:#fff;border:1px solid #ccd6e8;color:#111;}
+    table.calc input:disabled{background:#f4f6fb;color:#555;}
+    .vcard,.chk-block,.ctrl-strip{background:#f6f9ff;border-color:#ccd6e8;}
+    .vcard .vtitle,.vcard .vbig{color:#0a2472;}
+    .vcard .vsub,.vcard dt,.vcard dd,ul.chk li{color:#333;}
+    .chk-block h4{color:#0a2472;}
+    .badge.ok{background:#dcfce7;color:#166534;border-color:#86efac;}
+    .badge.bad{background:#fee2e2;color:#991b1b;border-color:#fca5a5;}
+    .badge.warn{background:#fef3c7;color:#92600a;border-color:#fcd34d;}
+    .badge.neutral{background:#eef2fa;color:#334;border-color:#ccd6e8;}
+    ol.notes,.callout,footer,.formula-chip{color:#333;}
+    .callout,.formula-chip{background:#f3f7ff;}
+    .table-scroll{overflow:visible;}
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-base"></div>
+
+<div class="bg-waves" aria-hidden="true">
+  <svg viewBox="0 0 2880 1200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="wg1" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#0a2472"/><stop offset="0.5" stop-color="#153a9e"/><stop offset="1" stop-color="#0a2472"/>
+      </linearGradient>
+      <linearGradient id="wg2" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#123f8f"/><stop offset="0.5" stop-color="#1450c9"/><stop offset="1" stop-color="#123f8f"/>
+      </linearGradient>
+      <linearGradient id="wg3" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#1450c9"/><stop offset="0.5" stop-color="#1c6ee0"/><stop offset="1" stop-color="#1450c9"/>
+      </linearGradient>
+      <linearGradient id="wg4" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#1565d8"/><stop offset="0.5" stop-color="#2f7ef0"/><stop offset="1" stop-color="#1565d8"/>
+      </linearGradient>
+      <linearGradient id="wg5" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#2f7ef0"/><stop offset="0.5" stop-color="#22d3ee"/><stop offset="1" stop-color="#2f7ef0"/>
+      </linearGradient>
+    </defs>
+
+    <g class="wv wv1" opacity="0.55">
+      <path fill="url(#wg1)" d="M0,200 C180,120 540,120 720,200 C900,280 1260,280 1440,200 C1620,120 1980,120 2160,200 C2340,280 2700,280 2880,200 C3060,120 3420,120 3600,200 C3780,280 4140,280 4320,200 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv2" opacity="0.48">
+      <path fill="url(#wg2)" d="M0,410 C180,315 540,315 720,410 C900,505 1260,505 1440,410 C1620,315 1980,315 2160,410 C2340,505 2700,505 2880,410 C3060,315 3420,315 3600,410 C3780,505 4140,505 4320,410 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv3" opacity="0.42">
+      <path fill="url(#wg3)" d="M0,620 C180,535 540,535 720,620 C900,705 1260,705 1440,620 C1620,535 1980,535 2160,620 C2340,705 2700,705 2880,620 C3060,535 3420,535 3600,620 C3780,705 4140,705 4320,620 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv4" opacity="0.34">
+      <path fill="url(#wg4)" d="M0,830 C180,725 540,725 720,830 C900,935 1260,935 1440,830 C1620,725 1980,725 2160,830 C2340,935 2700,935 2880,830 C3060,725 3420,725 3600,830 C3780,935 4140,935 4320,830 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv5" opacity="0.26">
+      <path fill="url(#wg5)" d="M0,1015 C180,940 540,940 720,1015 C900,1090 1260,1090 1440,1015 C1620,940 1980,940 2160,1015 C2340,1090 2700,1090 2880,1015 C3060,940 3420,940 3600,1015 C3780,1090 4140,1090 4320,1015 L4320,1200 L0,1200 Z"/>
+    </g>
+  </svg>
+</div>
+
+<div class="wrap">
+
+  <!-- Back to main site -->
+  <a class="back-link" href="/" title="Back to allanronalddones.com">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Allan Ronald Dones
+  </a>
+
+  <header class="hero">
+    <span class="kicker">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6M12 16v6M4.9 4.9l4.2 4.2M14.9 14.9l4.2 4.2M2 12h6M16 12h6M4.9 19.1l4.2-4.2M14.9 9.1l4.2-4.2"/></svg>
+      Rotating Equipment Engineering
+    </span>
+    <h1>Compressor FAD Site Conversion</h1>
+    <p class="subtitle">Air compressor suppliers quote Free Air Delivery at a reference condition — ISO 1217, normal, or their own house standard. Site is hotter, higher and wetter, so the machine that met the duty on paper can fall short in the field. This sheet converts the process requirement into the <strong>actual inlet volume the compressor must swallow at site</strong>, derates the quoted FAD to what the package will really deliver, and checks the two against each other before the order is placed.</p>
+    <p class="byline">Developed by Allan Ronald Dones — Senior Mechanical Engineer, Rotating Equipment Specialist</p>
+  </header>
+
+  <!-- ============ 0 · IDENTIFICATION ============ -->
+  <div class="card">
+    <div class="toolbar">
+      <div style="font-size:12.5px;color:var(--text-secondary);max-width:560px;">
+        Set the two reference bases, describe the site, then enter the demand and the vendor's
+        quoted FAD. Every case column is independent — use them for separate plants,
+        separate elevations, or a summer / winter envelope.
+      </div>
+      <div class="btn-row no-print">
+        <button type="button" class="btn" id="btnSample">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg>
+          Load worked example
+        </button>
+        <button type="button" class="btn" id="btnCsv">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Export CSV
+        </button>
+        <button type="button" class="btn" id="btnPrint">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>
+          Print / Save PDF
+        </button>
+        <button type="button" class="btn" id="btnReset">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 2v6h6M3.5 15a9 9 0 1 0 2.1-9.4L3 8"/></svg>
+          Reset
+        </button>
+      </div>
+    </div>
+
+    <div class="field-row three" style="margin-top:20px;margin-bottom:0;">
+      <div>
+        <label>Project</label>
+        <input type="text" id="idProject" placeholder="Project name / number">
+      </div>
+      <div>
+        <label>Item no.</label>
+        <input type="text" id="idItem" placeholder="K-XXXXX A/B">
+      </div>
+      <div>
+        <label>Service</label>
+        <input type="text" id="idService" placeholder="e.g. Plant &amp; instrument air">
+      </div>
+    </div>
+
+    <div class="legend">
+      <span><i class="swatch in"></i> Input field</span>
+      <span><i class="swatch out"></i> Calculated output</span>
+      <span><i class="swatch key"></i> Governing result</span>
+      <span>Everything runs in your browser — no data leaves this page.</span>
+    </div>
+  </div>
+
+  <!-- ============ 1 · REFERENCE BASES ============ -->
+  <div class="card">
+    <h2><span class="num">1</span>Reference Bases</h2>
+    <p class="hint">
+      &ldquo;Normal&rdquo;, &ldquo;standard&rdquo; and &ldquo;free air&rdquo; are not one condition — they are a family of them, and the
+      difference between 0&nbsp;°C and 20&nbsp;°C alone is 7&nbsp;% on mass. Declare the basis the <em>process
+      requirement</em> is written to and the basis the <em>vendor</em> quoted to; they are frequently not the same.
+    </p>
+
+    <div class="field-row two" style="margin-bottom:0;">
+
+      <div style="background:rgba(5,14,32,0.5);border:1px solid rgba(91,157,250,0.16);border-radius:10px;padding:15px 16px;">
+        <h4 style="margin:0 0 12px;font-size:12px;color:var(--cyan-300);text-transform:uppercase;letter-spacing:.07em;">A · Demand basis — how the requirement is stated</h4>
+        <div class="field-row two" style="margin-bottom:12px;">
+          <div style="grid-column:1 / -1;">
+            <label for="refPresetD">Preset</label>
+            <select id="refPresetD"></select>
+          </div>
+        </div>
+        <div class="field-row two" style="margin-bottom:0;">
+          <div>
+            <label for="refTd">Reference temperature <span class="note-inline">°C</span></label>
+            <input type="number" id="refTd" step="0.1">
+          </div>
+          <div>
+            <label for="refPd">Reference pressure <span class="note-inline">kPa a</span></label>
+            <input type="number" id="refPd" step="0.001">
+          </div>
+          <div>
+            <label for="refHd">Reference relative humidity <span class="note-inline">%</span></label>
+            <input type="number" id="refHd" step="1">
+          </div>
+          <div>
+            <label for="refDensD">Reference air density <span class="note-inline">kg/m³ — calculated</span></label>
+            <input type="number" id="refDensD" disabled>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:rgba(5,14,32,0.5);border:1px solid rgba(91,157,250,0.16);border-radius:10px;padding:15px 16px;">
+        <h4 style="margin:0 0 12px;font-size:12px;color:var(--cyan-300);text-transform:uppercase;letter-spacing:.07em;">B · Vendor basis — how the FAD is quoted</h4>
+        <div class="field-row two" style="margin-bottom:12px;">
+          <div style="grid-column:1 / -1;">
+            <label for="refPresetV">Preset</label>
+            <select id="refPresetV"></select>
+          </div>
+        </div>
+        <div class="field-row two" style="margin-bottom:0;">
+          <div>
+            <label for="refTv">Reference temperature <span class="note-inline">°C</span></label>
+            <input type="number" id="refTv" step="0.1">
+          </div>
+          <div>
+            <label for="refPv">Reference pressure <span class="note-inline">kPa a</span></label>
+            <input type="number" id="refPv" step="0.001">
+          </div>
+          <div>
+            <label for="refHv">Reference relative humidity <span class="note-inline">%</span></label>
+            <input type="number" id="refHv" step="1">
+          </div>
+          <div>
+            <label for="refDensV">Reference air density <span class="note-inline">kg/m³ — calculated</span></label>
+            <input type="number" id="refDensV" disabled>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="callout">
+      <strong>Why the vendor basis matters less than you would think.</strong> FAD is defined as a volume
+      flow <em>measured at the compressor inlet</em>. A machine rated 1&nbsp;662&nbsp;Nm³/h at 20&nbsp;°C and one rated
+      1&nbsp;662&nbsp;Nm³/h at 0&nbsp;°C draw the same 1&nbsp;662&nbsp;m³/h of inlet volume — they simply move different
+      masses of air doing it. The vendor basis therefore sets the <em>mass</em> the package is credited with,
+      not the swept volume it can pass. The sizing comparison below is made on actual inlet volume, which is
+      the quantity a positive-displacement or centrifugal air package actually fixes.
+    </div>
+  </div>
+
+  <!-- ============ 2 · CALCULATION ============ -->
+  <div class="card">
+    <h2><span class="num">2</span>Site Conversion &amp; Selection Check</h2>
+    <p class="hint">Yellow cells are inputs, green are calculated. Leave the inlet loss at zero for a first pass and add the vendor's filter and silencer figure once it is confirmed.</p>
+
+    <div class="ctrl-strip no-print">
+      <div class="fld narrow">
+        <label for="nCases">Cases</label>
+        <select id="nCases">
+          <option>1</option><option>2</option><option selected>3</option><option>4</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label for="pAtmMode">Atmospheric pressure</label>
+        <select id="pAtmMode">
+          <option value="elev">From site elevation (ISA)</option>
+          <option value="direct">Entered directly</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label for="psatMode">Saturation vapour pressure</label>
+        <select id="psatMode">
+          <option value="auto">Calculated from temperature (Buck)</option>
+          <option value="manual">Entered directly</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label for="demUnit">Requirement quoted in</label>
+        <select id="demUnit"></select>
+      </div>
+      <div class="fld">
+        <label for="supUnit">Vendor FAD quoted in</label>
+        <select id="supUnit"></select>
+      </div>
+    </div>
+
+    <div class="vgrid" id="verdictGrid"></div>
+
+    <div class="table-scroll">
+      <table class="calc" id="mainTable">
+        <thead id="mainHead"></thead>
+        <tbody id="mainBody"></tbody>
+      </table>
+    </div>
+
+    <div class="formula-strip">
+      <span class="formula-chip">p<sub>d</sub> = p<sub>atm</sub> − Δp<sub>inlet</sub> − RH · p<sub>sat</sub>(T)</span>
+      <span class="formula-chip">K = (p<sub>d,ref</sub> / p<sub>d,site</sub>) · (T<sub>site</sub> / T<sub>ref</sub>)</span>
+      <span class="formula-chip">V̇<sub>site</sub> = Q<sub>ref</sub> · K</span>
+      <span class="formula-chip">Q<sub>delivered</sub> = FAD<sub>quoted</sub> / K</span>
+      <span class="formula-chip">ṁ<sub>dry</sub> = V̇<sub>site</sub> · p<sub>d</sub> / (R<sub>d</sub> T<sub>site</sub>)</span>
+    </div>
+  </div>
+
+  <!-- ============ 3 · SCREENING CHECKS ============ -->
+  <div class="card">
+    <h2><span class="num">3</span>Screening Checks</h2>
+    <p class="hint">Sanity checks on the inputs and the outcome. They are a first filter, not a substitute for the vendor's certified selection.</p>
+    <div class="chk-grid" id="chkGrid"></div>
+  </div>
+
+  <!-- ============ 4 · REFERENCE DATA ============ -->
+  <div class="card">
+    <h2><span class="num">4</span>Reference Conditions in Common Use</h2>
+    <p class="hint">The presets above are drawn from this list. Where a datasheet says only &ldquo;FAD&rdquo; with no basis, ask — the spread across this table is more than 10&nbsp;% on mass.</p>
+    <div class="table-scroll">
+      <table class="ref">
+        <thead>
+          <tr><th>Basis</th><th>Temperature</th><th>Pressure</th><th>Humidity</th><th>Dry-air density</th><th>Where it is used</th></tr>
+        </thead>
+        <tbody id="refTableBody"></tbody>
+      </table>
+    </div>
+
+    <div class="table-scroll" style="margin-top:22px;">
+      <table class="ref">
+        <thead>
+          <tr><th>Site elevation</th><th>Atmospheric pressure</th><th>Pressure ratio to sea level</th><th>Approximate capacity loss</th></tr>
+        </thead>
+        <tbody id="elevTableBody"></tbody>
+      </table>
+    </div>
+    <p style="font-size:11.5px;color:var(--text-muted);margin:10px 0 0;">
+      Capacity loss shown is the dry-air mass reduction at constant swept volume, 20&nbsp;°C dry, relative to sea level — altitude alone, before any temperature or humidity effect.
+    </p>
+  </div>
+
+  <!-- ============ 5 · METHOD ============ -->
+  <div class="card">
+    <h2><span class="num">5</span>Method &amp; Assumptions</h2>
+    <ol class="notes">
+      <li><strong>The conversion is a dry-air mass balance.</strong> Water vapour is a passenger — it occupies inlet volume but is not the product. Both states are reduced to the partial pressure of dry air, <code>p_d = p_atm − Δp_inlet − RH · p_sat(T)</code>, and dry-air mass is held constant between them. That gives the single conversion factor <code>K = (p_d,ref / p_d,site) · (T_site / T_ref)</code>, with temperatures absolute.</li>
+
+      <li><strong>Demand runs one way, supply runs the other.</strong> A process requirement stated at reference conditions is a mass duty, so the inlet volume the compressor must pass at site is <code>V̇_site = Q_ref · K</code> — always larger than the reference figure at a hot, high site. A quoted FAD is a volume the machine can pass, so the mass it actually delivers at site, expressed back in the demand basis, is <code>FAD / K</code> — always smaller. The two errors compound, which is why an apparently comfortable margin on the datasheet can disappear at site.</li>
+
+      <li><strong>Atmospheric pressure from elevation</strong> uses the ISA barometric relation <code>p = 101.325 · (1 − 2.25577×10⁻⁵ · h)^5.25588</code> kPa a, with <code>h</code> in metres. It assumes the ISA temperature lapse and a sea-level base of 101.325&nbsp;kPa; for a site with a measured barometric record, switch the control to <em>Entered directly</em> and use the site minimum, not the annual mean.</li>
+
+      <li><strong>Saturation vapour pressure</strong> uses the Buck equation over water, <code>p_sat = 0.61121 · exp((18.678 − T/234.5) · T/(257.14 + T))</code> kPa with <code>T</code> in °C — better than 0.1&nbsp;% against steam-table values from −20&nbsp;°C to 50&nbsp;°C. Legacy sheets often carry a rounded constant instead (9.8&nbsp;kPa at 45&nbsp;°C against a true 9.59&nbsp;kPa); switch to <em>Entered directly</em> if you need to reproduce one.</li>
+
+      <li><strong>Inlet loss</strong> is the pressure drop across the intake filter, silencer and any ducting, referred to the compressor suction flange. It is a direct debit against inlet density and is frequently omitted at the enquiry stage. Ask the vendor for it — on a heavily filtered outdoor package it is not negligible.</li>
+
+      <li><strong>Ideal-gas treatment.</strong> At atmospheric intake pressure the compressibility of moist air is within roughly 0.1&nbsp;% of unity, so no <code>Z</code> correction is applied. Densities use <code>R_dry = 287.058</code> and <code>R_vapour = 461.495</code>&nbsp;J/kg·K.</li>
+
+      <li><strong>What this sheet does not do.</strong> It converts capacity only. It does not correct shaft power, discharge temperature or specific energy, and it takes no account of the vendor's own altitude and temperature limits — many packages carry a maximum ambient above which the drive is derated or the machine is simply not offered. Those limits are the vendor's to state, and they govern.</li>
+
+      <li><strong>Margin.</strong> The design margin entered against the requirement is applied to the demand before conversion. A margin on capacity is not a margin on the machine: check that the resulting selection still sits inside its turndown and does not spend its life cycling.</li>
+    </ol>
+
+    <div class="callout">
+      <strong>Rule of thumb worth carrying.</strong> Every 1&nbsp;000&nbsp;m of elevation costs roughly 11&nbsp;% of the air a
+      compressor can move, and every 10&nbsp;°C of ambient above the reference costs roughly a further 3&nbsp;%. A
+      package quoted at ISO conditions and installed at 500&nbsp;m in a 45&nbsp;°C climate typically loses close to a
+      fifth of its rated mass output. That is the gap this sheet exists to make visible before the purchase order,
+      not after commissioning.
+    </div>
+  </div>
+
+  <footer>
+    Compressor FAD Site Conversion — for engineering estimation purposes. Confirm the reference basis in writing with every bidder, verify site elevation, design ambient and humidity against the site data sheet, and require the vendor's certified selection at site conditions before committing to a package size.<br>
+    © <span id="yr"></span> Allan Ronald Dones
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  const $ = id => document.getElementById(id);
+
+  /* ---------------------------------------------------------------
+     Constants
+  --------------------------------------------------------------- */
+  const R_DRY = 287.058;      // J/kg·K
+  const R_VAP = 461.495;      // J/kg·K
+  const T0    = 273.15;       // K at 0 °C
+  const P_SL  = 101.325;      // kPa a at sea level (ISA)
+  const M3_PER_FT3 = 0.028316846592;
+
+  /* Flow units. `f` converts the entered value into m³ per hour of the
+     same air — the volume is the invariant, whatever prefix the unit carries. */
+  const FLOWU = {
+    m3h  : {lab:'m³/h  ·  Nm³/h  ·  Sm³/h',   short:'m³/h',   f:1},
+    m3min: {lab:'m³/min  ·  Nm³/min',         short:'m³/min', f:60},
+    ls   : {lab:'l/s',                        short:'l/s',    f:3.6},
+    cfm  : {lab:'ft³/min  ·  cfm  ·  scfm',   short:'cfm',    f:M3_PER_FT3 * 60}
+  };
+
+  /* Reference bases in common use. psat is left null so it is computed
+     from the preset temperature — none of these are defined with a
+     vapour pressure that differs from saturation at their own temperature. */
+  const PRESETS = {
+    iso1217 : {lab:'ISO 1217 Annex C — 20 °C, 1 bar a, dry',           t:20,    p:100,     h:0,  where:'Packaged air compressors; the default for European and most Asian vendors'},
+    normal  : {lab:'Normal (Nm³) — 0 °C, 101.325 kPa a, dry',          t:0,     p:101.325, h:0,  where:'Process and utility balances; API and gas-industry datasheets'},
+    isa     : {lab:'ISA / ISO 2533 — 15 °C, 101.325 kPa a, dry',       t:15,    p:101.325, h:0,  where:'Gas turbine and aero ratings; standard atmosphere work'},
+    cagi    : {lab:'CAGI / ASME standard air — 20 °C, 101.325 kPa a, 36 % RH', t:20, p:101.325, h:36, where:'North American compressor scfm ratings'},
+    scfm60  : {lab:'US standard — 60 °F (15.56 °C), 14.696 psia, dry', t:15.556,p:101.325, h:0,  where:'US gas measurement; SCFM in oil and gas contracts'},
+    metric1 : {lab:'Metric standard — 15 °C, 1 bar a, dry',            t:15,    p:100,     h:0,  where:'Some European process specifications'},
+    custom  : {lab:'Custom — enter values below',                      t:null,  p:null,    h:null, where:'—'}
+  };
+
+  /* ---------------------------------------------------------------
+     Physics
+  --------------------------------------------------------------- */
+
+  /* Buck equation over water — kPa, T in °C. */
+  function psatOf(t){
+    if (!isFinite(t)) return NaN;
+    return 0.61121 * Math.exp((18.678 - t / 234.5) * (t / (257.14 + t)));
+  }
+
+  /* ISA barometric pressure — kPa a, h in metres. */
+  function pAtmOf(h){
+    if (!isFinite(h)) return NaN;
+    return P_SL * Math.pow(1 - 2.25577e-5 * h, 5.25588);
+  }
+
+  /* Moist-air density from the two partial pressures, kPa in / kg·m⁻³ out. */
+  function densityOf(pDry, pVap, tC){
+    const Tk = tC + T0;
+    return (pDry * 1000) / (R_DRY * Tk) + (pVap * 1000) / (R_VAP * Tk);
+  }
+
+  /* A reference state reduced to what the conversion needs. */
+  function refState(t, p, rhPct){
+    const pv = Math.max(0, Math.min(100, rhPct)) / 100 * psatOf(t);
+    const pd = p - pv;
+    return {t:t, p:p, rh:rhPct, pSat:psatOf(t), pVap:pv, pDry:pd,
+            dens:densityOf(pd, pv, t), densDry:(pd * 1000) / (R_DRY * (t + T0))};
+  }
+
+  /* ---------------------------------------------------------------
+     State
+  --------------------------------------------------------------- */
+
+  const DEFAULT_CASE = () => ({
+    name:'Case', elev:0, pAtm:101.325, tAmb:35, rh:60, pSat:null,
+    dpIn:0, qReq:1000, margin:10, fad:1200, nUnits:1
+  });
+
+  const ST = {
+    nCases:3,
+    pAtmMode:'elev',
+    psatMode:'auto',
+    demUnit:'m3h',
+    supUnit:'m3h',
+    refD:{preset:'normal',  t:0,  p:101.325, h:0},
+    refV:{preset:'iso1217', t:20, p:100,     h:0},
+    cases:[]
+  };
+
+  function seedCases(){
+    ST.cases = [];
+    for (let i = 0; i < 4; i++){
+      const c = DEFAULT_CASE();
+      c.name = 'Case ' + (i + 1);
+      ST.cases.push(c);
+    }
+  }
+  seedCases();
+
+  /* ---------------------------------------------------------------
+     Per-case computation
+  --------------------------------------------------------------- */
+
+  function computeCase(i){
+    const c   = ST.cases[i];
+    const rD  = refState(ST.refD.t, ST.refD.p, ST.refD.h);
+    const rV  = refState(ST.refV.t, ST.refV.p, ST.refV.h);
+
+    const pAtm = ST.pAtmMode === 'elev' ? pAtmOf(c.elev) : c.pAtm;
+    const pSat = ST.psatMode === 'auto' ? psatOf(c.tAmb) : (c.pSat === null ? psatOf(c.tAmb) : c.pSat);
+    const pVap = Math.max(0, Math.min(100, c.rh)) / 100 * pSat;
+    const pIn  = pAtm - c.dpIn;
+    const pDry = pIn - pVap;
+    const Tk   = c.tAmb + T0;
+
+    const dens    = densityOf(pDry, pVap, c.tAmb);
+    const densDry = (pDry * 1000) / (R_DRY * Tk);
+
+    /* The conversion factor, once per reference basis. */
+    const kD = (rD.pDry / pDry) * (Tk / (rD.t + T0));
+    const kV = (rV.pDry / pDry) * (Tk / (rV.t + T0));
+
+    /* Demand — a mass duty stated at the demand basis. */
+    const qRefRaw = c.qReq * FLOWU[ST.demUnit].f;      // ref-basis m³/h
+    const qRef    = qRefRaw * (1 + c.margin / 100);
+    const vSite   = qRef * kD;                          // actual inlet m³/h
+    const mDry    = vSite * densDry;                    // kg/h of dry air
+
+    /* Supply — a volume the package can pass. */
+    const fadUnit = c.fad * FLOWU[ST.supUnit].f;        // actual inlet m³/h per unit
+    const vAvail  = fadUnit * c.nUnits;
+    const delD    = vAvail / kD;                        // delivered, demand basis
+    const delV    = vAvail / kV;                        // delivered, vendor basis
+    const ratedV  = vAvail;                             // rated, vendor basis (volume is the invariant)
+    const derate  = (1 - 1 / kV) * 100;                 // % mass lost against the vendor rating
+
+    const surplus  = vAvail - vSite;
+    const marginPc = vSite > 0 ? surplus / vSite * 100 : NaN;
+    const unitsReq = (fadUnit > 0 && isFinite(vSite)) ? Math.ceil(vSite / fadUnit - 1e-9) : NaN;
+
+    return {
+      rD:rD, rV:rV,
+      pAtm:pAtm, pSat:pSat, pVap:pVap, pIn:pIn, pDry:pDry,
+      dens:dens, densDry:densDry,
+      pRatio:rD.pDry / pDry, tRatio:Tk / (rD.t + T0), densRatio:dens / rD.dens,
+      kD:kD, kV:kV, kDinv:1 / kD,
+      qRefRaw:qRefRaw, qRef:qRef,
+      vSite:vSite, vSiteMin:vSite / 60, vSiteLs:vSite / 3.6, vSiteCfm:vSite / (M3_PER_FT3 * 60),
+      mDry:mDry,
+      fadUnit:fadUnit, vAvail:vAvail, ratedV:ratedV, delD:delD, delV:delV, derate:derate,
+      surplus:surplus, marginPc:marginPc, unitsReq:unitsReq
+    };
+  }
+
+  /* ---------------------------------------------------------------
+     Row definitions
+  --------------------------------------------------------------- */
+
+  const ROWS = [
+    {kind:'sec', label:'Site conditions at the compressor intake'},
+    {kind:'in',  key:'elev',  sym:'h',      name:'Site elevation above sea level',      unit:'m',      dec:0, only:'elev'},
+    {kind:'in',  key:'pAtm',  sym:'p_atm',  name:'Atmospheric pressure',                unit:'kPa a',  dec:3, only:'direct'},
+    {kind:'out', key:'pAtm',  sym:'p_atm',  name:'Atmospheric pressure',                unit:'kPa a',  dec:3, only:'elev'},
+    {kind:'in',  key:'tAmb',  sym:'T_site', name:'Design ambient (inlet) temperature',  unit:'°C',     dec:1},
+    {kind:'in',  key:'rh',    sym:'RH',     name:'Design relative humidity',            unit:'%',      dec:0},
+    {kind:'in',  key:'pSat',  sym:'p_sat',  name:'Saturation vapour pressure at inlet', unit:'kPa',    dec:3, onlyPsat:'manual'},
+    {kind:'out', key:'pSat',  sym:'p_sat',  name:'Saturation vapour pressure at inlet', unit:'kPa',    dec:3, onlyPsat:'auto'},
+    {kind:'out', key:'pVap',  sym:'p_v',    name:'Water vapour partial pressure',       unit:'kPa',    dec:3},
+    {kind:'in',  key:'dpIn',  sym:'Δp_in',  name:'Intake filter / silencer loss',       unit:'kPa',    dec:2},
+    {kind:'out', key:'pIn',   sym:'p_in',   name:'Total pressure at suction flange',    unit:'kPa a',  dec:3},
+    {kind:'out', key:'pDry',  sym:'p_d',    name:'Dry-air partial pressure at inlet',   unit:'kPa a',  dec:3},
+    {kind:'out', key:'dens',  sym:'ρ_site', name:'Inlet air density (moist)',           unit:'kg/m³',  dec:4},
+
+    {kind:'sec', label:'Conversion factors — demand basis to site'},
+    {kind:'out', key:'pRatio',    sym:'p_d,ref/p_d', name:'Dry-air pressure ratio',                unit:'—', dec:4},
+    {kind:'out', key:'tRatio',    sym:'T_site/T_ref',name:'Absolute temperature ratio',            unit:'—', dec:4},
+    {kind:'out', key:'kD',        sym:'K',           name:'Reference → actual site volume',        unit:'—', dec:4, hl:true},
+    {kind:'out', key:'kDinv',     sym:'1/K',         name:'Actual site volume → reference',        unit:'—', dec:4},
+    {kind:'out', key:'densRatio', sym:'ρ_site/ρ_ref',name:'Inlet density ratio',                   unit:'—', dec:4},
+
+    {kind:'sec', label:'Demand — what the process needs'},
+    {kind:'in',  key:'qReq',    sym:'Q_ref', name:'Required capacity at demand basis',         unit:'@demand', dec:1},
+    {kind:'in',  key:'margin',  sym:'—',     name:'Design margin on capacity',                 unit:'%',       dec:1},
+    {kind:'out', key:'qRef',    sym:'Q_ref', name:'Required capacity including margin',        unit:'@demand', dec:1},
+    {kind:'out', key:'vSite',   sym:'V̇_site',name:'Required FAD at site conditions',           unit:'m³/h',    dec:1, hl:true},
+    {kind:'out', key:'vSiteMin',sym:'V̇_site',name:'Required FAD at site conditions',           unit:'m³/min',  dec:2},
+    {kind:'out', key:'vSiteLs', sym:'V̇_site',name:'Required FAD at site conditions',           unit:'l/s',     dec:1},
+    {kind:'out', key:'vSiteCfm',sym:'V̇_site',name:'Required FAD at site conditions',           unit:'acfm',    dec:1},
+    {kind:'out', key:'mDry',    sym:'ṁ_dry', name:'Dry-air mass flow required',                unit:'kg/h',    dec:1},
+
+    {kind:'sec', label:'Supply — what the vendor offered'},
+    {kind:'in',  key:'fad',    sym:'FAD',      name:'Quoted FAD per unit, at vendor basis',   unit:'@vendor', dec:1},
+    {kind:'in',  key:'nUnits', sym:'n',        name:'Units running (excluding standby)',      unit:'off',     dec:0},
+    {kind:'out', key:'ratedV', sym:'FAD_tot',  name:'Total rated FAD at vendor basis',        unit:'@vendorH',dec:1},
+    {kind:'out', key:'vAvail', sym:'V̇_avail',  name:'Actual inlet volume available at site',  unit:'m³/h',    dec:1, hl:true},
+    {kind:'out', key:'delV',   sym:'Q_del,V',  name:'Delivered at site, vendor basis',        unit:'@vendorH',dec:1},
+    {kind:'out', key:'delD',   sym:'Q_del,D',  name:'Delivered at site, demand basis',        unit:'@demandH',dec:1},
+    {kind:'out', key:'derate', sym:'—',        name:'Mass output lost against vendor rating', unit:'%',       dec:2, flag:'derate'},
+
+    {kind:'sec', label:'Selection check'},
+    {kind:'out', key:'surplus',  sym:'—', name:'Available − required, at site',        unit:'m³/h', dec:1, flag:'surplus'},
+    {kind:'out', key:'marginPc', sym:'—', name:'Margin over the required duty',        unit:'%',    dec:1, hl:true, flag:'margin'},
+    {kind:'out', key:'unitsReq', sym:'—', name:'Minimum units required at site',       unit:'off',  dec:0, flag:'units'}
+  ];
+
+  function rowVisible(r){
+    if (r.only && r.only !== ST.pAtmMode) return false;
+    if (r.onlyPsat && r.onlyPsat !== ST.psatMode) return false;
+    return true;
+  }
+
+  /* Unit labels that follow the selected reference basis. */
+  function unitLabel(u){
+    const dl = FLOWU[ST.demUnit].short, vl = FLOWU[ST.supUnit].short;
+    if (u === '@demand')  return dl + ' @ ref A';
+    if (u === '@demandH') return dl + ' @ ref A';
+    if (u === '@vendor')  return vl + ' @ ref B';
+    if (u === '@vendorH') return vl + ' @ ref B';
+    return u;
+  }
+
+  /* Output values held internally in m³/h need putting back into the
+     unit the user chose for that side of the sheet. */
+  function outScale(r){
+    if (r.unit === '@demand' || r.unit === '@demandH') return 1 / FLOWU[ST.demUnit].f;
+    if (r.unit === '@vendor' || r.unit === '@vendorH') return 1 / FLOWU[ST.supUnit].f;
+    return 1;
+  }
+
+  /* ---------------------------------------------------------------
+     Formatting
+  --------------------------------------------------------------- */
+
+  function fmt(v, dec){
+    if (v === null || v === undefined || !isFinite(v)) return '—';
+    return v.toLocaleString('en-GB', {minimumFractionDigits:dec, maximumFractionDigits:dec});
+  }
+  function esc(s){
+    s = (s === null || s === undefined) ? '' : String(s);
+    return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }
+
+  /* ---------------------------------------------------------------
+     Rendering
+  --------------------------------------------------------------- */
+
+  function buildSelects(){
+    const optHtml = Object.keys(PRESETS).map(k => '<option value="' + k + '">' + PRESETS[k].lab + '</option>').join('');
+    $('refPresetD').innerHTML = optHtml;
+    $('refPresetV').innerHTML = optHtml;
+    const fu = Object.keys(FLOWU).map(k => '<option value="' + k + '">' + FLOWU[k].lab + '</option>').join('');
+    $('demUnit').innerHTML = fu;
+    $('supUnit').innerHTML = fu;
+  }
+
+  function syncRefInputs(){
+    $('refPresetD').value = ST.refD.preset;
+    $('refTd').value = ST.refD.t;
+    $('refPd').value = ST.refD.p;
+    $('refHd').value = ST.refD.h;
+    $('refPresetV').value = ST.refV.preset;
+    $('refTv').value = ST.refV.t;
+    $('refPv').value = ST.refV.p;
+    $('refHv').value = ST.refV.h;
+    $('refDensD').value = fmt(refState(ST.refD.t, ST.refD.p, ST.refD.h).dens, 4);
+    $('refDensV').value = fmt(refState(ST.refV.t, ST.refV.p, ST.refV.h).dens, 4);
+    $('nCases').value = String(ST.nCases);
+    $('pAtmMode').value = ST.pAtmMode;
+    $('psatMode').value = ST.psatMode;
+    $('demUnit').value = ST.demUnit;
+    $('supUnit').value = ST.supUnit;
+  }
+
+  function renderHead(){
+    let h = '<tr><th class="pname">Parameter</th><th class="uhead">Unit</th>';
+    for (let i = 0; i < ST.nCases; i++){
+      h += '<th><input type="text" data-cname="' + i + '" value="' + ST.cases[i].name.replace(/"/g, '&quot;') + '" aria-label="Case ' + (i + 1) + ' name"></th>';
+    }
+    $('mainHead').innerHTML = h + '</tr>';
+  }
+
+  function renderBody(results){
+    const span = ST.nCases + 2;
+    let h = '';
+
+    ROWS.forEach(r => {
+      if (r.kind === 'sec'){
+        h += '<tr class="sec"><td class="pname" colspan="' + span + '">' + r.label + '</td></tr>';
+        return;
+      }
+      if (!rowVisible(r)) return;
+
+      h += '<tr' + (r.hl ? ' class="hl"' : '') + '>';
+      h += '<td class="pname"><span class="sym">' + r.sym + '</span><span class="pdesc">' + r.name + '</span></td>';
+      h += '<td class="u">' + unitLabel(r.unit) + '</td>';
+
+      for (let i = 0; i < ST.nCases; i++){
+        if (r.kind === 'in'){
+          let v = ST.cases[i][r.key];
+          if (r.key === 'pSat' && (v === null || v === undefined)) v = results[i].pSat;
+          const step = r.dec === 0 ? '1' : (r.dec >= 3 ? '0.001' : '0.01');
+          h += '<td><input type="number" step="' + step + '" data-cell="' + r.key + '" data-i="' + i +
+               '" value="' + (v === null || v === undefined || !isFinite(v) ? '' : v) + '"></td>';
+        } else {
+          const raw = results[i][r.key];
+          const val = raw * outScale(r);
+          h += '<td class="out' + flagClass(r, results[i]) + '">' + fmt(val, r.dec) + '</td>';
+        }
+      }
+      h += '</tr>';
+    });
+
+    $('mainBody').innerHTML = h;
+  }
+
+  function flagClass(r, o){
+    if (!r.flag) return '';
+    if (r.flag === 'margin' || r.flag === 'surplus'){
+      const m = o.marginPc;
+      if (!isFinite(m)) return '';
+      if (m < 0) return ' flag-bad';
+      if (m < 5) return ' flag-warn';
+      return ' flag-ok';
+    }
+    if (r.flag === 'derate') return o.derate > 20 ? ' flag-warn' : '';
+    if (r.flag === 'units')  return (isFinite(o.unitsReq) && o.unitsReq > o.nUnitsSet) ? ' flag-warn' : '';
+    return '';
+  }
+
+  function verdictOf(m){
+    if (!isFinite(m)) return {cls:'neutral', txt:'—'};
+    if (m < 0)  return {cls:'bad',  txt:'SHORT'};
+    if (m < 5)  return {cls:'warn', txt:'TIGHT'};
+    if (m > 60) return {cls:'warn', txt:'OVERSIZED'};
+    return {cls:'ok', txt:'ADEQUATE'};
+  }
+
+  function renderVerdicts(results){
+    let h = '';
+    for (let i = 0; i < ST.nCases; i++){
+      const o = results[i], c = ST.cases[i];
+      const v = verdictOf(o.marginPc);
+      h += '<div class="vcard ' + v.cls + '">' +
+             '<div class="vhead"><span class="vtitle">' + escHtml(c.name) + '</span>' +
+             '<span class="badge ' + v.cls + '">' + v.txt + '</span></div>' +
+             '<div class="vbig">' + fmt(o.vSite, 0) + '<span class="runit">m³/h</span></div>' +
+             '<div class="vsub">FAD actually required at site</div>' +
+             '<dl>' +
+               '<dt>Conversion factor K</dt><dd><strong>' + fmt(o.kD, 4) + '</strong></dd>' +
+               '<dt>Available at site</dt><dd>' + fmt(o.vAvail, 0) + ' m³/h</dd>' +
+               '<dt>Margin over duty</dt><dd><strong>' + fmt(o.marginPc, 1) + ' %</strong></dd>' +
+               '<dt>Units required</dt><dd>' + fmt(o.unitsReq, 0) + ' of ' + fmt(c.nUnits, 0) + '</dd>' +
+               '<dt>Loss vs vendor rating</dt><dd>' + fmt(o.derate, 1) + ' %</dd>' +
+             '</dl>' +
+           '</div>';
+    }
+    $('verdictGrid').innerHTML = h;
+  }
+
+  function escHtml(s){
+    return String(s).replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
+  }
+
+  function li(badgeCls, badgeTxt, text, note){
+    return '<li><span class="badge ' + badgeCls + '">' + badgeTxt + '</span>' +
+           '<span class="ctext">' + text + (note ? '<span class="cnote">' + note + '</span>' : '') + '</span></li>';
+  }
+
+  function renderChecks(results){
+    let h = '';
+
+    /* One block per case — outcome checks. */
+    for (let i = 0; i < ST.nCases; i++){
+      const o = results[i], c = ST.cases[i];
+      let items = '';
+
+      const v = verdictOf(o.marginPc);
+      items += li(v.cls, v.txt,
+        'Capacity margin <strong>' + fmt(o.marginPc, 1) + ' %</strong> over the required site duty',
+        o.marginPc < 0
+          ? 'Short by ' + fmt(-o.surplus, 0) + ' m³/h at site. Add a unit or move up a frame size.'
+          : (o.marginPc < 5
+              ? 'Below 5 %. Any error in ambient design temperature or filter loss erases this.'
+              : (o.marginPc > 60
+                  ? 'More than 60 % spare. Check the machine will not spend its life unloading or cycling.'
+                  : 'Reasonable headroom for the stated design point.')));
+
+      items += li(isFinite(o.unitsReq) && o.unitsReq <= c.nUnits ? 'ok' : 'bad',
+        isFinite(o.unitsReq) && o.unitsReq <= c.nUnits ? 'OK' : 'ADD',
+        'Needs <strong>' + fmt(o.unitsReq, 0) + '</strong> unit(s) running; <strong>' + fmt(c.nUnits, 0) + '</strong> assumed',
+        'Standby machines are excluded — add them separately to the installed count.');
+
+      items += li(o.derate > 25 ? 'warn' : 'neutral', fmt(o.derate, 1) + ' %',
+        'Mass output lost against the vendor rating',
+        'Elevation ' + fmt(o.pAtm, 1) + ' kPa a, inlet ' + fmt(c.tAmb, 1) + ' °C, ' + fmt(c.rh, 0) + ' % RH.');
+
+      h += '<div class="chk-block"><h4>' + escHtml(c.name) + '</h4><ul class="chk">' + items + '</ul></div>';
+    }
+
+    /* One block for input plausibility across all cases. */
+    let g = '';
+    const anyBad = fn => { for (let i = 0; i < ST.nCases; i++) if (fn(ST.cases[i], results[i])) return true; return false; };
+
+    g += li(anyBad(c => c.tAmb > 46) ? 'warn' : 'ok', anyBad(c => c.tAmb > 46) ? 'CHECK' : 'OK',
+      'Design inlet temperature within the usual package envelope',
+      'Above about 46 °C most air packages need a high-ambient variant — confirm the vendor offers one.');
+
+    g += li(anyBad(c => c.rh < 0 || c.rh > 100) ? 'bad' : 'ok', anyBad(c => c.rh < 0 || c.rh > 100) ? 'FIX' : 'OK',
+      'Relative humidity between 0 and 100 %',
+      'Design humidity should be the coincident value with the design temperature, not the annual maximum.');
+
+    g += li(anyBad((c, o) => o.pDry <= 0) ? 'bad' : 'ok', anyBad((c, o) => o.pDry <= 0) ? 'FIX' : 'OK',
+      'Dry-air partial pressure remains positive',
+      'A non-positive value means the inlet loss or vapour pressure has been entered wrongly.');
+
+    g += li(anyBad(c => c.dpIn <= 0) ? 'warn' : 'ok', anyBad(c => c.dpIn <= 0) ? 'ASK' : 'OK',
+      'Intake filter and silencer loss included',
+      'Left at zero on at least one case. Ask the vendor for the figure — it is a direct debit against inlet density.');
+
+    const sameRef = ST.refD.t === ST.refV.t && ST.refD.p === ST.refV.p && ST.refD.h === ST.refV.h;
+    g += li(sameRef ? 'ok' : 'warn', sameRef ? 'MATCH' : 'DIFFER',
+      'Demand basis and vendor basis',
+      sameRef
+        ? 'Both sides are stated to the same reference — no basis mismatch to reconcile.'
+        : 'The requirement is written to ' + escHtml(PRESETS[ST.refD.preset].lab.split('—')[0].trim()) +
+          ' and the quote to ' + escHtml(PRESETS[ST.refV.preset].lab.split('—')[0].trim()) +
+          '. This sheet reconciles them; confirm the vendor agrees in writing.');
+
+    g += li(anyBad(c => c.margin <= 0) ? 'warn' : 'ok', anyBad(c => c.margin <= 0) ? 'NONE' : 'OK',
+      'Design margin applied to the capacity requirement',
+      'Zero margin on at least one case. Utility air demand tends to grow after handover.');
+
+    h += '<div class="chk-block"><h4>Input plausibility</h4><ul class="chk">' + g + '</ul></div>';
+
+    $('chkGrid').innerHTML = h;
+  }
+
+  function renderRefTables(){
+    let h = '';
+    Object.keys(PRESETS).forEach(k => {
+      const p = PRESETS[k];
+      if (k === 'custom') return;
+      const s = refState(p.t, p.p, p.h);
+      h += '<tr><td>' + p.lab.split('—')[0].trim() + '</td>' +
+           '<td>' + fmt(p.t, 2) + ' °C</td>' +
+           '<td>' + fmt(p.p, 3) + ' kPa a</td>' +
+           '<td>' + fmt(p.h, 0) + ' %</td>' +
+           '<td>' + fmt(s.densDry, 4) + ' kg/m³</td>' +
+           '<td>' + p.where + '</td></tr>';
+    });
+    $('refTableBody').innerHTML = h;
+
+    const base = pAtmOf(0);
+    let e = '';
+    [0, 250, 500, 750, 1000, 1500, 2000, 2500, 3000].forEach(hm => {
+      const p = pAtmOf(hm);
+      e += '<tr><td>' + fmt(hm, 0) + ' m</td>' +
+           '<td>' + fmt(p, 2) + ' kPa a</td>' +
+           '<td>' + fmt(p / base, 4) + '</td>' +
+           '<td>' + fmt((1 - p / base) * 100, 1) + ' %</td></tr>';
+    });
+    $('elevTableBody').innerHTML = e;
+  }
+
+  /* ---------------------------------------------------------------
+     Recalculate and repaint
+  --------------------------------------------------------------- */
+
+  let results = [];
+
+  function rebuild(){
+    results = [];
+    for (let i = 0; i < ST.nCases; i++){
+      const o = computeCase(i);
+      o.nUnitsSet = ST.cases[i].nUnits;
+      results.push(o);
+    }
+    syncRefInputs();
+    renderHead();
+    renderBody(results);
+    renderVerdicts(results);
+    renderChecks(results);
+  }
+
+  /* ---------------------------------------------------------------
+     Events
+  --------------------------------------------------------------- */
+
+  document.addEventListener('input', ev => {
+    const t = ev.target;
+
+    if (t.dataset && t.dataset.cell !== undefined){
+      const i = +t.dataset.i, k = t.dataset.cell;
+      const raw = t.value.trim();
+      ST.cases[i][k] = raw === '' ? (k === 'pSat' ? null : 0) : parseFloat(raw);
+      if (!isFinite(ST.cases[i][k]) && k !== 'pSat') ST.cases[i][k] = 0;
+      /* Repaint outputs only — retyping the whole body would steal focus. */
+      repaintOutputs();
+      return;
+    }
+
+    if (t.dataset && t.dataset.cname !== undefined){
+      ST.cases[+t.dataset.cname].name = t.value;
+      renderVerdicts(recompute());
+      renderChecks(results);
+      return;
+    }
+  });
+
+  function recompute(){
+    results = [];
+    for (let i = 0; i < ST.nCases; i++){
+      const o = computeCase(i);
+      o.nUnitsSet = ST.cases[i].nUnits;
+      results.push(o);
+    }
+    return results;
+  }
+
+  /* Repaint every calculated cell in place, leaving the inputs alone so
+     the caret does not jump while a value is being typed. */
+  function repaintOutputs(){
+    recompute();
+    const rows = $('mainBody').querySelectorAll('tr');
+    let ri = 0;
+    ROWS.forEach(r => {
+      if (r.kind === 'sec'){ ri++; return; }
+      if (!rowVisible(r)) return;
+      const tr = rows[ri++];
+      if (!tr) return;
+      if (r.kind === 'in'){
+        /* An auto-computed p_sat is shown in the disabled input only when
+           the manual row is hidden, so nothing to refresh here. */
+        return;
+      }
+      const cells = tr.querySelectorAll('td.out');
+      for (let i = 0; i < ST.nCases && i < cells.length; i++){
+        cells[i].textContent = fmt(results[i][r.key] * outScale(r), r.dec);
+        cells[i].className = 'out' + flagClass(r, results[i]);
+      }
+    });
+    renderVerdicts(results);
+    renderChecks(results);
+    $('refDensD').value = fmt(refState(ST.refD.t, ST.refD.p, ST.refD.h).dens, 4);
+    $('refDensV').value = fmt(refState(ST.refV.t, ST.refV.p, ST.refV.h).dens, 4);
+  }
+
+  /* Reference basis controls. */
+  function bindRef(side){
+    /* Resolved on every event, not captured — loadSample() and reset()
+       replace the ST.ref* objects wholesale. */
+    const S = () => (side === 'D' ? ST.refD : ST.refV);
+    const pre = $('refPreset' + side);
+    const tEl = $('refT' + side.toLowerCase()), pEl = $('refP' + side.toLowerCase()), hEl = $('refH' + side.toLowerCase());
+
+    pre.addEventListener('change', () => {
+      const s = S();
+      s.preset = pre.value;
+      const p = PRESETS[s.preset];
+      if (p.t !== null){ s.t = p.t; s.p = p.p; s.h = p.h; }
+      rebuild();
+    });
+
+    [tEl, pEl, hEl].forEach(el => {
+      el.addEventListener('input', () => {
+        const s = S();
+        s.t = parseFloat(tEl.value); s.p = parseFloat(pEl.value); s.h = parseFloat(hEl.value);
+        if (!isFinite(s.t)) s.t = 0;
+        if (!isFinite(s.p)) s.p = 101.325;
+        if (!isFinite(s.h)) s.h = 0;
+        /* Any hand edit that no longer matches the preset is custom. */
+        const p = PRESETS[s.preset];
+        if (!p || p.t === null || p.t !== s.t || p.p !== s.p || p.h !== s.h){
+          s.preset = 'custom';
+          pre.value = 'custom';
+        }
+        repaintOutputs();
+      });
+    });
+  }
+  bindRef('D');
+  bindRef('V');
+
+  $('nCases').addEventListener('change',   () => { ST.nCases   = +$('nCases').value;   rebuild(); });
+  $('pAtmMode').addEventListener('change', () => {
+    /* Carry the elevation-derived pressure across so switching to manual
+       entry starts from what was on screen rather than the default. */
+    if ($('pAtmMode').value === 'direct'){
+      ST.cases.forEach(c => { const p = pAtmOf(c.elev); if (isFinite(p)) c.pAtm = +p.toFixed(3); });
+    }
+    ST.pAtmMode = $('pAtmMode').value;
+    rebuild();
+  });
+  $('psatMode').addEventListener('change', () => { ST.psatMode  = $('psatMode').value; rebuild(); });
+  $('demUnit').addEventListener('change',  () => { ST.demUnit   = $('demUnit').value;  rebuild(); });
+  $('supUnit').addEventListener('change',  () => { ST.supUnit   = $('supUnit').value;  rebuild(); });
+
+  /* ---------------------------------------------------------------
+     Worked example
+  --------------------------------------------------------------- */
+
+  function loadSample(){
+    $('idProject').value = 'Utility air — three-plant study';
+    $('idItem').value    = 'K-1001 A/B/C';
+    $('idService').value = 'Plant and instrument air';
+
+    ST.nCases   = 3;
+    ST.pAtmMode = 'elev';
+    ST.psatMode = 'auto';
+    ST.demUnit  = 'm3h';
+    ST.supUnit  = 'm3h';
+    ST.refD = {preset:'normal',  t:0,  p:101.325, h:0};
+    ST.refV = {preset:'iso1217', t:20, p:100,     h:0};
+
+    const s = [
+      {name:'Plant F-04', elev:290, tAmb:45, rh:75, qReq:3571, nUnits:3},
+      {name:'Plant F-05', elev:466, tAmb:45, rh:75, qReq:2293, nUnits:2},
+      {name:'Plant R-02', elev:353, tAmb:45, rh:75, qReq:2416, nUnits:2}
+    ];
+    seedCases();
+    s.forEach((v, i) => {
+      const c = ST.cases[i];
+      c.name = v.name; c.elev = v.elev; c.tAmb = v.tAmb; c.rh = v.rh;
+      c.qReq = v.qReq; c.nUnits = v.nUnits;
+      c.margin = 0; c.dpIn = 0; c.pSat = null; c.fad = 1662;
+    });
+    rebuild();
+  }
+
+  function reset(){
+    $('idProject').value = '';
+    $('idItem').value = '';
+    $('idService').value = '';
+    ST.nCases = 3;
+    ST.pAtmMode = 'elev';
+    ST.psatMode = 'auto';
+    ST.demUnit = 'm3h';
+    ST.supUnit = 'm3h';
+    ST.refD = {preset:'normal',  t:0,  p:101.325, h:0};
+    ST.refV = {preset:'iso1217', t:20, p:100,     h:0};
+    seedCases();
+    rebuild();
+  }
+
+  /* ---------------------------------------------------------------
+     CSV export
+  --------------------------------------------------------------- */
+
+  function exportCsv(){
+    const L = [];
+    L.push(['Compressor FAD Site Conversion'].map(esc).join(','));
+    L.push(['Project', $('idProject').value].map(esc).join(','));
+    L.push(['Item no.', $('idItem').value].map(esc).join(','));
+    L.push(['Service', $('idService').value].map(esc).join(','));
+    L.push(['Generated', new Date().toISOString().slice(0, 16).replace('T', ' ')].map(esc).join(','));
+    L.push('');
+
+    const rd = refState(ST.refD.t, ST.refD.p, ST.refD.h);
+    const rv = refState(ST.refV.t, ST.refV.p, ST.refV.h);
+    L.push(['Reference basis A — demand', PRESETS[ST.refD.preset].lab].map(esc).join(','));
+    L.push(['', 'Temperature, °C', ST.refD.t, 'Pressure, kPa a', ST.refD.p, 'RH, %', ST.refD.h, 'Density, kg/m³', rd.dens.toFixed(4)].map(esc).join(','));
+    L.push(['Reference basis B — vendor', PRESETS[ST.refV.preset].lab].map(esc).join(','));
+    L.push(['', 'Temperature, °C', ST.refV.t, 'Pressure, kPa a', ST.refV.p, 'RH, %', ST.refV.h, 'Density, kg/m³', rv.dens.toFixed(4)].map(esc).join(','));
+    L.push('');
+
+    const hdr = ['Parameter', 'Symbol', 'Unit'];
+    for (let i = 0; i < ST.nCases; i++) hdr.push(ST.cases[i].name);
+    L.push(hdr.map(esc).join(','));
+
+    ROWS.forEach(r => {
+      if (r.kind === 'sec'){ L.push([r.label].map(esc).join(',')); return; }
+      if (!rowVisible(r)) return;
+      const cells = [r.name, r.sym, unitLabel(r.unit)];
+      for (let i = 0; i < ST.nCases; i++){
+        let v;
+        if (r.kind === 'in'){
+          v = ST.cases[i][r.key];
+          if (r.key === 'pSat' && (v === null || v === undefined)) v = results[i].pSat;
+        } else {
+          v = results[i][r.key] * outScale(r);
+        }
+        cells.push(v === null || v === undefined || !isFinite(v) ? '' : (+v).toFixed(r.dec));
+      }
+      L.push(cells.map(esc).join(','));
+    });
+
+    /* The BOM matters here — the unit labels carry °, ³ and ·, and Excel
+       misreads them as Latin-1 without it. */
+    const blob = new Blob(['﻿' + L.join('\r\n')], {type:'text/csv;charset=utf-8;'});
+    const a = document.createElement('a');
+    const tag = ($('idItem').value || 'compressor').replace(/[^A-Za-z0-9_-]+/g, '-');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'fad-site-conversion-' + tag + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  }
+
+  $('btnSample').addEventListener('click', loadSample);
+  $('btnReset').addEventListener('click', reset);
+  $('btnCsv').addEventListener('click', exportCsv);
+  $('btnPrint').addEventListener('click', () => window.print());
+  $('yr').textContent = new Date().getFullYear();
+
+  buildSelects();
+  renderRefTables();
+  loadSample();
+})();
+</script>
+</body>
+</html>
