@@ -26,3 +26,9 @@
 #   Cache-Control: public, max-age=31536000, immutable
 /assets/*
   Cache-Control: public, max-age=300, must-revalidate
+
+# Credential documents are immutable once issued and are referenced by stable
+# filenames, so they can be cached far harder than /assets/*.
+/credentials/*
+  Cache-Control: public, max-age=86400
+  X-Content-Type-Options: nosniff
