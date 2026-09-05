@@ -100,6 +100,18 @@ table.reg td.ref{
 }
 table.reg td.dt{ color:var(--text-secondary); white-space:nowrap; }
 table.reg td .status{ white-space:nowrap; }
+.credtag{
+  display:block; margin-top:3px; font-weight:600; font-size:10.5px;
+  letter-spacing:.06em; text-transform:uppercase; color:var(--cyan-300);
+}
+/* Courses that make up a specialization, indented beneath it. */
+table.reg td.cred.sub{
+  font-weight:500; color:var(--text-secondary); padding-left:30px; position:relative;
+}
+table.reg td.cred.sub::before{
+  content:''; position:absolute; left:15px; top:17px;
+  width:7px; height:1px; background:var(--text-muted);
+}
 .rowgroup th{
   background:rgba(6,16,40,0.85); color:var(--text-muted); font-size:11px; font-weight:700;
   letter-spacing:.1em; text-transform:uppercase; padding:9px 14px;
@@ -135,6 +147,20 @@ table.reg td .status{ white-space:nowrap; }
 .eact{ display:flex; flex-wrap:wrap; gap:10px 14px; align-items:center; }
 .vlink{ font-size:12px; font-weight:600; color:var(--blue-300); text-decoration:none; }
 .vlink:hover, .vlink:focus-visible{ text-decoration:underline; color:var(--cyan-300); }
+
+/* Constituent courses of a specialization */
+.courselist{ list-style:none; margin:0 0 11px; padding:0; border-left:2px solid rgba(91,157,250,0.22); }
+.courselist li{
+  display:flex; flex-wrap:wrap; align-items:center; gap:6px 12px;
+  padding:7px 0 7px 13px; font-size:12.5px;
+  border-bottom:1px solid rgba(91,157,250,0.08);
+}
+.courselist li:last-child{ border-bottom:none; }
+.courselist .cn{ color:var(--text-primary); font-weight:600; flex:1 1 260px; }
+.courselist .cm{
+  font-family:'Cascadia Code','Consolas',ui-monospace,monospace;
+  font-size:11px; color:var(--text-muted); white-space:nowrap;
+}
 @media (max-width:560px){
   .entry{ gap:11px; }
   .emark{ width:38px; height:38px; flex:0 0 38px; font-size:10px; }
@@ -242,8 +268,8 @@ table.reg td .status{ white-space:nowrap; }
       </button>
     </div>
     <div class="dh-meta">
-      <span>Register compiled <b>1 September 2026</b></span>
-      <span><b>21</b> certificates available to view</span>
+      <span>Register compiled <b>5 September 2026</b></span>
+      <span><b>23</b> certificates available to view</span>
       <span>Documents hosted on <b>allanronalddones.com</b></span>
     </div>
   </header>
@@ -400,7 +426,15 @@ table.reg td .status{ white-space:nowrap; }
             <td><a class="doc" href="credentials/pmp-training-rs-management.pdf" target="_blank" rel="noopener noreferrer">PDF</a></td>
           </tr>
           <tr>
-            <td class="cred">Single-Phase Pipe Hydraulics and Pipe Sizing</td>
+            <td class="cred">Design of Industrial Piping Systems<span class="credtag">4-course Specialization</span></td>
+            <td class="iss">L&amp;T EduTech, via Coursera</td>
+            <td class="ref">5XGBBCUNFKA1</td>
+            <td class="dt">4 Sep 2026</td>
+            <td><span class="status active">Completed</span></td>
+            <td><a class="doc" href="credentials/coursera-design-of-industrial-piping-systems.pdf" target="_blank" rel="noopener noreferrer">PDF</a></td>
+          </tr>
+          <tr>
+            <td class="cred sub">Single-Phase Pipe Hydraulics and Pipe Sizing</td>
             <td class="iss">L&amp;T EduTech, via Coursera</td>
             <td class="ref">CR5GL2T3BG4R</td>
             <td class="dt">5 Aug 2026</td>
@@ -408,7 +442,7 @@ table.reg td .status{ white-space:nowrap; }
             <td><a class="doc" href="credentials/coursera-single-phase-pipe-hydraulics.pdf" target="_blank" rel="noopener noreferrer">PDF</a></td>
           </tr>
           <tr>
-            <td class="cred">Two-Phase Pipe Hydraulics and Pipe Sizing</td>
+            <td class="cred sub">Two-Phase Pipe Hydraulics and Pipe Sizing</td>
             <td class="iss">L&amp;T EduTech, via Coursera</td>
             <td class="ref">L0F9VBF8DPZM</td>
             <td class="dt">14 Aug 2026</td>
@@ -416,12 +450,20 @@ table.reg td .status{ white-space:nowrap; }
             <td><a class="doc" href="https://coursera.org/verify/L0F9VBF8DPZM" target="_blank" rel="noopener noreferrer">Verify &#8599;</a></td>
           </tr>
           <tr>
-            <td class="cred">Pipe Material Specification</td>
+            <td class="cred sub">Pipe Material Specification</td>
             <td class="iss">L&amp;T EduTech, via Coursera</td>
             <td class="ref">0PKQZ6V589Q5</td>
             <td class="dt">30 Aug 2026</td>
             <td><span class="status active">Completed</span></td>
             <td><a class="doc" href="credentials/coursera-pipe-material-specification.pdf" target="_blank" rel="noopener noreferrer">PDF</a></td>
+          </tr>
+          <tr>
+            <td class="cred sub">ASME B31 Series and Pipeline Construction</td>
+            <td class="iss">L&amp;T EduTech, via Coursera</td>
+            <td class="ref">5HFR2LKXLOYX</td>
+            <td class="dt">4 Sep 2026</td>
+            <td><span class="status active">Completed</span></td>
+            <td><a class="doc" href="credentials/coursera-asme-b31-series-and-pipeline-construction.pdf" target="_blank" rel="noopener noreferrer">PDF</a></td>
           </tr>
           <tr>
             <td class="cred">CM&nbsp;654 Construction Quality Management</td>
@@ -812,31 +854,51 @@ table.reg td .status{ white-space:nowrap; }
       <div class="entry">
         <div class="emark">L&amp;T</div>
         <div class="ebody">
-          <div class="etitle">Piping engineering series &mdash; three courses <span class="status active">Completed 2026</span></div>
-          <div class="eissuer">L&amp;T EduTech, delivered through Coursera</div>
+          <div class="etitle">Design of Industrial Piping Systems <span class="status active">Specialization completed</span></div>
+          <div class="eissuer">L&amp;T EduTech, delivered through Coursera &mdash; four-course Specialization</div>
           <div class="efacts">
-            <span>Single-Phase Pipe Hydraulics and Pipe Sizing &mdash; <b>5 Aug 2026</b></span>
-            <span>Two-Phase Pipe Hydraulics and Pipe Sizing &mdash; <b>14 Aug 2026</b></span>
-            <span>Pipe Material Specification &mdash; <b>30 Aug 2026</b></span>
+            <span>Specialization <b>5XGBBCUNFKA1</b></span>
+            <span>Awarded <b>4 September 2026</b></span>
+            <span><b>4 of 4</b> courses complete</span>
           </div>
           <p class="enote">
-            Current professional development in piping hydraulics and material specification, directly
-            supporting rotating-equipment system design &mdash; suction and discharge sizing, NPSH
-            margin, two-phase line behaviour and material selection against service conditions. Each
-            certificate is independently verifiable through Coursera.
+            A complete specialization rather than a set of unrelated short courses. It covers the
+            hydraulics of piping systems under single- and two-phase gas and liquid flow, pipe design,
+            flange types and classes, valve types and classes, pipe stress analysis, pipe supports,
+            cross-country onshore pipeline construction, and <b>ASME&nbsp;B31.1 Power Piping and
+            ASME&nbsp;B31.3 Process Piping</b>.
+          </p>
+          <p class="enote">
+            Directly adjacent to rotating-equipment work: suction and discharge line sizing, NPSH
+            margin, two-phase line behaviour, nozzle loading and support design, and material
+            selection against service conditions &mdash; the interfaces where pump and compressor
+            packages meet the piping designer.
+          </p>
+          <ul class="courselist">
+            <li><span class="cn">Single-Phase Pipe Hydraulics and Pipe Sizing</span>
+              <span class="cm">5 Aug 2026 &middot; CR5GL2T3BG4R</span>
+              <a class="doc" href="credentials/coursera-single-phase-pipe-hydraulics.pdf" target="_blank" rel="noopener noreferrer">PDF</a></li>
+            <li><span class="cn">Two-Phase Pipe Hydraulics and Pipe Sizing</span>
+              <span class="cm">14 Aug 2026 &middot; L0F9VBF8DPZM</span>
+              <a class="vlink" href="https://coursera.org/verify/L0F9VBF8DPZM" target="_blank" rel="noopener noreferrer">Verify &#8599;</a></li>
+            <li><span class="cn">Pipe Material Specification</span>
+              <span class="cm">30 Aug 2026 &middot; 0PKQZ6V589Q5</span>
+              <a class="doc" href="credentials/coursera-pipe-material-specification.pdf" target="_blank" rel="noopener noreferrer">PDF</a></li>
+            <li><span class="cn">ASME B31 Series and Pipeline Construction</span>
+              <span class="cm">4 Sep 2026 &middot; 5HFR2LKXLOYX</span>
+              <a class="doc" href="credentials/coursera-asme-b31-series-and-pipeline-construction.pdf" target="_blank" rel="noopener noreferrer">PDF</a></li>
+          </ul>
+          <p class="enote" style="color:var(--text-muted);">
+            The individual Two-Phase course certificate is not held as a separate file. The
+            specialization certificate names all four constituent courses, so it evidences that course
+            directly; Coursera verification for it is linked above in any case.
           </p>
           <div class="eact">
-            <a class="doc" href="credentials/coursera-single-phase-pipe-hydraulics.pdf" target="_blank" rel="noopener noreferrer">
+            <a class="doc" href="credentials/coursera-design-of-industrial-piping-systems.pdf" target="_blank" rel="noopener noreferrer">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
-              Single-phase
+              View specialization certificate
             </a>
-            <a class="doc" href="credentials/coursera-pipe-material-specification.pdf" target="_blank" rel="noopener noreferrer">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
-              Material specification
-            </a>
-            <a class="vlink" href="https://coursera.org/verify/CR5GL2T3BG4R" target="_blank" rel="noopener noreferrer">Verify single-phase &#8599;</a>
-            <a class="vlink" href="https://coursera.org/verify/L0F9VBF8DPZM" target="_blank" rel="noopener noreferrer">Verify two-phase &#8599;</a>
-            <a class="vlink" href="https://coursera.org/verify/0PKQZ6V589Q5" target="_blank" rel="noopener noreferrer">Verify material specification &#8599;</a>
+            <a class="vlink" href="https://coursera.org/verify/specialization/5XGBBCUNFKA1" target="_blank" rel="noopener noreferrer">Verify specialization on Coursera &#8599;</a>
           </div>
         </div>
       </div>
