@@ -1,0 +1,2752 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pump MAWP &amp; Material Check (API 610) | Allan Ronald Dones</title>
+<meta name="description" content="API 610 pump MAWP verifier — maximum discharge pressure from maximum-impeller head and maximum specific gravity, the 10% differential-pressure margin, the ASME B16.5 flange rating at temperature, hydrostatic test pressure and an Annex H material-class check, for one pump or a whole purchase-order register.">
+<meta name="author" content="Allan Ronald Dones">
+<link rel="canonical" href="https://allanronalddones.com/tools/pump-mawp-material-check">
+
+<!-- Social preview (shown when the link is shared from the main site) -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://allanronalddones.com/tools/pump-mawp-material-check">
+<meta property="og:title" content="Pump MAWP &amp; Material Check (API 610)">
+<meta property="og:site_name" content="Allan Ronald Dones — Rotating Equipment Engineering">
+<meta property="og:description" content="Verify a vendor's pump casing MAWP against the API 610 maximum discharge pressure plus 10% of differential pressure, the ASME B16.5 flange rating at temperature, the line design pressure and the TBE agreement — then check the offered materials against the Annex H material class.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Pump MAWP &amp; Material Check (API 610)">
+<meta name="twitter:description" content="API 610 casing MAWP verification and Annex H material-class check — single pump or full register, entirely in the browser.">
+
+<!-- Inline SVG favicon — keeps the page self-contained (no separate .ico request) -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a2472'/%3E%3Cpath d='M14 40a18 18 0 0 1 36 0' fill='none' stroke='%2322d3ee' stroke-width='4' stroke-linecap='round'/%3E%3Cpath d='M32 40l9-11' stroke='%235b9dfa' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='32' cy='40' r='3.6' fill='%2367e8f9'/%3E%3Cpath d='M12 50h40' stroke='%232f7ef0' stroke-width='3.5' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --navy-950:#050b1a;
+    --navy-900:#08132b;
+    --navy-800:#0c1c3f;
+    --navy-700:#0f2551;
+    --blue-600:#1450c9;
+    --blue-500:#1565d8;
+    --blue-400:#2f7ef0;
+    --blue-300:#5b9dfa;
+    --cyan-400:#22d3ee;
+    --cyan-300:#67e8f9;
+    --text-primary:#eaf1ff;
+    --text-secondary:#a9bde0;
+    --text-muted:#6f84ab;
+    --card-bg:rgba(6,16,40,0.82);
+    --card-border:rgba(91,157,250,0.22);
+    --card-border-strong:rgba(103,232,249,0.4);
+    --ok-500:#22c55e;
+    --ok-300:#86efac;
+    --bad-500:#ef4444;
+    --bad-300:#fca5a5;
+    --warn-300:#fcd34d;
+    --radius:14px;
+    /* Input / output cell tinting mirrors the source workbook's colour key:
+       yellow = user input, green = calculated output. */
+    --in-bg:rgba(252,211,77,0.09);
+    --in-border:rgba(252,211,77,0.32);
+    --out-bg:rgba(34,197,94,0.07);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Segoe UI', 'Inter', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    color:var(--text-primary);
+    background:var(--navy-950);
+    min-height:100vh;
+    line-height:1.5;
+  }
+
+  /* ---------- Layered background: base wash → animated waves ---------- */
+
+  .bg-base{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    background:
+      radial-gradient(1200px 800px at 12% -8%, rgba(47,126,240,0.55), transparent 62%),
+      radial-gradient(1000px 700px at 108% 8%, rgba(34,211,238,0.34), transparent 58%),
+      radial-gradient(900px 900px at 50% 115%, rgba(21,101,216,0.42), transparent 60%),
+      linear-gradient(180deg, #06122e 0%, #0d2a63 40%, #071431 100%);
+    background-color:#06122e;
+  }
+
+  .bg-waves{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    overflow:hidden;
+  }
+  .bg-waves svg{ width:100%; height:100%; display:block; }
+  .wv path{ will-change:transform; }
+  .wv1{ animation:driftL 52s linear infinite; }
+  .wv2{ animation:driftR 43s linear infinite; }
+  .wv3{ animation:driftL 36s linear infinite; }
+  .wv4{ animation:driftR 29s linear infinite; }
+  .wv5{ animation:driftL 23s linear infinite; }
+
+  @keyframes driftL{
+    from{ transform:translateX(0); }
+    to  { transform:translateX(-1440px); }
+  }
+  @keyframes driftR{
+    from{ transform:translateX(-1440px); }
+    to  { transform:translateX(0); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .wv1,.wv2,.wv3,.wv4,.wv5{ animation:none; }
+  }
+
+  /* ---------- Back-link to main site ---------- */
+  /* href="/" is site-root relative — resolves correctly on any domain. */
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    margin-bottom:26px;
+    font-size:13px;
+    font-weight:600;
+    color:var(--text-secondary);
+    text-decoration:none;
+    border:1px solid var(--card-border);
+    background:rgba(6,16,40,0.62);
+    padding:7px 15px 7px 12px;
+    border-radius:999px;
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    transition:color .15s, border-color .15s, background .15s;
+  }
+  .back-link:hover, .back-link:focus-visible{
+    color:#fff;
+    border-color:var(--cyan-400);
+    background:rgba(6,16,40,0.9);
+  }
+  .back-link svg{ width:15px; height:15px; flex:0 0 15px; }
+
+  .wrap{
+    position:relative;
+    z-index:1;
+    max-width:1240px;
+    margin:0 auto;
+    padding:40px 24px 80px;
+  }
+
+  header.hero{
+    text-align:center;
+    margin-bottom:34px;
+    padding-bottom:26px;
+    border-bottom:1px solid rgba(91,157,250,0.16);
+  }
+  .kicker{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:12.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--cyan-300);
+    background:rgba(34,211,238,0.08);
+    border:1px solid rgba(34,211,238,0.25);
+    padding:6px 14px;
+    border-radius:999px;
+    margin-bottom:18px;
+  }
+  .kicker svg{width:14px;height:14px;}
+  h1{
+    font-size:clamp(26px,3.6vw,40px);
+    margin:0 0 10px;
+    font-weight:700;
+    letter-spacing:-0.01em;
+    background:linear-gradient(90deg, #fff 0%, var(--blue-300) 55%, var(--cyan-300) 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .subtitle{
+    color:var(--text-secondary);
+    font-size:16px;
+    max-width:720px;
+    margin:0 auto 4px;
+  }
+  .byline{
+    color:var(--text-muted);
+    font-size:13px;
+    margin-top:14px;
+  }
+
+  .card{
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
+    border-radius:var(--radius);
+    padding:22px 24px;
+    margin-bottom:22px;
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    box-shadow:0 8px 32px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+  .card h2{
+    margin:0 0 4px;
+    font-size:16px;
+    font-weight:700;
+    letter-spacing:.02em;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .card h2 .num{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:24px;height:24px;
+    flex:0 0 24px;
+    border-radius:7px;
+    background:linear-gradient(135deg, var(--blue-500), var(--cyan-400));
+    color:#04101f;
+    font-size:12.5px;
+    font-weight:800;
+  }
+  .card .hint{
+    color:var(--text-muted);
+    font-size:12.5px;
+    margin:0 0 18px;
+    padding-left:34px;
+  }
+  .card .hint a{color:var(--blue-300);}
+
+  .field-row{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    margin-bottom:14px;
+  }
+  .field-row.three{grid-template-columns:repeat(3,1fr);}
+  .field-row.two{grid-template-columns:repeat(2,1fr);}
+  @media (max-width:860px){ .field-row, .field-row.three{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:520px){ .field-row, .field-row.three, .field-row.two{grid-template-columns:1fr;} }
+
+  label{
+    display:block;
+    font-size:12.5px;
+    color:var(--text-secondary);
+    margin-bottom:6px;
+    font-weight:600;
+  }
+  label .unit{
+    color:var(--cyan-300);
+    font-weight:500;
+    font-size:11.5px;
+  }
+  .note-inline{
+    color:var(--text-muted);
+    font-size:11px;
+    display:block;
+    margin-top:3px;
+    font-weight:400;
+  }
+
+  input[type="number"], input[type="text"], select{
+    width:100%;
+    background:rgba(5,14,32,0.65);
+    border:1px solid rgba(91,157,250,0.25);
+    color:var(--text-primary);
+    padding:9px 11px;
+    border-radius:9px;
+    font-size:14px;
+    font-family:inherit;
+    transition:border-color .15s, box-shadow .15s;
+  }
+  input[type="number"]:focus, input[type="text"]:focus, select:focus{
+    outline:none;
+    border-color:var(--cyan-400);
+    box-shadow:0 0 0 3px rgba(34,211,238,0.15);
+  }
+  select{cursor:pointer;}
+  /* Inputs that feed a calculation carry the workbook's yellow key. */
+  input.keyed{ background:var(--in-bg); border-color:var(--in-border); }
+  input.keyed:focus{ border-color:var(--cyan-400); }
+
+  /* ---------- Toolbar: unit switch + actions ---------- */
+  .toolbar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .unit-switch{
+    display:inline-flex;
+    background:rgba(5,14,32,0.7);
+    border:1px solid rgba(91,157,250,0.25);
+    border-radius:999px;
+    padding:4px;
+    gap:4px;
+  }
+  .unit-switch button{
+    border:none;
+    background:transparent;
+    color:var(--text-secondary);
+    font:600 13px/1 inherit;
+    padding:9px 20px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:background .15s, color .15s;
+  }
+  .unit-switch button.active{
+    background:linear-gradient(135deg, var(--blue-500), var(--cyan-400));
+    color:#04101f;
+  }
+  .btn-row{display:flex;flex-wrap:wrap;gap:9px;}
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    border:1px solid var(--card-border);
+    background:rgba(6,16,40,0.62);
+    color:var(--text-secondary);
+    font:600 12.5px/1 inherit;
+    padding:9px 15px;
+    border-radius:9px;
+    cursor:pointer;
+    transition:color .15s, border-color .15s, background .15s;
+  }
+  .btn:hover{ color:#fff; border-color:var(--cyan-400); background:rgba(6,16,40,0.92); }
+  .btn svg{width:14px;height:14px;flex:0 0 14px;}
+
+  .legend{
+    display:flex;
+    flex-wrap:wrap;
+    gap:16px;
+    margin-top:16px;
+    padding-top:14px;
+    border-top:1px dashed rgba(91,157,250,0.18);
+    font-size:11.5px;
+    color:var(--text-muted);
+  }
+  .legend span{display:inline-flex;align-items:center;gap:7px;}
+  .swatch{display:inline-block;width:13px;height:13px;border-radius:3px;border:1px solid;flex:0 0 13px;}
+  .swatch.in{background:var(--in-bg);border-color:var(--in-border);}
+  .swatch.out{background:var(--out-bg);border-color:rgba(34,197,94,0.3);}
+  .swatch.fix{background:rgba(91,157,250,0.1);border-color:rgba(91,157,250,0.28);}
+
+  /* ---------- Data table ---------- */
+  .table-scroll{
+    overflow-x:auto;
+    margin:0 -4px;
+    padding:0 4px 6px;
+  }
+  table.calc{
+    width:100%;
+    min-width:1000px;
+    border-collapse:separate;
+    border-spacing:0;
+    font-size:12.5px;
+    font-variant-numeric:tabular-nums;
+  }
+  table.calc th, table.calc td{
+    border-bottom:1px solid rgba(91,157,250,0.13);
+    padding:6px 8px;
+    text-align:right;
+    white-space:nowrap;
+  }
+  table.calc th.pname, table.calc td.pname{
+    text-align:left;
+    position:sticky;
+    left:0;
+    z-index:2;
+    background:#08152f;
+    min-width:266px;
+    box-shadow:1px 0 0 rgba(91,157,250,0.18);
+    white-space:normal;
+  }
+  table.calc thead th{
+    position:sticky;
+    top:0;
+    z-index:3;
+    background:#0a1b3d;
+    color:var(--cyan-300);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    vertical-align:bottom;
+    padding:10px 8px;
+    border-bottom:1px solid rgba(103,232,249,0.28);
+  }
+  table.calc thead th.pname{ z-index:4; background:#0a1b3d; }
+  table.calc thead th .pcol{ display:block; color:#fff; font-size:12.5px; letter-spacing:0; text-transform:none; }
+  table.calc thead th .pnote{ display:block; color:var(--text-muted); font-weight:500; font-size:10px; text-transform:none; letter-spacing:0; margin-top:2px;}
+  table.calc thead th.rated{ background:#10306b; }
+
+  tr.sec td{
+    background:rgba(21,101,216,0.16);
+    color:var(--cyan-300);
+    font-weight:700;
+    font-size:11px;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    padding:7px 8px;
+  }
+  tr.sec td.pname{ background:#10245a; }
+
+  td.pname .sym{
+    display:inline-block;
+    min-width:44px;
+    padding-right:8px;
+    color:var(--cyan-300);
+    font-weight:700;
+    font-family:'Cascadia Code','Consolas',monospace;
+  }
+  td.pname .pdesc{ color:var(--text-secondary); }
+  td.pname .pu{ color:var(--text-muted); font-size:11px; }
+  td.pname sup{ color:var(--blue-300); font-size:9.5px; font-weight:700; }
+
+  td.out{ background:var(--out-bg); color:#fff; font-weight:600; }
+  td.fixed{ color:var(--text-muted); background:rgba(91,157,250,0.05); }
+  td.na{ color:var(--text-muted); }
+  td.flag-bad{ color:var(--bad-300); background:rgba(239,68,68,0.12); font-weight:700; }
+  td.flag-ok{ color:var(--ok-300); }
+  tr.hl td{ background:rgba(34,211,238,0.09); }
+  tr.hl td.pname{ background:#0d2450; }
+  tr.hl td.out{ background:rgba(34,211,238,0.16); }
+
+  table.calc input{
+    width:100%;
+    min-width:74px;
+    background:var(--in-bg);
+    border:1px solid var(--in-border);
+    color:var(--text-primary);
+    padding:5px 7px;
+    border-radius:6px;
+    font:600 12.5px/1.3 inherit;
+    text-align:right;
+    font-variant-numeric:tabular-nums;
+  }
+  table.calc input:focus{
+    outline:none;
+    border-color:var(--cyan-400);
+    box-shadow:0 0 0 2px rgba(34,211,238,0.18);
+  }
+  table.calc td.inactive{ opacity:.32; }
+
+  /* ---------- Verdict table ---------- */
+  table.res{
+    width:100%;
+    min-width:880px;
+    border-collapse:separate;
+    border-spacing:0;
+    font-size:12.5px;
+    font-variant-numeric:tabular-nums;
+  }
+  table.res th{
+    background:#0a1b3d;
+    color:var(--cyan-300);
+    font-size:10.5px;
+    font-weight:700;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    padding:10px 9px;
+    text-align:right;
+    border-bottom:1px solid rgba(103,232,249,0.28);
+  }
+  table.res th:first-child{text-align:left;}
+  table.res td{
+    padding:9px;
+    text-align:right;
+    border-bottom:1px solid rgba(91,157,250,0.13);
+    white-space:nowrap;
+  }
+  table.res td:first-child{text-align:left;color:var(--text-secondary);white-space:normal;min-width:190px;}
+  table.res td.crit{color:var(--text-muted);font-size:12px;}
+  table.res td.actual{color:#fff;font-weight:700;}
+  table.res input{
+    width:110px;
+    background:var(--in-bg);
+    border:1px solid var(--in-border);
+    color:var(--text-primary);
+    padding:6px 8px;
+    border-radius:7px;
+    font:600 12.5px/1.3 inherit;
+    text-align:right;
+  }
+  table.res input.tol{width:74px;}
+  table.res input:focus{outline:none;border-color:var(--cyan-400);box-shadow:0 0 0 2px rgba(34,211,238,0.18);}
+
+  .badge{
+    display:inline-block;
+    padding:4px 11px;
+    border-radius:999px;
+    font-size:10.5px;
+    font-weight:800;
+    letter-spacing:.05em;
+    border:1px solid;
+  }
+  .badge.ok{ background:rgba(34,197,94,0.13); border-color:rgba(34,197,94,0.42); color:var(--ok-300); }
+  .badge.bad{ background:rgba(239,68,68,0.13); border-color:rgba(239,68,68,0.42); color:var(--bad-300); }
+  .badge.neutral{ background:rgba(111,132,171,0.12); border-color:rgba(111,132,171,0.3); color:var(--text-secondary); }
+  .badge.info{ background:rgba(34,211,238,0.1); border-color:rgba(34,211,238,0.32); color:var(--cyan-300); }
+
+  /* ---------- Summary strip ---------- */
+  .summary{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    margin-bottom:18px;
+  }
+  @media (max-width:860px){ .summary{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:480px){ .summary{grid-template-columns:1fr;} }
+  .stile{
+    background:rgba(5,14,32,0.55);
+    border:1px solid rgba(91,157,250,0.18);
+    border-radius:10px;
+    padding:13px 15px;
+  }
+  .stile .rlabel{
+    font-size:10.5px;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    margin-bottom:5px;
+  }
+  .stile .rvalue{
+    font-size:20px;
+    font-weight:700;
+    color:#fff;
+    font-variant-numeric:tabular-nums;
+  }
+  .stile .rvalue .runit{
+    font-size:12px;
+    color:var(--blue-300);
+    font-weight:600;
+    margin-left:4px;
+  }
+  .stile.verdict-ok{ background:rgba(34,197,94,0.1); border-color:rgba(34,197,94,0.38); }
+  .stile.verdict-bad{ background:rgba(239,68,68,0.1); border-color:rgba(239,68,68,0.38); }
+
+  /* ---------- Appendix I: pipe lookup ---------- */
+  .pipe-out{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:12px;
+    background:rgba(5,14,32,0.55);
+    border:1px solid rgba(91,157,250,0.18);
+    border-radius:10px;
+    padding:13px 15px;
+    margin-top:4px;
+  }
+  .pipe-out .pv{font-size:19px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums;}
+  .pipe-out .pv small{font-size:12px;color:var(--blue-300);font-weight:600;margin-left:3px;}
+  .pipe-out .plbl{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;}
+
+  table.ref{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    font-size:12.5px;
+    font-variant-numeric:tabular-nums;
+    min-width:560px;
+  }
+  table.ref th{
+    background:#0a1b3d;
+    color:var(--cyan-300);
+    font-size:10.5px;
+    font-weight:700;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    padding:9px;
+    text-align:left;
+    border-bottom:1px solid rgba(103,232,249,0.28);
+  }
+  table.ref td{
+    padding:8px 9px;
+    border-bottom:1px solid rgba(91,157,250,0.13);
+    color:var(--text-secondary);
+  }
+  table.ref td:first-child{color:#fff;font-weight:600;}
+
+  /* ---------- Notes ---------- */
+  ol.notes{
+    margin:0;
+    padding-left:20px;
+    color:var(--text-secondary);
+    font-size:12.5px;
+  }
+  ol.notes li{ margin-bottom:9px; }
+  ol.notes code{
+    font-family:'Cascadia Code','Consolas',monospace;
+    background:rgba(5,14,32,0.6);
+    border:1px solid rgba(91,157,250,0.18);
+    padding:1px 5px;
+    border-radius:5px;
+    font-size:11.5px;
+  }
+
+  .callout{
+    border-left:3px solid var(--cyan-400);
+    background:rgba(34,211,238,0.06);
+    border-radius:0 9px 9px 0;
+    padding:12px 15px;
+    font-size:12.5px;
+    color:var(--text-secondary);
+    margin-top:16px;
+  }
+  .callout strong{color:#fff;}
+
+  .schem-wrap{display:flex;justify-content:center;padding:4px 0;overflow-x:auto;}
+  svg.loop{max-width:100%;height:auto;min-width:640px;}
+  svg.loop text{font-family:inherit;}
+
+  .formula-strip{
+    display:flex;
+    flex-wrap:wrap;
+    gap:9px;
+    margin-top:16px;
+  }
+  .formula-chip{
+    font-size:11.5px;
+    color:var(--text-secondary);
+    background:rgba(5,14,32,0.5);
+    border:1px solid rgba(91,157,250,0.18);
+    padding:5px 10px;
+    border-radius:7px;
+    font-family:'Cascadia Code','Consolas',monospace;
+  }
+
+  footer{
+    text-align:center;
+    margin-top:36px;
+    padding-top:22px;
+    border-top:1px solid rgba(91,157,250,0.14);
+    color:var(--text-muted);
+    font-size:12.5px;
+  }
+  footer a{color:var(--blue-300);text-decoration:none;}
+  footer a:hover{text-decoration:underline;}
+
+
+  /* ================================================================
+     Additions beyond the shared tool shell, for this tool only.
+     ================================================================ */
+
+  /* ---------- Settings strip (basis / severity) ---------- */
+  .ctrl-strip{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    align-items:flex-end;
+    background:rgba(5,14,32,0.5);
+    border:1px solid rgba(91,157,250,0.18);
+    border-radius:10px;
+    padding:13px 15px;
+    margin-top:18px;
+  }
+  .ctrl-strip > div{ flex:1 1 210px; min-width:180px; }
+  .ctrl-strip label{ margin-bottom:5px; }
+
+  /* ---------- Result tiles ---------- */
+  .result-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    margin-bottom:18px;
+  }
+  @media (max-width:940px){ .result-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:480px){ .result-grid{grid-template-columns:1fr;} }
+  .result-tile{
+    background:rgba(5,14,32,0.55);
+    border:1px solid rgba(91,157,250,0.18);
+    border-radius:10px;
+    padding:13px 15px;
+  }
+  .result-tile.headline{ background:rgba(34,211,238,0.08); border-color:rgba(103,232,249,0.34); }
+  .result-tile .rlabel{
+    font-size:10.5px;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    margin-bottom:5px;
+  }
+  .result-tile .rvalue{
+    font-size:21px;
+    font-weight:700;
+    color:#fff;
+    font-variant-numeric:tabular-nums;
+  }
+  .result-tile .rvalue .runit{
+    font-size:12px;
+    color:var(--blue-300);
+    font-weight:600;
+    margin-left:4px;
+  }
+  .result-tile .rsub{
+    font-size:10.5px;
+    color:var(--text-muted);
+    margin-top:5px;
+    line-height:1.4;
+  }
+
+  /* ---------- Verdict card ---------- */
+  .verdict-card{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:16px;
+    border-radius:12px;
+    border:1px solid;
+    padding:16px 18px;
+    margin-top:18px;
+  }
+  .verdict-card.ok{ background:rgba(34,197,94,0.1);  border-color:rgba(34,197,94,0.4); }
+  .verdict-card.bad{ background:rgba(239,68,68,0.1);  border-color:rgba(239,68,68,0.4); }
+  .verdict-card.warn{ background:rgba(252,211,77,0.09); border-color:rgba(252,211,77,0.4); }
+  .verdict-card.neutral{ background:rgba(111,132,171,0.09); border-color:rgba(111,132,171,0.3); }
+  .verdict-card .vbig{
+    font-size:23px;
+    font-weight:800;
+    letter-spacing:.02em;
+    white-space:nowrap;
+  }
+  .verdict-card.ok .vbig{ color:var(--ok-300); }
+  .verdict-card.bad .vbig{ color:var(--bad-300); }
+  .verdict-card.warn .vbig{ color:var(--warn-300); }
+  .verdict-card.neutral .vbig{ color:var(--text-secondary); }
+  .verdict-card .vtxt{ flex:1 1 320px; min-width:0; }
+  .verdict-card .vtitle{ font-size:13px; font-weight:700; color:#fff; margin-bottom:3px; }
+  .verdict-card .vsub{ font-size:12.5px; color:var(--text-secondary); }
+
+  /* ---------- Remark output ---------- */
+  .remark-row{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:14px; }
+  .remark-out{
+    flex:1 1 340px;
+    min-width:0;
+    font-family:'Cascadia Code','Consolas',monospace;
+    font-size:11.5px;
+    color:var(--text-secondary);
+    background:rgba(5,14,32,0.5);
+    border:1px solid rgba(91,157,250,0.18);
+    padding:9px 12px;
+    border-radius:7px;
+    word-break:break-word;
+  }
+
+  /* ---------- Warn variants (amber = review, not a rejection) ---------- */
+  .badge.warn{ background:rgba(252,211,77,0.13); border-color:rgba(252,211,77,0.44); color:var(--warn-300); }
+  td.flag-warn{ color:var(--warn-300); background:rgba(252,211,77,0.1); font-weight:700; }
+  .stile.verdict-warn{ background:rgba(252,211,77,0.09); border-color:rgba(252,211,77,0.38); }
+
+  /* ---------- Register ---------- */
+  table.reg{
+    width:100%;
+    min-width:1500px;
+    border-collapse:separate;
+    border-spacing:0;
+    font-size:11.5px;
+    font-variant-numeric:tabular-nums;
+  }
+  table.reg th, table.reg td{
+    border-bottom:1px solid rgba(91,157,250,0.13);
+    padding:6px 8px;
+    text-align:right;
+    white-space:nowrap;
+  }
+  table.reg thead th{
+    position:sticky;
+    top:0;
+    z-index:3;
+    background:#0a1b3d;
+    color:var(--cyan-300);
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    vertical-align:bottom;
+    padding:9px 8px;
+    border-bottom:1px solid rgba(103,232,249,0.28);
+  }
+  table.reg th.tagc, table.reg td.tagc{
+    text-align:left;
+    position:sticky;
+    left:0;
+    z-index:2;
+    background:#08152f;
+    min-width:130px;
+    box-shadow:1px 0 0 rgba(91,157,250,0.18);
+  }
+  table.reg thead th.tagc{ z-index:4; background:#0a1b3d; }
+  table.reg tbody tr{ cursor:pointer; }
+  table.reg tbody tr:hover td{ background:rgba(34,211,238,0.06); }
+  table.reg tbody tr:hover td.tagc{ background:#0d2450; }
+  table.reg tr.cur td{ background:rgba(34,211,238,0.11); }
+  table.reg tr.cur td.tagc{ background:#0d2450; box-shadow:1px 0 0 var(--cyan-400), inset 3px 0 0 var(--cyan-400); }
+  table.reg td.txt{ text-align:left; color:var(--text-secondary); }
+  table.reg td.empty{ text-align:center; color:var(--text-muted); padding:22px 8px; }
+  table.reg .minibadge{
+    display:inline-block;
+    width:19px;
+    text-align:center;
+    border-radius:4px;
+    font-size:9.5px;
+    font-weight:800;
+    padding:2px 0;
+    border:1px solid;
+  }
+  table.reg .minibadge.ok{ background:rgba(34,197,94,0.13); border-color:rgba(34,197,94,0.4); color:var(--ok-300); }
+  table.reg .minibadge.bad{ background:rgba(239,68,68,0.13); border-color:rgba(239,68,68,0.42); color:var(--bad-300); }
+  table.reg .minibadge.warn{ background:rgba(252,211,77,0.13); border-color:rgba(252,211,77,0.42); color:var(--warn-300); }
+  table.reg .minibadge.na{ background:rgba(111,132,171,0.1); border-color:rgba(111,132,171,0.28); color:var(--text-muted); }
+
+  /* ---------- Paste-from-Excel panel ---------- */
+  textarea.tsv{
+    width:100%;
+    min-height:130px;
+    background:rgba(5,14,32,0.65);
+    border:1px solid rgba(91,157,250,0.25);
+    color:var(--text-primary);
+    padding:10px 12px;
+    border-radius:9px;
+    font-family:'Cascadia Code','Consolas',monospace;
+    font-size:12px;
+    line-height:1.5;
+    resize:vertical;
+  }
+  textarea.tsv:focus{ outline:none; border-color:var(--cyan-400); box-shadow:0 0 0 3px rgba(34,211,238,0.15); }
+  .tsv-cols{
+    font-family:'Cascadia Code','Consolas',monospace;
+    font-size:11px;
+    color:var(--text-secondary);
+    line-height:1.7;
+    word-break:break-word;
+  }
+  .chk-inline{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    font-size:12.5px;
+    color:var(--text-secondary);
+    font-weight:600;
+    cursor:pointer;
+  }
+  .chk-inline input{ width:auto; accent-color:var(--cyan-400); }
+  .import-msg{ font-size:12px; margin-top:10px; }
+  .import-msg.ok{ color:var(--ok-300); }
+  .import-msg.bad{ color:var(--bad-300); }
+
+  /* ---------- Appendix lookup output ---------- */
+  .lookup-out{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:16px;
+    background:rgba(5,14,32,0.55);
+    border:1px solid rgba(91,157,250,0.18);
+    border-radius:10px;
+    padding:13px 15px;
+    margin:4px 0 16px;
+  }
+  .lookup-out .pv{ font-size:20px; font-weight:700; color:#fff; font-variant-numeric:tabular-nums; }
+  .lookup-out .pv small{ font-size:12px; color:var(--blue-300); font-weight:600; margin-left:3px; }
+  .lookup-out .plbl{ font-size:10.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.05em; }
+  .lookup-out .pnote{ flex:1 1 240px; font-size:11.5px; color:var(--text-muted); }
+
+  /* Section headings inside a card, for the grouped input blocks. */
+  .sub-h{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:var(--cyan-300);
+    margin:20px 0 12px;
+    padding-bottom:6px;
+    border-bottom:1px solid rgba(91,157,250,0.14);
+  }
+  .sub-h:first-of-type{ margin-top:4px; }
+
+  /* ---------- Print: flip to a light, ink-friendly test report ---------- */
+  @media print{
+    .bg-base,.bg-waves,.back-link,.btn-row,.unit-switch,.no-print{display:none !important;}
+    body{background:#fff;color:#111;}
+    .wrap{max-width:none;padding:0;}
+    h1{color:#0a2472 !important;-webkit-text-fill-color:#0a2472;background:none;}
+    .subtitle,.byline,.card .hint,.legend{color:#444;}
+    .card{
+      background:#fff;border:1px solid #b9c6de;box-shadow:none;
+      break-inside:avoid;page-break-inside:avoid;margin-bottom:14px;padding:14px 16px;
+    }
+    .card h2{color:#0a2472;}
+    .card h2 .num{background:#0a2472;color:#fff;}
+    table.calc, table.res, table.ref{min-width:0;font-size:10px;}
+    table.calc th.pname, table.calc td.pname, table.calc thead th, table.calc thead th.pname,
+    table.res th, table.ref th, tr.sec td.pname{background:#eef2fa !important;color:#0a2472 !important;box-shadow:none;}
+    table.calc td, table.calc th, table.res td, table.res th, table.ref td, table.ref th{border-bottom:1px solid #ccd6e8;}
+    td.out,tr.hl td,tr.hl td.out,tr.sec td{background:#f3f7ff !important;color:#111 !important;}
+    td.pname .sym,td.pname .pdesc,td.pname .pu,table.res td:first-child{color:#333 !important;}
+    td.flag-bad{color:#b91c1c !important;background:#fee2e2 !important;}
+    table.calc input,table.res input{background:#fff;border:1px solid #ccd6e8;color:#111;}
+    .stile{background:#f6f9ff;border-color:#ccd6e8;}
+    .stile .rvalue{color:#0a2472;}
+    .badge.ok{background:#dcfce7;color:#166534;border-color:#86efac;}
+    .badge.bad{background:#fee2e2;color:#991b1b;border-color:#fca5a5;}
+    .badge.neutral,.badge.info{background:#eef2fa;color:#334;border-color:#ccd6e8;}
+    ol.notes,.callout,footer{color:#333;}
+    .callout{background:#f3f7ff;}
+    .table-scroll{overflow:visible;}
+
+    /* Elements introduced by this tool. */
+    .ctrl-strip,textarea.tsv,#tsvPanel{display:none !important;}
+    .result-tile,.lookup-out{background:#f6f9ff;border-color:#ccd6e8;}
+    .result-tile.headline{background:#eaf1ff;border-color:#9fb6dd;}
+    .result-tile .rvalue,.lookup-out .pv{color:#0a2472;}
+    .result-tile .rlabel,.result-tile .rsub,.lookup-out .plbl,.lookup-out .pnote{color:#444;}
+    .verdict-card{border-color:#ccd6e8;background:#f6f9ff;}
+    .verdict-card .vtitle{color:#0a2472;}
+    .verdict-card .vsub{color:#333;}
+    .verdict-card.ok{background:#dcfce7;border-color:#86efac;}
+    .verdict-card.bad{background:#fee2e2;border-color:#fca5a5;}
+    .verdict-card.warn{background:#fef3c7;border-color:#fcd34d;}
+    .verdict-card.ok .vbig{color:#166534;}
+    .verdict-card.bad .vbig{color:#991b1b;}
+    .verdict-card.warn .vbig{color:#92400e;}
+    .verdict-card.neutral .vbig{color:#334;}
+    .badge.warn{background:#fef3c7;color:#92400e;border-color:#fcd34d;}
+    td.flag-warn{color:#92400e !important;background:#fef3c7 !important;}
+    .remark-out{background:#f6f9ff;border-color:#ccd6e8;color:#333;}
+    .sub-h{color:#0a2472;border-color:#ccd6e8;}
+    table.reg{min-width:0;font-size:8px;}
+    table.reg thead th,table.reg th.tagc,table.reg td.tagc{background:#eef2fa !important;color:#0a2472 !important;box-shadow:none;}
+    table.reg td,table.reg th{border-bottom:1px solid #ccd6e8;padding:3px 4px;}
+    table.reg tr.cur td{background:#eaf1ff !important;}
+    table.reg td.txt{color:#333;}
+    table.reg .minibadge{border-color:#ccd6e8;}
+    table.reg .minibadge.ok{background:#dcfce7;color:#166534;border-color:#86efac;}
+    table.reg .minibadge.bad{background:#fee2e2;color:#991b1b;border-color:#fca5a5;}
+    table.reg .minibadge.warn{background:#fef3c7;color:#92400e;border-color:#fcd34d;}
+    table.reg .minibadge.na{background:#eef2fa;color:#556;}
+    .reg-card{page-break-before:always;}
+  }
+  /* The register is a wide document; a landscape sheet keeps it legible. */
+  @page{ size:A4 portrait; margin:12mm; }
+</style>
+</head>
+<body>
+
+<div class="bg-base"></div>
+<div class="bg-base"></div>
+
+<div class="bg-waves" aria-hidden="true">
+  <svg viewBox="0 0 2880 1200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="wg1" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#0a2472"/><stop offset="0.5" stop-color="#153a9e"/><stop offset="1" stop-color="#0a2472"/>
+      </linearGradient>
+      <linearGradient id="wg2" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#123f8f"/><stop offset="0.5" stop-color="#1450c9"/><stop offset="1" stop-color="#123f8f"/>
+      </linearGradient>
+      <linearGradient id="wg3" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#1450c9"/><stop offset="0.5" stop-color="#1c6ee0"/><stop offset="1" stop-color="#1450c9"/>
+      </linearGradient>
+      <linearGradient id="wg4" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#1565d8"/><stop offset="0.5" stop-color="#2f7ef0"/><stop offset="1" stop-color="#1565d8"/>
+      </linearGradient>
+      <linearGradient id="wg5" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#2f7ef0"/><stop offset="0.5" stop-color="#22d3ee"/><stop offset="1" stop-color="#2f7ef0"/>
+      </linearGradient>
+    </defs>
+
+    <g class="wv wv1" opacity="0.55">
+      <path fill="url(#wg1)" d="M0,200 C180,120 540,120 720,200 C900,280 1260,280 1440,200 C1620,120 1980,120 2160,200 C2340,280 2700,280 2880,200 C3060,120 3420,120 3600,200 C3780,280 4140,280 4320,200 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv2" opacity="0.48">
+      <path fill="url(#wg2)" d="M0,410 C180,315 540,315 720,410 C900,505 1260,505 1440,410 C1620,315 1980,315 2160,410 C2340,505 2700,505 2880,410 C3060,315 3420,315 3600,410 C3780,505 4140,505 4320,410 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv3" opacity="0.42">
+      <path fill="url(#wg3)" d="M0,620 C180,535 540,535 720,620 C900,705 1260,705 1440,620 C1620,535 1980,535 2160,620 C2340,705 2700,705 2880,620 C3060,535 3420,535 3600,620 C3780,705 4140,705 4320,620 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv4" opacity="0.34">
+      <path fill="url(#wg4)" d="M0,830 C180,725 540,725 720,830 C900,935 1260,935 1440,830 C1620,725 1980,725 2160,830 C2340,935 2700,935 2880,830 C3060,725 3420,725 3600,830 C3780,935 4140,935 4320,830 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv5" opacity="0.26">
+      <path fill="url(#wg5)" d="M0,1015 C180,940 540,940 720,1015 C900,1090 1260,1090 1440,1015 C1620,940 1980,940 2160,1015 C2340,1090 2700,1090 2880,1015 C3060,940 3420,940 3600,1015 C3780,1090 4140,1090 4320,1015 L4320,1200 L0,1200 Z"/>
+    </g>
+  </svg>
+</div>
+
+<div class="wrap">
+
+  <!-- Back to main site -->
+  <a class="back-link" href="/" title="Back to allanronalddones.com">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Allan Ronald Dones
+  </a>
+
+  <header class="hero">
+    <span class="kicker">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6M12 16v6M4.9 4.9l4.2 4.2M14.9 14.9l4.2 4.2M2 12h6M16 12h6M4.9 19.1l4.2-4.2M14.9 9.1l4.2-4.2"/></svg>
+      Rotating Equipment Engineering
+    </span>
+    <h1>Pump MAWP &amp; Material Check — API 610</h1>
+    <p class="subtitle">Builds the maximum discharge pressure from the head and relative density you specify, applies the API 610 11th Edition Sec. 6.3.5 requirement and its pressure-rating floor, then checks the vendor's stated MAWP and the offered materials against the result.</p>
+    <p class="byline">Developed by Allan Ronald Dones — Senior Mechanical Engineer, Rotating Equipment Specialist</p>
+  </header>
+
+  <!-- ============ 0 · IDENTIFICATION, UNITS & CHECK SETTINGS ============ -->
+  <div class="card">
+    <div class="toolbar">
+      <div class="unit-switch" role="group" aria-label="Measurement system">
+        <button type="button" id="btnSI" class="active">SI Units</button>
+        <button type="button" id="btnENG">English Units</button>
+      </div>
+      <div class="btn-row no-print">
+        <button type="button" class="btn" id="btnSample">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg>
+          Load worked sample
+        </button>
+        <button type="button" class="btn" id="btnCsv">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Export CSV
+        </button>
+        <button type="button" class="btn" id="btnPrint">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>
+          Print / Save PDF
+        </button>
+        <button type="button" class="btn" id="btnReset">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 2v6h6M3.5 15a9 9 0 1 0 2.1-9.4L3 8"/></svg>
+          Reset this pump
+        </button>
+      </div>
+    </div>
+
+    <div class="field-row three" style="margin-top:20px;margin-bottom:0;">
+      <div>
+        <label>Project</label>
+        <input type="text" id="idProject" placeholder="Project name / number">
+      </div>
+      <div>
+        <label>Requisition / PO reference</label>
+        <input type="text" id="idDoc" placeholder="e.g. MR-0000-PU-001">
+      </div>
+      <div>
+        <label>Revision</label>
+        <input type="text" id="idRev" placeholder="e.g. R1">
+      </div>
+    </div>
+
+    <div class="ctrl-strip no-print">
+      <div>
+        <label>Margin basis for the required MAWP
+          <span class="note-inline">Sec. 6.3.5 applies the margin to the differential pressure</span>
+        </label>
+        <select id="optBasis">
+          <option value="api">API 610 Sec. 6.3.5 — Ps,max + 1.10 &times; &Delta;P</option>
+          <option value="legacy">Legacy sheet — 1.10 &times; Pd,max (margin on the total)</option>
+          <option value="custom">Custom margin on &Delta;P</option>
+        </select>
+      </div>
+      <div id="wrapCustomPct" hidden>
+        <label>Custom margin on &Delta;P <span class="unit">%</span></label>
+        <input type="number" id="optCustomPct" step="any" value="10">
+      </div>
+      <div>
+        <label>Temperature for the Sec. 6.3.5 rating floor
+          <span class="note-inline">6.3.5 a) states no temperature; 38&nbsp;&deg;C is the alternative reading</span>
+        </label>
+        <select id="optFloorTemp">
+          <option value="mawp">Temperature basis of the vendor MAWP</option>
+          <option value="des">Casing design temperature</option>
+          <option value="ref">38 &deg;C (100 &deg;F)</option>
+        </select>
+      </div>
+      <div>
+        <label>Severity of the rating-floor check
+          <span class="note-inline">Sec. 6.3.5 is a &ldquo;shall&rdquo;; downgrade only against an agreed deviation</span>
+        </label>
+        <select id="optFloorSev">
+          <option value="fail">Fail (per Sec. 6.3.5)</option>
+          <option value="warn">Review only (project deviation agreed)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span><i class="swatch in"></i> Input field</span>
+      <span><i class="swatch out"></i> Calculated output</span>
+      <span><i class="swatch fix"></i> Derived from the material class</span>
+      <span>Everything runs in your browser — nothing is uploaded. The register is remembered by this browser only, until you press Clear.</span>
+    </div>
+  </div>
+
+  <!-- ============ 1 · PUMP IDENTIFICATION & CONFIGURATION ============ -->
+  <div class="card detail-card">
+    <h2><span class="num">1</span>Pump Identification &amp; Configuration</h2>
+    <p class="hint">The pump type sets which pressure-rating floor of Sec. 6.3.5 applies. The material class sets the casing material, and with it the ASME B16.5 material group used for the flange-rating floor.</p>
+
+    <div class="field-row">
+      <div><label>Pump tag</label><input type="text" id="pTag" placeholder="P-1001 A/B"></div>
+      <div><label>Vendor model</label><input type="text" id="pModel" placeholder="Model designation"></div>
+      <div><label>P&amp;ID number</label><input type="text" id="pPid" placeholder="Drawing number"></div>
+      <div><label>Mounted on / vessel</label><input type="text" id="pMount" placeholder="e.g. V-1001"></div>
+    </div>
+
+    <div class="field-row">
+      <div>
+        <label>API 610 pump type
+          <span class="note-inline" id="noteType">&mdash;</span>
+        </label>
+        <select id="pType"></select>
+      </div>
+      <div><label>Seal plan (API 682)</label><input type="text" id="pSeal" placeholder="e.g. 53B"></div>
+      <div><label>Installed pressure transmitter</label><input type="text" id="pInstPt" placeholder="Tag, if any"></div>
+      <div>
+        <label>Casing joint
+          <span class="note-inline">Axially split invokes the 6.3.5 a) floor for any type</span>
+        </label>
+        <select id="pSplit">
+          <option value="radial">Radially split</option>
+          <option value="axial">Axially split</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field-row three">
+      <div>
+        <label>API 610 material class (Table H.1)
+          <span class="note-inline" id="noteMat">&mdash;</span>
+        </label>
+        <select id="pMatClass"></select>
+      </div>
+      <div>
+        <label>Flange pressure class for the floor
+          <span class="note-inline">Sec. 6.3.5 a) floor is the Class 150 (PN 20) rating</span>
+        </label>
+        <select id="pFlgClass">
+          <option value="150">Class 150 (PN 20)</option>
+          <option value="300">Class 300 (PN 50)</option>
+          <option value="600">Class 600</option>
+        </select>
+      </div>
+      <div>
+        <label>ASME B16.5 material group
+          <span class="note-inline" id="noteGroup">&mdash;</span>
+        </label>
+        <select id="pGroup"></select>
+      </div>
+    </div>
+
+    <div class="btn-row no-print" style="margin-top:6px;">
+      <button type="button" class="btn" id="btnPumpAdd">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        Add pump
+      </button>
+      <button type="button" class="btn" id="btnPumpDup">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>
+        Duplicate
+      </button>
+      <button type="button" class="btn" id="btnPumpDel">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
+        Delete
+      </button>
+    </div>
+  </div>
+
+  <!-- ============ 2 · PRESSURE & TEMPERATURE INPUTS ============ -->
+  <div class="card detail-card">
+    <h2><span class="num">2</span>Pressure &amp; Temperature Inputs</h2>
+    <p class="hint">All pressures are gauge. Enter the head and relative density on the basis you intend to hold the vendor to — Sec. 6.3.2 lets the purchaser escalate the maximum discharge pressure for maximum relative density, maximum impeller and trip speed. Record which of those the entered values represent.</p>
+
+    <div class="sub-h">Basis of the maximum differential pressure</div>
+    <div class="field-row three">
+      <div>
+        <label>H<sub>max</sub> — Head at the impeller and speed considered <span class="unit" data-u="len">m</span>
+          <span class="note-inline">Shut-off head is the usual basis</span>
+        </label>
+        <input type="number" class="keyed" id="pHmax" step="any" placeholder="e.g. 61">
+      </div>
+      <div>
+        <label>SG<sub>max</sub> — Relative density considered
+          <span class="note-inline">Sec. 6.3.1 uses normal SG; 6.3.2 a) allows maximum</span>
+        </label>
+        <input type="number" class="keyed" id="pSgMax" step="any" placeholder="e.g. 0.976">
+      </div>
+      <div>
+        <label>P<sub>s,max</sub> — Maximum suction pressure <span class="unit" data-u="press">barg</span>
+          <span class="note-inline">Sec. 3.26, non-transient</span>
+        </label>
+        <input type="number" class="keyed" id="pPsMax" step="any" placeholder="e.g. 3.58">
+      </div>
+    </div>
+    <div class="legend" style="margin-top:2px;border-top:none;padding-top:0;">
+      <label class="chk-inline"><input type="checkbox" id="esc610a"> Sec. 6.3.2 a) maximum specified relative density</label>
+      <label class="chk-inline"><input type="checkbox" id="esc610b"> Sec. 6.3.2 b) maximum impeller diameter / stages</label>
+      <label class="chk-inline"><input type="checkbox" id="esc610c"> Sec. 6.3.2 c) operation to trip speed</label>
+    </div>
+
+    <div class="sub-h">Temperatures</div>
+    <div class="field-row three">
+      <div>
+        <label>Maximum pumping temperature <span class="unit" data-u="temp">&deg;C</span>
+          <span class="note-inline">Sec. 3.24, including upset conditions</span>
+        </label>
+        <input type="number" class="keyed" id="pTpump" step="any" placeholder="e.g. 42">
+      </div>
+      <div>
+        <label>Casing design temperature <span class="unit" data-u="temp">&deg;C</span></label>
+        <input type="number" class="keyed" id="pTdes" step="any" placeholder="e.g. 95">
+      </div>
+      <div>
+        <label>Temperature basis of the vendor MAWP <span class="unit" data-u="temp">&deg;C</span>
+          <span class="note-inline">Sec. 6.13.2 j) — a nameplate item</span>
+        </label>
+        <input type="number" class="keyed" id="pTmawp" step="any" placeholder="e.g. 95">
+      </div>
+    </div>
+
+    <div class="sub-h">Stated MAWP and competing pressure demands</div>
+    <div class="field-row">
+      <div>
+        <label>(A) MAWP agreed at bid evaluation <span class="unit" data-u="press">barg</span>
+          <span class="note-inline">Contractual, from the TBE</span>
+        </label>
+        <input type="number" class="keyed" id="pMawpTbe" step="any" placeholder="optional">
+      </div>
+      <div>
+        <label>(B) MAWP stated by the vendor <span class="unit" data-u="press">barg</span>
+          <span class="note-inline">From the vendor data book — the value under test</span>
+        </label>
+        <input type="number" class="keyed" id="pMawpVen" step="any" placeholder="e.g. 16.00">
+      </div>
+      <div>
+        <label>(i) Maximum discharge pressure, process <span class="unit" data-u="press">barg</span>
+          <span class="note-inline">From the process datasheet, if stated</span>
+        </label>
+        <input type="number" class="keyed" id="pPdDs" step="any" placeholder="optional">
+      </div>
+      <div>
+        <label>(ii) Discharge line design pressure <span class="unit" data-u="press">barg</span>
+          <span class="note-inline">From the line list / piping specification</span>
+        </label>
+        <input type="number" class="keyed" id="pPdLine" step="any" placeholder="optional">
+      </div>
+    </div>
+
+    <div class="field-row two">
+      <div>
+        <label>(C) Rating-floor override <span class="unit" data-u="press">barg</span>
+          <span class="note-inline">Enter the rating from your ASME B16.5 copy to bypass the embedded table</span>
+        </label>
+        <input type="number" class="keyed" id="pFloorOverride" step="any" placeholder="blank = use the embedded table">
+      </div>
+      <div>
+        <label>Hydrostatic stress ratio, Sec. 8.3.2.6
+          <span class="note-inline">Allowable stress at test temperature &divide; at rated temperature; 1 if no correction</span>
+        </label>
+        <input type="number" class="keyed" id="pStressRatio" step="any" placeholder="1.0">
+      </div>
+    </div>
+
+    <div class="field-row" style="grid-template-columns:1fr;margin-bottom:0;">
+      <div>
+        <label>Reviewer remark
+          <span class="note-inline">Carried into the register and the export alongside the generated remark</span>
+        </label>
+        <input type="text" id="pNote" placeholder="e.g. vendor to confirm at kick-off meeting">
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 3 · CALCULATED PRESSURES ============ -->
+  <div class="card detail-card">
+    <h2><span class="num">3</span>Calculated Pressures</h2>
+    <p class="hint">Every intermediate value is shown so the result can be checked by hand. The row carrying the selected margin basis is highlighted.</p>
+
+    <div class="result-grid">
+      <div class="result-tile headline">
+        <div class="rlabel">Required minimum MAWP</div>
+        <div class="rvalue" id="tPreq">—</div>
+        <div class="rsub" id="tPreqSub">Sec. 6.3.5</div>
+      </div>
+      <div class="result-tile">
+        <div class="rlabel">(B) MAWP stated by vendor</div>
+        <div class="rvalue" id="tMawpB">—</div>
+        <div class="rsub" id="tMawpBSub">Margin against the requirement</div>
+      </div>
+      <div class="result-tile">
+        <div class="rlabel">(C) Sec. 6.3.5 rating floor</div>
+        <div class="rvalue" id="tFloor">—</div>
+        <div class="rsub" id="tFloorSub">—</div>
+      </div>
+      <div class="result-tile">
+        <div class="rlabel">Hydrostatic test, Sec. 8.3.2.2</div>
+        <div class="rvalue" id="tHydro">—</div>
+        <div class="rsub" id="tHydroSub">1.5 &times; MAWP</div>
+      </div>
+    </div>
+
+    <div class="table-scroll">
+      <table class="res">
+        <thead>
+          <tr><th>Symbol</th><th>Parameter</th><th>Basis</th><th>Value</th></tr>
+        </thead>
+        <tbody id="calcBody"></tbody>
+      </table>
+    </div>
+
+    <div class="formula-strip" id="formulaStrip"></div>
+  </div>
+
+  <!-- ============ 4 · CHECKS & VERDICT ============ -->
+  <div class="card detail-card">
+    <h2><span class="num">4</span>MAWP Checks &amp; Verdict</h2>
+    <p class="hint">A check with no data entered is reported as not applicable rather than as a pass. The clause column names the requirement each check enforces.</p>
+
+    <div class="table-scroll">
+      <table class="res">
+        <thead>
+          <tr><th>Check</th><th>Clause</th><th>Criterion</th><th>Required</th><th>Actual</th><th>Margin</th><th>Result</th></tr>
+        </thead>
+        <tbody id="chkBody"></tbody>
+      </table>
+    </div>
+
+    <div class="verdict-card neutral" id="verdictMain">
+      <div class="vbig" id="verdictBig">—</div>
+      <div class="vtxt">
+        <div class="vtitle" id="verdictTitle">Awaiting data</div>
+        <div class="vsub" id="verdictSub">Enter the head, relative density, suction pressure and the vendor's MAWP.</div>
+      </div>
+    </div>
+
+    <div class="remark-row">
+      <div class="remark-out" id="remarkOut">—</div>
+      <button type="button" class="btn no-print" id="btnCopyRemark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>
+        Copy remark
+      </button>
+    </div>
+  </div>
+
+  <!-- ============ 5 · MATERIAL CHECK ============ -->
+  <div class="card detail-card">
+    <h2><span class="num">5</span>Material Check — API 610 Annex H</h2>
+    <p class="hint">Table H.1 is normative and lists the material class for each pump part. Enter what the vendor has offered; the tool flags anything that is not the class material. Table H.2 specifications are guidance only — Sec. 6.12.1.2 requires the vendor to state the actual specification and grade.</p>
+
+    <div class="table-scroll">
+      <table class="res">
+        <thead>
+          <tr><th>Part</th><th>Compliance</th><th>Table H.1 material</th><th>Typical specification (Table H.2)</th><th>Offered</th><th>Result</th></tr>
+        </thead>
+        <tbody id="matBody"></tbody>
+      </table>
+    </div>
+
+    <datalist id="famList"></datalist>
+
+    <div class="verdict-card neutral" id="verdictMat">
+      <div class="vbig" id="matBig">—</div>
+      <div class="vtxt">
+        <div class="vtitle" id="matTitle">No materials entered</div>
+        <div class="vsub" id="matSub">Leave a part blank to omit it from the check.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 6 · PUMP REGISTER ============ -->
+  <div class="card reg-card">
+    <h2><span class="num">6</span>Pump Register</h2>
+    <p class="hint">One row per pump, all sharing the check settings above. Click a row to open it in the detail view. Columns 1 to 7 are the checks of section 4 and Mat is the material check — P passes, F fails, R needs review, and a dash means not applicable. The register is held in this browser only.</p>
+
+    <div class="btn-row no-print" style="margin-bottom:16px;">
+      <button type="button" class="btn" id="btnRegAdd">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        Add pump
+      </button>
+      <button type="button" class="btn" id="btnRegPaste">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
+        Paste from Excel
+      </button>
+      <button type="button" class="btn" id="btnRegClear">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
+        Clear register
+      </button>
+    </div>
+
+    <div id="tsvPanel" class="no-print" hidden style="margin-bottom:18px;">
+      <div class="callout" style="margin-top:0;margin-bottom:12px;">
+        <strong>Column order.</strong> Copy the cells from Excel and paste them below — tab separated, one pump per line. A first line whose first cell reads <code>Tag</code> is treated as a header and skipped. Blank cells are allowed.
+        <div class="tsv-cols" id="tsvCols" style="margin-top:8px;"></div>
+      </div>
+      <textarea class="tsv" id="tsvBox" placeholder="Paste the copied cells here"></textarea>
+      <div class="btn-row" style="margin-top:12px;align-items:center;">
+        <button type="button" class="btn" id="btnTsvImport">Import rows</button>
+        <button type="button" class="btn" id="btnTsvHeader">Put the header row in the box</button>
+        <label class="chk-inline"><input type="checkbox" id="tsvReplace"> Replace the existing register</label>
+      </div>
+      <div class="import-msg" id="tsvMsg"></div>
+    </div>
+
+    <div class="table-scroll">
+      <table class="reg">
+        <thead id="regHead"></thead>
+        <tbody id="regBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ APPENDIX I · ASME B16.5 RATINGS ============ -->
+  <div class="card">
+    <h2><span class="num">I</span>Appendix I — ASME B16.5 Pressure-Temperature Ratings</h2>
+    <p class="hint">The table behind the Sec. 6.3.5 rating floor. Linear interpolation between tabulated temperatures is permitted by ASME B16.5; interpolation between pressure classes is not.</p>
+
+    <div class="field-row three">
+      <div><label>Material group</label><select id="apxGroup"></select></div>
+      <div><label>Pressure class</label><select id="apxClass">
+        <option value="150">Class 150</option><option value="300">Class 300</option><option value="600">Class 600</option>
+      </select></div>
+      <div><label>Temperature <span class="unit" data-u="temp">&deg;C</span></label><input type="number" class="keyed" id="apxT" step="any" placeholder="e.g. 95"></div>
+    </div>
+
+    <div class="lookup-out">
+      <div>
+        <div class="plbl">Working pressure</div>
+        <div class="pv" id="apxOut">—</div>
+      </div>
+      <div class="pnote" id="apxNote">Choose a group, class and temperature.</div>
+    </div>
+
+    <div class="table-scroll">
+      <table class="ref">
+        <thead><tr><th>Temperature</th><th>Class 150</th><th>Class 300</th><th>Class 600</th></tr></thead>
+        <tbody id="apxBody"></tbody>
+      </table>
+    </div>
+
+    <div class="callout" id="apxCallout"></div>
+  </div>
+
+  <!-- ============ APPENDIX II · API 610 ANNEX H ============ -->
+  <div class="card">
+    <h2><span class="num">II</span>Appendix II — API 610 Annex H Material Classes</h2>
+    <p class="hint">Table H.1 material classes for pump parts, with the typical specifications of Table H.2. Reproduced as an aid; the standard and the purchase order govern.</p>
+
+    <div class="field-row three">
+      <div><label>Material class</label><select id="apxMatClass"></select></div>
+    </div>
+
+    <div class="table-scroll">
+      <table class="ref">
+        <thead><tr><th>Part</th><th>Full compliance</th><th>Table H.1 material</th><th>Typical specification (Table H.2)</th></tr></thead>
+        <tbody id="apxMatBody"></tbody>
+      </table>
+    </div>
+
+    <div class="callout" style="margin-bottom:16px;"><strong>Class code.</strong> <span id="apxMatCode">—</span></div>
+
+    <div class="table-scroll">
+      <table class="ref">
+        <thead><tr><th>Class</th><th>Casing</th><th>Impeller</th><th>Shaft</th><th>Case wear rings</th><th>B16.5 group</th></tr></thead>
+        <tbody id="apxMatrix"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ NOTES ============ -->
+  <div class="card">
+    <h2><span class="num">§</span>Notes &amp; Conventions</h2>
+    <ol class="notes">
+      <li><strong>Maximum discharge pressure.</strong> API 610 11th Ed. Sec. 3.22 and Sec. 6.3.1 define it as the maximum suction pressure plus the maximum differential pressure the pump develops with the furnished impeller at rated speed and the specified normal relative density. Sec. 6.3.2 allows the purchaser to specify an increase for a) maximum specified relative density, b) an impeller of maximum diameter or number of stages, and c) operation to trip speed. The head and relative density you enter set that basis, and the boxes in section&nbsp;2 record which escalations they represent.</li>
+      <li><strong>Required MAWP.</strong> Sec. 6.3.5 requires the MAWP to be at least the maximum discharge pressure plus 10&nbsp;% of the maximum differential pressure, and not less than a pressure-rating floor that depends on the pump type. Note&nbsp;3 to that clause states the 10&nbsp;% margin is intended to accommodate the head increase of Sec. 6.1.4, higher speed in variable-speed pumps, and the head test tolerance of Sec. 8.3.3.3&nbsp;b).</li>
+      <li><strong>The rating floor.</strong> Sec. 6.3.5&nbsp;a) applies to axially split pumps, one- and two-stage between-bearings pumps, and single-casing vertically suspended pumps: the MAWP shall not be less than the rating of an ISO&nbsp;7005-1 PN&nbsp;20 steel flange, or an ISO&nbsp;7005-2 PN&nbsp;20 cast iron flange, of a material grade corresponding to the pressure casing. Note&nbsp;1 to the clause makes ASME B16.5 Class&nbsp;150 equivalent to ISO&nbsp;7005-1 PN&nbsp;20, and ASME B16.1 Class&nbsp;125 equivalent to ISO&nbsp;7005-2 PN&nbsp;20. Sec. 6.3.5&nbsp;b) applies to all other pumps: a gauge pressure rating of at least 4&nbsp;MPa (40&nbsp;bar; 600&nbsp;psi) at 38&nbsp;&deg;C (100&nbsp;&deg;F).</li>
+      <li><strong>Temperature of the rating floor.</strong> Sec. 6.3.5&nbsp;a) states no temperature for the flange rating, unlike b) which states 38&nbsp;&deg;C. This tool evaluates the floor at the temperature basis of the vendor's MAWP by default, which is the conservative reading and the one that makes the floor comparable with the MAWP it is being tested against. The selector in section&nbsp;0 offers the design temperature and 38&nbsp;&deg;C as alternatives.</li>
+      <li><strong>Cast iron.</strong> Sec. 6.12.1.6 permits material classes I-1 and I-2 only where the maximum allowable gauge working pressure does not exceed 1&nbsp;725&nbsp;kPa (17,25&nbsp;bar; 250&nbsp;psi). Cast iron flanges are covered by ASME B16.1, not B16.5, and their Class&nbsp;125 rating varies with nominal size, so the tool does not compute a floor for those classes — enter it in the override field.</li>
+      <li><strong>Hydrostatic test.</strong> Sec. 8.3.2.2 requires the test to be conducted with liquid at a minimum of 1,5 times the MAWP. Sec. 8.3.2.6 requires that pressure to be multiplied by the ratio of the allowable working stress at the testing temperature to that at the rated operating temperature where the latter is lower; enter that ratio in section&nbsp;2 if it applies. Sec. 8.3.2.11 requires the test to hold without leakage or seepage for 30&nbsp;min. Sec. 6.13.2 requires the casing hydrostatic test pressure, the MAWP and the temperature basis for the MAWP to be stamped on the nameplate.</li>
+      <li><strong>Materials.</strong> Sec. 6.12.1.1 makes the material class the purchaser's to specify, and Table&nbsp;G.1 is the informative selection guide. Table&nbsp;H.1 is normative and lists the material for each part, marking those with strength or pressure-integrity requirements as full-compliance parts under Sec. 6.12.1.4. Table&nbsp;H.2 gives corresponding international specifications for guidance only; Sec. 6.12.1.2 requires the vendor to state the actual specification and grade in the proposal.</li>
+      <li><strong>Vertically suspended pumps.</strong> For type VS4 and VS5 in open-system sump service, Sec. 9.3.12.3 makes the casing, suction cover and discharge line the pressure-containing components; in closed-system pressurised or vacuum tank service the seal chamber, pump cover plate and tank cover become pressure-containing as well. Sec. 9.3.12.7 requires the discharge nozzle and cover plate to be designed to Sec. 6.3.3.</li>
+      <li><strong>Constants.</strong> Differential pressure is <code>H &times; SG &times; 0.0980665</code> bar per metre in SI, taking water at 1&nbsp;000&nbsp;kg/m&sup3; and <em>g</em> = 9.80665&nbsp;m/s&sup2;, and <code>H &times; SG &times; 0.4335</code> psi per foot in English units. All pressures are gauge.</li>
+      <li><strong>ASME B16.5 data.</strong> The pressure-temperature ratings in Appendix&nbsp;I are transcribed for convenience and are marked as unverified until checked against a licensed copy of the standard. Any result that depends on them carries that warning. The override field in section&nbsp;2 bypasses the table entirely.</li>
+    </ol>
+
+    <div class="callout">
+      <strong>Scope.</strong> This tool covers the pressure-containment requirements of Sec. 6.3.5, the hydrostatic test pressure of Sec. 8.3.2, and the material class of Annex&nbsp;H. It does not evaluate the nozzle-load design case of Sec. 6.3.3, the allowable stresses and casting factors of Sec. 6.3.4, the 3&nbsp;mm corrosion allowance of Sec. 6.3.7, the inner-casing differential of Sec. 6.3.8, the radially split casing requirements of Sec. 6.3.9, bolting or gasket design, casing thickness, or any hydraulic or NPSH criterion. It is a check on the numbers a vendor has stated, not a substitute for the vendor's casing design calculation.
+    </div>
+  </div>
+
+  <footer>
+    Pump MAWP &amp; Material Check — for engineering evaluation purposes. Verify all inputs against the project process datasheets, the line list, the vendor data book and a licensed copy of API 610 and ASME B16.5 before accepting or rejecting a vendor's stated MAWP.<br>
+    &copy; <span id="yr"></span> Allan Ronald Dones
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ==================================================================
+     PURE:BEGIN — everything between these markers is free of the DOM
+     so it can be lifted out and exercised by a plain script harness.
+     ================================================================== */
+
+  /* ------------------------------------------------------------------
+     Unit systems. Head is converted to pressure with water at
+     1000 kg/m3 and g = 9.80665 m/s2, giving 0.0980665 bar per metre;
+     the English equivalent is 0.4335 psi per foot.
+  ------------------------------------------------------------------ */
+  const UNITS = {
+    si : {press:'barg', len:'m',  temp:'°C', kHead:0.0980665, barTo:1,         dP:2, dL:1, dT:0,
+          toC:t => t, fromC:t => t, ref38:38},
+    eng: {press:'psig', len:'ft', temp:'°F', kHead:0.4335,    barTo:14.503774, dP:1, dL:1, dT:0,
+          toC:t => (t - 32) * 5 / 9, fromC:t => t * 9 / 5 + 32, ref38:100}
+  };
+
+  /* ------------------------------------------------------------------
+     API 610 11th Ed. Sec. 6.3.5 splits the minimum-pressure-rating
+     requirement by pump type:
+       floor 'a' — axially split pumps, one- and two-stage
+                   between-bearings pumps, and single-casing
+                   vertically suspended pumps: the rating of an
+                   ISO 7005-1 PN 20 (= ASME B16.5 Class 150) flange of
+                   a material grade corresponding to the casing.
+       floor 'b' — all other pumps: at least 4 MPa (40 bar; 600 psi)
+                   at 38 degC (100 degF).
+     An axially split casing invokes floor 'a' whatever the type.
+  ------------------------------------------------------------------ */
+  const PUMP_TYPES = [
+    {k:'OH1', floor:'b', label:'OH1 — Overhung, foot mounted'},
+    {k:'OH2', floor:'b', label:'OH2 — Overhung, centreline mounted'},
+    {k:'OH3', floor:'b', label:'OH3 — Overhung, vertical in-line, separate bearings'},
+    {k:'OH4', floor:'b', label:'OH4 — Overhung, vertical in-line, rigid coupling'},
+    {k:'OH5', floor:'b', label:'OH5 — Overhung, vertical in-line, close coupled'},
+    {k:'OH6', floor:'b', label:'OH6 — Overhung, high speed, integral gear'},
+    {k:'BB1', floor:'a', label:'BB1 — Between bearings, 1 or 2 stage, axially split'},
+    {k:'BB2', floor:'a', label:'BB2 — Between bearings, 1 or 2 stage, radially split'},
+    {k:'BB3', floor:'b', label:'BB3 — Between bearings, multistage, axially split'},
+    {k:'BB4', floor:'b', label:'BB4 — Between bearings, multistage, single casing'},
+    {k:'BB5', floor:'b', label:'BB5 — Between bearings, multistage, double casing'},
+    {k:'VS1', floor:'a', label:'VS1 — Vertically suspended, diffuser, single casing'},
+    {k:'VS2', floor:'a', label:'VS2 — Vertically suspended, volute, single casing'},
+    {k:'VS3', floor:'a', label:'VS3 — Vertically suspended, axial flow, single casing'},
+    {k:'VS4', floor:'a', label:'VS4 — Vertically suspended, line shaft sump'},
+    {k:'VS5', floor:'a', label:'VS5 — Vertically suspended, cantilever sump'},
+    {k:'VS6', floor:'b', label:'VS6 — Vertically suspended, double casing, diffuser'},
+    {k:'VS7', floor:'b', label:'VS7 — Vertically suspended, double casing, volute'}
+  ];
+  const TYPE_BY_KEY = {};
+  PUMP_TYPES.forEach(t => { TYPE_BY_KEY[t.k] = t; });
+
+  /* Sec. 6.3.5 b) floor, stated in the standard as 4 MPa at 38 degC. */
+  const FLOOR_B_BAR = 40;
+
+  /* Sec. 6.12.1.6 ceiling on cast iron construction: 1 725 kPa. */
+  const CAST_IRON_MAX_BAR = 17.25;
+
+  /* ------------------------------------------------------------------
+     ASME B16.5 pressure-temperature ratings, bar gauge against degC.
+     The first entry covers the range from -29 degC up to 38 degC.
+
+     >>> UNVERIFIED <<<  These values are transcribed for convenience
+     and have NOT been checked against a licensed copy of ASME B16.5.
+     Every result that depends on them is labelled accordingly in the
+     interface. Correct them here, then set verified:true below.
+     Group membership per ASME B16.5 Table 1A is likewise to be
+     confirmed; the 12 % chrome castings are placed in group 1.7
+     following the convention of the source review register.
+  ------------------------------------------------------------------ */
+  const B165 = {
+    edition: 'ASME B16.5 (edition to be confirmed)',
+    verified: false,
+    groups: {
+      '1.1': {table:'2-1.1', name:'Carbon steel', tmax:538,
+        materials:'A105, A216 Gr WCB, A516 Gr 70, A350 Gr LF2',
+        rows:[[38,19.6,51.1,102.1],[50,19.2,50.1,100.2],[100,17.7,46.6,93.2],[150,15.8,45.1,90.2],
+              [200,13.8,43.8,87.6],[250,12.1,41.9,83.9],[300,10.2,39.8,79.6],[325,9.3,38.7,77.4],
+              [350,8.4,37.6,75.1],[375,7.4,36.4,72.7],[400,6.5,34.7,69.4],[425,5.5,28.8,57.5],
+              [450,4.6,23.0,46.0],[475,3.7,17.4,34.9],[500,2.8,11.8,23.5],[538,1.4,5.9,11.8]]},
+      '1.2': {table:'2-1.2', name:'Carbon steel, higher strength', tmax:538,
+        materials:'A216 Gr WCC, A350 Gr LF6 Cl.1, A352 Gr LCC',
+        rows:[[38,20.0,51.7,103.4],[50,19.5,51.7,103.4],[100,17.7,51.5,103.0],[150,15.8,50.3,100.3],
+              [200,13.8,48.6,97.2],[250,12.1,46.3,92.7],[300,10.2,42.9,85.7],[325,9.3,41.4,82.6],
+              [350,8.4,40.0,79.3],[375,7.4,37.8,75.5],[400,6.5,34.7,69.4],[425,5.5,28.8,57.5],
+              [450,4.6,23.0,46.0],[475,3.7,17.4,34.9],[500,2.8,11.8,23.5],[538,1.4,5.9,11.8]]},
+      '1.7': {table:'2-1.7', name:'12 % chrome (13Cr martensitic)', tmax:538,
+        materials:'A182 Gr F6a Cl.1, A217 Gr CA15 — confirm group per Table 1A',
+        rows:[[38,19.0,49.6,99.3],[50,18.4,48.1,96.2],[100,16.2,42.2,84.4],[150,14.8,38.5,77.2],
+              [200,13.7,35.7,71.6],[250,12.1,33.4,67.0],[300,10.2,31.6,63.3],[325,9.3,30.9,61.8],
+              [350,8.4,30.3,60.7],[375,7.4,29.9,59.8],[400,6.5,29.4,58.9],[425,5.5,28.8,57.5],
+              [450,4.6,23.0,46.0],[475,3.7,17.4,34.9],[500,2.8,11.8,23.5],[538,1.4,5.9,11.8]]},
+      '2.1': {table:'2-2.1', name:'Austenitic 304 / CF8', tmax:816,
+        materials:'A182 Gr F304, A351 Gr CF8, A240 Gr 304',
+        rows:[[38,19.0,49.6,99.3],[50,18.4,48.1,96.2],[100,16.2,42.2,84.4],[150,14.8,38.5,77.2],
+              [200,13.7,35.7,71.6],[250,12.1,33.4,66.8],[300,10.2,31.6,63.2],[325,9.3,30.9,61.8],
+              [350,8.4,30.3,60.7],[375,7.4,29.9,59.8],[400,6.5,29.4,58.9],[425,5.5,28.8,57.5],
+              [450,4.6,28.2,56.5],[475,3.7,27.7,55.4],[500,2.8,25.7,51.5],[538,1.4,21.0,41.9],
+              [550,1.3,20.0,40.0],[600,1.0,15.6,31.1],[650,0.8,11.3,22.6],[700,0.7,7.6,15.1],
+              [750,0.5,5.0,10.0],[800,0.4,3.4,6.8],[816,0.4,2.9,5.9]]},
+      '2.2': {table:'2-2.2', name:'Austenitic 316 / CF8M', tmax:816,
+        materials:'A182 Gr F316, A351 Gr CF8M, A240 Gr 316',
+        rows:[[38,19.0,51.7,103.4],[50,18.4,51.7,103.4],[100,16.2,46.6,93.2],[150,14.8,45.1,90.2],
+              [200,13.7,43.8,87.6],[250,12.1,41.9,83.9],[300,10.2,40.3,80.4],[325,9.3,39.0,78.0],
+              [350,8.4,37.6,75.1],[375,7.4,36.4,72.7],[400,6.5,35.5,71.3],[425,5.5,35.2,70.0],
+              [450,4.6,33.7,67.7],[475,3.7,31.7,63.4],[500,2.8,28.2,56.5],[538,1.4,25.2,50.0],
+              [550,1.3,24.0,48.0],[600,1.0,19.9,39.8],[650,0.8,15.8,31.6],[700,0.7,12.9,25.7],
+              [750,0.5,10.7,21.3],[800,0.4,8.4,16.8],[816,0.4,7.4,14.8]]},
+      '2.3': {table:'2-2.3', name:'Austenitic 304L / 316L / CF3, CF3M', tmax:454,
+        materials:'A182 Gr F304L, F316L, A351 Gr CF3, CF3M, A240 Gr 304L, 316L',
+        rows:[[38,15.9,41.4,82.7],[50,15.3,40.0,80.0],[100,13.3,34.8,69.6],[150,12.0,31.4,62.8],
+              [200,11.2,29.2,58.4],[250,10.5,27.5,55.0],[300,10.0,26.1,52.1],[325,9.3,25.5,50.9],
+              [350,8.4,25.1,50.1],[375,7.4,24.8,49.5],[400,6.5,24.3,48.6],[425,5.5,23.9,47.7],
+              [450,4.6,23.4,46.8],[454,4.4,23.3,46.6]]},
+      '2.8': {table:'2-2.8', name:'Duplex 22Cr', tmax:316,
+        materials:'A182 Gr F51 (S31803), A995 Gr 4A, A240 S31803 — confirm super duplex placement',
+        rows:[[38,20.0,51.7,103.4],[50,19.5,51.7,103.4],[100,17.7,51.5,103.0],[150,15.8,50.3,100.3],
+              [200,13.8,48.6,97.2],[250,12.1,46.3,92.7],[300,10.2,42.9,85.7],[316,9.7,41.4,82.7]]}
+    }
+  };
+
+  /* ------------------------------------------------------------------
+     API 610 11th Ed. Annex H. Table H.1 (normative) gives the material
+     for each pump part by material class; Table H.2 gives corresponding
+     specifications for guidance only. Class order below is the order of
+     the columns in Table H.1.
+  ------------------------------------------------------------------ */
+  const MAT_ORDER = ['I-1','I-2','S-1','S-3','S-4','S-5','S-6','S-8','S-9','C-6','A-7','A-8','D-1','D-2'];
+
+  /* Material families. rank orders them by general corrosion resistance
+     and is used only to label an offered material as a higher grade —
+     it is not a statement that the substitution is acceptable. */
+  const FAM = {
+    CI    :{label:'Cast iron',                     rank:0, spec:'A278 Cl.30 pressure castings; A48 Cl.25/30/40 general'},
+    BRZ   :{label:'Bronze',                        rank:1, spec:'Not listed in Table H.2'},
+    NIR   :{label:'Ni-Resist',                     rank:2, spec:'Not listed in Table H.2'},
+    CS    :{label:'Carbon steel',                  rank:2, spec:'A216 Gr WCB castings; A105 / A266 Cl.4 forgings; A576 Gr 1045 bar'},
+    A4140 :{label:'4140 alloy steel',              rank:3, spec:'A434 Cl.BB/BC bar; A193 Gr B7 bolting'},
+    CR12  :{label:'12 % chrome',                   rank:4, spec:'A487 Gr CA6NM / A743 Gr CA15 castings; A182 Gr F6a Cl.1 forgings'},
+    CR12H :{label:'12 % chrome, hardened',         rank:4, spec:'A276 Type 410 / 420, hardened'},
+    AUS   :{label:'Austenitic stainless',          rank:5, spec:'A351 Gr CF3 castings; A182 Gr F304L forgings'},
+    AUSHF :{label:'Austenitic, hard-faced',        rank:5, spec:'A351 Gr CF3 with hard-facing per Table H.1 note e'},
+    A316  :{label:'316 austenitic stainless',      rank:6, spec:'A351 Gr CF3M castings; A182 Gr F316L forgings'},
+    A316HF:{label:'316 austenitic, hard-faced',    rank:6, spec:'A351 Gr CF3M with hard-facing per Table H.1 note e'},
+    NICU  :{label:'Ni-Cu alloy',                   rank:6, spec:'Not listed in Table H.2'},
+    NICUH :{label:'Ni-Cu alloy, hardened',         rank:6, spec:'Not listed in Table H.2'},
+    DUP   :{label:'Duplex stainless',              rank:7, spec:'A890 / A995 Gr 4A castings; A182 Gr F51 (S31803) forgings'},
+    DUPHF :{label:'Duplex, hard-faced',            rank:7, spec:'A890 / A995 Gr 4A with hard-facing per Table H.1 note e'},
+    SDUP  :{label:'Super duplex stainless',        rank:8, spec:'A890 Gr 5A / 6A castings; A182 Gr F55 (S32750 / S32760)'},
+    SDUPHF:{label:'Super duplex, hard-faced',      rank:8, spec:'A890 Gr 5A / 6A with hard-facing per Table H.1 note e'}
+  };
+
+  /* Table H.1, one array per part in MAT_ORDER sequence. */
+  const H1 = {
+    casing    :['CI','CI','CS','CS','CS','CS','CS','CS','CS','CR12','AUS','A316','DUP','SDUP'],
+    innerCase :['CI','BRZ','CI','NIR','CI','CS','CR12','A316','NICU','CR12','AUS','A316','DUP','SDUP'],
+    impeller  :['CI','BRZ','CI','NIR','CS','CS','CR12','A316','NICU','CR12','AUS','A316','DUP','SDUP'],
+    caseRings :['CI','BRZ','CI','NIR','CI','CR12H','CR12H','A316HF','NICU','CR12H','AUSHF','A316HF','DUPHF','SDUPHF'],
+    impRings  :['CI','BRZ','CI','NIR','CI','CR12H','CR12H','A316HF','NICU','CR12H','AUSHF','A316HF','DUPHF','SDUPHF'],
+    shaft     :['CS','CS','CS','CS','CS','A4140','A4140','A316','NICU','CR12','AUS','A316','DUP','SDUP'],
+    throatBush:['CI','BRZ','CI','NIR','CI','CR12H','CR12H','A316','NICU','CR12H','AUS','A316','DUP','SDUP'],
+    studs     :['A4140','A4140','A4140','A4140','A4140','A4140','A4140','A4140','NICUH','A4140','A4140','A4140','DUP','SDUP'],
+    headCan   :['CS','CS','CS','CS','CS','CS','CS','CS','CS','AUS','AUS','A316','DUP','SDUP'],
+    fasteners :['CS','CS','CS','CS','CS','A316','A316','A316','NICU','A316','A316','A316','DUP','SDUP']
+  };
+
+  /* Parts. full = designated a full-compliance material by Table H.1
+     and Sec. 6.12.1.4; checked = included in the offered-material check. */
+  const PARTS = [
+    {k:'casing',     name:'Pressure casing',                       full:true,  checked:true},
+    {k:'innerCase',  name:'Inner case parts (bowls, diffusers)',   full:false, checked:true},
+    {k:'impeller',   name:'Impeller',                              full:true,  checked:true},
+    {k:'caseRings',  name:'Case wear rings',                       full:false, checked:true},
+    {k:'impRings',   name:'Impeller wear rings',                   full:false, checked:true},
+    {k:'shaft',      name:'Shaft',                                 full:true,  checked:true},
+    {k:'throatBush', name:'Throat bushings',                       full:false, checked:false},
+    {k:'studs',      name:'Case and gland studs',                  full:true,  checked:false},
+    {k:'headCan',    name:'Discharge head / suction can',          full:true,  checked:false},
+    {k:'fasteners',  name:'Wetted fasteners',                      full:true,  checked:false}
+  ];
+
+  /* Class descriptor: case material / trim material per Table H.1 note b,
+     and the ASME B16.5 group that corresponds to the casing material.
+     Cast iron classes take ASME B16.1 Class 125 flanges, which are size
+     dependent, so no group is mapped and the floor must be entered by hand. */
+  const MAT_CLASS = {
+    'I-1':{code:'Cast iron case / cast iron trim',            grp:null},
+    'I-2':{code:'Cast iron case / bronze trim',               grp:null},
+    'S-1':{code:'Steel case / cast iron trim',                grp:'1.1'},
+    'S-3':{code:'Steel case / Ni-Resist trim',                grp:'1.1'},
+    'S-4':{code:'Steel case / steel trim',                    grp:'1.1'},
+    'S-5':{code:'Steel case / steel and 12 % chrome trim',    grp:'1.1'},
+    'S-6':{code:'Steel case / 12 % chrome trim',              grp:'1.1'},
+    'S-8':{code:'Steel case / 316 austenitic trim',           grp:'1.1'},
+    'S-9':{code:'Steel case / Ni-Cu alloy trim',              grp:'1.1'},
+    'C-6':{code:'12 % chrome case / 12 % chrome trim',        grp:'1.7'},
+    'A-7':{code:'Austenitic case / austenitic trim',          grp:'2.3'},
+    'A-8':{code:'316 austenitic case / 316 austenitic trim',  grp:'2.3'},
+    'D-1':{code:'Duplex case / duplex trim',                  grp:'2.8'},
+    'D-2':{code:'Super duplex case / super duplex trim',      grp:'2.8'}
+  };
+
+  /* Free text from a vendor document resolved back to a family.
+     Longest patterns first so that 316 is not swallowed by 3. */
+  const FAM_PATTERNS = [
+    [/S3275|S3276|F55|F53|GR\.?\s*5A|GR\.?\s*6A|SUPER\s*DUPLEX|2507|Z100/i, 'SDUP'],
+    [/S31803|S32205|F51|GR\.?\s*4A|GR\.?\s*3A|CD3MN|CD4MCU|DUPLEX|2205/i,   'DUP'],
+    [/CF3M|CF8M|F316|A?\s*316|S31603|S31600/i,                              'A316'],
+    [/CF3\b|CF8\b|F304|A?\s*304|S30403|S30400|AUSTENITIC/i,                 'AUS'],
+    [/CA6NM|CA15|F6A|F6NM|41[03]\b|420\b|12\s*%?\s*CR|13\s*CR|MARTENSITIC/i,'CR12'],
+    [/4140|B7\b|A434|42CRMO/i,                                              'A4140'],
+    [/MONEL|NI-?CU|K-?500|N04400|N05500/i,                                  'NICU'],
+    [/NI-?RESIST|D-?2\s*NI|AUSTENITIC\s*IRON/i,                             'NIR'],
+    [/BRONZE|B584|B505|C9\d{4}/i,                                           'BRZ'],
+    [/WCB|WCC|A216|A105|A266|A516|A576|LCB|LCC|CARBON\s*STEEL|CS\b/i,       'CS'],
+    [/A278|A48\b|GJL|GREY\s*IRON|GRAY\s*IRON|CAST\s*IRON|\bCI\b/i,          'CI']
+  ];
+
+  /* A vendor writing "410 hardened" or "CF8M hard-faced" has stated the
+     hardened or hard-faced grade, so the base family is promoted to its
+     treated variant where Table H.1 has one. */
+  const HARD_RE = /harden|hard.?fac|hard.?surf|stellite|colmonoy|nitrid|\bHRC\b|\bHB\s*\d/i;
+
+  function resolveFamily(text){
+    const s = String(text || '').trim();
+    if (!s) return null;
+    for (const key in FAM){
+      if (FAM[key].label.toLowerCase() === s.toLowerCase()) return key;
+    }
+    let base = null;
+    for (let i = 0; i < FAM_PATTERNS.length; i++){
+      if (FAM_PATTERNS[i][0].test(s)){ base = FAM_PATTERNS[i][1]; break; }
+    }
+    if (base && HARD_RE.test(s)){
+      if (FAM[base + 'H']) return base + 'H';
+      if (FAM[base + 'HF']) return base + 'HF';
+    }
+    return base;
+  }
+
+  /* Hard-faced and hardened variants share a base family, so that an
+     offered "12 % chrome" is not read as a downgrade from
+     "12 % chrome, hardened". Hardening is reported separately. */
+  function baseFam(k){
+    if (!k || !FAM[k]) return k;
+    const cand = [k.replace(/HF$/, ''), k.replace(/H$/, '')];
+    for (let i = 0; i < cand.length; i++){
+      if (cand[i] !== k && FAM[cand[i]]) return cand[i];
+    }
+    return k;
+  }
+
+  /* ------------------------------------------------------------------
+     Field specification. One list drives the detail-view binding, the
+     paste column order and the CSV column order, so the three cannot
+     drift apart.
+  ------------------------------------------------------------------ */
+  const FIELDS = [
+    {k:'tag',        id:'pTag',           t:'text', h:'Tag'},
+    {k:'model',      id:'pModel',         t:'text', h:'Model'},
+    {k:'type',       id:'pType',          t:'sel',  h:'API 610 type'},
+    {k:'split',      id:'pSplit',         t:'sel',  h:'Casing joint'},
+    {k:'pid',        id:'pPid',           t:'text', h:'P&ID'},
+    {k:'mount',      id:'pMount',         t:'text', h:'Mounted on'},
+    {k:'seal',       id:'pSeal',          t:'text', h:'Seal plan'},
+    {k:'instPt',     id:'pInstPt',        t:'text', h:'Installed PT'},
+    {k:'matClass',   id:'pMatClass',      t:'sel',  h:'Material class'},
+    {k:'flgClass',   id:'pFlgClass',      t:'sel',  h:'Flange class'},
+    {k:'group',      id:'pGroup',         t:'sel',  h:'B16.5 group (blank = auto)'},
+    {k:'hMax',       id:'pHmax',          t:'num',  h:'H max', u:'len'},
+    {k:'sgMax',      id:'pSgMax',         t:'num',  h:'SG max'},
+    {k:'psMax',      id:'pPsMax',         t:'num',  h:'Ps max', u:'press'},
+    {k:'tPump',      id:'pTpump',         t:'num',  h:'Max pumping temp', u:'temp'},
+    {k:'tDes',       id:'pTdes',          t:'num',  h:'Design temp', u:'temp'},
+    {k:'tMawp',      id:'pTmawp',         t:'num',  h:'MAWP temp basis', u:'temp'},
+    {k:'mawpTbe',    id:'pMawpTbe',       t:'num',  h:'(A) MAWP per TBE', u:'press'},
+    {k:'mawpVen',    id:'pMawpVen',       t:'num',  h:'(B) MAWP per vendor', u:'press'},
+    {k:'pdDs',       id:'pPdDs',          t:'num',  h:'(i) Max discharge P', u:'press'},
+    {k:'pdLine',     id:'pPdLine',        t:'num',  h:'(ii) Line design P', u:'press'},
+    {k:'floorOverride', id:'pFloorOverride', t:'num', h:'(C) floor override', u:'press'},
+    {k:'stressRatio',id:'pStressRatio',   t:'num',  h:'Hydro stress ratio'},
+    {k:'escA',       id:'esc610a',        t:'bool', h:'6.3.2 a) max SG'},
+    {k:'escB',       id:'esc610b',        t:'bool', h:'6.3.2 b) max impeller'},
+    {k:'escC',       id:'esc610c',        t:'bool', h:'6.3.2 c) trip speed'},
+    {k:'off.casing',    id:'mo-casing',    t:'text', h:'Offered casing'},
+    {k:'off.innerCase', id:'mo-innerCase', t:'text', h:'Offered inner case'},
+    {k:'off.impeller',  id:'mo-impeller',  t:'text', h:'Offered impeller'},
+    {k:'off.caseRings', id:'mo-caseRings', t:'text', h:'Offered case wear rings'},
+    {k:'off.impRings',  id:'mo-impRings',  t:'text', h:'Offered impeller wear rings'},
+    {k:'off.shaft',     id:'mo-shaft',     t:'text', h:'Offered shaft'},
+    {k:'note',       id:'pNote',          t:'text', h:'Reviewer remark'}
+  ];
+
+  function getPath(o, k){
+    if (k.indexOf('.') < 0) return o[k];
+    const parts = k.split('.');
+    return (o[parts[0]] || {})[parts[1]];
+  }
+  function setPath(o, k, v){
+    if (k.indexOf('.') < 0){ o[k] = v; return; }
+    const parts = k.split('.');
+    if (!o[parts[0]]) o[parts[0]] = {};
+    o[parts[0]][parts[1]] = v;
+  }
+
+  function newRow(){
+    return {
+      tag:'', model:'', type:'VS4', split:'radial', pid:'', mount:'', seal:'', instPt:'',
+      matClass:'S-6', flgClass:'150', group:'',
+      hMax:null, sgMax:null, psMax:null,
+      tPump:null, tDes:null, tMawp:null,
+      mawpTbe:null, mawpVen:null, pdDs:null, pdLine:null,
+      floorOverride:null, stressRatio:null,
+      escA:false, escB:false, escC:false,
+      off:{casing:'', innerCase:'', impeller:'', caseRings:'', impRings:'', shaft:''},
+      note:''
+    };
+  }
+
+  /* ------------------------------------------------------------------
+     ASME B16.5 rating lookup with linear interpolation, which the
+     standard permits between tabulated temperatures. Interpolation
+     between pressure classes is not permitted and is not offered.
+     Returns pressure in bar; the caller converts.
+  ------------------------------------------------------------------ */
+  function b165Rating(groupKey, cls, tC){
+    const g = B165.groups[groupKey];
+    if (!groupKey || !g) return {p:null, state:'nogroup'};
+    const col = {'150':1, '300':2, '600':3}[String(cls)];
+    if (!col) return {p:null, state:'noclass'};
+    if (tC === null || tC === undefined || !isFinite(tC)) return {p:null, state:'notemp', table:g.table};
+    const r = g.rows;
+    const base = {table:g.table, group:groupKey, tmax:g.tmax};
+    if (tC <= r[0][0]) {
+      return Object.assign({p:r[0][col], state:tC < -29 ? 'below' : 'ok', t1:r[0][0], p1:r[0][col]}, base);
+    }
+    if (tC > r[r.length - 1][0]) return Object.assign({p:null, state:'above'}, base);
+    for (let i = 0; i < r.length - 1; i++){
+      if (tC > r[i][0] && tC <= r[i + 1][0]){
+        const f = (tC - r[i][0]) / (r[i + 1][0] - r[i][0]);
+        return Object.assign({
+          p: r[i][col] + f * (r[i + 1][col] - r[i][col]), state:'ok',
+          t1:r[i][0], p1:r[i][col], t2:r[i + 1][0], p2:r[i + 1][col]
+        }, base);
+      }
+    }
+    return Object.assign({p:null, state:'above'}, base);
+  }
+
+  /* Which of the two Sec. 6.3.5 floors applies. */
+  function floorRule(row){
+    if (row.split === 'axial') return 'a';
+    const t = TYPE_BY_KEY[row.type];
+    return t ? t.floor : 'b';
+  }
+
+  function classIndex(cls){ return MAT_ORDER.indexOf(cls); }
+
+  function expectedFamily(cls, partKey){
+    const i = classIndex(cls);
+    if (i < 0 || !H1[partKey]) return null;
+    return H1[partKey][i];
+  }
+
+  /* ------------------------------------------------------------------
+     The offered material for one part against the class requirement.
+  ------------------------------------------------------------------ */
+  function partCheck(cls, partKey, offeredText){
+    const exp = expectedFamily(cls, partKey);
+    const expLabel = exp ? FAM[exp].label : '—';
+    const spec = exp ? FAM[exp].spec : '—';
+    const txt = String(offeredText || '').trim();
+    if (!txt) return {expected:exp, expLabel:expLabel, spec:spec, offered:'', state:'na', text:'—'};
+    const off = resolveFamily(txt);
+    if (!off) return {expected:exp, expLabel:expLabel, spec:spec, offered:txt, state:'warn', text:'NOT RECOGNISED'};
+    const bo = baseFam(off), be = baseFam(exp);
+    if (bo === be){
+      const hardExpected = exp !== be, hardOffered = off !== bo;
+      if (hardExpected && !hardOffered){
+        return {expected:exp, expLabel:expLabel, spec:spec, offered:FAM[off].label, state:'warn',
+                text:'CONFIRM HARDENING'};
+      }
+      return {expected:exp, expLabel:expLabel, spec:spec, offered:FAM[off].label, state:'ok', text:'MATCH'};
+    }
+    if (FAM[off].rank > FAM[be].rank){
+      return {expected:exp, expLabel:expLabel, spec:spec, offered:FAM[off].label, state:'warn',
+              text:'HIGHER GRADE'};
+    }
+    return {expected:exp, expLabel:expLabel, spec:spec, offered:FAM[off].label, state:'bad', text:'MISMATCH'};
+  }
+
+  /* ------------------------------------------------------------------
+     The whole calculation for one pump. Returns every intermediate
+     value, so the detail view, the register and the CSV all read from
+     one result and cannot disagree.
+  ------------------------------------------------------------------ */
+  function computePump(row, opts, sys){
+    const u = UNITS[sys];
+    const n = v => (v === null || v === undefined || v === '' || !isFinite(v)) ? null : Number(v);
+    const hMax = n(row.hMax), sgMax = n(row.sgMax), psMax = n(row.psMax);
+    const mawpB = n(row.mawpVen), mawpA = n(row.mawpTbe);
+    const pdDs = n(row.pdDs), pdLine = n(row.pdLine);
+    const tPump = n(row.tPump), tDes = n(row.tDes), tMawp = n(row.tMawp);
+    const sr = n(row.stressRatio);
+
+    const R = {unit:u, checks:[]};
+
+    R.dp = (hMax !== null && sgMax !== null) ? hMax * sgMax * u.kHead : null;
+    R.pd = (R.dp !== null && psMax !== null) ? psMax + R.dp : null;
+    R.dp10 = R.dp === null ? null : 0.10 * R.dp;
+    R.pReqApi = (R.pd !== null) ? R.pd + R.dp10 : null;
+    R.pReqLegacy = (R.pd !== null) ? 1.10 * R.pd : null;
+    const pct = (opts.customPct === null || !isFinite(opts.customPct)) ? 10 : Number(opts.customPct);
+    R.pReqCustom = (R.pd !== null) ? psMax + (1 + pct / 100) * R.dp : null;
+    R.customPct = pct;
+    R.deltaBasis = (R.pReqApi !== null && R.pReqLegacy !== null) ? R.pReqLegacy - R.pReqApi : null;
+
+    if (opts.basis === 'legacy'){ R.pReqMargin = R.pReqLegacy; R.basisLabel = 'Legacy sheet basis — 1.10 x maximum discharge pressure'; }
+    else if (opts.basis === 'custom'){ R.pReqMargin = R.pReqCustom; R.basisLabel = 'Custom basis — maximum suction pressure + ' + (100 + pct) / 100 + ' x differential pressure'; }
+    else { R.pReqMargin = R.pReqApi; R.basisLabel = 'API 610 Sec. 6.3.5 — maximum discharge pressure + 10 % of the maximum differential pressure'; }
+
+    /* Sec. 6.3.5 rating floor. */
+    R.rule = floorRule(row);
+    R.group = row.group || (MAT_CLASS[row.matClass] ? MAT_CLASS[row.matClass].grp : null);
+    R.groupAuto = !row.group;
+    const ovr = n(row.floorOverride);
+    let tFloorDisp = null, tFloorSrc = '';
+    if (opts.floorTemp === 'ref'){ tFloorDisp = u.ref38; tFloorSrc = '38 °C reference'; }
+    else if (opts.floorTemp === 'des'){ tFloorDisp = tDes; tFloorSrc = 'design temperature'; }
+    else { tFloorDisp = tMawp; tFloorSrc = 'MAWP temperature basis'; }
+    if (tFloorDisp === null){
+      tFloorDisp = (tMawp !== null) ? tMawp : (tDes !== null ? tDes : (tPump !== null ? tPump : u.ref38));
+      tFloorSrc += ' (fallback)';
+    }
+    R.tFloor = tFloorDisp;
+    R.tFloorSrc = tFloorSrc;
+
+    if (ovr !== null){
+      R.floor = ovr; R.floorState = 'override'; R.floorNote = 'Entered by hand';
+      R.floorClause = R.rule === 'a' ? 'Sec. 6.3.5 a)' : 'Sec. 6.3.5 b)';
+    } else if (R.rule === 'b'){
+      R.floor = FLOOR_B_BAR * u.barTo; R.floorState = 'fixed';
+      R.floorNote = '4 MPa (40 bar; 600 psi) at 38 °C for all pumps outside Sec. 6.3.5 a)';
+      R.floorClause = 'Sec. 6.3.5 b)';
+    } else {
+      const lk = b165Rating(R.group, row.flgClass, u.toC(tFloorDisp));
+      R.lookup = lk;
+      R.floor = (lk.p === null) ? null : lk.p * u.barTo;
+      R.floorState = lk.state;
+      R.floorClause = 'Sec. 6.3.5 a)';
+      if (lk.state === 'nogroup') R.floorNote = 'Cast iron casing takes ASME B16.1 Class 125 flanges, whose rating varies with size — enter the floor by hand';
+      else if (lk.state === 'above') R.floorNote = 'Temperature above the tabulated range of group ' + R.group + ' (max ' + lk.tmax + ' °C)';
+      else if (lk.state === 'below') R.floorNote = 'Below −29 °C the rating is held at the lowest tabulated value; low-temperature toughness still applies';
+      else if (lk.state === 'notemp') R.floorNote = 'No temperature entered';
+      else R.floorNote = 'ASME B16.5 Table ' + lk.table + ', Class ' + row.flgClass + ' at ' +
+             fmtNum(tFloorDisp, 0) + ' ' + u.temp + (lk.t2 === undefined ? '' :
+             ' (interpolated between ' + lk.t1 + ' °C and ' + lk.t2 + ' °C)');
+    }
+
+    /* The governing requirement is the higher of the two limbs of 6.3.5. */
+    const limbs = [R.pReqMargin, R.floor].filter(v => v !== null && v !== undefined);
+    R.pReq = limbs.length ? Math.max.apply(null, limbs) : null;
+    R.governed = (R.floor !== null && R.pReqMargin !== null)
+      ? (R.floor > R.pReqMargin ? 'floor' : 'margin')
+      : (R.floor !== null ? 'floor' : (R.pReqMargin !== null ? 'margin' : null));
+
+    R.mawpB = mawpB;
+    R.stressRatio = (sr === null || sr <= 0) ? 1 : sr;
+    R.hydro = (mawpB === null) ? null : 1.5 * mawpB * R.stressRatio;
+
+    /* ---- checks ---- */
+    const cmp = (id, name, clause, crit, req, act, sev) => {
+      if (req === null || req === undefined || act === null || act === undefined){
+        R.checks.push({id:id, name:name, clause:clause, crit:crit, req:req, act:act,
+                       margin:null, state:'na', text:'NOT APPLICABLE'});
+        return;
+      }
+      const ok = act >= req;
+      const margin = req === 0 ? null : (act - req) / req * 100;
+      const state = ok ? 'ok' : (sev === 'warn' ? 'warn' : 'bad');
+      R.checks.push({id:id, name:name, clause:clause, crit:crit, req:req, act:act, margin:margin,
+                     state:state, text:ok ? 'PASS' : (sev === 'warn' ? 'REVIEW' : 'FAIL')});
+    };
+
+    cmp('CHK-1', 'Vendor MAWP against the margin requirement', 'Sec. 6.3.5',
+        '(B) ≥ P<sub>req</sub>', R.pReqMargin, mawpB, 'fail');
+    cmp('CHK-2', 'Vendor MAWP against the pressure-rating floor', R.floorClause,
+        '(B) ≥ (C)', R.floor, mawpB, opts.floorSev === 'warn' ? 'warn' : 'fail');
+    cmp('CHK-3', 'Vendor MAWP against the process maximum discharge pressure', 'Process datasheet',
+        '(B) ≥ (i)', pdDs, mawpB, 'fail');
+    cmp('CHK-4', 'Vendor MAWP against the discharge line design pressure', 'Line list',
+        '(B) ≥ (ii)', pdLine, mawpB, 'fail');
+    cmp('CHK-5', 'Vendor MAWP against the bid-evaluation agreement', 'TBE',
+        '(B) ≥ (A)', mawpA, mawpB, 'warn');
+
+    /* Temperature basis of the MAWP, a nameplate item under 6.13.2 j). */
+    const tRefs = [];
+    if (tPump !== null) tRefs.push(tPump);
+    if (tDes !== null) tRefs.push(tDes);
+    if (tMawp === null || !tRefs.length){
+      R.checks.push({id:'CHK-6', name:'Temperature basis of the stated MAWP', clause:'Sec. 6.13.2 j)',
+                     crit:'T(MAWP) ≥ T(pumping), T(design)', req:null, act:tMawp, margin:null,
+                     state:'na', text:'NOT APPLICABLE'});
+    } else {
+      const need = Math.max.apply(null, tRefs);
+      const ok = tMawp >= need;
+      R.checks.push({id:'CHK-6', name:'Temperature basis of the stated MAWP', clause:'Sec. 6.13.2 j)',
+                     crit:'T(MAWP) ≥ T(pumping), T(design)', req:need, act:tMawp, margin:null,
+                     state:ok ? 'ok' : 'warn', text:ok ? 'PASS' : 'REVIEW', isTemp:true});
+    }
+
+    /* Cast iron ceiling of Sec. 6.12.1.6. */
+    if (row.matClass === 'I-1' || row.matClass === 'I-2'){
+      const cap = CAST_IRON_MAX_BAR * u.barTo;
+      if (mawpB === null){
+        R.checks.push({id:'CHK-7', name:'Cast iron construction pressure limit', clause:'Sec. 6.12.1.6',
+                       crit:'(B) ≤ ' + fmtNum(cap, u.dP), req:cap, act:null, margin:null,
+                       state:'na', text:'NOT APPLICABLE', reverse:true});
+      } else {
+        const ok = mawpB <= cap;
+        R.checks.push({id:'CHK-7', name:'Cast iron construction pressure limit', clause:'Sec. 6.12.1.6',
+                       crit:'(B) ≤ ' + fmtNum(cap, u.dP), req:cap, act:mawpB, margin:null,
+                       state:ok ? 'ok' : 'bad', text:ok ? 'PASS' : 'FAIL', reverse:true});
+      }
+    }
+
+    /* ---- materials ---- */
+    R.mat = {rows:[], state:'na'};
+    let worst = 'na';
+    PARTS.forEach(p => {
+      const res = partCheck(row.matClass, p.k, getPath(row, 'off.' + p.k));
+      res.part = p.name; res.key = p.k; res.full = p.full; res.checked = p.checked;
+      R.mat.rows.push(res);
+      if (!p.checked) return;
+      if (res.state === 'bad') worst = 'bad';
+      else if (res.state === 'warn' && worst !== 'bad') worst = 'warn';
+      else if (res.state === 'ok' && worst === 'na') worst = 'ok';
+    });
+    R.mat.state = worst;
+
+    /* ---- verdict ---- */
+    const anyBad = R.checks.some(c => c.state === 'bad') || R.mat.state === 'bad';
+    const anyWarn = R.checks.some(c => c.state === 'warn') || R.mat.state === 'warn';
+    const anyDecided = R.checks.some(c => c.state !== 'na');
+    R.verdict = anyBad ? 'NOT OK' : (anyWarn ? 'REVIEW' : (anyDecided ? 'OK' : '—'));
+    R.verdictState = anyBad ? 'bad' : (anyWarn ? 'warn' : (anyDecided ? 'ok' : 'neutral'));
+    R.remark = remarkOf(R);
+    R.matRemark = matRemarkOf(R);
+    return R;
+  }
+
+  /* Shorthand in the style the source review register used. */
+  function remarkOf(R){
+    const sym = {'CHK-1':'P_req', 'CHK-2':'(C)', 'CHK-3':'(i)', 'CHK-4':'(ii)', 'CHK-5':'(A)'};
+    const word = s => s === 'ok' ? 'ok' : (s === 'warn' ? 'review' : 'not ok');
+    const seg = [];
+    const byId = {};
+    R.checks.forEach(c => { byId[c.id] = c; });
+
+    ['CHK-1', 'CHK-2'].forEach(id => {
+      const c = byId[id];
+      if (!c || c.state === 'na') return;
+      seg.push('(B) ' + (c.act >= c.req ? '>=' : '<') + ' ' + sym[id] + ' - ' + word(c.state));
+    });
+
+    const i3 = byId['CHK-3'], i4 = byId['CHK-4'];
+    if (i3 && i4 && i3.state !== 'na' && i4.state !== 'na' && i3.state === i4.state){
+      seg.push('(B) ' + (i3.act >= i3.req ? '>=' : '<') + ' (i) & (ii) - ' + word(i3.state));
+    } else {
+      [i3, i4].forEach(c => {
+        if (!c || c.state === 'na') return;
+        seg.push('(B) ' + (c.act >= c.req ? '>=' : '<') + ' ' + sym[c.id] + ' - ' + word(c.state));
+      });
+    }
+
+    const c5 = byId['CHK-5'];
+    if (c5 && c5.state !== 'na') seg.push('(B) ' + (c5.act >= c5.req ? '>=' : '<') + ' (A) - ' + word(c5.state));
+
+    const c6 = byId['CHK-6'];
+    if (c6 && c6.state === 'warn') seg.push('MAWP stated at a temperature below the service temperature - review');
+
+    const c7 = byId['CHK-7'];
+    if (c7 && c7.state === 'bad') seg.push('cast iron above the Sec. 6.12.1.6 limit - not ok');
+
+    return seg.length ? seg.join('; ') : '—';
+  }
+
+  function matRemarkOf(R){
+    const out = [];
+    R.mat.rows.forEach(r => {
+      if (!r.checked || r.state === 'ok' || r.state === 'na') return;
+      out.push(r.part.toLowerCase() + ': ' + r.offered + ' offered against ' + r.expLabel +
+               ' - ' + (r.state === 'bad' ? 'not ok' : 'review'));
+    });
+    return out.length ? out.join('; ') : '—';
+  }
+
+  function fmtNum(v, d){
+    if (v === null || v === undefined || !isFinite(v)) return '—';
+    return Number(v).toLocaleString('en-GB', {minimumFractionDigits:d, maximumFractionDigits:d});
+  }
+
+  /* ==================================================================
+     PURE:END
+     ================================================================== */
+
+  /* ---------------- DOM helpers ---------------- */
+  const $ = id => document.getElementById(id);
+  const esc = s => {
+    s = (s === null || s === undefined) ? '' : String(s);
+    return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  };
+  const escHtml = s => String(s === null || s === undefined ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  const badge = (state, text) => '<span class="badge ' +
+    (state === 'ok' ? 'ok' : state === 'bad' ? 'bad' : state === 'warn' ? 'warn' : 'neutral') +
+    '">' + escHtml(text) + '</span>';
+  const mini = (state, text) => '<span class="minibadge ' +
+    (state === 'ok' ? 'ok' : state === 'bad' ? 'bad' : state === 'warn' ? 'warn' : 'na') +
+    '">' + escHtml(text) + '</span>';
+
+  $('yr').textContent = new Date().getFullYear();
+
+  /* ---------------- State ---------------- */
+  const LS_KEY = 'ard.pump-mawp-check.v1';
+  const ST = {
+    v:1, sys:'si',
+    project:{name:'', doc:'', rev:''},
+    opts:{basis:'api', customPct:10, floorTemp:'mawp', floorSev:'fail'},
+    cur:0,
+    rows:[newRow()]
+  };
+  let RES = [];
+  let saveT = null;
+
+  function save(){
+    clearTimeout(saveT);
+    saveT = setTimeout(function(){
+      try { localStorage.setItem(LS_KEY, JSON.stringify(ST)); } catch(e){ /* storage unavailable */ }
+    }, 250);
+  }
+  function load(){
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      if (!raw) return;
+      const s = JSON.parse(raw);
+      if (!s || s.v !== 1 || !Array.isArray(s.rows) || !s.rows.length) return;
+      ST.sys = (s.sys === 'eng') ? 'eng' : 'si';
+      ST.project = Object.assign({name:'', doc:'', rev:''}, s.project || {});
+      ST.opts = Object.assign({basis:'api', customPct:10, floorTemp:'mawp', floorSev:'fail'}, s.opts || {});
+      ST.rows = s.rows.map(r => Object.assign(newRow(), r, {off:Object.assign(newRow().off, r.off || {})}));
+      ST.cur = Math.min(Math.max(0, s.cur | 0), ST.rows.length - 1);
+    } catch(e){ /* corrupt or unavailable — start clean */ }
+  }
+  const U = () => UNITS[ST.sys];
+  const row = () => ST.rows[ST.cur];
+
+  /* ---------------- Select population ---------------- */
+  function fillSelects(){
+    $('pType').innerHTML = PUMP_TYPES.map(t =>
+      '<option value="' + t.k + '">' + escHtml(t.label) + '</option>').join('');
+    const matOpts = MAT_ORDER.map(c =>
+      '<option value="' + c + '">' + c + ' — ' + escHtml(MAT_CLASS[c].code) + '</option>').join('');
+    $('pMatClass').innerHTML = matOpts;
+    $('apxMatClass').innerHTML = matOpts;
+    const grpOpts = '<option value="">Automatic — from the material class</option>' +
+      Object.keys(B165.groups).map(g =>
+        '<option value="' + g + '">Group ' + g + ' — ' + escHtml(B165.groups[g].name) + '</option>').join('');
+    $('pGroup').innerHTML = grpOpts;
+    $('apxGroup').innerHTML = Object.keys(B165.groups).map(g =>
+      '<option value="' + g + '">Group ' + g + ' — ' + escHtml(B165.groups[g].name) + '</option>').join('');
+    $('famList').innerHTML = Object.keys(FAM).map(k =>
+      '<option value="' + escHtml(FAM[k].label) + '"></option>').join('');
+    $('tsvCols').textContent = FIELDS.map((f, i) => (i + 1) + '. ' + f.h).join('   ');
+  }
+
+  /* ---------------- Unit labels ---------------- */
+  function refreshUnitLabels(){
+    const u = U();
+    document.querySelectorAll('[data-u]').forEach(el => {
+      const k = el.getAttribute('data-u');
+      el.textContent = k === 'press' ? u.press : k === 'len' ? u.len : k === 'temp' ? u.temp : '';
+    });
+    $('btnSI').classList.toggle('active', ST.sys === 'si');
+    $('btnENG').classList.toggle('active', ST.sys === 'eng');
+  }
+
+  /* ---------------- Detail view binding ---------------- */
+  function syncDetail(){
+    const r = row();
+    FIELDS.forEach(f => {
+      if (f.id.indexOf('mo-') === 0) return;
+      const el = $(f.id);
+      if (!el) return;
+      const v = getPath(r, f.k);
+      if (f.t === 'bool') el.checked = !!v;
+      else el.value = (v === null || v === undefined) ? '' : v;
+    });
+    $('idProject').value = ST.project.name;
+    $('idDoc').value = ST.project.doc;
+    $('idRev').value = ST.project.rev;
+    $('optBasis').value = ST.opts.basis;
+    $('optCustomPct').value = ST.opts.customPct;
+    $('optFloorTemp').value = ST.opts.floorTemp;
+    $('optFloorSev').value = ST.opts.floorSev;
+    $('wrapCustomPct').hidden = ST.opts.basis !== 'custom';
+  }
+
+  function bindDetail(){
+    FIELDS.forEach(f => {
+      if (f.id.indexOf('mo-') === 0) return;
+      const el = $(f.id);
+      if (!el) return;
+      const evt = (f.t === 'sel' || f.t === 'bool') ? 'change' : 'input';
+      el.addEventListener(evt, function(){
+        const r = row();
+        if (f.t === 'bool') setPath(r, f.k, el.checked);
+        else if (f.t === 'num') setPath(r, f.k, el.value === '' ? null : Number(el.value));
+        else setPath(r, f.k, el.value);
+        recalc();
+      });
+    });
+    ['name:idProject', 'doc:idDoc', 'rev:idRev'].forEach(pair => {
+      const parts = pair.split(':');
+      $(parts[1]).addEventListener('input', function(){ ST.project[parts[0]] = $(parts[1]).value; save(); });
+    });
+    $('optBasis').addEventListener('change', function(){
+      ST.opts.basis = $('optBasis').value;
+      $('wrapCustomPct').hidden = ST.opts.basis !== 'custom';
+      recalc();
+    });
+    $('optCustomPct').addEventListener('input', function(){
+      ST.opts.customPct = $('optCustomPct').value === '' ? 10 : Number($('optCustomPct').value);
+      recalc();
+    });
+    $('optFloorTemp').addEventListener('change', function(){ ST.opts.floorTemp = $('optFloorTemp').value; recalc(); });
+    $('optFloorSev').addEventListener('change', function(){ ST.opts.floorSev = $('optFloorSev').value; recalc(); });
+
+    /* Offered materials are rendered on every recalc, so they are bound
+       by delegation rather than by id. */
+    $('matBody').addEventListener('input', function(ev){
+      const el = ev.target;
+      if (!el || !el.dataset || !el.dataset.part) return;
+      setPath(row(), 'off.' + el.dataset.part, el.value);
+      recalc();
+    });
+  }
+
+  /* ---------------- Rendering: calculated pressures ---------------- */
+  function pv(v, d){ return fmtNum(v, d); }
+
+  function renderCalc(R){
+    const u = U(), d = u.dP;
+    const unitP = '<span class="runit">' + u.press + '</span>';
+    $('tPreq').innerHTML = R.pReq === null ? '—' : pv(R.pReq, d) + unitP;
+    $('tPreqSub').textContent = R.pReq === null ? 'Sec. 6.3.5' :
+      (R.governed === 'floor' ? 'Governed by the Sec. 6.3.5 rating floor' : 'Governed by the margin on differential pressure');
+    $('tMawpB').innerHTML = R.mawpB === null ? '—' : pv(R.mawpB, d) + unitP;
+    $('tMawpBSub').textContent = (R.mawpB === null || R.pReq === null) ? 'Margin against the requirement'
+      : (R.mawpB >= R.pReq ? '+' : '') + fmtNum((R.mawpB - R.pReq) / R.pReq * 100, 1) + ' % against the requirement';
+    $('tFloor').innerHTML = R.floor === null ? '—' : pv(R.floor, d) + unitP;
+    $('tFloorSub').textContent = R.floorNote || '';
+    $('tHydro').innerHTML = R.hydro === null ? '—' : pv(R.hydro, d) + unitP;
+    $('tHydroSub').textContent = R.hydro === null ? '1.5 × MAWP'
+      : (R.stressRatio === 1 ? '1.5 × MAWP, Sec. 8.3.2.2' : '1.5 × MAWP × ' + fmtNum(R.stressRatio, 3) + ', Sec. 8.3.2.6');
+
+    const tile = $('tFloor').closest('.result-tile');
+    tile.classList.toggle('headline', R.governed === 'floor');
+
+    const rows = [
+      ['ΔP', 'Maximum differential pressure', 'H × SG × ' + (ST.sys === 'si' ? '0.0980665' : '0.4335'), R.dp, d, false],
+      ['P<sub>d</sub>', 'Maximum discharge pressure', 'Sec. 3.22 / 6.3.1 — P<sub>s</sub> + ΔP', R.pd, d, false],
+      ['0.1ΔP', '10 % of the maximum differential pressure', 'Sec. 6.3.5 margin', R.dp10, d, false],
+      ['P<sub>req</sub> (a)', 'Required MAWP, API 610 basis', 'P<sub>s</sub> + 1.10 × ΔP', R.pReqApi, d, ST.opts.basis === 'api'],
+      ['P<sub>req</sub> (l)', 'Required MAWP, legacy sheet basis', '1.10 × P<sub>d</sub>', R.pReqLegacy, d, ST.opts.basis === 'legacy'],
+      ST.opts.basis === 'custom'
+        ? ['P<sub>req</sub> (c)', 'Required MAWP, custom margin', 'P<sub>s</sub> + ' + fmtNum(1 + R.customPct / 100, 2) + ' × ΔP', R.pReqCustom, d, true]
+        : null,
+      ['Δ', 'Difference between the two published bases', 'equals 0.10 × P<sub>s</sub>', R.deltaBasis, d, false],
+      ['(C)', 'Pressure-rating floor', R.floorClause + ' — at the ' + R.tFloorSrc, R.floor, d, false],
+      ['P<sub>req</sub>', 'Governing required MAWP', 'the higher of the margin and the floor', R.pReq, d, true],
+      ['P<sub>h</sub>', 'Hydrostatic test pressure', 'Sec. 8.3.2.2 — 1.5 × MAWP' + (R.stressRatio === 1 ? '' : ' × stress ratio'), R.hydro, d, false]
+    ];
+    $('calcBody').innerHTML = rows.filter(Boolean).map(r =>
+      '<tr' + (r[5] ? ' class="hl"' : '') + '><td style="text-align:left;color:var(--cyan-300);font-weight:700;">' + r[0] +
+      '</td><td>' + escHtml(r[1]) + '</td><td class="crit">' + r[2] + '</td><td class="actual">' +
+      (r[3] === null ? '—' : pv(r[3], r[4]) + ' <span style="color:var(--blue-300);font-weight:600;font-size:11px;">' + u.press + '</span>') +
+      '</td></tr>').join('');
+
+    const escSel = [];
+    if (row().escA) escSel.push('6.3.2 a) max SG');
+    if (row().escB) escSel.push('6.3.2 b) max impeller');
+    if (row().escC) escSel.push('6.3.2 c) trip speed');
+    const chips = [
+      'ΔP = H × SG × ' + (ST.sys === 'si' ? '0.0980665 bar/m' : '0.4335 psi/ft'),
+      'P<sub>d</sub> = P<sub>s</sub> + ΔP',
+      'P<sub>req</sub> = P<sub>s</sub> + 1.10 ΔP  (Sec. 6.3.5)',
+      'P<sub>h</sub> = 1.5 × MAWP  (Sec. 8.3.2.2)',
+      'floor = ' + (R.rule === 'a' ? 'Class ' + row().flgClass + ' rating, group ' + (R.group || '—') : '40 bar at 38 °C'),
+      'basis: ' + (escSel.length ? escSel.join(' + ') : 'Sec. 6.3.1 furnished impeller, normal SG')
+    ];
+    $('formulaStrip').innerHTML = chips.map(c => '<span class="formula-chip">' + c + '</span>').join('');
+  }
+
+  /* ---------------- Rendering: checks ---------------- */
+  function renderChecks(R){
+    const u = U(), d = u.dP;
+    $('chkBody').innerHTML = R.checks.map(c => {
+      const unit = c.isTemp ? u.temp : u.press;
+      const dec = c.isTemp ? 0 : d;
+      const cell = v => v === null || v === undefined ? '<td class="na">—</td>'
+        : '<td class="actual">' + pv(v, dec) + ' <span style="color:var(--blue-300);font-weight:600;font-size:11px;">' + unit + '</span></td>';
+      return '<tr><td>' + escHtml(c.id + ' · ' + c.name) + '</td><td class="crit">' + escHtml(c.clause) +
+        '</td><td class="crit">' + c.crit + '</td>' + cell(c.req) + cell(c.act) +
+        '<td class="' + (c.state === 'bad' ? 'flag-bad' : c.state === 'warn' ? 'flag-warn' : '') + '">' +
+        (c.margin === null ? '—' : (c.margin >= 0 ? '+' : '') + fmtNum(c.margin, 1) + ' %') +
+        '</td><td>' + badge(c.state, c.text) + '</td></tr>';
+    }).join('');
+
+    const vc = $('verdictMain');
+    vc.className = 'verdict-card ' + R.verdictState;
+    $('verdictBig').textContent = R.verdict;
+    const titles = {'OK':'All applicable checks pass', 'NOT OK':'At least one requirement is not met',
+                    'REVIEW':'Passes the mandatory checks, but items need review', '—':'Awaiting data'};
+    $('verdictTitle').textContent = titles[R.verdict] || '';
+    let sub = R.verdict === '—'
+      ? 'Enter the head, relative density, suction pressure and the vendor MAWP.'
+      : R.basisLabel + '. ' + (R.governed === 'floor'
+          ? 'The governing requirement is the ' + R.floorClause + ' rating floor.'
+          : 'The governing requirement is the margin on differential pressure.');
+    if (R.rule === 'a' && R.floorState !== 'override' && R.floorState !== 'nogroup' && !B165.verified){
+      sub += ' The rating floor comes from the unverified ASME B16.5 table in Appendix I — check it before issuing this result.';
+    }
+    $('verdictSub').textContent = sub;
+    $('remarkOut').textContent = R.remark;
+  }
+
+  /* ---------------- Rendering: materials ---------------- */
+  function renderMaterial(R){
+    const r = row();
+    $('matBody').innerHTML = R.mat.rows.filter(m => m.checked).map(m =>
+      '<tr><td>' + escHtml(m.part) + '</td><td class="crit">' + (m.full ? 'Full compliance' : 'Chemistry only') +
+      '</td><td class="actual" style="text-align:right;">' + escHtml(m.expLabel) +
+      '</td><td class="crit">' + escHtml(m.spec) +
+      '</td><td><input type="text" list="famList" data-part="' + m.key + '" value="' +
+      escHtml(getPath(r, 'off.' + m.key) || '') + '" placeholder="as offered"></td><td>' +
+      badge(m.state, m.text) + '</td></tr>').join('');
+
+    const vc = $('verdictMat');
+    const st = R.mat.state;
+    vc.className = 'verdict-card ' + (st === 'bad' ? 'bad' : st === 'warn' ? 'warn' : st === 'ok' ? 'ok' : 'neutral');
+    $('matBig').textContent = st === 'bad' ? 'NOT OK' : st === 'warn' ? 'REVIEW' : st === 'ok' ? 'OK' : '—';
+    $('matTitle').textContent = st === 'na' ? 'No materials entered'
+      : 'Class ' + r.matClass + ' — ' + MAT_CLASS[r.matClass].code;
+    $('matSub').textContent = st === 'na'
+      ? 'Enter what the vendor has offered for each part; leave a part blank to omit it.'
+      : (R.matRemark === '—' ? 'Every part entered matches the Table H.1 material for this class.' : R.matRemark);
+  }
+
+  /* ---------------- Rendering: register ---------------- */
+  const REG_COLS = [
+    'Tag', 'Type', 'Class', 'Flg', 'Group', 'H max', 'SG', 'Ps', 'ΔP', 'Pd',
+    'P req', '(C)', 'T floor', '(A)', '(B)', 'T MAWP', '(i)', '(ii)', 'Hydro',
+    '1', '2', '3', '4', '5', '6', '7', 'Mat', 'Verdict', 'Remark'
+  ];
+
+  function renderRegister(){
+    const u = U(), d = u.dP;
+    $('regHead').innerHTML = '<tr>' + REG_COLS.map((c, i) =>
+      '<th' + (i === 0 ? ' class="tagc"' : '') + '>' + escHtml(c) + '</th>').join('') + '</tr>';
+    if (!ST.rows.length){
+      $('regBody').innerHTML = '<tr><td class="empty" colspan="' + REG_COLS.length + '">No pumps in the register.</td></tr>';
+      return;
+    }
+    $('regBody').innerHTML = ST.rows.map((r, i) => {
+      const R = RES[i];
+      const num = (v, dec) => v === null || v === undefined ? '<td class="na">—</td>' : '<td>' + fmtNum(v, dec) + '</td>';
+      const byId = {};
+      R.checks.forEach(c => { byId[c.id] = c; });
+      const chk = n => {
+        const c = byId['CHK-' + n];
+        if (!c) return '<td>' + mini('na', '–') + '</td>';
+        return '<td>' + mini(c.state, c.state === 'ok' ? 'P' : c.state === 'bad' ? 'F' : c.state === 'warn' ? 'R' : '–') + '</td>';
+      };
+      return '<tr class="' + (i === ST.cur ? 'cur' : '') + '" data-i="' + i + '">' +
+        '<td class="tagc">' + escHtml(r.tag || '(untitled ' + (i + 1) + ')') + '</td>' +
+        '<td class="txt">' + escHtml(r.type) + (r.split === 'axial' ? ' ax' : '') + '</td>' +
+        '<td class="txt">' + escHtml(r.matClass) + '</td>' +
+        '<td class="txt">' + escHtml(r.flgClass) + '</td>' +
+        '<td class="txt">' + escHtml(R.group || '—') + '</td>' +
+        num(r.hMax, 1) + num(r.sgMax, 3) + num(r.psMax, d) +
+        num(R.dp, d) + num(R.pd, d) + num(R.pReq, d) + num(R.floor, d) + num(R.tFloor, 0) +
+        num(r.mawpTbe, d) + num(r.mawpVen, d) + num(r.tMawp, 0) + num(r.pdDs, d) + num(r.pdLine, d) +
+        num(R.hydro, d) +
+        chk(1) + chk(2) + chk(3) + chk(4) + chk(5) + chk(6) + chk(7) +
+        '<td>' + mini(R.mat.state, R.mat.state === 'ok' ? 'P' : R.mat.state === 'bad' ? 'F' : R.mat.state === 'warn' ? 'R' : '–') + '</td>' +
+        '<td class="' + (R.verdictState === 'bad' ? 'flag-bad' : R.verdictState === 'warn' ? 'flag-warn' : '') + '">' +
+        escHtml(R.verdict) + '</td>' +
+        '<td class="txt" style="white-space:normal;min-width:280px;">' + escHtml(R.remark) +
+        (r.note ? ' — ' + escHtml(r.note) : '') + '</td></tr>';
+    }).join('');
+  }
+
+  function selectRow(i){
+    if (i < 0 || i >= ST.rows.length) return;
+    ST.cur = i;
+    syncDetail();
+    recalc();
+    const card = document.querySelector('.detail-card');
+    if (card) card.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  /* ---------------- Rendering: appendices ---------------- */
+  function renderApxB165(){
+    const g = B165.groups[$('apxGroup').value];
+    const cls = $('apxClass').value;
+    const u = U();
+    if (!g) return;
+    $('apxBody').innerHTML = g.rows.map(r =>
+      '<tr><td>' + (ST.sys === 'si' ? (r[0] === 38 ? '−29 to 38' : r[0]) + ' °C'
+                                    : (r[0] === 38 ? '−20 to 100' : Math.round(u.fromC(r[0]))) + ' °F') +
+      '</td><td>' + fmtNum(r[1] * u.barTo, u.dP) + '</td><td>' + fmtNum(r[2] * u.barTo, u.dP) +
+      '</td><td>' + fmtNum(r[3] * u.barTo, u.dP) + '</td></tr>').join('');
+
+    const tRaw = $('apxT').value === '' ? null : Number($('apxT').value);
+    const lk = b165Rating($('apxGroup').value, cls, tRaw === null ? null : u.toC(tRaw));
+    if (lk.p === null){
+      $('apxOut').textContent = '—';
+      $('apxNote').textContent = lk.state === 'above'
+        ? 'Above the tabulated range for this group (maximum ' + g.tmax + ' °C).'
+        : lk.state === 'notemp' ? 'Enter a temperature.' : 'No rating available.';
+    } else {
+      $('apxOut').innerHTML = fmtNum(lk.p * u.barTo, u.dP) + '<small>' + u.press + '</small>';
+      $('apxNote').textContent = 'Table ' + lk.table + ', Class ' + cls +
+        (lk.t2 === undefined ? ' — first tabulated row.' :
+         ' — interpolated between ' + lk.t1 + ' °C and ' + lk.t2 + ' °C.') +
+        (lk.state === 'below' ? ' Below −29 °C the rating is held; low-temperature toughness still applies.' : '');
+    }
+    $('apxCallout').innerHTML = '<strong>' + (B165.verified ? 'Source.' : 'Unverified.') + '</strong> ' +
+      escHtml(B165.edition) + ' — group ' + escHtml($('apxGroup').value) + ', ' + escHtml(g.materials) + '. ' +
+      (B165.verified ? 'Checked against a licensed copy of the standard.'
+        : 'These values have not been checked against a licensed copy of ASME B16.5 and must be verified before this tool is relied on. Use the override field in section 2 to enter a rating from your own copy.');
+  }
+
+  function renderApxMat(){
+    const cls = $('apxMatClass').value;
+    const i = classIndex(cls);
+    $('apxMatBody').innerHTML = PARTS.map(p => {
+      const fam = H1[p.k][i];
+      return '<tr><td>' + escHtml(p.name) + '</td><td>' + (p.full ? 'Yes' : 'No') +
+        '</td><td>' + escHtml(FAM[fam].label) + '</td><td>' + escHtml(FAM[fam].spec) + '</td></tr>';
+    }).join('');
+    $('apxMatCode').textContent = cls + ' — ' + MAT_CLASS[cls].code +
+      (MAT_CLASS[cls].grp ? '. Casing maps to ASME B16.5 group ' + MAT_CLASS[cls].grp + '.'
+                          : '. Cast iron casing takes ASME B16.1 Class 125 flanges, so no B16.5 group applies.');
+    $('apxMatrix').innerHTML = MAT_ORDER.map((c, j) =>
+      '<tr' + (c === cls ? ' class="hl"' : '') + '><td>' + c + '</td><td>' + escHtml(FAM[H1.casing[j]].label) +
+      '</td><td>' + escHtml(FAM[H1.impeller[j]].label) + '</td><td>' + escHtml(FAM[H1.shaft[j]].label) +
+      '</td><td>' + escHtml(FAM[H1.caseRings[j]].label) + '</td><td>' +
+      (MAT_CLASS[c].grp || '—') + '</td></tr>').join('');
+  }
+
+  /* ---------------- Recalculate everything ---------------- */
+  function recalc(){
+    RES = ST.rows.map(r => computePump(r, ST.opts, ST.sys));
+    const R = RES[ST.cur];
+    const r = row();
+
+    const t = TYPE_BY_KEY[r.type];
+    $('noteType').textContent = (r.split === 'axial')
+      ? 'Axially split — Sec. 6.3.5 a) flange-rating floor applies'
+      : (t && t.floor === 'a' ? 'Sec. 6.3.5 a) flange-rating floor applies'
+                              : 'Sec. 6.3.5 b) floor of 40 bar (600 psi) at 38 °C applies');
+    $('noteMat').textContent = MAT_CLASS[r.matClass].code;
+    $('noteGroup').textContent = R.groupAuto
+      ? (R.group ? 'Group ' + R.group + ', from the ' + FAM[H1.casing[classIndex(r.matClass)]].label + ' casing'
+                 : 'No B16.5 group — cast iron casing')
+      : 'Set by hand';
+
+    renderCalc(R);
+    renderChecks(R);
+    renderMaterial(R);
+    renderRegister();
+    renderApxB165();
+    save();
+  }
+
+  /* ---------------- Register operations ---------------- */
+  function addRow(copy){
+    const r = copy ? JSON.parse(JSON.stringify(row())) : newRow();
+    if (copy) r.tag = (r.tag || 'pump') + ' (copy)';
+    ST.rows.splice(ST.cur + 1, 0, r);
+    ST.cur = ST.cur + 1;
+    syncDetail();
+    recalc();
+  }
+  function delRow(){
+    if (ST.rows.length === 1){
+      if (!confirm('This is the only pump in the register. Clear its data?')) return;
+      ST.rows[0] = newRow();
+      ST.cur = 0;
+    } else {
+      if (!confirm('Delete "' + (row().tag || 'this pump') + '" from the register?')) return;
+      ST.rows.splice(ST.cur, 1);
+      ST.cur = Math.min(ST.cur, ST.rows.length - 1);
+    }
+    syncDetail();
+    recalc();
+  }
+
+  /* ---------------- Paste from a spreadsheet ---------------- */
+  function parseTsv(text){
+    const out = {rows:[], errors:[]};
+    const lines = String(text || '').replace(/\r\n?/g, '\n').split('\n').filter(l => l.trim() !== '');
+    if (!lines.length){ out.errors.push('Nothing to import.'); return out; }
+    const delim = lines[0].indexOf('\t') >= 0 ? '\t' : ',';
+    lines.forEach((line, li) => {
+      const cells = line.split(delim).map(c => c.trim().replace(/^"|"$/g, ''));
+      if (li === 0 && /^tag$/i.test(cells[0])) return;
+      const r = newRow();
+      FIELDS.forEach((f, ci) => {
+        const raw = cells[ci];
+        if (raw === undefined || raw === '') return;
+        if (f.t === 'num'){
+          const v = parseFloat(raw.replace(/[, ]/g, ''));
+          if (isFinite(v)) setPath(r, f.k, v);
+          else out.errors.push('Line ' + (li + 1) + ': "' + raw + '" is not a number for ' + f.h + '.');
+        } else if (f.t === 'bool'){
+          setPath(r, f.k, /^(y|yes|true|1|x)$/i.test(raw));
+        } else if (f.k === 'type'){
+          const k = raw.toUpperCase().replace(/[^A-Z0-9]/g, '');
+          if (TYPE_BY_KEY[k]) r.type = k;
+          else out.errors.push('Line ' + (li + 1) + ': pump type "' + raw + '" not recognised, kept as ' + r.type + '.');
+        } else if (f.k === 'split'){
+          r.split = /^ax/i.test(raw) ? 'axial' : 'radial';
+        } else if (f.k === 'matClass'){
+          const k = raw.toUpperCase().replace(/\s/g, '');
+          if (MAT_CLASS[k]) r.matClass = k;
+          else out.errors.push('Line ' + (li + 1) + ': material class "' + raw + '" not recognised, kept as ' + r.matClass + '.');
+        } else if (f.k === 'flgClass'){
+          const k = raw.replace(/[^0-9]/g, '');
+          if (k === '150' || k === '300' || k === '600') r.flgClass = k;
+          else out.errors.push('Line ' + (li + 1) + ': flange class "' + raw + '" not recognised, kept as ' + r.flgClass + '.');
+        } else if (f.k === 'group'){
+          r.group = B165.groups[raw] ? raw : '';
+        } else {
+          setPath(r, f.k, raw);
+        }
+      });
+      out.rows.push(r);
+    });
+    if (!out.rows.length) out.errors.push('No data rows found.');
+    return out;
+  }
+
+  function doImport(){
+    const res = parseTsv($('tsvBox').value);
+    const msg = $('tsvMsg');
+    if (!res.rows.length){
+      msg.className = 'import-msg bad';
+      msg.textContent = res.errors.join(' ');
+      return;
+    }
+    if ($('tsvReplace').checked){ ST.rows = res.rows; ST.cur = 0; }
+    else { ST.rows = ST.rows.concat(res.rows); ST.cur = ST.rows.length - res.rows.length; }
+    msg.className = 'import-msg ' + (res.errors.length ? 'bad' : 'ok');
+    msg.textContent = res.rows.length + ' pump' + (res.rows.length === 1 ? '' : 's') + ' imported.' +
+      (res.errors.length ? ' ' + res.errors.slice(0, 6).join(' ') : '');
+    $('tsvBox').value = '';
+    syncDetail();
+    recalc();
+  }
+
+  /* ---------------- CSV export ---------------- */
+  function exportCsv(){
+    recalc();
+    const u = U(), d = u.dP;
+    const L = [];
+    const push = a => L.push(a.map(esc).join(','));
+    push(['Pump MAWP & Material Check — API 610 11th Edition']);
+    push(['Project', ST.project.name]);
+    push(['Requisition / PO', ST.project.doc]);
+    push(['Revision', ST.project.rev]);
+    push(['Units', ST.sys === 'si' ? 'SI (barg, m, °C)' : 'English (psig, ft, °F)']);
+    push(['Margin basis', ST.opts.basis === 'api' ? 'API 610 Sec. 6.3.5 — Ps + 1.10 x dP'
+      : ST.opts.basis === 'legacy' ? 'Legacy — 1.10 x Pd'
+      : 'Custom — Ps + ' + (1 + ST.opts.customPct / 100) + ' x dP']);
+    push(['Rating-floor temperature', ST.opts.floorTemp === 'mawp' ? 'MAWP temperature basis'
+      : ST.opts.floorTemp === 'des' ? 'Design temperature' : '38 °C']);
+    push(['Rating-floor severity', ST.opts.floorSev === 'fail' ? 'Fail (per Sec. 6.3.5)' : 'Review only']);
+    push(['ASME B16.5 data', B165.edition + (B165.verified ? '' : ' — UNVERIFIED, check against a licensed copy')]);
+    push(['Exported', new Date().toISOString().slice(0, 19).replace('T', ' ') + ' UTC']);
+    L.push('');
+
+    const inHdr = FIELDS.map(f => f.h + (f.u ? ' (' + (f.u === 'press' ? u.press : f.u === 'len' ? u.len : u.temp) + ')' : ''));
+    const outHdr = ['dP (' + u.press + ')', 'Pd (' + u.press + ')', 'P req API (' + u.press + ')',
+      'P req legacy (' + u.press + ')', 'P req governing (' + u.press + ')', 'Governed by',
+      '(C) floor (' + u.press + ')', 'Floor clause', 'Floor basis', 'Floor temperature (' + u.temp + ')',
+      'Hydrostatic (' + u.press + ')',
+      'CHK-1', 'CHK-2', 'CHK-3', 'CHK-4', 'CHK-5', 'CHK-6', 'CHK-7',
+      'Material result', 'Verdict', 'Generated remark', 'Material remark'];
+    push(inHdr.concat(outHdr));
+
+    ST.rows.forEach((r, i) => {
+      const R = RES[i];
+      const byId = {};
+      R.checks.forEach(c => { byId[c.id] = c; });
+      const ck = n => byId['CHK-' + n] ? byId['CHK-' + n].text : 'NOT APPLICABLE';
+      const inVals = FIELDS.map(f => {
+        const v = getPath(r, f.k);
+        if (f.t === 'bool') return v ? 'yes' : 'no';
+        return (v === null || v === undefined) ? '' : v;
+      });
+      const num = (v, dec) => v === null || v === undefined ? '' : Number(v).toFixed(dec);
+      push(inVals.concat([
+        num(R.dp, d), num(R.pd, d), num(R.pReqApi, d), num(R.pReqLegacy, d), num(R.pReq, d),
+        R.governed === 'floor' ? 'rating floor' : R.governed === 'margin' ? 'differential margin' : '',
+        num(R.floor, d), R.floorClause, R.floorNote, num(R.tFloor, 0), num(R.hydro, d),
+        ck(1), ck(2), ck(3), ck(4), ck(5), ck(6), ck(7),
+        R.mat.state === 'ok' ? 'PASS' : R.mat.state === 'bad' ? 'MISMATCH' : R.mat.state === 'warn' ? 'REVIEW' : 'NOT APPLICABLE',
+        R.verdict, R.remark, R.matRemark
+      ]));
+    });
+
+    const blob = new Blob(['﻿' + L.join('\r\n')], {type:'text/csv;charset=utf-8;'});
+    const a = document.createElement('a');
+    const tag = (ST.project.name || 'register').replace(/[^A-Za-z0-9_-]+/g, '-').slice(0, 40);
+    a.href = URL.createObjectURL(blob);
+    a.download = 'pump-mawp-check-' + tag + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+  }
+
+  /* ---------------- Worked sample ---------------- */
+  /* Illustrative only. The numbers are representative of a vertical
+     sump pump package; the tags and references are invented. */
+  function loadSample(){
+    if (ST.sys !== 'si'){ ST.sys = 'si'; refreshUnitLabels(); }
+    ST.project = {name:'Sample — vertical sump pump package', doc:'MR-0000-PU-001', rev:'R0'};
+    ST.opts = {basis:'api', customPct:10, floorTemp:'mawp', floorSev:'fail'};
+    const mk = o => Object.assign(newRow(), o, {off:Object.assign(newRow().off, o.off || {})});
+    ST.rows = [
+      mk({tag:'P-1001 A/B', model:'VS4 sump pump', type:'VS4', pid:'PID-0001', mount:'V-1001',
+          seal:'53B', instPt:'PT-1001', matClass:'D-1', flgClass:'150', escA:true, escB:true,
+          hMax:61, sgMax:0.976, psMax:3.58, tPump:42, tDes:95, tMawp:95,
+          mawpTbe:16.00, mawpVen:16.00, pdDs:9.50, pdLine:8.00,
+          off:{casing:'A995 Gr 4A', innerCase:'Duplex', impeller:'Duplex',
+               caseRings:'Duplex', impRings:'Duplex', shaft:'A182 F51'},
+          note:'Illustrative data — not a real machine'}),
+      mk({tag:'P-1002 A/B', model:'VS4 sump pump', type:'VS4', pid:'PID-0002', mount:'V-1002',
+          seal:'02/61', matClass:'S-6', flgClass:'150', escA:true, escB:true,
+          hMax:85, sgMax:1.05, psMax:4.00, tPump:80, tDes:120, tMawp:80,
+          mawpTbe:16.00, mawpVen:12.50, pdDs:12.80, pdLine:11.00,
+          off:{casing:'A216 WCB', innerCase:'12 % chrome', impeller:'A216 WCB',
+               caseRings:'12 % chrome, hardened', impRings:'12 % chrome, hardened', shaft:'4140'},
+          note:'Illustrative failing case'}),
+      mk({tag:'P-1003 A/B', model:'OH2 process pump', type:'OH2', pid:'PID-0003', mount:'—',
+          seal:'11/52', matClass:'S-6', flgClass:'300', escA:true,
+          hMax:45, sgMax:1.00, psMax:1.20, tPump:60, tDes:120, tMawp:120,
+          mawpTbe:41.00, mawpVen:41.00, pdDs:6.20, pdLine:10.00,
+          off:{casing:'A216 WCB', innerCase:'A487 CA6NM', impeller:'CA6NM',
+               caseRings:'410 hardened', impRings:'410 hardened', shaft:'A434 4140'},
+          note:'Illustrative — Sec. 6.3.5 b) floor governs'})
+    ];
+    ST.cur = 0;
+    syncDetail();
+    recalc();
+  }
+
+  /* ---------------- Unit switching ---------------- */
+  /* Switching systems clears the register rather than converting it —
+     a half-converted pressure record is more dangerous than an empty one. */
+  function setSys(next){
+    if (next === ST.sys) return;
+    const hasData = ST.rows.some(r => FIELDS.some(f =>
+      f.t === 'num' && getPath(r, f.k) !== null && getPath(r, f.k) !== undefined));
+    if (hasData && !confirm('Switching measurement system clears the register. Continue?')) return;
+    ST.sys = next;
+    ST.rows = [newRow()];
+    ST.cur = 0;
+    refreshUnitLabels();
+    syncDetail();
+    recalc();
+  }
+
+  /* ---------------- Wiring ---------------- */
+  fillSelects();
+  load();
+  refreshUnitLabels();
+  bindDetail();
+  syncDetail();
+
+  $('btnSI').addEventListener('click', function(){ setSys('si'); });
+  $('btnENG').addEventListener('click', function(){ setSys('eng'); });
+  $('btnSample').addEventListener('click', loadSample);
+  $('btnCsv').addEventListener('click', exportCsv);
+  $('btnPrint').addEventListener('click', function(){ window.print(); });
+  $('btnReset').addEventListener('click', function(){
+    if (!confirm('Clear the data for "' + (row().tag || 'this pump') + '"?')) return;
+    ST.rows[ST.cur] = newRow();
+    syncDetail();
+    recalc();
+  });
+
+  $('btnPumpAdd').addEventListener('click', function(){ addRow(false); });
+  $('btnRegAdd').addEventListener('click', function(){ addRow(false); });
+  $('btnPumpDup').addEventListener('click', function(){ addRow(true); });
+  $('btnPumpDel').addEventListener('click', delRow);
+
+  $('btnRegClear').addEventListener('click', function(){
+    if (!confirm('Clear the whole register and forget it from this browser?')) return;
+    ST.rows = [newRow()];
+    ST.cur = 0;
+    try { localStorage.removeItem(LS_KEY); } catch(e){ /* storage unavailable */ }
+    syncDetail();
+    recalc();
+  });
+
+  $('btnRegPaste').addEventListener('click', function(){ $('tsvPanel').hidden = !$('tsvPanel').hidden; });
+  $('btnTsvImport').addEventListener('click', doImport);
+  $('btnTsvHeader').addEventListener('click', function(){
+    $('tsvBox').value = FIELDS.map(f => f.h).join('\t');
+    $('tsvMsg').className = 'import-msg ok';
+    $('tsvMsg').textContent = 'Header row placed in the box. Copy it into row 1 of a spreadsheet, fill the rows beneath it, then copy the block back here.';
+  });
+
+  $('regBody').addEventListener('click', function(ev){
+    const tr = ev.target.closest('tr[data-i]');
+    if (tr) selectRow(Number(tr.dataset.i));
+  });
+
+  $('btnCopyRemark').addEventListener('click', function(){
+    const txt = $('remarkOut').textContent;
+    try {
+      navigator.clipboard.writeText(txt).then(function(){
+        $('btnCopyRemark').lastChild.textContent = ' Copied';
+        setTimeout(function(){ $('btnCopyRemark').lastChild.textContent = ' Copy remark'; }, 1400);
+      });
+    } catch(e){
+      const ta = document.createElement('textarea');
+      ta.value = txt;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch(e2){ /* nothing more to try */ }
+      document.body.removeChild(ta);
+    }
+  });
+
+  ['apxGroup', 'apxClass'].forEach(function(id){
+    $(id).addEventListener('change', renderApxB165);
+  });
+  $('apxT').addEventListener('input', renderApxB165);
+  $('apxMatClass').addEventListener('change', renderApxMat);
+
+  renderApxMat();
+  recalc();
+})();
+</script>
+
+</body>
+</html>
