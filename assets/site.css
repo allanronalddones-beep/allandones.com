@@ -75,6 +75,7 @@ body{
 @keyframes driftR{ from{transform:translateX(-1440px);} to{transform:translateX(0);} }
 @media (prefers-reduced-motion: reduce){
   .wv1,.wv2,.wv3,.wv4,.wv5{ animation:none; }
+  .why-arrow{ animation:none; }
   html{scroll-behavior:auto;}
 }
 
@@ -419,6 +420,39 @@ a:focus-visible, button:focus-visible{
 .why-ico svg{ width:20px; height:20px; color:#04101f; }
 .why-card h3{ margin:0 0 6px; font-size:15.5px; font-weight:700; color:#fff; }
 .why-card p{ margin:0; font-size:13.5px; color:var(--text-secondary); }
+
+/* Lede + call-to-action row. The CTA sits in the whitespace beside the lede
+   and points at the Pumps category, which is the entry point most visitors
+   want. Collapses to a stacked, centred block on narrow screens. */
+.why-top{
+  display:grid; grid-template-columns:minmax(0,1fr) auto;
+  gap:18px 30px; align-items:center; margin:0 0 26px;
+}
+.why-top .why-lead{ margin:0; }
+.why-cta{ display:flex; align-items:center; gap:16px; }
+.why-arrow{
+  width:96px; height:28px; flex:0 0 96px; color:var(--cyan-400);
+  animation:whyNudge 1.9s ease-in-out infinite;
+}
+@keyframes whyNudge{ 0%,100%{ transform:translateX(0); } 50%{ transform:translateX(8px); } }
+.why-cta-body{ display:flex; flex-direction:column; align-items:flex-start; gap:7px; }
+.why-cta-btn{ white-space:nowrap; box-shadow:0 6px 20px rgba(21,101,216,0.34); }
+.why-cta-btn .why-btn-chev{ transition:transform .18s ease; }
+.why-cta-btn:hover .why-btn-chev, .why-cta-btn:focus-visible .why-btn-chev{ transform:translateX(3px); }
+.why-cta-note{ font-size:12px; color:var(--text-muted); }
+
+@media (max-width:900px){
+  .why-top{ grid-template-columns:1fr; }
+  .why-cta{ justify-content:flex-start; }
+  .why-arrow{ width:52px; flex:0 0 52px; }
+}
+@media (max-width:520px){
+  .why-cta{ flex-direction:column; align-items:flex-start; gap:11px; }
+  .why-arrow{ transform:rotate(90deg); width:44px; flex:0 0 44px; margin-left:14px; animation:none; }
+}
+
+/* Deep-linked tool categories clear the sticky nav. */
+.tool-cat[id]{ scroll-margin-top:86px; }
 
 /* ---------- 3. Projects + gallery ---------- */
 .proj{ border-left:3px solid rgba(34,211,238,0.4); padding-left:18px; margin-bottom:26px; }

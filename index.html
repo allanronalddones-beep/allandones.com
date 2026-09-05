@@ -23,7 +23,7 @@
 <meta name="twitter:description" content="Rotating equipment and mechanical packages for oil, gas, petrochemical and energy projects — FEED through procurement to commissioning.">
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a2472'/%3E%3Crect x='22' y='8' width='20' height='16' rx='3' fill='%2322d3ee'/%3E%3Crect x='28' y='24' width='8' height='14' fill='%232f7ef0'/%3E%3Cellipse cx='32' cy='40' rx='13' ry='4' fill='%235b9dfa'/%3E%3Cellipse cx='32' cy='47' rx='12' ry='4' fill='%235b9dfa'/%3E%3Cpolygon points='24,52 40,52 36,60 28,60' fill='%237ea8dd'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="assets/site.css?v=3">
+<link rel="stylesheet" href="assets/site.css?v=4">
 </head>
 <body>
 
@@ -174,11 +174,27 @@
       <p>What it's for, and what you can actually take from it.</p>
     </div>
 
-    <p class="why-lead">
-      Most rotating equipment knowledge lives in <em>spreadsheets on one engineer's laptop</em>.
-      It gets lost when they change jobs. This site publishes some of mine as working tools —
-      free, no sign-up, running entirely in your browser.
-    </p>
+    <div class="why-top">
+      <p class="why-lead">
+        Most rotating equipment knowledge lives in <em>spreadsheets on one engineer's laptop</em>.
+        It gets lost when they change jobs. This site publishes some of mine as working tools &mdash;
+        free, no sign-up, running entirely in your browser.
+      </p>
+      <div class="why-cta">
+        <svg class="why-arrow" viewBox="0 0 96 28" fill="none" aria-hidden="true">
+          <path d="M2 14h78" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="7 7"/>
+          <path d="M78 5l10 9-10 9" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="why-cta-body">
+          <a class="btn btn-primary why-cta-btn" href="#pumps">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v8"/><ellipse cx="12" cy="13" rx="7" ry="3"/><ellipse cx="12" cy="17" rx="6" ry="2.5"/><path d="M9 20h6l-2 3h-2z"/></svg>
+            Start with the Pump Tools
+            <svg class="why-btn-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <span class="why-cta-note">2 tools &#183; no sign-up &#183; runs in your browser</span>
+        </div>
+      </div>
+    </div>
 
     <div class="grid-3">
       <div class="card why-card">
@@ -406,7 +422,7 @@
       <p>Working calculators built from the engineering practice, not brochures about it. Each runs entirely in your browser — nothing is uploaded, nothing is stored. Organised by equipment class; the library is being extended.</p>
     </div>
     <!-- ---------- PUMPS ---------- -->
-    <div class="tool-cat">
+    <div class="tool-cat" id="pumps">
       <div class="tool-cat-head">
         <h3>Pumps</h3>
         <span class="rule"></span>
