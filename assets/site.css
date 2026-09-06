@@ -206,6 +206,37 @@ section + section{ border-top:1px solid rgba(91,157,250,0.13); }
 @media (max-width:900px){ .grid-3{ grid-template-columns:1fr 1fr; } }
 @media (max-width:640px){ .grid-2,.grid-3{ grid-template-columns:1fr; } }
 
+/* Card heading with an action link pinned to its right */
+.card-head{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:10px 12px; margin:0 0 6px;
+  /* the link drops to its own line rather than squeezing the heading, at any
+     width where the two no longer fit side by side */
+  flex-wrap:wrap;
+}
+.card-head h3{ margin:0; }
+.card-link{
+  display:inline-flex; align-items:center; gap:6px; flex:0 0 auto;
+  font-size:12px; font-weight:600; line-height:1; white-space:nowrap;
+  text-decoration:none; color:var(--cyan-300);
+  padding:7px 12px; border-radius:8px;
+  /* taller than the h3 beside it; absorb the difference so the heading and the
+     rows below stay level with the sibling card in the same grid row */
+  margin-top:-3px; margin-bottom:-3px;
+  background:rgba(21,101,216,0.24);
+  border:1px solid rgba(91,157,250,0.3);
+  transition:color .15s, background .15s, border-color .15s;
+}
+.card-link:hover, .card-link:focus-visible{
+  color:#fff; background:rgba(21,101,216,0.42); border-color:var(--cyan-400);
+}
+.card-link svg{ width:13px; height:13px; flex:0 0 13px; transition:transform .15s; }
+.card-link:hover svg, .card-link:focus-visible svg{ transform:translateX(2px); }
+@media (prefers-reduced-motion: reduce){
+  .card-link svg{ transition:none; }
+  .card-link:hover svg, .card-link:focus-visible svg{ transform:none; }
+}
+
 /* Credential strip at the head of the About card */
 .cred-strip{
   display:flex; flex-wrap:wrap; gap:8px;
