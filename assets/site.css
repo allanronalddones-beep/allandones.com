@@ -216,9 +216,9 @@ section + section{ border-top:1px solid rgba(91,157,250,0.13); }
 }
 .card-head h3{ margin:0; }
 .card-link{
-  display:inline-flex; align-items:center; gap:6px; flex:0 0 auto;
-  font-size:12px; font-weight:600; line-height:1; white-space:nowrap;
-  text-decoration:none; color:var(--cyan-300);
+  display:inline-flex; align-items:center; flex:0 0 auto;
+  font-size:12.5px; font-weight:600; line-height:1; white-space:nowrap;
+  text-decoration:none; color:var(--blue-300);
   padding:7px 12px; border-radius:8px;
   /* taller than the h3 beside it; absorb the difference so the heading and the
      rows below stay level with the sibling card in the same grid row */
@@ -229,12 +229,6 @@ section + section{ border-top:1px solid rgba(91,157,250,0.13); }
 }
 .card-link:hover, .card-link:focus-visible{
   color:#fff; background:rgba(21,101,216,0.42); border-color:var(--cyan-400);
-}
-.card-link svg{ width:13px; height:13px; flex:0 0 13px; transition:transform .15s; }
-.card-link:hover svg, .card-link:focus-visible svg{ transform:translateX(2px); }
-@media (prefers-reduced-motion: reduce){
-  .card-link svg{ transition:none; }
-  .card-link:hover svg, .card-link:focus-visible svg{ transform:none; }
 }
 
 /* Credential strip at the head of the About card */
