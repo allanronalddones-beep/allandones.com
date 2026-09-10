@@ -446,7 +446,7 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
     <a href="#c2-chiller"><span class="rm">·</span>Chillers &amp; cooling towers</a>
     <a href="#c2-pump"><span class="rm">·</span>Pumping arrangements</a>
     <a href="#c2-exD"><span class="rm">D</span>Worked: plant sizing</a>
-    <a href="#c2-duct"><span class="rm">·</span>Duct design &amp; ESP</a>
+    <a href="#c2-duct"><span class="rm">·</span>Bid evaluation points</a>
     <a href="#c2q"><span class="rm">?</span>Quiz C2</a>
   </div>
   <div class="rail-group" data-rail="c3" hidden>
@@ -1648,56 +1648,1083 @@ The ESHF line is drawn from the room state; where it strikes the saturation curv
 </div><!-- /panel-c1 -->
 <!-- ==================== COURSES 2-4 + REFERENCE (pending build) ============ -->
 <div class="panel" id="panel-c2" role="tabpanel" aria-labelledby="tab-c2" hidden>
-  <section id="c2-intro">
-    <div class="mod-head">
-      <p class="eyebrow">Course 2 · Modules 1–2</p>
-      <h2>Equipment selection, design &amp; sizing</h2>
-      <p class="lede">Turning Course 1's 3.02 TR zone duty into a chiller, a tower, a pump, a duct and a fan.</p>
+
+<section id="c2-intro">
+  <div class="mod-head">
+    <p class="eyebrow">Course 2 · Modules 1–2</p>
+    <h2>Equipment selection, design &amp; sizing</h2>
+    <p class="lede">Course 1 produced a zone duty. This course turns it into hardware you can put on a schedule and defend in a bid evaluation — a chiller, a tower, two pump circuits, a duct and a fan — and shows where the numbers a vendor quotes stop meaning what you think they mean.</p>
+    <div class="tag-row">
+      <span class="chip acc">High side</span><span class="chip acc">Low side</span>
+      <span class="chip">Hydraulics</span><span class="chip">Technical bid evaluation</span>
     </div>
-    <div class="note"><b class="nh">Section under construction</b>
-      <p style="margin-bottom:0;">Course 1 is complete and awaiting review. This course will carry: the chilled-water plant schematic, chiller and cooling-tower selection against Doha's 30.6 °C design wet bulb, primary/secondary versus variable-primary pumping, worked example D (block load → 98.1 TR plant, 13.74 L/s chilled water, 19.33 L/s condenser water, 364 mm duct at 5.76 m/s, 890 Pa external static, 1.37 W/(L/s) specific fan power), and a module quiz.</p>
+  </div>
+
+  <h3 id="c2-plant">The plant, end to end</h3>
+  <p class="prose">Two water loops and one air loop, in series thermally. Heat leaves the room in air, crosses into chilled water at the coil, crosses into refrigerant at the evaporator, is pumped uphill in pressure by the compressor, crosses into condenser water, and finally leaves into the Doha air at the tower. Every crossing costs a temperature difference, and every temperature difference costs compressor power.</p>
+
+  <figure>
+    <div class="figbox">
+      <svg viewBox="0 0 880 400" role="img" aria-label="Chilled water plant schematic showing the cooling tower, condenser water loop with pump, chiller with condenser and evaporator, chilled water loop with pump, air handling unit with filter coil and fan, and the conditioned zone, with design temperatures marked on each loop." style="min-width:760px;">
+        <defs>
+          <marker id="flw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9 z" fill="#67e8f9"/></marker>
+          <marker id="flwW" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9 z" fill="#fb7185"/></marker>
+        </defs>
+
+        <!-- condenser water loop -->
+        <path d="M186 190 L186 106" stroke="#fb7185" stroke-width="2.6" fill="none" marker-end="url(#flwW)"/>
+        <path d="M104 106 L104 186" stroke="#5b9dfa" stroke-width="2.6" fill="none" marker-end="url(#flw)"/>
+        <text class="svg-num" x="194" y="150" fill="#fb7185">40.6 °C</text>
+        <text class="svg-num" x="96" y="176" text-anchor="end" fill="#5b9dfa">35.6 °C</text>
+
+        <!-- cooling tower -->
+        <rect x="52" y="28" width="182" height="78" rx="9" fill="rgba(10,36,114,0.55)" stroke="#5b9dfa" stroke-width="1.4"/>
+        <circle cx="143" cy="48" r="11" fill="none" stroke="#67e8f9" stroke-width="1.6"/>
+        <path d="M136 48 L150 48 M143 41 L143 55" stroke="#67e8f9" stroke-width="1.6"/>
+        <text class="svg-ttl" x="143" y="78" text-anchor="middle" fill="#eaf1ff">COOLING TOWER</text>
+        <text class="svg-lbl-sm" x="143" y="94" text-anchor="middle">range 5 K · approach 5 K · design WB 30.6 °C</text>
+
+        <!-- CW pump -->
+        <circle cx="104" cy="146" r="13" fill="rgba(6,16,40,0.95)" stroke="#67e8f9" stroke-width="1.6"/>
+        <path d="M98 140 L112 146 L98 152 Z" fill="#67e8f9"/>
+        <text class="svg-lbl-sm" x="84" y="150" text-anchor="end">CWP</text>
+        <text class="svg-num" x="84" y="163" text-anchor="end" fill="#6f84ab">19.33 L/s</text>
+
+        <!-- chiller -->
+        <rect x="52" y="186" width="182" height="128" rx="9" fill="rgba(6,16,40,0.85)" stroke="#67e8f9" stroke-width="1.6"/>
+        <rect x="62" y="196" width="162" height="34" rx="6" fill="rgba(251,113,133,0.13)" stroke="rgba(251,113,133,0.45)"/>
+        <text class="svg-lbl" x="143" y="217" text-anchor="middle" fill="#fb7185" font-weight="700">CONDENSER</text>
+        <rect x="62" y="270" width="162" height="34" rx="6" fill="rgba(103,232,249,0.13)" stroke="rgba(103,232,249,0.45)"/>
+        <text class="svg-lbl" x="143" y="291" text-anchor="middle" fill="#67e8f9" font-weight="700">EVAPORATOR</text>
+        <circle cx="143" cy="250" r="14" fill="rgba(252,211,77,0.16)" stroke="#fcd34d" stroke-width="1.5"/>
+        <text class="svg-lbl-sm" x="143" y="254" text-anchor="middle" fill="#fcd34d" font-weight="700">C</text>
+        <text class="svg-lbl-sm" x="166" y="254" fill="#fcd34d">compressor</text>
+        <text class="svg-lbl-sm" x="143" y="330" text-anchor="middle" fill="#a9bde0">2 × 50 TR water-cooled</text>
+
+        <!-- chilled water loop -->
+        <path d="M234 290 L418 290" stroke="#67e8f9" stroke-width="2.6" fill="none" marker-end="url(#flw)"/>
+        <path d="M418 260 L234 260" stroke="#fb7185" stroke-width="2.6" fill="none" marker-end="url(#flwW)"/>
+        <text class="svg-num" x="300" y="306" fill="#67e8f9">6.0 °C · 13.74 L/s</text>
+        <text class="svg-num" x="300" y="252" fill="#fb7185">12.0 °C · Δt 6 K</text>
+        <circle cx="340" cy="290" r="13" fill="rgba(6,16,40,0.95)" stroke="#67e8f9" stroke-width="1.6"/>
+        <path d="M334 284 L348 290 L334 296 Z" fill="#67e8f9"/>
+        <text class="svg-lbl-sm" x="340" y="322" text-anchor="middle">CHWP · 6.29 kW</text>
+
+        <!-- AHU -->
+        <rect x="418" y="168" width="266" height="146" rx="9" fill="rgba(6,16,40,0.85)" stroke="#5b9dfa" stroke-width="1.5"/>
+        <text class="svg-ttl" x="551" y="190" text-anchor="middle" fill="#eaf1ff">AIR HANDLING UNIT</text>
+        <rect x="436" y="204" width="30" height="76" rx="4" fill="rgba(111,132,171,0.18)" stroke="#6f84ab"/>
+        <text class="svg-lbl-sm" x="451" y="294" text-anchor="middle">filter</text>
+        <rect x="486" y="204" width="46" height="76" rx="4" fill="rgba(103,232,249,0.14)" stroke="#67e8f9"/>
+        <text class="svg-lbl-sm" x="509" y="294" text-anchor="middle" fill="#67e8f9">coil</text>
+        <text class="svg-lbl-sm" x="509" y="200" text-anchor="middle" fill="#67e8f9">ADP 11.27</text>
+        <circle cx="596" cy="242" r="24" fill="none" stroke="#5b9dfa" stroke-width="1.6"/>
+        <path d="M596 242 L596 222 A20 20 0 0 1 613 252 Z" fill="rgba(91,157,250,0.35)"/>
+        <path d="M596 242 L579 252 A20 20 0 0 1 596 222 Z" fill="rgba(91,157,250,0.22)"/>
+        <text class="svg-lbl-sm" x="596" y="294" text-anchor="middle">fan · 890 Pa</text>
+        <text class="svg-lbl-sm" x="646" y="238" fill="#a9bde0">601 L/s</text>
+        <text class="svg-lbl-sm" x="646" y="251" fill="#6f84ab">1.37 W/(L/s)</text>
+
+        <!-- air loop -->
+        <path d="M684 218 L730 218" stroke="#67e8f9" stroke-width="2.6" fill="none" marker-end="url(#flw)"/>
+        <text class="svg-num" x="707" y="210" text-anchor="middle" fill="#67e8f9">13.0 °C</text>
+        <path d="M730 288 L684 288" stroke="#fb7185" stroke-width="2.6" fill="none" marker-end="url(#flwW)"/>
+        <text class="svg-num" x="707" y="304" text-anchor="middle" fill="#fb7185">24.0 °C</text>
+        <rect x="730" y="184" width="118" height="122" rx="9" fill="rgba(10,36,114,0.42)" stroke="#5b9dfa" stroke-width="1.4"/>
+        <text class="svg-ttl" x="789" y="230" text-anchor="middle" fill="#eaf1ff">ZONE</text>
+        <text class="svg-lbl-sm" x="789" y="248" text-anchor="middle">96 m² · 24 °C</text>
+        <text class="svg-lbl-sm" x="789" y="262" text-anchor="middle">50% RH</text>
+        <text class="svg-lbl-sm" x="789" y="280" text-anchor="middle" fill="#67e8f9">3.02 TR</text>
+
+        <text class="svg-lbl-sm" x="52" y="360" fill="#6f84ab">Heat path:  zone air  →  chilled water  →  refrigerant  →  condenser water  →  Doha ambient.</text>
+        <text class="svg-lbl-sm" x="52" y="376" fill="#6f84ab">Every arrow is a temperature difference, and every temperature difference is bought with compressor power.</text>
+      </svg>
     </div>
-  </section>
-</div>
+    <figcaption><b>Read the two water temperatures against each other.</b> Chilled water leaves at 6.0 °C to make an 11.27 °C apparatus dew point. Condenser water returns at 40.6 °C because Doha's design wet bulb is 30.6 °C and a tower cannot beat its approach. The compressor spans that gap — and the gap here is far wider than the one the chiller was rated across.</figcaption>
+  </figure>
+
+  <h3 id="c2-chiller">Cooling towers set the condenser temperature, and the condenser sets the bill</h3>
+  <p class="prose">A cooling tower cannot cool water below the ambient wet bulb. What it achieves is the wet bulb plus an <strong>approach</strong> — the margin the tower is selected for. Range is the temperature drop across the tower, fixed by flow and heat rejection, not by tower size.</p>
+
+  <div class="fml">
+    <span class="eq">Leaving water = design wet bulb + approach        Range = entering − leaving water</span>
+    <span class="eq">Heat rejected  Q_rej = Q_chiller × (1 + 1/COP)</span>
+    <span class="eq">Condenser flow  ṁ = Q_rej / (c_p · range)</span>
+    <span class="wh">Approach is an economic selection: a smaller approach needs a larger, costlier tower but yields
+colder condenser water and a more efficient chiller. Range is set by the flow you choose, not the tower.</span>
+    <span class="src">Doha design wet bulb from ASHRAE Fundamentals Ch. 14, 0.4% evaporation WB. <span class="vb verify">Verify</span></span>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">The single most valuable check in a chiller bid evaluation</b>
+    <p>AHRI 550/590 rates chillers at <strong>29.4 °C entering condenser water</strong>. This plant, on a Doha design day, runs at <strong>40.6 °C</strong>. Reversed-Carnot scaling across that gap, at a fixed evaporator leaving temperature of 6.7 °C:</p>
+    <div class="tw" style="margin:1em 0;">
+      <table>
+        <caption>Condenser-temperature penalty <span class="vb derived">Derived</span> — order-of-magnitude, not a substitute for vendor data</caption>
+        <thead><tr><th>Condition</th><th class="num">Condenser in → out</th><th class="num">Carnot COP</th><th class="num">Quoted 0.58 kW/TR becomes</th></tr></thead>
+        <tbody>
+          <tr><td>AHRI 550/590 nominal</td><td class="num">29.4 → 34.9 °C</td><td class="num">9.92</td><td class="num">0.58 kW/TR</td></tr>
+          <tr class="total"><td>Doha design day</td><td class="num">40.6 → 46.1 °C</td><td class="num">7.10</td><td class="num">≈ 0.81 kW/TR</td></tr>
+          <tr class="sub"><td>Power multiplier</td><td class="num">Δ 11.2 K</td><td class="num">×1.40</td><td class="num">≈ +40%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-bottom:0;">On this 98 TR plant that is roughly <strong>57 kW rising to 80 kW</strong> at design. Second-law efficiency is not actually constant across the range, so treat +40% as an argument, not an answer. The argument is this: <strong>a kW/TR figure with no stated condenser condition is not a number you can evaluate a bid on.</strong> Ask for the performance point at your condenser water temperature, and ask for it in writing.</p>
+  </div>
+
+  <h3 id="c2-pump">Pumping arrangements — where the operating cost hides</h3>
+  <div class="grid g3" style="margin:1.4em 0;">
+    <div class="card">
+      <h4 style="margin-top:0;">Constant primary</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">One fixed-speed circuit through evaporator and coils, three-way valves at the loads. Simple and robust. Pumping energy is constant at full flow regardless of load — the expensive option over a year.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">Primary–secondary</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">Constant flow through the chillers, variable flow to the loads, decoupled by a bypass. The conventional arrangement. Watch the decoupler: reverse flow through it is the classic <em>low delta-T syndrome</em> symptom.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">Variable primary</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">One variable-speed circuit, two-way valves, minimum-flow bypass to protect the evaporator. Lowest pumping energy and fewest pumps, but requires a chiller that tolerates variable evaporator flow — confirm that in the submittal, do not assume it.</p>
+    </div>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">Low delta-T syndrome — why your ΔT choice is a commissioning risk</b>
+    <p style="margin-bottom:0;">Designing at a wide ΔT saves pumping energy (below: 8 K needs 25% less flow than 6 K, and 25% less pump power). But if coils are selected on optimistic entering conditions, or three-way valves leak, or control valves are oversized, the plant never achieves the design return temperature. Flow rises to compensate, pumps run out, and chillers load up on flow rather than tonnage. <strong>The wider your design ΔT, the less margin you have before this bites</strong> — so a wide ΔT must be matched by two-way valves, correctly sized control valves, and coil selections you have actually checked.</p>
+  </div>
+</section>
+
+<section id="c2-exD">
+  <h3>Worked example D — from zone load to plant</h3>
+  <p class="prose">One zone does not buy a chiller. Scaling to a plant needs two judgements that are easy to get wrong in opposite directions: how much of the building looks like the worst zone, and how much of the peak is coincident.</p>
+
+  <div class="work">
+    <div class="stp"><b>Do not extrapolate the worst zone across the building</b>
+      <span class="r">worst zone (top floor, SW corner, 40% glazing) = 10 621 W / 96 m² = <strong>110.6 W/m²</strong></span>
+      <span class="r">interior and shielded zones, no roof and no solar ≈ <strong>60 W/m²</strong></span></div>
+    <div class="stp"><b>Blend by area — assume 30% of the floor plate behaves like the perimeter/top case</b>
+      <span class="r">q̄ = 0.30 × 110.6 + 0.70 × 60.0 = <strong>75.19 W/m²</strong></span>
+      <span class="r">block load = 5 100 m² × 75.19 = <strong>383.5 kW</strong></span></div>
+    <div class="stp"><b>Apply diversity — zone peaks are not coincident</b>
+      <span class="r">plant = 383.5 × 0.90 = <strong>345.1 kW = 98.1 TR</strong></span>
+      <span class="r">select <strong>2 × 50 TR</strong> water-cooled — one machine carries 51% of design</span></div>
+    <div class="stp"><b>Chilled water flow at two candidate design ΔT</b>
+      <span class="r">ΔT 6 K:  ṁ = 345.1 / (4.187 × 6) = <strong>13.74 L/s</strong> = 217.7 GPM = 2.22 GPM/TR</span>
+      <span class="r">ΔT 8 K:  ṁ = 345.1 / (4.187 × 8) = <strong>10.30 L/s</strong> = 163.3 GPM = 1.66 GPM/TR</span></div>
+    <div class="stp"><b>Pump power at 35 m total head, 75% efficiency</b>
+      <span class="r">P = ρgQH/η = 1 000 × 9.81 × 0.01374 × 35 / 0.75 = <strong>6.29 kW</strong> (ΔT 6 K)</span>
+      <span class="r">at ΔT 8 K: <strong>4.72 kW</strong> — a 25% saving, for the commissioning risk described above</span></div>
+    <div class="stp"><b>Heat rejection and condenser water</b>
+      <span class="r">Q_rej = 345.1 × (1 + 1/5.8) = <strong>404.6 kW</strong></span>
+      <span class="r">ṁ_cw = 404.6 / (4.187 × 5) = <strong>19.33 L/s</strong> = 306 GPM = 3.12 GPM/TR</span></div>
+    <div class="stp"><b>Cooling tower selection point</b>
+      <span class="r">leaving = 30.6 + 5.0 = <strong>35.6 °C</strong>;  entering = 35.6 + 5.0 = <strong>40.6 °C</strong></span></div>
+    <div class="stp"><b>Duct, sized by equal friction at 1.0 Pa/m for the Case 1 airflow</b>
+      <span class="r">601 L/s → <strong>364 mm</strong> equivalent round, velocity <strong>5.76 m/s</strong> (1 134 fpm)</span></div>
+    <div class="stp"><b>External static pressure, built up component by component</b>
+      <span class="r">filters 150 + coil 250 + duct 300 + diffusers 50 + return 80 + attenuator 60 = <strong>890 Pa</strong> (3.57 in.w.g.)</span>
+      <span class="r">fan power = 0.601 × 890 / 0.65 = <strong>823 W</strong>;  SFP = <strong>1.37 W/(L/s)</strong></span></div>
+  </div>
+
+  <div class="res">
+    <div class="hero"><span class="k">Plant duty</span><span class="v">98.1</span><span class="u">TR · 345.1 kW</span></div>
+    <div><span class="k">Chiller selection</span><span class="v">2×50</span><span class="u">TR water-cooled</span></div>
+    <div><span class="k">Chilled water</span><span class="v">13.74</span><span class="u">L/s · 218 GPM</span></div>
+    <div><span class="k">Condenser water</span><span class="v">19.33</span><span class="u">L/s · 306 GPM</span></div>
+    <div><span class="k">Tower selection</span><span class="v">35.6</span><span class="u">°C leaving · 5 K approach</span></div>
+    <div><span class="k">Specific fan power</span><span class="v">1.37</span><span class="u">W/(L/s)</span></div>
+  </div>
+
+  <div class="sanity">
+    <b class="nh">Sanity check — four rules of thumb, all passed</b>
+    <ul style="margin-bottom:0;">
+      <li><strong>2.22 GPM/TR</strong> chilled water at ΔT 6 K. The rule is 24/ΔT(°F); 6 K = 10.8 °F gives 2.22. Exact.</li>
+      <li><strong>3.12 GPM/TR</strong> condenser water against the familiar 3 GPM/ton. Slightly high because Doha's condenser runs hot, which is the right direction.</li>
+      <li><strong>5.76 m/s</strong> duct velocity, inside the 5–7 m/s band for a main. Above 8 m/s you are buying noise complaints.</li>
+      <li><strong>1.37 W/(L/s)</strong> specific fan power, comfortably under typical 1.6–2.0 limits for a system of this type.</li>
+    </ul>
+  </div>
+
+  <div class="note">
+    <b class="nh">Where the two judgement calls could bite</b>
+    <p style="margin-bottom:0;">The 30% perimeter fraction and the 0.90 diversity factor together moved the answer from a naive 5 100 × 110.6 = 564 kW down to 345 kW — a factor of 1.63. <strong>Both must be stated explicitly in the basis of design and agreed, not buried in a spreadsheet.</strong> If a reviewer disagrees with either, the plant size changes materially, and that is a conversation to have at design stage rather than after the chillers are ordered.</p>
+  </div>
+
+  <h3 id="c2-duct">Technical bid evaluation — what to demand and what to reject</h3>
+  <p class="prose">A bid evaluation that compares price against nameplate capacity compares almost nothing. These are the points where offers actually differ.</p>
+
+  <div class="tw">
+    <table>
+      <caption>Bid evaluation points by equipment type <span class="vb standard">Standard</span> practice</caption>
+      <thead><tr><th>Equipment</th><th style="text-align:left;">Demand in the offer</th><th style="text-align:left;">Reject or query if</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Chiller</strong></td><td style="text-align:left;">Performance at site condenser condition (40.6 °C entering), not only AHRI; IPLV <em>and</em> full-load kW/TR; evaporator minimum flow if variable primary; fouling factor used; sound power by octave band</td><td style="text-align:left;">Only AHRI-condition performance quoted; fouling factor of zero; IPLV cited alone as the efficiency claim</td></tr>
+        <tr><td><strong>Cooling tower</strong></td><td style="text-align:left;">Thermal performance certified at the specified wet bulb, range and approach; drift rate; fan power; water consumption; materials for Gulf water chemistry</td><td style="text-align:left;">Performance quoted at a wet bulb below the project design; approach quoted without the corresponding flow</td></tr>
+        <tr><td><strong>AHU</strong></td><td style="text-align:left;">Coil entering and leaving conditions, total <em>and</em> sensible duty, face velocity, rows and fin spacing; fan curve with the operating point marked; casing leakage and thermal-bridging class</td><td style="text-align:left;">Total duty given without SHR; face velocity above ~2.5 m/s with no drift eliminator; fan curve absent</td></tr>
+        <tr><td><strong>Pump</strong></td><td style="text-align:left;">Certified curve with duty point, efficiency and NPSH required at duty; motor margin; operation away from best efficiency point</td><td style="text-align:left;">Duty point sits far from BEP; NPSH margin not demonstrated; curve is a catalogue family rather than the selected impeller</td></tr>
+        <tr><td><strong>Fan</strong></td><td style="text-align:left;">Curve with system resistance overlaid; specific fan power; sound power; motor and drive losses stated as included or not</td><td style="text-align:left;">Operating point on the unstable left of the curve; SFP quoted excluding drive losses</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note good">
+    <b class="nh">The comment that saves the most money</b>
+    <p style="margin-bottom:0;">Ask every bidder to quote performance <strong>at the project's stated conditions on a single common data sheet you issue</strong>, rather than accepting each vendor's own format. Offers quoted at differing conditions cannot be compared, and the difference is routinely larger than the price spread you are agonising over. This one requirement converts a bid evaluation from a price comparison into an engineering comparison.</p>
+  </div>
+
+  <div class="quiz" id="c2q" data-quiz="c2">
+    <div class="quiz-hd"><b>Course 2 — practice questions</b><span class="sc" data-score>Not started</span></div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">1</span><p class="qt">A cooling tower is selected for a 5 K approach at a 30.6 °C design wet bulb. What is the leaving water temperature, and can a larger tower beat it?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c2_1" value="a"><span>30.6 °C — a tower reaches the wet bulb</span></label>
+        <label class="opt"><input type="radio" name="c2_1" value="b"><span>35.6 °C — and a larger tower reduces the approach but can never reach the wet bulb</span></label>
+        <label class="opt"><input type="radio" name="c2_1" value="c"><span>25.6 °C — the approach is subtracted</span></label>
+        <label class="opt"><input type="radio" name="c2_1" value="d"><span>It depends on the range, not the approach</span></label>
+      </div>
+      <div class="fb" data-fb>Leaving = wet bulb + approach = 35.6 °C. The wet bulb is the thermodynamic floor; approach is bought with tower size and can be reduced but never eliminated. Range, by contrast, is set by flow and heat rejection — not by how big the tower is.</div>
+    </div>
+
+    <div class="q" data-a="19.33" data-tol="0.03" data-unit="L/s">
+      <div class="qs"><span class="qn">2</span><p class="qt">A 345.1 kW plant operates at COP 5.8. Compute the condenser water flow at a 5 K range. Use Q<sub>rej</sub> = Q(1 + 1/COP) and ṁ = Q<sub>rej</sub>/(4.187 × range).</p></div>
+      <div class="numq"><input type="number" step="0.01" data-in aria-label="Condenser water flow in litres per second"><span class="un">L/s</span></div>
+      <div class="fb" data-fb>Q<sub>rej</sub> = 345.1 × (1 + 1/5.8) = 404.6 kW; ṁ = 404.6/(4.187 × 5) = <strong>19.33 L/s</strong> (306 GPM, 3.12 GPM/TR). The rule of thumb is 3 GPM/ton — slightly exceeded here because a hot Doha condenser rejects proportionally more heat.</div>
+    </div>
+
+    <div class="q" data-a="c">
+      <div class="qs"><span class="qn">3</span><p class="qt">A chiller is quoted at 0.58 kW/TR with no condition stated. Your plant runs at 40.6 °C entering condenser water. What is the most defensible response?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c2_3" value="a"><span>Accept it — 0.58 kW/TR is a good figure</span></label>
+        <label class="opt"><input type="radio" name="c2_3" value="b"><span>Apply a 40% correction yourself and evaluate on 0.81 kW/TR</span></label>
+        <label class="opt"><input type="radio" name="c2_3" value="c"><span>Require the vendor to state performance at the project condenser condition in writing, on a data sheet you issue</span></label>
+        <label class="opt"><input type="radio" name="c2_3" value="d"><span>Reject the bid outright</span></label>
+      </div>
+      <div class="fb" data-fb>Correcting it yourself gives you an argument, not a contractual number — Carnot scaling assumes a constant second-law efficiency, which real machines do not have. Use the ≈40% estimate to justify the request; make the vendor own the figure. Issuing a common data sheet also makes competing offers comparable.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">4</span><p class="qt">Widening design ΔT from 6 K to 8 K cuts chilled water flow 25% and pump power with it. What is the corresponding risk?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c2_4" value="a"><span>The chiller cannot produce 8 K</span></label>
+        <label class="opt"><input type="radio" name="c2_4" value="b"><span>Low delta-T syndrome — if coils, valves or controls underperform, return temperature falls short, flow rises to compensate, and pumps run out before the plant is loaded</span></label>
+        <label class="opt"><input type="radio" name="c2_4" value="c"><span>Pipe velocities become erosive</span></label>
+        <label class="opt"><input type="radio" name="c2_4" value="d"><span>The cooling tower approach increases</span></label>
+      </div>
+      <div class="fb" data-fb>A wide ΔT is only realised if every coil actually returns water that warm. Three-way valves, oversized control valves and optimistic coil selections all erode it. Wide ΔT designs must be backed by two-way valves, correctly sized control valves, and coil selections you have checked yourself.</div>
+    </div>
+
+    <div class="q" data-a="890" data-tol="0.02" data-unit="Pa">
+      <div class="qs"><span class="qn">5</span><p class="qt">Build the external static pressure: filters 150 Pa, cooling coil 250 Pa, supply duct and fittings 300 Pa, diffusers 50 Pa, return path 80 Pa, sound attenuator 60 Pa.</p></div>
+      <div class="numq"><input type="number" step="1" data-in aria-label="External static pressure in pascals"><span class="un">Pa</span></div>
+      <div class="fb" data-fb><strong>890 Pa</strong> (3.57 in.w.g.). Note the filter figure must be a <em>mid-life</em> or dirty value, not clean — sizing a fan on clean-filter resistance guarantees it cannot hold airflow before the first filter change.</div>
+    </div>
+
+    <div class="q" data-a="a">
+      <div class="qs"><span class="qn">6</span><p class="qt">An AHU offer states "cooling capacity 3.02 TR" and nothing else. What is the first thing you ask for?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c2_6" value="a"><span>Entering and leaving air conditions, and the sensible duty alongside the total</span></label>
+        <label class="opt"><input type="radio" name="c2_6" value="b"><span>The casing material specification</span></label>
+        <label class="opt"><input type="radio" name="c2_6" value="c"><span>Delivery lead time</span></label>
+        <label class="opt"><input type="radio" name="c2_6" value="d"><span>The unit weight for structural loading</span></label>
+      </div>
+      <div class="fb" data-fb>Total duty does not define a coil. Without entering/leaving conditions or an SHR, a coil selected on a default 0.75–0.80 SHR will not deliver this zone's required 0.693, and the room will not hold 50% RH. All the other items matter, but none of them determines whether the unit does its job.</div>
+    </div>
+
+    <div class="q" data-a="c">
+      <div class="qs"><span class="qn">7</span><p class="qt">The block load calculation blended 110.6 W/m² perimeter with 60 W/m² interior at 30/70, then applied 0.90 diversity — moving 564 kW down to 345 kW. What does this demand?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c2_7" value="a"><span>Nothing — these are standard factors</span></label>
+        <label class="opt"><input type="radio" name="c2_7" value="b"><span>A safety factor added afterwards to compensate</span></label>
+        <label class="opt"><input type="radio" name="c2_7" value="c"><span>Both assumptions stated explicitly in the basis of design and formally agreed, because together they change plant size by a factor of 1.63</span></label>
+        <label class="opt"><input type="radio" name="c2_7" value="d"><span>Recalculation of every zone individually</span></label>
+      </div>
+      <div class="fb" data-fb>Zone-by-zone calculation is better where the model exists, but the real point is disclosure. A factor of 1.63 buried in a spreadsheet is a dispute waiting to happen; the same factor stated and agreed in the basis of design is a design decision. Adding a blanket safety factor on top just conceals the assumption twice over.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">8</span><p class="qt">Which pumping arrangement gives the lowest pumping energy, and what must be confirmed before specifying it?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c2_8" value="a"><span>Constant primary — confirm the three-way valves are correctly sized</span></label>
+        <label class="opt"><input type="radio" name="c2_8" value="b"><span>Variable primary — confirm the chiller tolerates variable evaporator flow and a minimum-flow bypass is provided</span></label>
+        <label class="opt"><input type="radio" name="c2_8" value="c"><span>Primary–secondary — confirm the decoupler is correctly sized</span></label>
+        <label class="opt"><input type="radio" name="c2_8" value="d"><span>All three are equivalent at part load</span></label>
+      </div>
+      <div class="fb" data-fb>Variable primary uses fewest pumps and least energy, but the evaporator must tolerate variable flow — a machine-specific capability to confirm in the submittal, never assume. A minimum-flow bypass protects the evaporator at low load. Reverse flow in a primary–secondary decoupler, incidentally, is the classic low delta-T symptom.</div>
+    </div>
+
+    <div class="quiz-ft">
+      <button class="btn pri" type="button" data-check>Check answers</button>
+      <button class="btn" type="button" data-reset>Reset</button>
+      <span class="msg" data-msg></span>
+    </div>
+  </div>
+</section>
+
+</div><!-- /panel-c2 -->
 
 <div class="panel" id="panel-c3" role="tabpanel" aria-labelledby="tab-c3" hidden>
-  <section id="c3-intro">
-    <div class="mod-head">
-      <p class="eyebrow">Course 3 · Modules 1–2</p>
-      <h2>Ventilation, life safety &amp; smoke extraction</h2>
-      <p class="lede">The one branch of the specialization sized by code and geometry rather than by thermal load.</p>
+
+<section id="c3-intro">
+  <div class="mod-head">
+    <p class="eyebrow">Course 3 · Modules 1–2</p>
+    <h2>Ventilation, life safety &amp; smoke extraction</h2>
+    <p class="lede">The one branch of the specialization that is not sized by thermal load. These systems are sized by code, geometry and fire size, they are tested by a witnessed procedure rather than a performance curve, and they are the systems most likely to fail at handover because nobody checked the criteria until the authority arrived.</p>
+    <div class="tag-row">
+      <span class="chip acc">NFPA 92</span><span class="chip acc">Pressurization</span>
+      <span class="chip">Stack effect</span><span class="chip">Witnessed testing</span>
     </div>
-    <div class="note"><b class="nh">Section under construction</b>
-      <p style="margin-bottom:0;">Will carry: stack effect and the neutral pressure plane, wind effect, stairwell and lift-lobby pressurization, car park ventilation and smoke extraction, atrium plume calculation, and worked example E (car park at 6 and 10 air changes per hour, stairwell governed by the open-door criterion at 3.78 m³/s with a door-force check at 81.5 N against the 133 N limit, and a 5 MW atrium fire requiring 96.8 m³/s of extract).</p>
+  </div>
+
+  <h3 id="c3-stack">Stack effect — and why Doha reverses it</h3>
+  <p class="prose">Warm air is less dense. In a tall building a temperature difference across the façade drives a vertical pressure gradient, and somewhere up the building sits a <strong>neutral pressure plane</strong> where inside and outside pressures are equal. Above it, flow is one way; below it, the other.</p>
+
+  <div class="fml">
+    <span class="eq">Δp = 353 · g · h · (1/T_outdoor − 1/T_indoor)  =  3 463 · h · (1/T_o − 1/T_i)</span>
+    <span class="wh">Δp = stack pressure difference, Pa      h = height above the neutral pressure plane, m
+T = absolute temperature, K            353/T is the density of air at standard barometric pressure</span>
+    <span class="src">Standard buoyancy relation; see ASHRAE Fundamentals, Ch. 16 (Ventilation and Infiltration). <span class="vb standard">Standard</span></span>
+  </div>
+
+  <figure>
+    <div class="figbox">
+      <svg viewBox="0 0 800 400" role="img" aria-label="Two building sections comparing normal stack effect in a heating climate, where air enters low and leaves high, against reverse stack effect in Doha's cooling season, where cooler denser indoor air causes flow to enter high and leave low. Each shows the neutral pressure plane and the pressure gradient." style="min-width:700px;">
+        <!-- left: temperate winter -->
+        <text class="svg-ttl" x="30" y="24" fill="#eaf1ff">Heating climate — normal stack effect</text>
+        <text class="svg-lbl-sm" x="30" y="40">outside 0 °C · inside 20 °C · +0.865 Pa per metre</text>
+        <rect x="42" y="56" width="150" height="300" rx="4" fill="rgba(10,36,114,0.35)" stroke="#5b9dfa" stroke-width="1.4"/>
+        <line x1="42" y1="206" x2="192" y2="206" stroke="#fcd34d" stroke-width="1.6" stroke-dasharray="6 4"/>
+        <text class="svg-lbl-sm" x="117" y="200" text-anchor="middle" fill="#fcd34d">neutral pressure plane</text>
+        <path d="M18 320 L40 320" stroke="#67e8f9" stroke-width="2.4" marker-end="url(#flw2)"/>
+        <path d="M18 290 L40 290" stroke="#67e8f9" stroke-width="2.4" marker-end="url(#flw2)"/>
+        <path d="M194 100 L216 100" stroke="#fb7185" stroke-width="2.4" marker-end="url(#flw2r)"/>
+        <path d="M194 130 L216 130" stroke="#fb7185" stroke-width="2.4" marker-end="url(#flw2r)"/>
+        <text class="svg-lbl-sm" x="16" y="308" text-anchor="end" fill="#67e8f9">in</text>
+        <text class="svg-lbl-sm" x="222" y="118" fill="#fb7185">out</text>
+        <path d="M117 356 L117 76" stroke="#6f84ab" stroke-width="1" opacity=".5"/>
+        <path d="M104 96 L117 76 L130 96" fill="none" stroke="#6f84ab" stroke-width="1" opacity=".5"/>
+        <text class="svg-lbl-sm" x="126" y="92" fill="#6f84ab">warm air rises</text>
+
+        <!-- right: Doha cooling -->
+        <text class="svg-ttl" x="420" y="24" fill="#eaf1ff">Doha cooling season — reverse stack effect</text>
+        <text class="svg-lbl-sm" x="420" y="40">outside 45 °C · inside 24 °C · −0.769 Pa per metre</text>
+        <rect x="432" y="56" width="150" height="300" rx="4" fill="rgba(10,36,114,0.35)" stroke="#5b9dfa" stroke-width="1.4"/>
+        <line x1="432" y1="206" x2="582" y2="206" stroke="#fcd34d" stroke-width="1.6" stroke-dasharray="6 4"/>
+        <text class="svg-lbl-sm" x="507" y="200" text-anchor="middle" fill="#fcd34d">neutral pressure plane</text>
+        <path d="M408 100 L430 100" stroke="#fb7185" stroke-width="2.4" marker-end="url(#flw2)"/>
+        <path d="M408 130 L430 130" stroke="#fb7185" stroke-width="2.4" marker-end="url(#flw2)"/>
+        <path d="M584 290 L606 290" stroke="#67e8f9" stroke-width="2.4" marker-end="url(#flw2r)"/>
+        <path d="M584 320 L606 320" stroke="#67e8f9" stroke-width="2.4" marker-end="url(#flw2r)"/>
+        <text class="svg-lbl-sm" x="406" y="118" text-anchor="end" fill="#fb7185">in</text>
+        <text class="svg-lbl-sm" x="612" y="308" fill="#67e8f9">out</text>
+        <path d="M507 76 L507 356" stroke="#6f84ab" stroke-width="1" opacity=".5"/>
+        <path d="M494 336 L507 356 L520 336" fill="none" stroke="#6f84ab" stroke-width="1" opacity=".5"/>
+        <text class="svg-lbl-sm" x="516" y="336" fill="#6f84ab">cool indoor air sinks</text>
+
+        <!-- pressure gradient scale -->
+        <text class="svg-lbl-sm" x="260" y="120" fill="#a9bde0">40 m building,</text>
+        <text class="svg-lbl-sm" x="260" y="134" fill="#a9bde0">plane at mid-height:</text>
+        <text class="svg-num" x="260" y="156" fill="#67e8f9">±17.3 Pa  (heating)</text>
+        <text class="svg-num" x="260" y="172" fill="#fb7185">±15.4 Pa  (Doha)</text>
+        <text class="svg-lbl-sm" x="260" y="200" fill="#6f84ab">comparable magnitude,</text>
+        <text class="svg-lbl-sm" x="260" y="214" fill="#6f84ab">opposite direction</text>
+        <defs>
+          <marker id="flw2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9 z" fill="#a9bde0"/></marker>
+          <marker id="flw2r" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9 z" fill="#a9bde0"/></marker>
+        </defs>
+      </svg>
     </div>
-  </section>
-</div>
+    <figcaption><b>The textbook picture is upside down for most of the Gulf year.</b> Because indoor air at 24 °C is <em>denser</em> than outdoor air at 45 °C, the buoyancy term changes sign: infiltration enters at high level and leaves at low level. Magnitude is comparable to a temperate winter — 0.77 against 0.865 Pa per metre — so this is not a small effect that can be waved away. It matters for lift-lobby door forces, for where unconditioned air actually enters a tall building, and for which direction a smoke-control system is fighting.</figcaption>
+  </figure>
+
+  <h3 id="c3-press">Pressurization — two criteria, and the one that governs</h3>
+  <p class="prose">A stairwell pressurization system must satisfy two requirements at once, and they pull in opposite directions. Enough pressure to keep smoke out; not so much that a person cannot open the door.</p>
+
+  <div class="fml">
+    <span class="eq">Leakage flow    Q = 0.827 · A_leak · Δp^0.5</span>
+    <span class="eq">Open-door flow  Q = N_doors · A_door · v_min</span>
+    <span class="eq">Door force      F = F_closer + K_d · W · A_door · Δp / [ 2 · (W − d) ]</span>
+    <span class="wh">A_leak = total effective leakage area, m²      Δp = pressure difference, Pa
+v_min = minimum velocity through an open door, m/s (typically 0.75–1.0)
+W = door width, m     d = knob-to-edge distance, m     K_d = 1.0 in SI
+F_closer = force to overcome the door closer alone, N     total F limited to 133 N</span>
+    <span class="src">NFPA 92 <em>Standard for Smoke Control Systems</em>; door-force limit per NFPA 101 / IBC. <span class="vb standard">Standard</span></span>
+  </div>
+
+  <h3 id="c3-exE">Worked example E — life safety systems</h3>
+
+  <h4>E1 · Car park ventilation and smoke extraction</h4>
+  <div class="work">
+    <div class="stp"><b>Volume</b><span class="r">2 000 m² × 3.0 m = 6 000 m³</span></div>
+    <div class="stp"><b>Normal ventilation at 6 air changes per hour</b>
+      <span class="r">6 × 6 000 / 3 600 = <strong>10.00 m³/s = 10 000 L/s = 21 189 CFM</strong></span></div>
+    <div class="stp"><b>Smoke extraction at 10 air changes per hour</b>
+      <span class="r">10 × 6 000 / 3 600 = <strong>16.67 m³/s = 16 667 L/s = 35 315 CFM</strong></span></div>
+  </div>
+  <div class="note">
+    <b class="nh">Air changes per hour is the weakest method in this guide</b>
+    <p style="margin-bottom:0;">An ACH rate takes no account of how many vehicles run, for how long, or where. It is a code compliance floor, not an engineering answer. Where the code permits, <strong>CO-based demand ventilation</strong> sized on actual vehicle movements is both more defensible and much cheaper to run — but the smoke-extraction duty still has to be met at full rate on demand, so the fans do not get smaller. Confirm which rate your authority mandates before sizing anything.</p>
+  </div>
+
+  <h4>E2 · Stairwell pressurization</h4>
+  <div class="work">
+    <div class="stp"><b>Leakage criterion — all doors closed, 50 Pa</b>
+      <span class="r">10 doors × 0.024 m² × 1.30 (wall and construction leakage) = 0.312 m² effective area</span>
+      <span class="r">Q = 0.827 × 0.312 × √50 = <strong>1.825 m³/s (1 825 L/s)</strong></span></div>
+    <div class="stp"><b>Open-door criterion — 2 doors open, 1.0 m/s through each</b>
+      <span class="r">Q = 2 × (0.9 × 2.1) × 1.0 = <strong>3.78 m³/s (3 780 L/s, 8 009 CFM)</strong> ← governs, by more than 2×</span></div>
+    <div class="stp"><b>Door-opening force check at 50 Pa</b>
+      <span class="r">F = 30 + (1.0 × 0.9 × 1.89 × 50) / [2 × (0.9 − 0.075)] = 30 + 51.5 = <strong>81.5 N</strong> (limit 133 N) ✓</span></div>
+    <div class="stp"><b>Maximum permissible pressure difference</b>
+      <span class="r">Δp_max = (133 − 30) × 2 × (0.9 − 0.075) / (0.9 × 1.89) = <strong>99.9 Pa</strong></span></div>
+  </div>
+
+  <div class="res">
+    <div class="hero"><span class="k">Stairwell fan duty</span><span class="v">3 780</span><span class="u">L/s · 8 009 CFM</span></div>
+    <div><span class="k">Governing criterion</span><span class="v">Open</span><span class="u">door, not leakage</span></div>
+    <div><span class="k">Door force at 50 Pa</span><span class="v">81.5</span><span class="u">N · limit 133 N</span></div>
+    <div><span class="k">Pressure ceiling</span><span class="v">99.9</span><span class="u">Pa before force fails</span></div>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">Why this system needs relief, not just a fan</b>
+    <p style="margin-bottom:0;">The fan is sized on the open-door case at 3 780 L/s. With every door closed, that same fan drives the stairwell far past 50 Pa — and the calculation above says the door force fails at about 100 Pa. A fixed-speed fan with no relief will therefore <strong>trap occupants behind doors they cannot open</strong>, which is the precise opposite of the system's purpose. A barometric relief damper or a variable-speed fan on pressure control is not an enhancement here; it is what makes the system safe.</p>
+  </div>
+
+  <h4>E3 · Atrium smoke extraction</h4>
+  <div class="fml">
+    <span class="eq">Convective fraction   Q_c = 0.70 · Q</span>
+    <span class="eq">Flame height          z_l = 0.166 · Q_c^0.4</span>
+    <span class="eq">Plume mass (z &gt; z_l)  ṁ_p = 0.071 · Q_c^(1/3) · z^(5/3) + 0.0018 · Q_c</span>
+    <span class="eq">Smoke temperature     T_s = T_ambient + Q_c / (ṁ_p · c_p)</span>
+    <span class="wh">Q = total heat release rate, kW      Q_c = convective portion, kW
+z = height from fire to smoke-layer interface, m      ṁ_p = plume mass flow, kg/s</span>
+    <span class="src">NFPA 92, axisymmetric plume. Design fire size is an authority-approved input, not a default. <span class="vb standard">Standard</span></span>
+  </div>
+  <div class="work">
+    <div class="stp"><b>Design fire and convective fraction</b><span class="r">Q = 5 000 kW → Q_c = 3 500 kW</span></div>
+    <div class="stp"><b>Flame height, checked against the clear height</b>
+      <span class="r">z_l = 0.166 × 3 500^0.4 = 4.34 m &lt; 15 m → axisymmetric plume equation applies</span></div>
+    <div class="stp"><b>Plume mass flow at a 15 m smoke-layer interface</b>
+      <span class="r">ṁ_p = 0.071 × 3 500^(1/3) × 15^(5/3) + 0.0018 × 3 500 = <strong>104.65 kg/s</strong></span></div>
+    <div class="stp"><b>Smoke temperature and density</b>
+      <span class="r">T_s = 20 + 3 500 / (104.65 × 1.0) = <strong>53.4 °C</strong>;  ρ = 353 / 326.5 = 1.0808 kg/m³</span></div>
+    <div class="stp"><b>Volumetric extract rate</b>
+      <span class="r">V = 104.65 / 1.0808 = <strong>96.82 m³/s = 205 151 CFM = 348 554 m³/h</strong></span></div>
+  </div>
+
+  <div class="sanity">
+    <b class="nh">Sanity check — and a warning about scale</b>
+    <p>96.8 m³/s is nearly <strong>ten times</strong> the entire normal ventilation rate of the 2 000 m² car park above. Smoke control is not a variation on comfort ventilation; it is a different order of magnitude, and it drives shaft space, structural openings, generator sizing and façade make-up air.</p>
+    <p style="margin-bottom:0;">Note also that most of the plume mass is <strong>entrained room air, not combustion products</strong> — which is why the smoke layer is only 53 °C, and why the extract rate grows with the 5/3 power of clear height. Lowering the design smoke-layer interface by a few metres reduces the extract rate dramatically. That is a coordination conversation with the architect, and it is worth having early.</p>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">Reviewing a smoke-control submittal — the five things most often missing</b>
+    <ol style="margin-bottom:0;">
+      <li><strong>The design fire size, and who approved it.</strong> Everything scales from it. A 5 MW assumption presented without authority agreement is an unaccepted risk, not a design.</li>
+      <li><strong>Make-up air.</strong> You cannot extract 96.8 m³/s from a sealed atrium. Make-up must be provided at low level below 1.0 m/s so it does not disturb the smoke layer — and it must be shown on the drawings, not assumed.</li>
+      <li><strong>Door-force calculation at the maximum pressure</strong>, not just at the design pressure. See E2 above.</li>
+      <li><strong>Fan and damper response times</strong>, and the cause-and-effect matrix that drives them, cross-checked against the fire alarm submittal.</li>
+      <li><strong>The witnessed test procedure</strong>, agreed before installation. Smoke-control commissioning is a pass/fail demonstration in front of the authority; discovering the criteria at that point is far too late.</li>
+    </ol>
+  </div>
+
+  <div class="quiz" id="c3q" data-quiz="c3">
+    <div class="quiz-hd"><b>Course 3 — practice questions</b><span class="sc" data-score>Not started</span></div>
+
+    <div class="q" data-a="c">
+      <div class="qs"><span class="qn">1</span><p class="qt">In Doha during the cooling season, which way does the stack effect drive infiltration in a tall building?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c3_1" value="a"><span>In at low level, out at high level, as in the textbook case</span></label>
+        <label class="opt"><input type="radio" name="c3_1" value="b"><span>There is no stack effect because the building is air-conditioned</span></label>
+        <label class="opt"><input type="radio" name="c3_1" value="c"><span>In at high level, out at low level — indoor air at 24 °C is denser than outdoor air at 45 °C, so the buoyancy term reverses</span></label>
+        <label class="opt"><input type="radio" name="c3_1" value="d"><span>Horizontally only, driven by wind</span></label>
+      </div>
+      <div class="fb" data-fb>Reverse stack effect, at 0.769 Pa per metre — comparable in magnitude to a temperate winter's 0.865 Pa/m, but opposite in direction. It changes where unconditioned air actually enters the building and which way a smoke-control system is working.</div>
+    </div>
+
+    <div class="q" data-a="3.78" data-tol="0.03" data-unit="m³/s">
+      <div class="qs"><span class="qn">2</span><p class="qt">Open-door criterion: 2 doors open, each 0.9 m × 2.1 m, minimum velocity 1.0 m/s. What airflow is required?</p></div>
+      <div class="numq"><input type="number" step="0.01" data-in aria-label="Airflow in cubic metres per second"><span class="un">m³/s</span></div>
+      <div class="fb" data-fb>Q = 2 × (0.9 × 2.1) × 1.0 = <strong>3.78 m³/s</strong> (3 780 L/s). This is more than double the 1.825 m³/s leakage criterion, so it governs the fan selection. Always compute both and take the larger.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">3</span><p class="qt">A stairwell fan is sized on the open-door case with no pressure relief. What happens when all doors close?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c3_3" value="a"><span>The fan simply rides up its curve — no consequence</span></label>
+        <label class="opt"><input type="radio" name="c3_3" value="b"><span>Stairwell pressure rises well past 50 Pa; beyond about 100 Pa the door force exceeds 133 N and occupants cannot open the doors</span></label>
+        <label class="opt"><input type="radio" name="c3_3" value="c"><span>The fan stalls and stops</span></label>
+        <label class="opt"><input type="radio" name="c3_3" value="d"><span>Smoke is drawn into the stairwell</span></label>
+      </div>
+      <div class="fb" data-fb>The system traps the people it exists to protect. Barometric relief or variable-speed pressure control is a safety requirement here, not a refinement — and it is a specific thing to look for when reviewing the submittal.</div>
+    </div>
+
+    <div class="q" data-a="81.5" data-tol="0.03" data-unit="N">
+      <div class="qs"><span class="qn">4</span><p class="qt">Door force at 50 Pa: closer force 30 N, door 0.9 m wide × 2.1 m high, knob 0.075 m from the edge. Use F = F<sub>dc</sub> + K<sub>d</sub>·W·A·Δp / [2(W − d)], K<sub>d</sub> = 1.0.</p></div>
+      <div class="numq"><input type="number" step="0.1" data-in aria-label="Door opening force in newtons"><span class="un">N</span></div>
+      <div class="fb" data-fb>F = 30 + (1.0 × 0.9 × 1.89 × 50)/(2 × 0.825) = 30 + 51.5 = <strong>81.5 N</strong>, within the 133 N limit. Rearranged for Δp, the limit is reached at 99.9 Pa — which is the number that makes pressure relief mandatory.</div>
+    </div>
+
+    <div class="q" data-a="c">
+      <div class="qs"><span class="qn">5</span><p class="qt">The atrium plume calculation gives 104.65 kg/s of smoke at only 53.4 °C for a 5 MW fire. Why is it so cool?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c3_5" value="a"><span>The sprinklers have cooled it</span></label>
+        <label class="opt"><input type="radio" name="c3_5" value="b"><span>5 MW is a small fire</span></label>
+        <label class="opt"><input type="radio" name="c3_5" value="c"><span>Most of the plume mass is entrained room air, not combustion products — entrainment grows with the 5/3 power of clear height</span></label>
+        <label class="opt"><input type="radio" name="c3_5" value="d"><span>Heat has been lost through the atrium roof</span></label>
+      </div>
+      <div class="fb" data-fb>A rising plume entrains enormous quantities of ambient air. That is also why lowering the design smoke-layer interface cuts the extract rate so sharply — a coordination point worth raising with the architect early, when it is still cheap.</div>
+    </div>
+
+    <div class="q" data-a="a">
+      <div class="qs"><span class="qn">6</span><p class="qt">An atrium submittal specifies 96.8 m³/s of extract and shows no make-up air provision. Is this acceptable?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c3_6" value="a"><span>No — make-up air must be provided at low level, below about 1.0 m/s so it does not disturb the smoke layer, and it must be shown on the drawings</span></label>
+        <label class="opt"><input type="radio" name="c3_6" value="b"><span>Yes — infiltration through the façade will supply it</span></label>
+        <label class="opt"><input type="radio" name="c3_6" value="c"><span>Yes, provided the fans are rated for the negative pressure</span></label>
+        <label class="opt"><input type="radio" name="c3_6" value="d"><span>Only an issue if the atrium is fully sealed</span></label>
+      </div>
+      <div class="fb" data-fb>You cannot extract from a sealed volume. Relying on infiltration means depressurising the atrium, which loads doors, defeats the extract fans and can pull smoke into adjoining spaces. High-velocity make-up is equally wrong — it mixes the smoke layer back down.</div>
+    </div>
+
+    <div class="q" data-a="16667" data-tol="0.02" data-unit="L/s">
+      <div class="qs"><span class="qn">7</span><p class="qt">A 2 000 m² car park with a 3.0 m ceiling requires 10 air changes per hour for smoke extraction. What is the rate in L/s?</p></div>
+      <div class="numq"><input type="number" step="1" data-in aria-label="Extract rate in litres per second"><span class="un">L/s</span></div>
+      <div class="fb" data-fb>V = 2 000 × 3.0 = 6 000 m³; 10 × 6 000/3 600 = 16.67 m³/s = <strong>16 667 L/s</strong> (35 315 CFM). Note this is a code compliance floor: an ACH figure knows nothing about vehicle numbers or movements.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">8</span><p class="qt">Which item, missing from a smoke-control submittal, invalidates every other number in it?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c3_8" value="a"><span>The fan sound power levels</span></label>
+        <label class="opt"><input type="radio" name="c3_8" value="b"><span>The design fire size and evidence that the authority accepted it</span></label>
+        <label class="opt"><input type="radio" name="c3_8" value="c"><span>The duct insulation schedule</span></label>
+        <label class="opt"><input type="radio" name="c3_8" value="d"><span>The damper actuator torque calculations</span></label>
+      </div>
+      <div class="fb" data-fb>Every downstream quantity — plume mass, extract rate, make-up air, shaft size — scales from the design fire. An unaccepted fire size is an unaccepted risk carried through the whole submittal, and it is the first thing to check.</div>
+    </div>
+
+    <div class="quiz-ft">
+      <button class="btn pri" type="button" data-check>Check answers</button>
+      <button class="btn" type="button" data-reset>Reset</button>
+      <span class="msg" data-msg></span>
+    </div>
+  </div>
+</section>
+
+</div><!-- /panel-c3 -->
 
 <div class="panel" id="panel-c4" role="tabpanel" aria-labelledby="tab-c4" hidden>
-  <section id="c4-dcv">
-    <div class="mod-head">
-      <p class="eyebrow">Course 4 · Modules 1–2</p>
-      <h2>Cutting-edge technology</h2>
-      <p class="lede">Where the energy actually goes: part load, not design load.</p>
+
+<section id="c4-dcv">
+  <div class="mod-head">
+    <p class="eyebrow">Course 4 · Modules 1–2</p>
+    <h2>Cutting-edge technology</h2>
+    <p class="lede">Design load happens on a handful of afternoons a year. Everything else is part load — which is where the energy actually goes, and where the technologies in this course either earn their premium or quietly fail to.</p>
+    <div class="tag-row">
+      <span class="chip acc">Demand control ventilation</span><span class="chip acc">VRF</span>
+      <span class="chip">Fan laws</span><span class="chip">Specific fan power</span>
     </div>
-    <div class="note"><b class="nh">Section under construction</b>
-      <p style="margin-bottom:0;">Will carry: demand control ventilation and why the CO₂ setpoint must be derived from the design ventilation rate rather than copied from a 1 000 ppm rule of thumb (this zone computes to 1 387 ppm), variable refrigerant flow topologies, fan types and the fan laws, and worked example F.</p>
+  </div>
+
+  <h3>Demand control ventilation — derive the setpoint, never copy it</h3>
+  <p class="prose">CO₂ is not a pollutant to be controlled at some universal threshold. It is a <strong>proxy for occupancy</strong>. At steady state the difference between indoor and outdoor concentration tells you how much outdoor air each person is receiving — and the setpoint that corresponds to your design ventilation rate is specific to your design.</p>
+
+  <div class="fml">
+    <span class="eq">C_indoor − C_outdoor = N · G / V_oz            [volume fraction]</span>
+    <span class="eq">setpoint = C_outdoor + 10⁶ · N · G / V_oz       [ppm]</span>
+    <span class="wh">N = number of occupants      G = CO₂ generation per person ≈ 0.0052 L/s at 1.2 met
+V_oz = zone outdoor airflow, L/s      C_outdoor ≈ 400–420 ppm in an urban setting
+Check: 7.5 L/s per person → 0.0052/7.5 = 693 ppm rise, matching the widely published ≈700 ppm.</span>
+    <span class="src">ASHRAE 62.1 and its User's Manual; generation rate per ASHRAE Fundamentals Ch. 10. <span class="vb standard">Standard</span></span>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>CO₂ setpoint for this zone at varying occupancy <span class="vb derived">Derived</span></caption>
+      <thead><tr><th class="num">Occupants</th><th class="num">V<sub>bz</sub> required</th><th class="num">Per person</th><th class="num">Steady-state rise</th><th class="num">Setpoint at 420 ppm outdoor</th></tr></thead>
+      <tbody>
+        <tr class="total"><td class="num">10 (design)</td><td class="num">53.8 L/s</td><td class="num">5.38 L/s</td><td class="num">967 ppm</td><td class="num">1 387 ppm</td></tr>
+        <tr><td class="num">8</td><td class="num">48.8 L/s</td><td class="num">6.10 L/s</td><td class="num">852 ppm</td><td class="num">1 272 ppm</td></tr>
+        <tr><td class="num">5</td><td class="num">41.3 L/s</td><td class="num">8.26 L/s</td><td class="num">630 ppm</td><td class="num">1 050 ppm</td></tr>
+        <tr><td class="num">3</td><td class="num">36.3 L/s</td><td class="num">12.10 L/s</td><td class="num">430 ppm</td><td class="num">850 ppm</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">Two traps in one table</b>
+    <p><strong>First:</strong> this zone's design condition corresponds to <strong>1 387 ppm</strong>, not the 1 000 ppm that gets copied into specifications as though it were a code limit. Setting the controller to 1 000 ppm here would force <em>more</em> outdoor air than ASHRAE 62.1 requires, all day, every day — a demand control system that increases energy consumption.</p>
+    <p style="margin-bottom:0;"><strong>Second:</strong> halving occupancy from 10 to 5 does <strong>not</strong> halve the outdoor air. It falls from 53.8 to 41.3 L/s — a 23% reduction, not 50% — because the area component R<sub>a</sub> × A<sub>z</sub> = 28.8 L/s does not depend on people and must keep flowing. In this zone the area term is the <em>larger</em> half of the requirement. DCV vendors who quote savings proportional to occupancy have not read the ventilation rate procedure.</p>
+  </div>
+
+  <h3 id="c4-vrf">Variable refrigerant flow — and where it does not belong</h3>
+  <div class="grid g2" style="margin:1.4em 0;">
+    <div class="card">
+      <h4 style="margin-top:0;">What VRF genuinely offers</h4>
+      <ul style="margin-bottom:0;font-size:var(--step--1);color:var(--text-secondary);">
+        <li>Excellent part-load efficiency through inverter compressors</li>
+        <li>Individual zone control without terminal reheat</li>
+        <li>Heat recovery between simultaneously heating and cooling zones</li>
+        <li>No plant room, no chilled water distribution, small risers</li>
+      </ul>
     </div>
-  </section>
-</div>
+    <div class="card">
+      <h4 style="margin-top:0;">What it does not solve, and must be checked</h4>
+      <ul style="margin-bottom:0;font-size:var(--step--1);color:var(--text-secondary);">
+        <li><strong>Ventilation.</strong> VRF conditions recirculated room air. Outdoor air still needs a dedicated unit — and in Doha that unit carries the entire 2 226 W latent load computed in Course 1.</li>
+        <li><strong>Dehumidification at part load.</strong> A VRF unit modulating on sensible demand can leave a Gulf space cool and humid.</li>
+        <li><strong>Refrigerant volume limits</strong> for occupied spaces (ISO 5149 / EN 378 concentration limits).</li>
+        <li><strong>Condenser ambient rating.</strong> Confirm capacity at 45 °C+, not at a 35 °C nominal rating.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">The VRF question to put in every technical query</b>
+    <p style="margin-bottom:0;">"State the net cooling capacity and input power at 46 °C ambient with the specified refrigerant pipe run and lift, and state the latent capacity at the space design condition." Nominal VRF capacities are typically published at 35 °C ambient with a short, level pipe run. Doha's design ambient, a long riser and a real lift can each take a bite out of capacity, and they compound. A system selected on nominal figures can be materially short on the day it is needed.</p>
+  </div>
+
+  <h3 id="c4-fans">Fans and the fan laws</h3>
+  <p class="prose">The fan laws are the strongest argument in building services, because the third one is cubic. Everything about variable-speed control follows from it.</p>
+
+  <div class="fml">
+    <span class="eq">Q₂/Q₁ = N₂/N₁              flow scales with speed</span>
+    <span class="eq">p₂/p₁ = (N₂/N₁)²           pressure with the square</span>
+    <span class="eq">W₂/W₁ = (N₂/N₁)³           power with the cube</span>
+    <span class="eq">SFP = fan input power / airflow                [W per L/s]</span>
+    <span class="wh">Valid for a fixed system curve and constant air density. They do NOT hold when the system
+resistance changes — a closing damper moves you along a different curve entirely.</span>
+    <span class="src">Standard fan affinity relations. <span class="vb standard">Standard</span></span>
+  </div>
+
+  <figure>
+    <div class="figbox">
+      <svg viewBox="0 0 660 350" role="img" aria-label="Chart comparing fan flow, which scales linearly with speed, against fan power, which scales with the cube of speed. At 80 percent speed the flow is 80 percent but the power is only 51 percent." style="min-width:580px;">
+        <line x1="70" y1="300" x2="600" y2="300" stroke="#a9bde0" stroke-width="1.2"/>
+        <line x1="70" y1="300" x2="70" y2="44" stroke="#a9bde0" stroke-width="1.2"/>
+        <text class="svg-lbl" x="335" y="334" text-anchor="middle">Fan speed, % of design</text>
+        <text class="svg-lbl" x="26" y="172" text-anchor="middle" transform="rotate(-90 26 172)">% of design value</text>
+        <g>
+          <line x1="70" y1="50" x2="600" y2="50" stroke="#5b9dfa" stroke-width=".5" opacity=".14"/>
+          <line x1="70" y1="112" x2="600" y2="112" stroke="#5b9dfa" stroke-width=".5" opacity=".14"/>
+          <line x1="70" y1="175" x2="600" y2="175" stroke="#5b9dfa" stroke-width=".5" opacity=".14"/>
+          <line x1="70" y1="237" x2="600" y2="237" stroke="#5b9dfa" stroke-width=".5" opacity=".14"/>
+          <text class="svg-num" x="62" y="54" text-anchor="end">100</text>
+          <text class="svg-num" x="62" y="116" text-anchor="end">75</text>
+          <text class="svg-num" x="62" y="179" text-anchor="end">50</text>
+          <text class="svg-num" x="62" y="241" text-anchor="end">25</text>
+          <text class="svg-num" x="62" y="304" text-anchor="end">0</text>
+        </g>
+        <g>
+          <text class="svg-num" x="70" y="318" text-anchor="middle">50</text>
+          <text class="svg-num" x="172" y="318" text-anchor="middle">60</text>
+          <text class="svg-num" x="274" y="318" text-anchor="middle">70</text>
+          <text class="svg-num" x="376" y="318" text-anchor="middle">80</text>
+          <text class="svg-num" x="478" y="318" text-anchor="middle">90</text>
+          <text class="svg-num" x="580" y="318" text-anchor="middle">100</text>
+        </g>
+        <path d="M70,175 L172,150 L274,125 L376,100 L478,75 L580,50" fill="none" stroke="#5b9dfa" stroke-width="2.2"/>
+        <path d="M70,269 L172,246 L274,214 L376,172 L478,118 L580,50" fill="none" stroke="#22d3ee" stroke-width="2.8"/>
+        <path d="M376,100 L376,172" stroke="#fcd34d" stroke-width="1.4" stroke-dasharray="4 3"/>
+        <circle cx="376" cy="100" r="4.5" fill="#5b9dfa" stroke="#050b1a" stroke-width="1.4"/>
+        <circle cx="376" cy="172" r="4.5" fill="#22d3ee" stroke="#050b1a" stroke-width="1.4"/>
+        <text class="svg-lbl-sm" x="388" y="98" fill="#5b9dfa">flow 80%</text>
+        <text class="svg-lbl-sm" x="388" y="176" fill="#22d3ee">power 51%</text>
+        <text class="svg-lbl-sm" x="388" y="140" fill="#fcd34d">49% saved</text>
+        <text class="svg-lbl" x="590" y="44" text-anchor="end" fill="#5b9dfa" font-weight="700">flow ∝ N</text>
+        <text class="svg-lbl" x="180" y="262" fill="#22d3ee" font-weight="700">power ∝ N³</text>
+        <rect x="86" y="52" width="216" height="52" rx="8" fill="rgba(10,36,114,0.55)" stroke="rgba(103,232,249,0.34)"/>
+        <text class="svg-lbl" x="98" y="72" fill="#67e8f9" font-weight="700">A 20% flow reduction</text>
+        <text class="svg-lbl-sm" x="98" y="90">halves the fan energy. This is why VAV exists.</text>
+      </svg>
+    </div>
+    <figcaption><b>The gap between the two lines is the entire economic case for variable speed.</b> One caveat that ends careers: the cubic law holds only while the <em>system curve</em> is unchanged. Throttling a damper does not follow this line — it moves the operating point up a different, steeper system curve, and the power saving largely evaporates. Speed control saves energy; dampers mostly convert it into noise.</figcaption>
+  </figure>
+
+  <h3 id="c4-exF">Worked example F — DCV saving and fan turndown</h3>
+  <div class="work">
+    <div class="stp"><b>Outdoor air reduction at 50% occupancy</b>
+      <span class="r">V<sub>bz</sub>: 53.8 → 41.3 L/s = 12.5 L/s reduction (<strong>23%</strong>, limited by the area component)</span></div>
+    <div class="stp"><b>Coil load avoided, at the Case 2 design condition</b>
+      <span class="r">ṁ = 12.5 / 1 000 / 0.8964 = 0.013945 kg/s</span>
+      <span class="r">q = 0.013945 × (92.78 − 47.81) = <strong>627 W = 0.178 TR</strong></span></div>
+    <div class="stp"><b>As a share of the zone's grand total</b>
+      <span class="r">627 / 10 621 = <strong>5.9%</strong> — real, but not the transformative figure DCV is often sold on</span></div>
+    <div class="stp"><b>Fan power at turndown, on the Example D duty of 601 L/s / 890 Pa / 823 W</b>
+      <span class="r">80% speed → 481 L/s, 570 Pa, <strong>421 W</strong> (49% saved)</span>
+      <span class="r">60% speed → 361 L/s, 320 Pa, <strong>178 W</strong> (78% saved)</span></div>
+    <div class="stp"><b>Specific fan power at design</b>
+      <span class="r">SFP = 823 / 601 = <strong>1.37 W/(L/s)</strong></span></div>
+  </div>
+
+  <div class="res">
+    <div><span class="k">OA reduction at 50% occupancy</span><span class="v">23</span><span class="u">% · not 50%</span></div>
+    <div><span class="k">Coil load avoided</span><span class="v">627</span><span class="u">W · 0.178 TR</span></div>
+    <div><span class="k">Share of zone total</span><span class="v">5.9</span><span class="u">%</span></div>
+    <div class="hero"><span class="k">Fan power at 80% speed</span><span class="v">49</span><span class="u">% saved</span></div>
+  </div>
+
+  <div class="sanity">
+    <b class="nh">Sanity check — be honest about which technology pays</b>
+    <p style="margin-bottom:0;">In this zone, DCV avoids 627 W at design and fan turndown avoids 402 W at 80% speed — and the fan saving is available <em>whenever</em> load is below design, which is nearly always, while the DCV saving requires the space to actually be under-occupied. On a single office zone with a modest ventilation rate, <strong>variable speed on the fan is the stronger investment</strong>. DCV earns its keep in spaces with high and genuinely variable occupant density — auditoria, training rooms, prayer halls, conference centres — where the people component dominates the area component. Applying it to a lightly-occupied cellular office is a specification habit, not an analysis.</p>
+  </div>
+
+  <div class="quiz" id="c4q" data-quiz="c4">
+    <div class="quiz-hd"><b>Course 4 — practice questions</b><span class="sc" data-score>Not started</span></div>
+
+    <div class="q" data-a="1387" data-tol="0.03" data-unit="ppm">
+      <div class="qs"><span class="qn">1</span><p class="qt">Derive the CO₂ setpoint for this zone at design: 10 occupants, V<sub>bz</sub> = 53.8 L/s, generation 0.0052 L/s per person, outdoor 420 ppm.</p></div>
+      <div class="numq"><input type="number" step="1" data-in aria-label="CO2 setpoint in ppm"><span class="un">ppm</span></div>
+      <div class="fb" data-fb>Rise = 10⁶ × (10 × 0.0052)/53.8 = 967 ppm; setpoint = 420 + 967 = <strong>1 387 ppm</strong>. Specifying the habitual 1 000 ppm here would force more outdoor air than 62.1 requires, all day — a demand control system that increases energy use.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">2</span><p class="qt">Occupancy halves from 10 to 5. By how much may the outdoor air rate fall under ASHRAE 62.1?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c4_2" value="a"><span>50% — proportional to occupancy</span></label>
+        <label class="opt"><input type="radio" name="c4_2" value="b"><span>23% — only the R<sub>p</sub> people component may be reduced; the R<sub>a</sub> area component must keep flowing</span></label>
+        <label class="opt"><input type="radio" name="c4_2" value="c"><span>Not at all — 62.1 does not permit reduction</span></label>
+        <label class="opt"><input type="radio" name="c4_2" value="d"><span>100% when the space is unoccupied</span></label>
+      </div>
+      <div class="fb" data-fb>53.8 → 41.3 L/s, a 23% cut. The area term (0.3 × 96 = 28.8 L/s) addresses building emissions — furnishings, finishes, materials — which do not leave when the people do. In this zone the area term is the larger half of the requirement.</div>
+    </div>
+
+    <div class="q" data-a="51.2" data-tol="0.03" data-unit="%">
+      <div class="qs"><span class="qn">3</span><p class="qt">A variable-speed fan runs at 80% of design speed with an unchanged system curve. What percentage of design power does it draw?</p></div>
+      <div class="numq"><input type="number" step="0.1" data-in aria-label="Percentage of design power"><span class="un">%</span></div>
+      <div class="fb" data-fb>W₂/W₁ = 0.8³ = 0.512 → <strong>51.2%</strong>, a 49% saving for a 20% flow reduction. This cubic relationship is the entire economic argument for VAV and variable-speed drives.</div>
+    </div>
+
+    <div class="q" data-a="c">
+      <div class="qs"><span class="qn">4</span><p class="qt">An engineer proposes throttling a damper to reduce airflow 20%, citing the fan laws to claim a 49% power saving. What is wrong?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c4_4" value="a"><span>Nothing — the fan laws apply to any flow reduction</span></label>
+        <label class="opt"><input type="radio" name="c4_4" value="b"><span>The saving would be larger than claimed</span></label>
+        <label class="opt"><input type="radio" name="c4_4" value="c"><span>The fan laws assume an unchanged system curve; a damper raises system resistance, moving the operating point up a steeper curve, and most of the saving disappears</span></label>
+        <label class="opt"><input type="radio" name="c4_4" value="d"><span>Fan laws apply only to centrifugal fans</span></label>
+      </div>
+      <div class="fb" data-fb>The affinity relations hold along a fixed system curve as speed varies. A damper changes the system, not the speed. The fan rides up its pressure curve at nearly the same power, and the energy is dissipated across the damper — mostly as noise.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">5</span><p class="qt">A VRF system is proposed for a Doha office. Which of these does VRF <em>not</em> address?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c4_5" value="a"><span>Individual zone temperature control</span></label>
+        <label class="opt"><input type="radio" name="c4_5" value="b"><span>Outdoor air ventilation — which still needs a dedicated unit carrying the full latent load</span></label>
+        <label class="opt"><input type="radio" name="c4_5" value="c"><span>Part-load efficiency</span></label>
+        <label class="opt"><input type="radio" name="c4_5" value="d"><span>Simultaneous heating and cooling in different zones</span></label>
+      </div>
+      <div class="fb" data-fb>VRF conditions recirculated room air. Ventilation remains a separate system, and in Doha that dedicated outdoor air unit carries the entire 2 226 W latent load from Course 1 — the hardest part of the duty, concentrated into one machine.</div>
+    </div>
+
+    <div class="q" data-a="1.37" data-tol="0.03" data-unit="W/(L/s)">
+      <div class="qs"><span class="qn">6</span><p class="qt">A fan delivers 601 L/s and draws 823 W. Compute the specific fan power.</p></div>
+      <div class="numq"><input type="number" step="0.01" data-in aria-label="Specific fan power"><span class="un">W/(L/s)</span></div>
+      <div class="fb" data-fb>SFP = 823 / 601 = <strong>1.37 W/(L/s)</strong>. Check that a quoted SFP includes motor and drive losses — some vendors quote impeller power, which flatters the figure by 10–15%.</div>
+    </div>
+
+    <div class="q" data-a="a">
+      <div class="qs"><span class="qn">7</span><p class="qt">A VRF vendor quotes nominal capacity at 35 °C ambient. What must you require for a Doha project?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c4_7" value="a"><span>Net capacity and input power at the site design ambient with the actual pipe run and lift, plus latent capacity at the space design condition</span></label>
+        <label class="opt"><input type="radio" name="c4_7" value="b"><span>A larger unit, chosen with a 20% safety margin</span></label>
+        <label class="opt"><input type="radio" name="c4_7" value="c"><span>Nothing — nominal ratings include a margin for ambient</span></label>
+        <label class="opt"><input type="radio" name="c4_7" value="d"><span>Confirmation of the warranty period</span></label>
+      </div>
+      <div class="fb" data-fb>Ambient derating, pipe length and vertical lift each reduce capacity and they compound. Applying your own blanket margin is guesswork that the vendor is not contractually bound to; requiring performance at stated conditions makes it theirs.</div>
+    </div>
+
+    <div class="q" data-a="c">
+      <div class="qs"><span class="qn">8</span><p class="qt">In this 96 m² office zone, which measure delivers the more reliable saving — and why?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c4_8" value="a"><span>DCV, because ventilation is the largest single load</span></label>
+        <label class="opt"><input type="radio" name="c4_8" value="b"><span>They are equivalent</span></label>
+        <label class="opt"><input type="radio" name="c4_8" value="c"><span>Fan speed control — it saves whenever load is below design, which is nearly always, whereas DCV only pays when the space is genuinely under-occupied</span></label>
+        <label class="opt"><input type="radio" name="c4_8" value="d"><span>Neither is worth applying to an office</span></label>
+      </div>
+      <div class="fb" data-fb>DCV avoids 627 W but only when occupancy actually drops; fan turndown avoids 402 W at 80% speed and applies across almost the whole year. DCV comes into its own where occupant density is high and genuinely variable — auditoria, training rooms, prayer halls — not in a lightly occupied office.</div>
+    </div>
+
+    <div class="quiz-ft">
+      <button class="btn pri" type="button" data-check>Check answers</button>
+      <button class="btn" type="button" data-reset>Reset</button>
+      <span class="msg" data-msg></span>
+    </div>
+  </div>
+</section>
+
+</div><!-- /panel-c4 -->
 
 <div class="panel" id="panel-ref" role="tabpanel" aria-labelledby="tab-ref" hidden>
-  <section id="r-ckl1">
-    <div class="mod-head">
-      <p class="eyebrow">Reference</p>
-      <h2>Checklists, formulae &amp; codes</h2>
-      <p class="lede">The part of the guide that outlives the certificate.</p>
-    </div>
-    <div class="note"><b class="nh">Section under construction</b>
-      <p style="margin-bottom:0;">Will carry five persistent review checklists (design basis, heat load calculation review, equipment datasheet and technical bid evaluation, vendor submittal review, commissioning and mechanical completion), a printable formula sheet with symbol and unit tables, and a codes register mapping ASHRAE 55 / 62.1 / 90.1 / Fundamentals, NFPA 92 and ISO against QCS.</p>
-    </div>
-  </section>
-</div>
+
+<section id="r-ckl1">
+  <div class="mod-head">
+    <p class="eyebrow">Reference</p>
+    <h2>Checklists, formulae &amp; codes</h2>
+    <p class="lede">Five review checklists, a printable formula sheet and a codes register. Ticks are stored in this browser, so the checklists survive a reload and can be worked through across several sittings.</p>
+    <div class="tag-row"><span class="chip acc">Persistent</span><span class="chip">Printable</span></div>
+  </div>
+
+  <div class="ckl" data-ckl="basis">
+    <div class="ckl-hd"><b>01 · Design basis — settle before calculating</b><span class="cnt" data-cnt>0 / 0</span></div>
+    <ul>
+      <li><label><input type="checkbox"><span class="ct">Outdoor design conditions cited to a named source and edition<em>Both the cooling DB/MCWB and the dehumidification DP/MCDB set. Course 1 shows an 11.8% coil difference between them.</em></span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Design percentile agreed — 0.4%, 1% or 2%<em>Changes the design temperature by several kelvin. It is a client risk decision, not an engineering default.</em></span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Indoor design condition, including humidity, with a stated tolerance<em>"24 °C" alone is not a design condition. Without an RH target the coil SHR is undefined.</em></span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Envelope U-values and glazing SHGC confirmed against the architectural specification<em>Not against the thermal report, which may pre-date value engineering.</em></span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Surface colour factor K justified, and the finish reflectance written into the specification<em>K = 0.65 is a promise the specification must be able to enforce.</em></span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Occupant density stated, with its source — 62.1 default or client brief<em>Drives both the ventilation rate and the latent load.</em></span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Lighting and equipment power densities agreed, with diversity stated separately</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Ventilation rate procedure inputs recorded: R<sub>p</sub>, R<sub>a</sub>, E<sub>z</sub> and the zone/system distinction</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Infiltration rate and building pressurisation assumption stated</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Perimeter/interior split and diversity factor stated explicitly in the basis of design<em>Course 2 moved plant size by a factor of 1.63 on these two assumptions alone.</em></span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Chilled water and condenser water design temperatures and ΔT agreed<em>Wide ΔT is a commissioning commitment, not just an energy saving.</em></span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Spare capacity and future-load allowance defined and separated from calculation margin<em>Two margins stacked silently is how plant ends up 40% oversized.</em></span></label></li>
+    </ul>
+  </div>
+</section>
+
+<section id="r-ckl2">
+  <div class="ckl" data-ckl="load">
+    <div class="ckl-hd"><b>02 · Heat load calculation review</b><span class="cnt" data-cnt>0 / 0</span></div>
+    <ul>
+      <li><label><input type="checkbox"><span class="ct">Calculation run at <strong>both</strong> the peak dry-bulb and the peak dew-point condition<em>The single most common omission, and worth 11.8% of coil capacity in the Course 1 example.</em></span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Ventilation load applied at the coil, not in the room load<em>Double-counting here inflates airflow and duct sizes.</em></span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Peak hour and month identified, not assumed<em>West and east façades peak late; the building peak may not coincide with any zone peak.</em></span></label></li>
+      <li><label><input type="checkbox"><span class="ct">CLF values consistent with actual plant operating hours — 1.0 if the system shuts down</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Shading coefficient derived correctly where modern SHGC data is used: SC = SHGC / 0.87</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Latent load includes people, infiltration and outdoor air — and its sign has been checked<em>At Doha's peak dry bulb the outdoor-air latent term is negative.</em></span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Result cross-checked against a m²/TR or W/m² benchmark, and the deviation explained<em>25–35 m²/TR for a Gulf office with a compliant envelope.</em></span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Coil SHR stated on the schedule alongside total duty</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Airflow and coil duty attributed to the design case that governs each</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Method stated — CLTD, RTS or software — and an independent hand check performed<em>A CLTD hand check catches order-of-magnitude software errors in twenty minutes.</em></span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Software inputs spot-audited against the drawings, not just the output reviewed</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Safety factors identified and quantified, not embedded invisibly in inputs</span></label></li>
+    </ul>
+  </div>
+</section>
+
+<section id="r-ckl3">
+  <div class="ckl" data-ckl="tbe">
+    <div class="ckl-hd"><b>03 · Equipment datasheet &amp; technical bid evaluation</b><span class="cnt" data-cnt>0 / 0</span></div>
+    <ul>
+      <li><label><input type="checkbox"><span class="ct">A single common data sheet issued to all bidders, with the project's conditions pre-filled<em>Offers quoted at differing conditions cannot be compared, and the difference usually exceeds the price spread.</em></span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Chiller performance stated at the <strong>site</strong> condenser condition, not only AHRI 550/590<em>≈40% more power across an 11 K condenser gap, on Carnot scaling.</em></span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Full-load kW/TR <em>and</em> IPLV both provided — IPLV alone is not an efficiency claim</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Fouling factors stated and non-zero</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Chiller minimum evaporator flow confirmed if variable primary pumping is specified</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Cooling tower certified at the specified wet bulb, range and approach — with the flow it applies to</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Tower materials assessed against local water chemistry and drift rate stated</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">AHU coil: entering and leaving conditions, total and sensible duty, rows, fin spacing, face velocity</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Pump curve is for the selected impeller, with duty point, efficiency and NPSH<sub>r</sub> marked</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Pump duty point proximity to best efficiency point assessed</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Fan curve supplied with the system resistance overlaid and the operating point marked<em>Check it is not on the unstable left of the curve.</em></span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Specific fan power stated, confirmed to include motor and drive losses</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">VRF or DX capacity quoted at site ambient with actual pipe run and lift, plus latent capacity</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Sound power levels by octave band, at the operating point</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Electrical characteristics, starting method and inrush confirmed against the electrical design</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Deviations and exclusions listed explicitly and priced<em>An unlisted deviation becomes a variation later, at your cost.</em></span></label></li>
+    </ul>
+  </div>
+</section>
+
+<section id="r-ckl4">
+  <div class="ckl" data-ckl="submittal">
+    <div class="ckl-hd"><b>04 · Vendor drawing &amp; submittal review</b><span class="cnt" data-cnt>0 / 0</span></div>
+    <ul>
+      <li><label><input type="checkbox"><span class="ct">Submittal is against the current revision of the specification and drawings</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Schedules cross-checked against the approved load calculation, not against the previous submittal</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Equipment weights and point loads issued to structural, and coordinated</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Plant room access, tube-pull space and maintenance clearances shown and adequate</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Duct and pipe routing coordinated in 3D against structure, electrical and fire services</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Condensate drainage, trap depth and routing shown<em>Trap depth must exceed the fan negative pressure or the trap blows dry.</em></span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Insulation thickness and vapour barrier specified — continuous, with no thermal bridging<em>In Gulf humidity a discontinuous vapour barrier produces surface condensation, not merely heat loss.</em></span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Fire and smoke dampers located per the fire strategy, with access panels shown</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Control valve authority and sizing calculations provided<em>Oversized control valves are a direct cause of low delta-T syndrome.</em></span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Cause-and-effect matrix cross-checked against the fire alarm submittal</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Smoke-control design fire size shown, with evidence of authority acceptance</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Make-up air for smoke extraction shown on drawings, at low level and below ~1.0 m/s</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Comments from the previous review closed out and verifiable, one by one</span></label></li>
+    </ul>
+  </div>
+</section>
+
+<section id="r-ckl5">
+  <div class="ckl" data-ckl="mc">
+    <div class="ckl-hd"><b>05 · Commissioning &amp; mechanical completion</b><span class="cnt" data-cnt>0 / 0</span></div>
+    <ul>
+      <li><label><input type="checkbox"><span class="ct">Test procedures and acceptance criteria agreed <strong>before</strong> installation, not at witnessing</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Systems flushed, chemically cleaned and water treatment regime in place</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Pressure tests witnessed and recorded, with duration and acceptance stated</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Air and water balancing (TAB) reports reviewed against design, not merely received<em>Check the totals reconcile and that readings are not implausibly close to design.</em></span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Chiller performance test witnessed at, or corrected to, design conditions</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Achieved chilled water ΔT verified at design load — the low delta-T check</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Coil leaving conditions verified against schedule, including humidity, not temperature alone</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Stairwell pressurization tested for both criteria: pressure with doors closed <strong>and</strong> door-opening force</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Smoke-control cause-and-effect demonstrated end to end, with response times recorded</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Car park CO monitoring and staged fan response demonstrated</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">BMS points verified live against the points schedule — sensors reading true values</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">DCV CO₂ setpoint verified as the derived project value, not a default 1 000 ppm</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Seasonal commissioning scheduled for the opposite design condition<em>A system commissioned in February has not been tested against Doha's August dew point.</em></span></label></li>
+      <li><label><input type="checkbox"><span class="ct">O&amp;M manuals, as-built drawings and training delivered and accepted</span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Punch list categorised by criticality, with closure evidence for each item</span></label></li>
+    </ul>
+  </div>
+</section>
+
+<section id="r-fml">
+  <h3>Formula sheet</h3>
+  <p class="prose">Everything used in this guide, in one place. This section prints cleanly.</p>
+
+  <div class="tw">
+    <table>
+      <caption>Psychrometrics — SI</caption>
+      <thead><tr><th style="text-align:left;">Quantity</th><th style="text-align:left;">Relation</th><th style="text-align:left;">Units</th></tr></thead>
+      <tbody>
+        <tr><td>Humidity ratio</td><td style="text-align:left;"><code>W = 0.621945 · p_w / (p − p_w)</code></td><td style="text-align:left;">kg/kg dry air</td></tr>
+        <tr><td>From wet bulb</td><td style="text-align:left;"><code>W = [(2501 − 2.326·t_wb)·W_s,wb − 1.006(t − t_wb)] / [2501 + 1.86t − 4.186·t_wb]</code></td><td style="text-align:left;">kg/kg</td></tr>
+        <tr><td>Relative humidity</td><td style="text-align:left;"><code>φ = p_w / p_ws(t)</code></td><td style="text-align:left;">—</td></tr>
+        <tr><td>Enthalpy</td><td style="text-align:left;"><code>h = 1.006t + W(2501 + 1.86t)</code></td><td style="text-align:left;">kJ/kg dry air</td></tr>
+        <tr><td>Specific volume</td><td style="text-align:left;"><code>v = 0.287042(t + 273.15)(1 + 1.607858W) / p</code></td><td style="text-align:left;">m³/kg dry air</td></tr>
+        <tr><td>Mixing</td><td style="text-align:left;"><code>W_mix = (ṁ₁W₁ + ṁ₂W₂)/(ṁ₁+ṁ₂)</code> — mass-weighted, likewise for h</td><td style="text-align:left;">—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>Airside loads — shortcut coefficients and their exact form</caption>
+      <thead><tr><th style="text-align:left;">Quantity</th><th style="text-align:left;">SI shortcut</th><th style="text-align:left;">English shortcut</th><th style="text-align:left;">Exact</th></tr></thead>
+      <tbody>
+        <tr><td>Sensible</td><td style="text-align:left;"><code>q = 1.23 · V · Δt</code></td><td style="text-align:left;"><code>q = 1.10 · CFM · Δt</code></td><td style="text-align:left;"><code>q = ṁ · c_p · Δt</code></td></tr>
+        <tr><td>Latent</td><td style="text-align:left;"><code>q = 3010 · V · ΔW</code></td><td style="text-align:left;"><code>q = 4840 · CFM · ΔW</code></td><td style="text-align:left;"><code>q = ṁ · h_fg · ΔW</code></td></tr>
+        <tr><td>Total</td><td style="text-align:left;"><code>q = 1.20 · V · Δh</code></td><td style="text-align:left;"><code>q = 4.5 · CFM · Δh</code></td><td style="text-align:left;"><code>q = ṁ · Δh</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">The shortcut coefficients are anchored to standard air — check before you trust them</b>
+    <p style="margin-bottom:0;">1.23, 3010 and 1.20 assume 1.2 kg/m³ (v = 0.8333 m³/kg). Doha outdoor air at the peak dry-bulb condition has v = 0.9105 m³/kg — <strong>9.3% lighter</strong> — so the shortcut overstates the outdoor-air load by 11.3% at Case 1 and 5.8% at Case 2, and produced a physically impossible grand sensible heat factor of 1.0026 before the rigorous method was applied. Use <code>ṁ · Δh</code> whenever air is far from standard density: hot ambient, high altitude, or a cold supply duct.</p>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>Heat load, coil and plant</caption>
+      <thead><tr><th style="text-align:left;">Quantity</th><th style="text-align:left;">Relation</th></tr></thead>
+      <tbody>
+        <tr><td>Opaque surface</td><td style="text-align:left;"><code>q = U·A·CLTD_corr</code>, &nbsp;<code>CLTD_corr = (CLTD+LM)·K + (25.5 − t_i) + (t_o,mean − 29.4)</code></td></tr>
+        <tr><td>Glass solar</td><td style="text-align:left;"><code>q = A·SC·SCL</code>, &nbsp;<code>SC = SHGC / 0.87</code></td></tr>
+        <tr><td>Ventilation (62.1)</td><td style="text-align:left;"><code>V_bz = R_p·P_z + R_a·A_z</code>, &nbsp;<code>V_oz = V_bz / E_z</code></td></tr>
+        <tr><td>Sensible heat factors</td><td style="text-align:left;"><code>RSHF = RSH/(RSH+RLH)</code>; &nbsp;<code>GSHF = (RSH+OA_s)/GTH</code>; &nbsp;<code>ESHF = (RSH+BF·OA_s)/(RSH+BF·OA_s+RLH+BF·OA_l)</code></td></tr>
+        <tr><td>Bypass factor</td><td style="text-align:left;"><code>BF = (t_leaving − ADP)/(t_entering − ADP)</code></td></tr>
+        <tr><td>Chilled water flow</td><td style="text-align:left;"><code>ṁ = Q/(c_p·ΔT)</code>, &nbsp;c_p = 4.187 kJ/kg·K &nbsp;· rule: GPM/TR = 24/ΔT(°F)</td></tr>
+        <tr><td>Heat rejection</td><td style="text-align:left;"><code>Q_rej = Q(1 + 1/COP)</code></td></tr>
+        <tr><td>Tower</td><td style="text-align:left;"><code>leaving = WB + approach</code>; &nbsp;<code>range = entering − leaving</code></td></tr>
+        <tr><td>Pump power</td><td style="text-align:left;"><code>P = ρgQH/η</code></td></tr>
+        <tr><td>Fan laws</td><td style="text-align:left;"><code>Q ∝ N</code>; &nbsp;<code>p ∝ N²</code>; &nbsp;<code>W ∝ N³</code> — fixed system curve only</td></tr>
+        <tr><td>Specific fan power</td><td style="text-align:left;"><code>SFP = W_fan / V</code> &nbsp;[W per L/s], including motor and drive losses</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>Ventilation, life safety and DCV</caption>
+      <thead><tr><th style="text-align:left;">Quantity</th><th style="text-align:left;">Relation</th></tr></thead>
+      <tbody>
+        <tr><td>Stack effect</td><td style="text-align:left;"><code>Δp = 3463·h·(1/T_o − 1/T_i)</code> &nbsp;— negative in the Gulf cooling season</td></tr>
+        <tr><td>Leakage flow</td><td style="text-align:left;"><code>Q = 0.827·A_leak·Δp^0.5</code></td></tr>
+        <tr><td>Open-door criterion</td><td style="text-align:left;"><code>Q = N·A_door·v_min</code>, &nbsp;v_min ≈ 0.75–1.0 m/s</td></tr>
+        <tr><td>Door force</td><td style="text-align:left;"><code>F = F_dc + K_d·W·A·Δp / [2(W − d)]</code> &nbsp;≤ 133 N</td></tr>
+        <tr><td>Plume mass (z &gt; z_l)</td><td style="text-align:left;"><code>ṁ_p = 0.071·Q_c^(1/3)·z^(5/3) + 0.0018·Q_c</code></td></tr>
+        <tr><td>Flame height</td><td style="text-align:left;"><code>z_l = 0.166·Q_c^0.4</code>, &nbsp;<code>Q_c = 0.70·Q</code></td></tr>
+        <tr><td>Smoke temperature</td><td style="text-align:left;"><code>T_s = T_a + Q_c/(ṁ_p·c_p)</code>, &nbsp;<code>ρ_s = 353/T_s</code></td></tr>
+        <tr><td>DCV setpoint</td><td style="text-align:left;"><code>C = C_o + 10⁶·N·G/V_oz</code>, &nbsp;G ≈ 0.0052 L/s per person</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>Unit conversions used throughout</caption>
+      <thead><tr><th style="text-align:left;">From</th><th style="text-align:left;">To</th><th class="num">Multiply by</th></tr></thead>
+      <tbody>
+        <tr><td>kW</td><td style="text-align:left;">TR (tons refrigeration)</td><td class="num">0.284345</td></tr>
+        <tr><td>kW</td><td style="text-align:left;">Btu/h</td><td class="num">3 412.14</td></tr>
+        <tr><td>L/s</td><td style="text-align:left;">CFM</td><td class="num">2.11888</td></tr>
+        <tr><td>L/s</td><td style="text-align:left;">US GPM</td><td class="num">15.85032</td></tr>
+        <tr><td>kJ/kg</td><td style="text-align:left;">Btu/lb</td><td class="num">0.429923</td></tr>
+        <tr><td>kg/kg</td><td style="text-align:left;">grains/lb</td><td class="num">7 000</td></tr>
+        <tr><td>Pa</td><td style="text-align:left;">in. w.g.</td><td class="num">0.0040146</td></tr>
+        <tr><td>m/s</td><td style="text-align:left;">fpm</td><td class="num">196.850</td></tr>
+        <tr><td>m²</td><td style="text-align:left;">ft²</td><td class="num">10.7639</td></tr>
+        <tr><td>°C</td><td style="text-align:left;">°F</td><td class="num">×9/5 + 32</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="r-codes">
+  <h3>Codes &amp; standards register</h3>
+  <div class="tw">
+    <table>
+      <caption>What each document governs <span class="vb standard">Standard</span></caption>
+      <thead><tr><th>Document</th><th style="text-align:left;">Governs</th><th style="text-align:left;">Where it bites in this guide</th></tr></thead>
+      <tbody>
+        <tr><td><strong>ASHRAE Fundamentals</strong></td><td style="text-align:left;">Psychrometrics (Ch. 1), climatic design data (Ch. 14), ventilation and infiltration (Ch. 16), load calculation (Ch. 18)</td><td style="text-align:left;">Every state point; both Doha design conditions; RTS method</td></tr>
+        <tr><td><strong>ASHRAE 55</strong></td><td style="text-align:left;">Thermal environmental conditions for human occupancy</td><td style="text-align:left;">Indoor design condition and acceptable humidity range</td></tr>
+        <tr><td><strong>ASHRAE 62.1</strong></td><td style="text-align:left;">Ventilation for acceptable indoor air quality</td><td style="text-align:left;">R<sub>p</sub>/R<sub>a</sub>/E<sub>z</sub>; the area component DCV may not turn down</td></tr>
+        <tr><td><strong>ASHRAE 90.1</strong></td><td style="text-align:left;">Energy standard — envelope, lighting power density, equipment efficiency, fan power</td><td style="text-align:left;">LPD, SFP limits, minimum chiller efficiency</td></tr>
+        <tr><td><strong>AHRI 550/590</strong></td><td style="text-align:left;">Water-chilling package performance rating</td><td style="text-align:left;">The 29.4 °C condenser rating condition, and why it is not yours</td></tr>
+        <tr><td><strong>NFPA 92</strong></td><td style="text-align:left;">Smoke control systems</td><td style="text-align:left;">Pressurization criteria, plume equations, extract rates</td></tr>
+        <tr><td><strong>NFPA 101 / IBC</strong></td><td style="text-align:left;">Life safety — means of egress</td><td style="text-align:left;">The 133 N door-opening force limit</td></tr>
+        <tr><td><strong>NFPA 88A</strong></td><td style="text-align:left;">Parking structures</td><td style="text-align:left;">Car park ventilation and CO control</td></tr>
+        <tr><td><strong>ISO 5149 / EN 378</strong></td><td style="text-align:left;">Refrigerating systems — safety and environmental requirements</td><td style="text-align:left;">VRF refrigerant concentration limits in occupied spaces</td></tr>
+        <tr><td><strong>ISO 16890</strong></td><td style="text-align:left;">Air filter classification</td><td style="text-align:left;">Filter selection and the mid-life pressure drop used in ESP</td></tr>
+        <tr><td><strong>QCS (Qatar Construction Specifications)</strong></td><td style="text-align:left;">The governing national specification; adopts and amends international standards</td><td style="text-align:left;">Envelope U-values, glazing SHGC, ventilation and life-safety requirements</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">Precedence — read the contract, not the habit</b>
+    <p style="margin-bottom:0;">Where QCS and an international standard disagree, the prime contract decides which prevails, and it usually names the more onerous. Confirm the <strong>edition</strong> of every document the contract invokes: ventilation rates, efficiency floors and design climatic data have all moved between editions, and a calculation to the wrong edition is non-compliant even when the arithmetic is perfect.</p>
+  </div>
+</section>
+
+<section id="r-src">
+  <h3>Sources &amp; limits of this guide</h3>
+  <div class="note trap">
+    <b class="nh">How this guide was produced, and what that means for you</b>
+    <p>It was written <strong>without access to the Coursera platform</strong> — the course pages could not be reached from the environment that produced it. Nothing here is a transcript of the lectures, slides or graded quizzes. The structure follows the published course and specialization descriptions; the engineering follows the codes those courses name and established design method.</p>
+    <p style="margin-bottom:0;">Practical consequences: <strong>the practice questions are authored from first principles, not reproduced from Coursera</strong> — they are revision, not a question bank, and reproducing the real ones would breach the honor code in any case. Every value that would normally be read from a copyrighted ASHRAE table is tagged <span class="vb verify">Verify</span> and left editable. <strong>Replace those before any figure here reaches a deliverable.</strong></p>
+  </div>
+
+  <h4>Verification performed</h4>
+  <ul class="srcs">
+    <li>Every worked example was computed independently in Python and the page's own calculations reconciled against it — agreement better than 0.04% on all published quantities.</li>
+    <li>The coil energy balance (coil duty against room load plus outdoor-air load) closes to <strong>0.000%</strong>, which is what allows an error anywhere in the chain to be detected.</li>
+    <li>Psychrometric routines were checked against ASHRAE reference values: p<sub>ws</sub>(25 °C) = 3.16922 kPa against a published 3.1698 kPa.</li>
+    <li>Results were cross-checked against independent rules of thumb — m²/TR, GPM/TR, duct velocity, specific fan power — each stated in the relevant sanity-check block.</li>
+    <li>The classical ESHF/ADP graphical construction was checked against the rigorous mass-and-energy solution and agrees within 0.20 K.</li>
+  </ul>
+
+  <h4>Course pages this guide covers</h4>
+  <ul class="srcs">
+    <li><a href="https://www.coursera.org/specializations/design-of-ventilation-and-air-conditioning-system-for-buildings" rel="noopener">Design of Ventilation &amp; Air Conditioning System for Buildings — specialization</a></li>
+    <li><a href="https://www.coursera.org/learn/designing-air-conditioning-systems-and-heat-load-calculation" rel="noopener">C1 — Basics of Air Conditioning &amp; Heat Load Calculation</a></li>
+    <li><a href="https://www.coursera.org/learn/air-conditioning-equipment-selection--design-and-sizing" rel="noopener">C2 — Air Conditioning Equipment Selection, Design and Sizing</a></li>
+    <li><a href="https://www.coursera.org/learn/ventilation-life-safety-and-smoke-extraction-in-building" rel="noopener">C3 — Ventilation, Life Safety, and Smoke Extraction in Building</a></li>
+    <li><a href="https://www.coursera.org/learn/cutting-edge-technology-in-air-conditioning-system" rel="noopener">C4 — Cutting-edge Technology in Air Conditioning System</a></li>
+  </ul>
+  <p class="srcs" style="margin-top:1em;">Course structure was corroborated from public listings; the pages themselves were unreachable from the build environment. This guide is not affiliated with, endorsed by, or derived from Coursera or L&amp;T EduTech course material.</p>
+</section>
+
+</div><!-- /panel-ref -->
 
 </main>
 </div><!-- /layout -->
