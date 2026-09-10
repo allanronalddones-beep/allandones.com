@@ -1,0 +1,2011 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doha HVAC Study Guide</title>
+<meta name="description" content="Study guide for the Design of Ventilation &amp; Air Conditioning Systems for Buildings specialization — psychrometry, CLTD/CLF heat load, equipment selection, smoke control and DCV/VRF, worked against Doha design conditions in SI and English units.">
+<meta name="author" content="Allan Ronald Dones">
+<link rel="canonical" href="https://allanronalddones.com/tools/hvac-study-guide">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://allanronalddones.com/tools/hvac-study-guide">
+<meta property="og:title" content="Doha HVAC Study Guide">
+<meta property="og:site_name" content="Allan Ronald Dones — Mechanical Engineering">
+<meta property="og:description" content="Psychrometry, CLTD/CLF heat load, equipment sizing, smoke control and DCV/VRF — worked end to end against Doha design conditions, dual-unit, with interactive checklists and practice quizzes.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Doha HVAC Study Guide">
+<meta name="twitter:description" content="Heat load, psychrometry and equipment selection worked against Doha design conditions.">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a2472'/%3E%3Cpath d='M10 46 L54 46' stroke='%235b9dfa' stroke-width='2.5' stroke-linecap='round'/%3E%3Cpath d='M10 46 C26 46 40 36 50 14' fill='none' stroke='%2322d3ee' stroke-width='3.2' stroke-linecap='round'/%3E%3Ccircle cx='40' cy='31' r='4' fill='%23eaf1ff'/%3E%3Ccircle cx='22' cy='42' r='3' fill='%2386efac'/%3E%3Cpath d='M40 31 L22 42' stroke='%23fcd34d' stroke-width='2' stroke-dasharray='3 2'/%3E%3C/svg%3E">
+<style>
+/* ==========================================================================
+   Doha HVAC Study Guide — self-contained.
+   Tokens mirror assets/site.css so the guide reads as part of the site.
+   The page is deliberately single-theme (dark), matching every other tool in
+   tools/. Every colour is painted explicitly so the page never borrows a host
+   background. No external fonts or scripts: the site CSP is
+   default-src 'self'; font-src 'self' — a web font would fail silently.
+   ========================================================================== */
+:root{
+  --navy-950:#050b1a; --navy-900:#08132b; --navy-800:#0c1c3f; --navy-700:#0f2551;
+  --blue-700:#0a2472; --blue-600:#1450c9; --blue-500:#1565d8;
+  --blue-400:#2f7ef0; --blue-300:#5b9dfa;
+  --cyan-400:#22d3ee; --cyan-300:#67e8f9;
+  --text-primary:#eaf1ff; --text-secondary:#a9bde0; --text-muted:#6f84ab;
+  --card-bg:rgba(6,16,40,0.82); --card-border:rgba(91,157,250,0.22);
+  --card-border-strong:rgba(103,232,249,0.40);
+  --ok-500:#22c55e; --ok-300:#86efac;
+  --bad-500:#ef4444; --bad-300:#fca5a5;
+  --warn-500:#f59e0b; --warn-300:#fcd34d;
+  --muted-chip:rgba(111,132,171,0.18);
+
+  /* Verification status — deliberately separate from the accent hue.
+     Every data block on the page carries one of these three. */
+  --v-derived:#86efac; --v-derived-bg:rgba(34,197,94,0.10);
+  --v-standard:#5b9dfa; --v-standard-bg:rgba(47,126,240,0.10);
+  --v-verify:#fcd34d;  --v-verify-bg:rgba(245,158,11,0.10);
+
+  /* Input / output tinting carried over from the other tools:
+     amber = you type here, green = calculated. */
+  --in-bg:rgba(252,211,77,0.09); --in-border:rgba(252,211,77,0.32);
+  --out-bg:rgba(34,197,94,0.07);
+
+  --radius:14px; --radius-sm:9px;
+  --maxw:1240px; --readw:70ch;
+  --rail:246px;
+
+  --f-sans:'Segoe UI','Inter',system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+  --f-mono:ui-monospace,'SF Mono','Cascadia Mono','Roboto Mono',Consolas,'Liberation Mono',monospace;
+
+  --step--1:clamp(.78rem,.76rem + .10vw,.84rem);
+  --step-0:clamp(.95rem,.92rem + .14vw,1.02rem);
+  --step-1:clamp(1.10rem,1.05rem + .25vw,1.25rem);
+  --step-2:clamp(1.35rem,1.24rem + .48vw,1.70rem);
+  --step-3:clamp(1.70rem,1.48rem + .95vw,2.40rem);
+  --step-4:clamp(2.10rem,1.70rem + 1.75vw,3.30rem);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth; scroll-padding-top:96px;}
+html,body{margin:0; padding:0;}
+body{
+  font-family:var(--f-sans);
+  font-size:var(--step-0);
+  color:var(--text-primary);
+  background:var(--navy-950);
+  min-height:100vh; line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important;}
+}
+
+/* ---------- background wash (static; the site's waves are omitted here so
+     long reading sessions stay calm) ---------- */
+.bg-base{
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(1100px 760px at 10% -10%, rgba(47,126,240,0.34), transparent 62%),
+    radial-gradient(900px 640px at 106% 4%, rgba(34,211,238,0.18), transparent 58%),
+    radial-gradient(900px 900px at 52% 116%, rgba(21,101,216,0.20), transparent 60%),
+    linear-gradient(180deg,#06122e 0%,#0a1f4a 42%,#071431 100%);
+  background-color:#06122e;
+}
+.shell{position:relative; z-index:1;}
+
+/* ---------- skip link ---------- */
+.skip{position:absolute; left:-9999px; top:0; z-index:80;
+  background:var(--cyan-400); color:#04101f; padding:10px 16px; border-radius:0 0 10px 0; font-weight:700;}
+.skip:focus{left:0;}
+
+:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{
+  outline:2px solid var(--cyan-300); outline-offset:2px; border-radius:4px;
+}
+
+/* ---------- top bar ---------- */
+.topbar{
+  position:sticky; top:0; z-index:40;
+  background:linear-gradient(180deg,rgba(5,11,26,0.97),rgba(5,11,26,0.90));
+  border-bottom:1px solid var(--card-border);
+  backdrop-filter:blur(10px);
+}
+.topbar-in{
+  max-width:var(--maxw); margin:0 auto; padding:10px 20px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--text-primary); flex:0 0 auto;}
+.brand svg{width:26px; height:26px; display:block;}
+.brand b{font-size:var(--step-0); font-weight:700; letter-spacing:-.01em; white-space:nowrap;}
+.brand span{display:block; font-size:.68rem; color:var(--text-muted); letter-spacing:.08em; text-transform:uppercase; line-height:1.2;}
+.tabs{display:flex; gap:4px; flex-wrap:wrap; margin-left:auto;}
+.tab{
+  appearance:none; border:1px solid transparent; background:transparent;
+  color:var(--text-secondary); font-family:inherit; font-size:var(--step--1);
+  padding:6px 11px; border-radius:999px; cursor:pointer; white-space:nowrap;
+  transition:background .18s, color .18s, border-color .18s;
+}
+.tab:hover{color:var(--text-primary); background:rgba(47,126,240,0.12);}
+.tab[aria-selected="true"]{
+  color:#04101f; background:linear-gradient(180deg,var(--cyan-300),var(--cyan-400));
+  border-color:var(--cyan-400); font-weight:700;
+}
+.tab .tnum{font-family:var(--f-mono); opacity:.75; margin-right:5px; font-size:.9em;}
+.tab[aria-selected="true"] .tnum{opacity:.6;}
+
+/* ---------- layout ---------- */
+.layout{max-width:var(--maxw); margin:0 auto; padding:0 20px 90px; display:grid; gap:30px;
+  grid-template-columns:var(--rail) minmax(0,1fr); align-items:start;}
+@media (max-width:940px){ .layout{grid-template-columns:minmax(0,1fr); gap:0;} }
+
+/* ---------- rail ---------- */
+.rail{position:sticky; top:74px; max-height:calc(100vh - 92px); overflow-y:auto; padding:22px 0 30px;
+  scrollbar-width:thin; scrollbar-color:rgba(91,157,250,.4) transparent;}
+.rail::-webkit-scrollbar{width:7px;} .rail::-webkit-scrollbar-thumb{background:rgba(91,157,250,.35); border-radius:4px;}
+@media (max-width:940px){ .rail{position:static; max-height:none; overflow:visible; padding:16px 0 0;} }
+.rail h4{margin:0 0 8px; font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--text-muted); font-weight:700;}
+.rail-group{margin-bottom:20px;}
+.rail a{display:block; text-decoration:none; color:var(--text-secondary); font-size:var(--step--1);
+  padding:5px 10px 5px 12px; border-left:2px solid rgba(91,157,250,0.18); line-height:1.4;
+  transition:color .16s, border-color .16s, background .16s;}
+.rail a:hover{color:var(--text-primary); background:rgba(47,126,240,0.10); border-left-color:var(--blue-400);}
+.rail a.on{color:var(--cyan-300); border-left-color:var(--cyan-400); background:rgba(34,211,238,0.07); font-weight:600;}
+.rail a .rm{font-family:var(--f-mono); color:var(--text-muted); margin-right:7px; font-size:.9em;}
+
+.progress-card{border:1px solid var(--card-border); background:var(--card-bg); border-radius:var(--radius-sm); padding:13px 14px; margin-bottom:20px;}
+.progress-card .pt{display:flex; justify-content:space-between; align-items:baseline; gap:8px; margin-bottom:8px;}
+.progress-card .pt b{font-size:var(--step-1); font-family:var(--f-mono); font-variant-numeric:tabular-nums; color:var(--cyan-300);}
+.progress-card .pt span{font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color:var(--text-muted); font-weight:700;}
+.pbar{height:6px; border-radius:99px; background:rgba(91,157,250,0.16); overflow:hidden;}
+.pbar i{display:block; height:100%; width:0%; border-radius:99px;
+  background:linear-gradient(90deg,var(--blue-400),var(--cyan-400)); transition:width .4s ease;}
+.progress-card small{display:block; margin-top:7px; color:var(--text-muted); font-size:.72rem; line-height:1.45;}
+
+/* ---------- main ---------- */
+main{min-width:0; padding-top:22px;}
+.panel[hidden]{display:none !important;}
+section{scroll-margin-top:92px;}
+.prose{max-width:var(--readw);}
+p{margin:0 0 1em;}
+h1,h2,h3,h4{text-wrap:balance; margin:0;}
+h1{font-size:var(--step-4); line-height:1.04; letter-spacing:-.028em; font-weight:800;}
+h2{font-size:var(--step-3); line-height:1.12; letter-spacing:-.02em; font-weight:750; margin:0 0 .45em;}
+h3{font-size:var(--step-2); line-height:1.2; letter-spacing:-.012em; font-weight:700; margin:2.1em 0 .5em;}
+h4{font-size:var(--step-1); line-height:1.3; font-weight:700; margin:1.7em 0 .4em; color:var(--text-primary);}
+.eyebrow{font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; color:var(--cyan-300); font-weight:700; margin:0 0 .7em;}
+.lede{font-size:var(--step-1); color:var(--text-secondary); line-height:1.55; max-width:64ch;}
+strong{color:var(--text-primary); font-weight:650;}
+a{color:var(--blue-300);}
+a:hover{color:var(--cyan-300);}
+code,kbd{font-family:var(--f-mono); font-size:.9em; background:rgba(91,157,250,0.12);
+  padding:.1em .38em; border-radius:5px; color:var(--cyan-300);}
+hr{border:0; border-top:1px solid var(--card-border); margin:2.6em 0;}
+ul,ol{margin:0 0 1em; padding-left:1.25em;}
+li{margin:.3em 0;}
+li::marker{color:var(--blue-300);}
+
+/* module head */
+.mod-head{border-bottom:1px solid var(--card-border); padding-bottom:1.4em; margin-bottom:1.8em;}
+.mod-head .tag-row{display:flex; gap:7px; flex-wrap:wrap; margin-top:.9em;}
+.chip{display:inline-flex; align-items:center; gap:5px; font-size:.7rem; font-weight:650;
+  padding:3px 9px; border-radius:999px; background:var(--muted-chip); color:var(--text-secondary);
+  border:1px solid rgba(111,132,171,0.28); letter-spacing:.02em;}
+.chip.acc{background:rgba(34,211,238,0.10); color:var(--cyan-300); border-color:rgba(34,211,238,0.32);}
+
+/* ---------- cards ---------- */
+.card{background:var(--card-bg); border:1px solid var(--card-border); border-radius:var(--radius); padding:20px 22px;}
+.card.tight{padding:15px 17px;}
+.grid{display:grid; gap:16px;}
+.g2{grid-template-columns:repeat(auto-fit,minmax(258px,1fr));}
+.g3{grid-template-columns:repeat(auto-fit,minmax(202px,1fr));}
+.g4{grid-template-columns:repeat(auto-fit,minmax(158px,1fr));}
+
+/* callouts — border-left rail reserved for these only, so it keeps meaning */
+.note{border-left:3px solid var(--blue-400); background:rgba(47,126,240,0.07);
+  padding:14px 17px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin:1.5em 0;}
+.note.warn{border-left-color:var(--warn-500); background:rgba(245,158,11,0.07);}
+.note.good{border-left-color:var(--ok-500); background:rgba(34,197,94,0.07);}
+.note.trap{border-left-color:var(--bad-500); background:rgba(239,68,68,0.07);}
+.note b.nh{display:block; font-size:.7rem; letter-spacing:.11em; text-transform:uppercase; margin-bottom:.42em; font-weight:750;}
+.note.warn b.nh{color:var(--warn-300);} .note.good b.nh{color:var(--ok-300);}
+.note.trap b.nh{color:var(--bad-300);} .note b.nh{color:var(--blue-300);}
+.note p:last-child,.note ul:last-child{margin-bottom:0;}
+
+/* ---------- verification badges ---------- */
+.vb{display:inline-flex; align-items:center; gap:5px; font-size:.66rem; font-weight:750;
+  letter-spacing:.07em; text-transform:uppercase; padding:2px 8px; border-radius:999px;
+  border:1px solid currentColor; white-space:nowrap; vertical-align:middle;}
+.vb::before{content:""; width:6px; height:6px; border-radius:50%; background:currentColor; flex:0 0 auto;}
+.vb.derived{color:var(--v-derived); background:var(--v-derived-bg);}
+.vb.standard{color:var(--v-standard); background:var(--v-standard-bg);}
+.vb.verify{color:var(--v-verify); background:var(--v-verify-bg);}
+
+/* ---------- tables ---------- */
+.tw{overflow-x:auto; margin:1.3em 0; border:1px solid var(--card-border); border-radius:var(--radius-sm);
+  scrollbar-width:thin; scrollbar-color:rgba(91,157,250,.4) transparent;}
+.tw::-webkit-scrollbar{height:8px;} .tw::-webkit-scrollbar-thumb{background:rgba(91,157,250,.35); border-radius:4px;}
+table{border-collapse:collapse; width:100%; font-size:var(--step--1); min-width:480px;}
+caption{caption-side:top; text-align:left; padding:11px 14px 9px; font-size:.7rem; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--text-muted); font-weight:750; border-bottom:1px solid var(--card-border);}
+th,td{padding:8px 12px; text-align:right; border-bottom:1px solid rgba(91,157,250,0.10);}
+th:first-child,td:first-child{text-align:left;}
+thead th{background:rgba(10,36,114,0.42); color:var(--text-secondary); font-weight:700;
+  font-size:.7rem; letter-spacing:.055em; text-transform:uppercase; position:sticky; top:0;}
+tbody tr:last-child td{border-bottom:0;}
+tbody tr:hover td{background:rgba(47,126,240,0.05);}
+td.num,th.num,.num{font-family:var(--f-mono); font-variant-numeric:tabular-nums;}
+tr.total td{border-top:2px solid var(--card-border-strong); font-weight:750; color:var(--cyan-300);
+  background:rgba(34,211,238,0.05);}
+tr.sub td{color:var(--text-secondary);}
+.si{background:rgba(47,126,240,0.05);} .eng{background:rgba(34,211,238,0.035);}
+td.g{color:var(--ok-300);} td.a{color:var(--warn-300);} td.r{color:var(--bad-300);}
+
+/* ---------- formula block ---------- */
+.fml{font-family:var(--f-mono); background:linear-gradient(180deg,rgba(10,36,114,0.34),rgba(6,16,40,0.5));
+  border:1px solid var(--card-border); border-radius:var(--radius-sm); padding:14px 16px; margin:1.15em 0;
+  font-size:.92em; line-height:1.85; overflow-x:auto; color:var(--text-primary);}
+.fml .eq{display:block; white-space:pre; color:var(--cyan-300);}
+.fml .wh{display:block; margin-top:.6em; padding-top:.6em; border-top:1px dashed rgba(91,157,250,0.22);
+  color:var(--text-muted); font-size:.86em; white-space:pre-wrap; line-height:1.6;}
+.fml .src{display:block; margin-top:.5em; color:var(--text-muted); font-size:.8em; font-family:var(--f-sans); font-style:italic;}
+
+/* step-through working */
+.work{counter-reset:stp; margin:1.3em 0; display:grid; gap:0;}
+.work .stp{position:relative; padding:11px 0 11px 42px; border-bottom:1px solid rgba(91,157,250,0.10);}
+.work .stp:last-child{border-bottom:0;}
+.work .stp::before{counter-increment:stp; content:counter(stp);
+  position:absolute; left:0; top:11px; width:25px; height:25px; border-radius:50%;
+  background:rgba(47,126,240,0.16); border:1px solid rgba(91,157,250,0.34); color:var(--blue-300);
+  font-family:var(--f-mono); font-size:.75rem; font-weight:700;
+  display:grid; place-items:center;}
+.work .stp b{display:block; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--text-muted); margin-bottom:.3em; font-weight:750;}
+.work .stp .r{font-family:var(--f-mono); color:var(--cyan-300); font-variant-numeric:tabular-nums;}
+
+/* result strip */
+.res{display:grid; gap:10px; margin:1.3em 0;
+  grid-template-columns:repeat(auto-fit,minmax(146px,1fr));}
+.res div{background:rgba(6,16,40,0.94); padding:12px 14px;
+  border:1px solid var(--card-border); border-radius:var(--radius-sm);}
+.res .k{font-size:.66rem; letter-spacing:.09em; text-transform:uppercase; color:var(--text-muted); font-weight:750; display:block; margin-bottom:3px;}
+.res .v{font-family:var(--f-mono); font-size:var(--step-1); font-weight:700; color:var(--cyan-300); font-variant-numeric:tabular-nums; line-height:1.25; display:block;}
+.res .u{font-size:.72rem; color:var(--text-secondary); font-family:var(--f-mono);}
+.res div.hero{background:linear-gradient(135deg,rgba(10,36,114,0.85),rgba(6,16,40,0.94));
+  border-color:var(--card-border-strong);}
+.res div.hero .v{color:var(--ok-300);}
+
+/* sanity check */
+.sanity{border:1px dashed rgba(103,232,249,0.34); background:rgba(34,211,238,0.045);
+  border-radius:var(--radius-sm); padding:13px 16px; margin:1.3em 0;}
+.sanity b.nh{display:block; font-size:.7rem; letter-spacing:.11em; text-transform:uppercase;
+  color:var(--cyan-300); margin-bottom:.4em; font-weight:750;}
+.sanity p:last-child{margin-bottom:0;}
+
+/* ---------- inputs ---------- */
+.io{display:grid; gap:9px 14px; grid-template-columns:repeat(auto-fit,minmax(178px,1fr));}
+.fld{display:flex; flex-direction:column; gap:4px; min-width:0;}
+.fld label{font-size:.71rem; color:var(--text-secondary); letter-spacing:.03em; line-height:1.35;}
+.fld label .u{color:var(--text-muted); font-family:var(--f-mono); font-size:.94em;}
+.fld input,.fld select{
+  font-family:var(--f-mono); font-size:var(--step--1); font-variant-numeric:tabular-nums;
+  background:var(--in-bg); border:1px solid var(--in-border); color:var(--text-primary);
+  border-radius:7px; padding:7px 9px; width:100%; min-width:0;
+}
+.fld input:focus,.fld select:focus{border-color:var(--cyan-400); background:rgba(252,211,77,0.14);}
+.fld select option{background:var(--navy-800); color:var(--text-primary);}
+.btn{appearance:none; font-family:inherit; font-size:var(--step--1); font-weight:650; cursor:pointer;
+  padding:8px 15px; border-radius:8px; border:1px solid var(--card-border-strong);
+  background:rgba(47,126,240,0.14); color:var(--text-primary); transition:background .16s, border-color .16s;}
+.btn:hover{background:rgba(47,126,240,0.26); border-color:var(--cyan-400);}
+.btn.pri{background:linear-gradient(180deg,var(--cyan-300),var(--cyan-400)); color:#04101f; border-color:var(--cyan-400); font-weight:750;}
+.btn.pri:hover{filter:brightness(1.08);}
+.btn.sm{padding:5px 11px; font-size:.74rem;}
+
+/* ---------- figures ---------- */
+figure{margin:1.7em 0;}
+.figbox{border:1px solid var(--card-border); border-radius:var(--radius); background:rgba(4,12,30,0.55);
+  padding:16px; overflow-x:auto; scrollbar-width:thin;}
+.figbox svg{display:block; max-width:100%; height:auto;}
+figcaption{margin-top:.75em; font-size:.78rem; color:var(--text-muted); line-height:1.55; max-width:66ch;}
+figcaption b{color:var(--text-secondary);}
+.svg-lbl{font-family:var(--f-sans); font-size:11px; fill:var(--text-secondary);}
+.svg-lbl-sm{font-family:var(--f-sans); font-size:9.5px; fill:var(--text-muted);}
+.svg-num{font-family:var(--f-mono); font-size:10px; fill:var(--text-muted);}
+.svg-ttl{font-family:var(--f-sans); font-size:12.5px; font-weight:700; fill:var(--text-primary);}
+
+/* ---------- quiz ---------- */
+.quiz{border:1px solid var(--card-border); border-radius:var(--radius); background:var(--card-bg); overflow:hidden; margin:1.5em 0;}
+.quiz-hd{padding:14px 18px; border-bottom:1px solid var(--card-border); display:flex; gap:12px;
+  align-items:center; justify-content:space-between; flex-wrap:wrap; background:rgba(10,36,114,0.30);}
+.quiz-hd b{font-size:var(--step-0); font-weight:700;}
+.quiz-hd .sc{font-family:var(--f-mono); font-size:.8rem; color:var(--text-secondary); font-variant-numeric:tabular-nums;}
+.q{padding:16px 18px; border-bottom:1px solid rgba(91,157,250,0.10);}
+.q:last-of-type{border-bottom:0;}
+.q .qs{display:flex; gap:9px; align-items:flex-start; margin-bottom:.7em;}
+.q .qn{font-family:var(--f-mono); font-size:.75rem; color:var(--blue-300); font-weight:700; flex:0 0 auto;
+  background:rgba(47,126,240,0.14); border-radius:5px; padding:1px 6px; margin-top:2px;}
+.q .qt{margin:0; font-weight:600; line-height:1.5;}
+.opts{display:grid; gap:6px; margin:0 0 0 30px;}
+.opt{display:flex; gap:9px; align-items:flex-start; padding:8px 11px; border-radius:8px; cursor:pointer;
+  border:1px solid rgba(91,157,250,0.18); background:rgba(6,16,40,0.5); font-size:var(--step--1); line-height:1.45;
+  transition:background .15s, border-color .15s;}
+.opt:hover{background:rgba(47,126,240,0.11); border-color:var(--blue-400);}
+.opt input{margin:3px 0 0; accent-color:var(--cyan-400); flex:0 0 auto;}
+.opt.ok{border-color:var(--ok-500); background:rgba(34,197,94,0.12);}
+.opt.no{border-color:var(--bad-500); background:rgba(239,68,68,0.10);}
+.opt.miss{border-color:var(--ok-500); border-style:dashed;}
+.numq{display:flex; gap:8px; align-items:center; margin-left:30px; flex-wrap:wrap;}
+.numq input{font-family:var(--f-mono); background:var(--in-bg); border:1px solid var(--in-border);
+  color:var(--text-primary); border-radius:7px; padding:7px 9px; width:130px; font-variant-numeric:tabular-nums;}
+.numq .un{font-family:var(--f-mono); font-size:.8rem; color:var(--text-muted);}
+.fb{margin:.75em 0 0 30px; padding:10px 13px; border-radius:8px; font-size:var(--step--1); line-height:1.55; display:none;}
+.fb.show{display:block;}
+.fb.ok{background:rgba(34,197,94,0.10); border-left:3px solid var(--ok-500);}
+.fb.no{background:rgba(239,68,68,0.09); border-left:3px solid var(--bad-500);}
+.fb b{display:block; margin-bottom:.25em; font-size:.71rem; letter-spacing:.09em; text-transform:uppercase;}
+.fb.ok b{color:var(--ok-300);} .fb.no b{color:var(--bad-300);}
+.quiz-ft{padding:13px 18px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; background:rgba(10,36,114,0.22); border-top:1px solid var(--card-border);}
+.quiz-ft .msg{font-size:var(--step--1); color:var(--text-secondary);}
+
+/* ---------- checklist ---------- */
+.ckl{border:1px solid var(--card-border); border-radius:var(--radius); background:var(--card-bg); overflow:hidden; margin:1.5em 0;}
+.ckl-hd{padding:14px 18px; border-bottom:1px solid var(--card-border); background:rgba(10,36,114,0.30);
+  display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap;}
+.ckl-hd b{font-size:var(--step-0);}
+.ckl-hd .cnt{font-family:var(--f-mono); font-size:.78rem; color:var(--cyan-300); font-variant-numeric:tabular-nums;}
+.ckl ul{list-style:none; margin:0; padding:0;}
+.ckl li{border-bottom:1px solid rgba(91,157,250,0.09);}
+.ckl li:last-child{border-bottom:0;}
+.ckl label{display:flex; gap:11px; align-items:flex-start; padding:11px 18px; cursor:pointer; transition:background .15s;}
+.ckl label:hover{background:rgba(47,126,240,0.06);}
+.ckl input{margin:4px 0 0; accent-color:var(--ok-500); flex:0 0 auto; width:15px; height:15px;}
+.ckl .ct{font-size:var(--step--1); line-height:1.5;}
+.ckl .ct em{display:block; color:var(--text-muted); font-style:normal; font-size:.92em; margin-top:2px;}
+.ckl input:checked + .ct{color:var(--text-muted); text-decoration:line-through; text-decoration-color:rgba(111,132,171,.5);}
+.ckl input:checked + .ct em{text-decoration:none;}
+
+/* ---------- misc ---------- */
+.kv{display:grid; grid-template-columns:auto 1fr; gap:5px 14px; font-size:var(--step--1); margin:1em 0;}
+.kv dt{color:var(--text-muted);} .kv dd{margin:0; font-family:var(--f-mono); color:var(--text-primary); font-variant-numeric:tabular-nums;}
+.srcs{font-size:.78rem; color:var(--text-muted); line-height:1.65;}
+.srcs li{margin:.35em 0;}
+footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px 0 0; color:var(--text-muted); font-size:.78rem; line-height:1.65;}
+
+@media print{
+  .bg-base,.topbar,.rail,.quiz-ft,.btn{display:none !important;}
+  body{background:#fff; color:#111;}
+  .layout{grid-template-columns:1fr; padding:0;}
+  .panel[hidden]{display:block !important;}
+  .card,.tw,.fml,.ckl,.quiz{border-color:#bbb; background:#fff;}
+  h1,h2,h3,h4,strong,.res .v{color:#111 !important;}
+  a{color:#111; text-decoration:underline;}
+  .figbox{border-color:#bbb; background:#fff;}
+  table{page-break-inside:avoid;}
+}
+</style>
+</head>
+<body>
+<div class="bg-base"></div>
+<a class="skip" href="#main">Skip to content</a>
+<div class="shell">
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="../index.html">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="12" fill="#0a2472"/><path d="M10 46 L54 46" stroke="#5b9dfa" stroke-width="2.5" stroke-linecap="round"/><path d="M10 46 C26 46 40 36 50 14" fill="none" stroke="#22d3ee" stroke-width="3.2" stroke-linecap="round"/><circle cx="40" cy="31" r="4" fill="#eaf1ff"/><circle cx="22" cy="42" r="3" fill="#86efac"/><path d="M40 31 L22 42" stroke="#fcd34d" stroke-width="2" stroke-dasharray="3 2"/></svg>
+      <span class="bt"><b>Doha HVAC Study Guide</b><span>Ventilation &amp; AC design specialization</span></span>
+    </a>
+    <nav class="tabs" role="tablist" aria-label="Course sections">
+      <button class="tab" role="tab" id="tab-overview" aria-controls="panel-overview" aria-selected="true" data-panel="overview">Overview</button>
+      <button class="tab" role="tab" id="tab-c1" aria-controls="panel-c1" aria-selected="false" data-panel="c1"><span class="tnum">C1</span>Heat Load</button>
+      <button class="tab" role="tab" id="tab-c2" aria-controls="panel-c2" aria-selected="false" data-panel="c2"><span class="tnum">C2</span>Equipment</button>
+      <button class="tab" role="tab" id="tab-c3" aria-controls="panel-c3" aria-selected="false" data-panel="c3"><span class="tnum">C3</span>Life Safety</button>
+      <button class="tab" role="tab" id="tab-c4" aria-controls="panel-c4" aria-selected="false" data-panel="c4"><span class="tnum">C4</span>Technology</button>
+      <button class="tab" role="tab" id="tab-ref" aria-controls="panel-ref" aria-selected="false" data-panel="ref">Reference</button>
+    </nav>
+  </div>
+</header>
+
+<div class="layout">
+
+<aside class="rail" aria-label="Section navigation">
+  <div class="progress-card">
+    <div class="pt"><span>Study progress</span><b id="progPct">0%</b></div>
+    <div class="pbar"><i id="progBar"></i></div>
+    <small id="progTxt">Checklist items ticked and quiz questions answered correctly, across the whole guide.</small>
+  </div>
+  <div class="rail-group" data-rail="overview">
+    <h4>Overview</h4>
+    <a href="#s-start" class="on"><span class="rm">00</span>Start here</a>
+    <a href="#s-verify"><span class="rm">01</span>How to trust the numbers</a>
+    <a href="#s-design"><span class="rm">02</span>Doha design basis</a>
+    <a href="#s-map"><span class="rm">03</span>Specialization map</a>
+    <a href="#s-mind"><span class="rm">04</span>Master mind map</a>
+  </div>
+  <div class="rail-group" data-rail="c1" hidden>
+    <h4>C1 · Heat load</h4>
+    <a href="#c1m1"><span class="rm">M1</span>Refrigeration &amp; psychrometry</a>
+    <a href="#c1-phchart"><span class="rm">·</span>The vapour-compression cycle</a>
+    <a href="#c1-psychart"><span class="rm">·</span>Reading the chart</a>
+    <a href="#c1-exA"><span class="rm">A</span>Worked: state points</a>
+    <a href="#c1m1q"><span class="rm">?</span>Quiz M1</a>
+    <a href="#c1m2"><span class="rm">M2</span>Heat load calculation</a>
+    <a href="#c1-cltd"><span class="rm">·</span>CLTD / CLF / SCL method</a>
+    <a href="#c1-exB"><span class="rm">B</span>Worked: full load</a>
+    <a href="#c1-rts"><span class="rm">·</span>Why RTS replaced CLTD</a>
+    <a href="#c1m2q"><span class="rm">?</span>Quiz M2</a>
+    <a href="#c1m3"><span class="rm">M3</span>Psychrometry × load</a>
+    <a href="#c1-exC"><span class="rm">C</span>Worked: coil selection</a>
+    <a href="#c1m3q"><span class="rm">?</span>Quiz M3</a>
+  </div>
+  <div class="rail-group" data-rail="c2" hidden>
+    <h4>C2 · Equipment</h4>
+    <a href="#c2-intro"><span class="rm">M1</span>High side &amp; low side</a>
+    <a href="#c2-plant"><span class="rm">·</span>Plant schematic</a>
+    <a href="#c2-chiller"><span class="rm">·</span>Chillers &amp; cooling towers</a>
+    <a href="#c2-pump"><span class="rm">·</span>Pumping arrangements</a>
+    <a href="#c2-exD"><span class="rm">D</span>Worked: plant sizing</a>
+    <a href="#c2-duct"><span class="rm">·</span>Duct design &amp; ESP</a>
+    <a href="#c2q"><span class="rm">?</span>Quiz C2</a>
+  </div>
+  <div class="rail-group" data-rail="c3" hidden>
+    <h4>C3 · Life safety</h4>
+    <a href="#c3-intro"><span class="rm">M1</span>Ventilation &amp; IAQ</a>
+    <a href="#c3-stack"><span class="rm">·</span>Stack &amp; wind effect</a>
+    <a href="#c3-press"><span class="rm">M2</span>Pressurization</a>
+    <a href="#c3-exE"><span class="rm">E</span>Worked: life safety</a>
+    <a href="#c3q"><span class="rm">?</span>Quiz C3</a>
+  </div>
+  <div class="rail-group" data-rail="c4" hidden>
+    <h4>C4 · Technology</h4>
+    <a href="#c4-dcv"><span class="rm">M1</span>Demand control ventilation</a>
+    <a href="#c4-vrf"><span class="rm">·</span>Variable refrigerant flow</a>
+    <a href="#c4-fans"><span class="rm">M2</span>Fans &amp; fan laws</a>
+    <a href="#c4-exF"><span class="rm">F</span>Worked: DCV &amp; fans</a>
+    <a href="#c4q"><span class="rm">?</span>Quiz C4</a>
+  </div>
+  <div class="rail-group" data-rail="ref" hidden>
+    <h4>Reference</h4>
+    <a href="#r-ckl1"><span class="rm">01</span>Design basis checklist</a>
+    <a href="#r-ckl2"><span class="rm">02</span>Load calc review</a>
+    <a href="#r-ckl3"><span class="rm">03</span>Datasheet &amp; TBE review</a>
+    <a href="#r-ckl4"><span class="rm">04</span>Vendor submittal review</a>
+    <a href="#r-ckl5"><span class="rm">05</span>Commissioning &amp; MC</a>
+    <a href="#r-fml"><span class="rm">06</span>Formula sheet</a>
+    <a href="#r-codes"><span class="rm">07</span>Codes &amp; standards</a>
+    <a href="#r-src"><span class="rm">08</span>Sources &amp; limits</a>
+  </div>
+</aside>
+
+<main id="main">
+
+<!-- ==================== OVERVIEW ==================== -->
+<div class="panel" id="panel-overview" role="tabpanel" aria-labelledby="tab-overview">
+
+<section id="s-start">
+  <p class="eyebrow">L&amp;T EduTech · Coursera specialization · 4 courses · 9 modules</p>
+  <h1>Design of Ventilation &amp; Air&nbsp;Conditioning Systems</h1>
+  <p class="lede">A working study guide for the whole specialization — psychrometry, heat load, equipment selection, smoke control and demand-based ventilation — with every method carried through to a number against <strong>Doha design conditions</strong>, in SI and English units side by side.</p>
+
+  <div class="grid g4" style="margin:1.8em 0;">
+    <div class="card tight"><span class="k" style="font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;color:var(--text-muted);font-weight:750;">Courses</span><div class="num" style="font-size:var(--step-2);color:var(--cyan-300);font-weight:700;">4</div></div>
+    <div class="card tight"><span class="k" style="font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;color:var(--text-muted);font-weight:750;">Modules</span><div class="num" style="font-size:var(--step-2);color:var(--cyan-300);font-weight:700;">9</div></div>
+    <div class="card tight"><span class="k" style="font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;color:var(--text-muted);font-weight:750;">Worked examples</span><div class="num" style="font-size:var(--step-2);color:var(--cyan-300);font-weight:700;">6</div></div>
+    <div class="card tight"><span class="k" style="font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;color:var(--text-muted);font-weight:750;">Practice questions</span><div class="num" style="font-size:var(--step-2);color:var(--cyan-300);font-weight:700;" id="qTotal">—</div></div>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">Read this before you use a single number</b>
+    <p>This guide was written <strong>without access to the Coursera platform</strong>. The course pages could not be reached from the environment that produced it, so nothing here is a transcript of the lectures, slides or graded quizzes. It is reconstructed from the published course and specialization descriptions, the codes those courses name, and established design method.</p>
+    <p style="margin-bottom:0;">Two consequences you must hold onto: the <strong>practice questions are written from first principles, not copied from Coursera</strong> — treat them as revision, not as a leaked question bank; and every table value that would normally be read out of an ASHRAE handbook is tagged <span class="vb verify">Verify</span> and left editable, because it was set from established magnitudes rather than read off the page.</p>
+  </div>
+</section>
+
+<section id="s-verify">
+  <h2>How to trust the numbers</h2>
+  <p class="prose">Engineering documents fail in a specific way: a plausible number with no traceable origin gets copied forward until someone builds it. Every quantitative block in this guide therefore carries one of three tags, and they mean different things.</p>
+
+  <div class="grid g3" style="margin:1.5em 0;">
+    <div class="card">
+      <span class="vb derived">Derived</span>
+      <p style="margin:.75em 0 0;font-size:var(--step--1);line-height:1.55;">Computed inside this guide from first principles. You can follow every step and reproduce it. Errors here are mine and are traceable.</p>
+    </div>
+    <div class="card">
+      <span class="vb standard">Standard</span>
+      <p style="margin:.75em 0 0;font-size:var(--step--1);line-height:1.55;">Quoted from a named clause of a code or standard, cited inline. Confirm the <em>edition</em> your project mandates — values move between editions.</p>
+    </div>
+    <div class="card">
+      <span class="vb verify">Verify</span>
+      <p style="margin:.75em 0 0;font-size:var(--step--1);line-height:1.55;">A representative magnitude, not a read table value. <strong>Never carry one of these into a deliverable</strong> without replacing it from the handbook or your project basis of design.</p>
+    </div>
+  </div>
+
+  <div class="note">
+    <b class="nh">Why the Verify tag exists rather than a confident-looking table</b>
+    <p style="margin-bottom:0;">CLTD, SCL, CLF, shading coefficients and climatic design data all live in copyrighted ASHRAE tables that could not be opened while writing this. Reproducing them from memory to four significant figures would look authoritative and be untrustworthy — the worst combination in a technical document. Instead the method is exact, the magnitudes are defensible, and every one of them is an input box you overwrite.</p>
+  </div>
+</section>
+<section id="s-design">
+  <h2>Doha design basis</h2>
+  <p class="prose">These inputs drive every worked example in the guide. They open on values representative of Doha and of QCS-compliant Gulf construction. <strong>Overwrite them with your project basis of design and the calculations re-solve.</strong></p>
+
+  <div class="card" style="margin:1.5em 0;">
+    <div style="display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:14px;">
+      <b style="font-size:var(--step-1);">Outdoor design conditions <span class="vb verify">Verify</span></b>
+      <button class="btn sm" id="btnReset" type="button">Reset to defaults</button>
+    </div>
+    <p style="font-size:var(--step--1);color:var(--text-secondary);margin-bottom:1em;">
+      ASHRAE <em>Fundamentals</em> Ch. 14 lists <strong>separate</strong> design conditions for peak dry bulb and for peak dew point. Doha's two are far apart, and that gap is the single most consequential fact in this guide — Case&nbsp;1 sizes the airflow, Case&nbsp;2 sizes the coil.
+    </p>
+    <div class="io">
+      <div class="fld"><label for="dd_oa1_db">Case 1 — 0.4% cooling <span class="u">DB, °C</span></label><input type="number" id="dd_oa1_db" value="45.0" step="0.1"></div>
+      <div class="fld"><label for="dd_oa1_wb">Case 1 — coincident <span class="u">WB, °C</span></label><input type="number" id="dd_oa1_wb" value="21.5" step="0.1"></div>
+      <div class="fld"><label for="dd_dr1">Case 1 daily range <span class="u">K</span></label><input type="number" id="dd_dr1" value="13.5" step="0.1"></div>
+      <div class="fld"><label for="dd_oa2_db">Case 2 — 0.4% dehum <span class="u">MCDB, °C</span></label><input type="number" id="dd_oa2_db" value="31.6" step="0.1"></div>
+      <div class="fld"><label for="dd_oa2_dp">Case 2 — 0.4% <span class="u">dew point, °C</span></label><input type="number" id="dd_oa2_dp" value="27.8" step="0.1"></div>
+      <div class="fld"><label for="dd_dr2">Case 2 daily range <span class="u">K</span></label><input type="number" id="dd_dr2" value="9.0" step="0.1"></div>
+      <div class="fld"><label for="dd_ct_wb">Cooling-tower design <span class="u">WB, °C</span></label><input type="number" id="dd_ct_wb" value="30.6" step="0.1"></div>
+      <div class="fld"><label for="dd_patm">Atmospheric pressure <span class="u">kPa</span></label><input type="number" id="dd_patm" value="101.325" step="0.001"></div>
+    </div>
+
+    <h4 style="margin-top:1.6em;">Indoor design &amp; ventilation <span class="vb standard">Standard</span></h4>
+    <div class="io">
+      <div class="fld"><label for="dd_in_db">Indoor dry bulb <span class="u">°C</span></label><input type="number" id="dd_in_db" value="24.0" step="0.5"></div>
+      <div class="fld"><label for="dd_in_rh">Indoor relative humidity <span class="u">%</span></label><input type="number" id="dd_in_rh" value="50" step="1"></div>
+      <div class="fld"><label for="dd_tsup">Supply air off coil <span class="u">°C</span></label><input type="number" id="dd_tsup" value="13.0" step="0.5"></div>
+      <div class="fld"><label for="dd_rp">62.1 R<sub>p</sub> <span class="u">L/s·person</span></label><input type="number" id="dd_rp" value="2.5" step="0.1"></div>
+      <div class="fld"><label for="dd_ra">62.1 R<sub>a</sub> <span class="u">L/s·m²</span></label><input type="number" id="dd_ra" value="0.3" step="0.05"></div>
+      <div class="fld"><label for="dd_ez">Zone air dist. effectiveness E<sub>z</sub></label><input type="number" id="dd_ez" value="1.0" step="0.05"></div>
+      <div class="fld"><label for="dd_ach_inf">Infiltration <span class="u">ACH</span></label><input type="number" id="dd_ach_inf" value="0.15" step="0.05"></div>
+    </div>
+
+    <details style="margin-top:1.4em;">
+      <summary style="cursor:pointer;font-weight:650;color:var(--cyan-300);font-size:var(--step--1);padding:6px 0;">Zone geometry &amp; envelope</summary>
+      <div class="io" style="margin-top:12px;">
+        <div class="fld"><label for="dd_Ls">Exposed wall — south <span class="u">m</span></label><input type="number" id="dd_Ls" value="12.0" step="0.5"></div>
+        <div class="fld"><label for="dd_Lw">Exposed wall — west <span class="u">m</span></label><input type="number" id="dd_Lw" value="8.0" step="0.5"></div>
+        <div class="fld"><label for="dd_hftf">Floor to floor <span class="u">m</span></label><input type="number" id="dd_hftf" value="3.6" step="0.1"></div>
+        <div class="fld"><label for="dd_hceil">Floor to ceiling <span class="u">m</span></label><input type="number" id="dd_hceil" value="3.0" step="0.1"></div>
+        <div class="fld"><label for="dd_glaz">Glazing fraction of wall</label><input type="number" id="dd_glaz" value="0.40" step="0.05"></div>
+        <div class="fld"><label for="dd_uroof">U roof <span class="u">W/m²·K</span></label><input type="number" id="dd_uroof" value="0.30" step="0.01"></div>
+        <div class="fld"><label for="dd_uwall">U wall <span class="u">W/m²·K</span></label><input type="number" id="dd_uwall" value="0.50" step="0.01"></div>
+        <div class="fld"><label for="dd_uglass">U glazing <span class="u">W/m²·K</span></label><input type="number" id="dd_uglass" value="1.90" step="0.05"></div>
+        <div class="fld"><label for="dd_shgc">Glazing SHGC</label><input type="number" id="dd_shgc" value="0.28" step="0.01"></div>
+      </div>
+    </details>
+
+    <details style="margin-top:.5em;">
+      <summary style="cursor:pointer;font-weight:650;color:var(--cyan-300);font-size:var(--step--1);padding:6px 0;">Internal gains &amp; cooling load factors</summary>
+      <div class="io" style="margin-top:12px;">
+        <div class="fld"><label for="dd_people">Occupants <span class="u">persons</span></label><input type="number" id="dd_people" value="10" step="1"></div>
+        <div class="fld"><label for="dd_ps">Sensible per person <span class="u">W</span></label><input type="number" id="dd_ps" value="75" step="5"></div>
+        <div class="fld"><label for="dd_pl">Latent per person <span class="u">W</span></label><input type="number" id="dd_pl" value="55" step="5"></div>
+        <div class="fld"><label for="dd_lpd">Lighting power density <span class="u">W/m²</span></label><input type="number" id="dd_lpd" value="8.0" step="0.5"></div>
+        <div class="fld"><label for="dd_epd">Equipment power density <span class="u">W/m²</span></label><input type="number" id="dd_epd" value="12.0" step="0.5"></div>
+        <div class="fld"><label for="dd_clf_p">CLF people</label><input type="number" id="dd_clf_p" value="0.90" step="0.01"></div>
+        <div class="fld"><label for="dd_clf_l">CLF lighting</label><input type="number" id="dd_clf_l" value="0.87" step="0.01"></div>
+        <div class="fld"><label for="dd_clf_e">CLF equipment</label><input type="number" id="dd_clf_e" value="0.90" step="0.01"></div>
+      </div>
+    </details>
+
+    <details style="margin-top:.5em;">
+      <summary style="cursor:pointer;font-weight:650;color:var(--warn-300);font-size:var(--step--1);padding:6px 0;">CLTD &amp; SCL table values — replace these first <span class="vb verify">Verify</span></summary>
+      <p style="font-size:var(--step--1);color:var(--text-secondary);margin:10px 0;">Read the real values from ASHRAE <em>Fundamentals</em> (1997) Tables 30–34 at your latitude, month and solar hour, or from the calculation basis your project has already approved. The defaults are magnitudes for a 24°N July afternoon peak, not table entries.</p>
+      <div class="io">
+        <div class="fld"><label for="dd_cltd_roof">CLTD roof <span class="u">K</span></label><input type="number" id="dd_cltd_roof" value="35" step="1"></div>
+        <div class="fld"><label for="dd_cltd_ws">CLTD wall south <span class="u">K</span></label><input type="number" id="dd_cltd_ws" value="16" step="1"></div>
+        <div class="fld"><label for="dd_cltd_ww">CLTD wall west <span class="u">K</span></label><input type="number" id="dd_cltd_ww" value="20" step="1"></div>
+        <div class="fld"><label for="dd_cltd_gl">CLTD glass <span class="u">K</span></label><input type="number" id="dd_cltd_gl" value="13" step="1"></div>
+        <div class="fld"><label for="dd_lm_roof">LM roof <span class="u">K</span></label><input type="number" id="dd_lm_roof" value="0" step="1"></div>
+        <div class="fld"><label for="dd_lm_ws">LM wall south <span class="u">K</span></label><input type="number" id="dd_lm_ws" value="-2" step="1"></div>
+        <div class="fld"><label for="dd_lm_ww">LM wall west <span class="u">K</span></label><input type="number" id="dd_lm_ww" value="0" step="1"></div>
+        <div class="fld"><label for="dd_k">Colour factor K</label><input type="number" id="dd_k" value="1.00" step="0.01"></div>
+        <div class="fld"><label for="dd_scl_s">SCL south <span class="u">W/m²</span></label><input type="number" id="dd_scl_s" value="145" step="5"></div>
+        <div class="fld"><label for="dd_scl_w">SCL west <span class="u">W/m²</span></label><input type="number" id="dd_scl_w" value="430" step="5"></div>
+      </div>
+    </details>
+  </div>
+
+  <div id="ddSummary" class="res" aria-live="polite"></div>
+
+  <div class="note warn">
+    <b class="nh">The colour factor K is a specification promise, not a discount</b>
+    <p style="margin-bottom:0;">K = 0.65 for a light-coloured surface will cut your roof load noticeably, and it is legitimate — but only if the finish reflectance is written into the specification <em>and</em> survives value engineering. Claiming the credit and then letting a dark membrane onto the roof is how a plant ends up 10% short on the hottest afternoon of the year. Default here is K = 1.00.</p>
+  </div>
+</section>
+<section id="s-map">
+  <h2>Specialization map</h2>
+  <p class="prose">Four courses, nine modules. The order is not arbitrary — each course consumes the output of the one before it. A heat load error in C1 does not stay in C1; it propagates into the chiller you select in C2 and the fan you specify in C4.</p>
+
+  <div class="tw">
+    <table>
+      <caption>Course structure and what each one produces</caption>
+      <thead><tr><th>Course</th><th style="text-align:left;">Modules</th><th style="text-align:left;">Governing method</th><th style="text-align:left;">Output it hands forward</th></tr></thead>
+      <tbody>
+        <tr><td><strong>C1</strong> Basics of Air Conditioning &amp; Heat Load</td><td style="text-align:left;">3</td><td style="text-align:left;">Psychrometry; CLTD/CLF/SCL</td><td style="text-align:left;">Zone loads, airflow, coil duty, ADP</td></tr>
+        <tr><td><strong>C2</strong> Equipment Selection, Design &amp; Sizing</td><td style="text-align:left;">2</td><td style="text-align:left;">Block load, diversity, hydraulics</td><td style="text-align:left;">Chiller, pump, tower, duct, ESP</td></tr>
+        <tr><td><strong>C3</strong> Ventilation, Life Safety &amp; Smoke Extraction</td><td style="text-align:left;">2</td><td style="text-align:left;">NFPA 92; ASHRAE 62.1; NBC</td><td style="text-align:left;">Pressurization and extract rates</td></tr>
+        <tr><td><strong>C4</strong> Cutting-edge Technology</td><td style="text-align:left;">2</td><td style="text-align:left;">DCV; VRF; fan laws</td><td style="text-align:left;">Part-load and energy strategy</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s-mind">
+  <h2>Master mind map</h2>
+  <figure>
+    <div class="figbox">
+      <svg viewBox="0 0 1140 700" role="img" aria-label="Mind map of the four courses and nine modules of the specialization, showing the key topics inside each module." style="min-width:940px;">
+        <defs>
+          <linearGradient id="mmRoot" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#1450c9"/><stop offset="1" stop-color="#0a2472"/>
+          </linearGradient>
+        </defs>
+
+        <path d="M176 350 C194 350 194 118 208 118" fill="none" stroke="#67e8f9" stroke-width="1.6" opacity="0.6"/>
+        <path d="M176 350 C194 350 194 300 208 300" fill="none" stroke="#22d3ee" stroke-width="1.6" opacity="0.6"/>
+        <path d="M176 350 C194 350 194 462 208 462" fill="none" stroke="#5b9dfa" stroke-width="1.6" opacity="0.6"/>
+        <path d="M176 350 C194 350 194 608 208 608" fill="none" stroke="#2f7ef0" stroke-width="1.6" opacity="0.6"/>
+
+        <path d="M384 118 C406 118 406 44 424 44"   fill="none" stroke="#67e8f9" stroke-width="1.3" opacity="0.45"/>
+        <path d="M384 118 C406 118 406 118 424 118" fill="none" stroke="#67e8f9" stroke-width="1.3" opacity="0.45"/>
+        <path d="M384 118 C406 118 406 192 424 192" fill="none" stroke="#67e8f9" stroke-width="1.3" opacity="0.45"/>
+        <path d="M384 300 C406 300 406 264 424 264" fill="none" stroke="#22d3ee" stroke-width="1.3" opacity="0.45"/>
+        <path d="M384 300 C406 300 406 336 424 336" fill="none" stroke="#22d3ee" stroke-width="1.3" opacity="0.45"/>
+        <path d="M384 462 C406 462 406 426 424 426" fill="none" stroke="#5b9dfa" stroke-width="1.3" opacity="0.45"/>
+        <path d="M384 462 C406 462 406 498 424 498" fill="none" stroke="#5b9dfa" stroke-width="1.3" opacity="0.45"/>
+        <path d="M384 608 C406 608 406 572 424 572" fill="none" stroke="#2f7ef0" stroke-width="1.3" opacity="0.45"/>
+        <path d="M384 608 C406 608 406 644 424 644" fill="none" stroke="#2f7ef0" stroke-width="1.3" opacity="0.45"/>
+
+        <rect x="24" y="318" width="152" height="64" rx="11" fill="url(#mmRoot)" stroke="#5b9dfa" stroke-width="1.4"/>
+        <text class="svg-ttl" x="100" y="343" text-anchor="middle" fill="#eaf1ff">Ventilation &amp; AC</text>
+        <text class="svg-ttl" x="100" y="359" text-anchor="middle" fill="#eaf1ff">System Design</text>
+        <text class="svg-lbl-sm" x="100" y="373" text-anchor="middle" fill="#a9bde0">4 courses · 9 modules</text>
+
+        <rect x="208" y="92"  width="176" height="52" rx="9" fill="rgba(103,232,249,0.10)" stroke="#67e8f9" stroke-width="1.3"/>
+        <text class="svg-ttl" x="222" y="114" fill="#67e8f9">C1 · Heat Load</text>
+        <text class="svg-lbl-sm" x="222" y="130" fill="#a9bde0">the foundation everything uses</text>
+
+        <rect x="208" y="274" width="176" height="52" rx="9" fill="rgba(34,211,238,0.10)" stroke="#22d3ee" stroke-width="1.3"/>
+        <text class="svg-ttl" x="222" y="296" fill="#22d3ee">C2 · Equipment</text>
+        <text class="svg-lbl-sm" x="222" y="312" fill="#a9bde0">turning load into hardware</text>
+
+        <rect x="208" y="436" width="176" height="52" rx="9" fill="rgba(91,157,250,0.10)" stroke="#5b9dfa" stroke-width="1.3"/>
+        <text class="svg-ttl" x="222" y="458" fill="#5b9dfa">C3 · Life Safety</text>
+        <text class="svg-lbl-sm" x="222" y="474" fill="#a9bde0">code-driven, not comfort-driven</text>
+
+        <rect x="208" y="582" width="176" height="52" rx="9" fill="rgba(47,126,240,0.10)" stroke="#2f7ef0" stroke-width="1.3"/>
+        <text class="svg-ttl" x="222" y="604" fill="#2f7ef0">C4 · Technology</text>
+        <text class="svg-lbl-sm" x="222" y="620" fill="#a9bde0">part-load is where energy goes</text>
+
+        <g>
+          <rect x="424" y="18" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(103,232,249,0.34)" stroke-width="1"/>
+          <text class="svg-lbl" x="440" y="40" fill="#eaf1ff" font-weight="700">M1 · Refrigeration cycle &amp; psychrometric properties</text>
+          <text class="svg-lbl-sm" x="440" y="56">Vapour-compression cycle · compressor, condenser, expansion device, evaporator · refrigerants &amp; GWP · the chart and its eight processes</text>
+
+          <rect x="424" y="92" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(103,232,249,0.34)" stroke-width="1"/>
+          <text class="svg-lbl" x="440" y="114" fill="#eaf1ff" font-weight="700">M2 · Heat load calculation</text>
+          <text class="svg-lbl-sm" x="440" y="130">CLTD / CLF / SCL · solar and transmission gain · lighting, people, equipment · infiltration · ASHRAE 62.1 ventilation · sensible vs latent</text>
+
+          <rect x="424" y="166" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(103,232,249,0.34)" stroke-width="1"/>
+          <text class="svg-lbl" x="440" y="188" fill="#eaf1ff" font-weight="700">M3 · Psychrometry × heat load</text>
+          <text class="svg-lbl-sm" x="440" y="204">RSHF · GSHF · ESHF · apparatus dew point · bypass factor · coil selection · supply air temperature and airflow</text>
+
+          <rect x="424" y="238" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(34,211,238,0.34)" stroke-width="1"/>
+          <text class="svg-lbl" x="440" y="260" fill="#eaf1ff" font-weight="700">M1 · High-side equipment</text>
+          <text class="svg-lbl-sm" x="440" y="276">Centrifugal, screw, reciprocating and absorption chillers · cooling towers, range and approach · condenser water circuit</text>
+
+          <rect x="424" y="310" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(34,211,238,0.34)" stroke-width="1"/>
+          <text class="svg-lbl" x="440" y="332" fill="#eaf1ff" font-weight="700">M2 · Low-side equipment &amp; distribution</text>
+          <text class="svg-lbl-sm" x="440" y="348">Air handling units · chilled-water pumping arrangements · pipe and duct sizing · external static pressure · insulation</text>
+
+          <rect x="424" y="400" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(91,157,250,0.34)" stroke-width="1"/>
+          <text class="svg-lbl" x="440" y="422" fill="#eaf1ff" font-weight="700">M1 · Ventilation &amp; indoor air quality</text>
+          <text class="svg-lbl-sm" x="440" y="438">Natural ventilation · stack effect and neutral pressure plane · wind effect · mechanical ventilation rates</text>
+
+          <rect x="424" y="472" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(91,157,250,0.34)" stroke-width="1"/>
+          <text class="svg-lbl" x="440" y="494" fill="#eaf1ff" font-weight="700">M2 · Smoke extraction &amp; pressurization</text>
+          <text class="svg-lbl-sm" x="440" y="510">Stairwell pressurization · lift well and lobby · car park extract · atrium smoke layer · door-opening force limit</text>
+
+          <rect x="424" y="546" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(47,126,240,0.34)" stroke-width="1"/>
+          <text class="svg-lbl" x="440" y="568" fill="#eaf1ff" font-weight="700">M1 · Demand control ventilation &amp; VRF</text>
+          <text class="svg-lbl-sm" x="440" y="584">CO₂-based outdoor air reset · the area component you may not turn down · VRF heat pump vs heat recovery</text>
+
+          <rect x="424" y="618" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(47,126,240,0.34)" stroke-width="1"/>
+          <text class="svg-lbl" x="440" y="640" fill="#eaf1ff" font-weight="700">M2 · Fans</text>
+          <text class="svg-lbl-sm" x="440" y="656">Centrifugal and axial types · the fan laws · specific fan power · system curve and operating point</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption><b>Reading it:</b> the branch order is the dependency order. C1 M2 produces the load that C2 M1 turns into a chiller; C1 M3 produces the airflow that C2 M2 turns into a duct and C4 M2 turns into a fan power. C3 is the one branch that does not descend from the load — it is sized by code, from occupancy and geometry, and is often the branch that gets reviewed last and found wanting.</figcaption>
+  </figure>
+</section>
+
+</div><!-- /panel-overview -->
+<!-- ==================== COURSE 1 ==================== -->
+<div class="panel" id="panel-c1" role="tabpanel" aria-labelledby="tab-c1" hidden>
+
+<section id="c1m1">
+  <div class="mod-head">
+    <p class="eyebrow">Course 1 · Module 1</p>
+    <h2>Refrigeration cycle &amp; psychrometric properties</h2>
+    <p class="lede">Two instruments underpin everything that follows: the pressure–enthalpy diagram, which tells you what the machine is doing, and the psychrometric chart, which tells you what the air is doing. Learn to read both and the rest of the specialization is bookkeeping.</p>
+    <div class="tag-row">
+      <span class="chip acc">Vapour-compression cycle</span><span class="chip acc">Psychrometry</span>
+      <span class="chip">Refrigerants</span><span class="chip">Components</span>
+    </div>
+  </div>
+
+  <h3 id="c1-phchart">The vapour-compression cycle</h3>
+  <p class="prose">Four components, four processes, one closed loop. The refrigerant is not consumed — it is a courier, picking up heat where you don't want it and putting it down where you don't care. Everything you pay for is the cost of moving it uphill in pressure.</p>
+
+  <figure>
+    <div class="figbox">
+      <svg viewBox="0 0 790 404" role="img" aria-label="Pressure-enthalpy diagram of the vapour-compression refrigeration cycle with the saturation dome and the four processes marked, alongside the component each process occurs in." style="min-width:680px;">
+        <defs>
+          <marker id="phArw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,1 L9,5 L0,9 z" fill="#22d3ee"/>
+          </marker>
+        </defs>
+<line x1="70" y1="360" x2="700" y2="360" stroke="#a9bde0" stroke-width="1.2"/>
+<line x1="70" y1="360" x2="70" y2="52" stroke="#a9bde0" stroke-width="1.2"/>
+<text class="svg-lbl" x="385" y="388" text-anchor="middle">Specific enthalpy  h  →</text>
+<text class="svg-lbl" x="40" y="210" text-anchor="middle" transform="rotate(-90 40 210)">Pressure  p  (log scale)  →</text>
+<line x1="70" y1="152" x2="692" y2="152" stroke="#6f84ab" stroke-width=".7" stroke-dasharray="4 4" opacity=".45"/>
+<text class="svg-num" x="76" y="146" fill="#6f84ab">p condensing</text>
+<line x1="70" y1="278" x2="692" y2="278" stroke="#6f84ab" stroke-width=".7" stroke-dasharray="4 4" opacity=".45"/>
+<text class="svg-num" x="76" y="272" fill="#6f84ab">p evaporating</text>
+<path d="M 150.0,340.0 L 150.1,337.9 L 150.3,335.9 L 150.6,333.8 L 150.9,331.7 L 151.3,329.7 L 151.8,327.6 L 152.2,325.5 L 152.7,323.5 L 153.3,321.4 L 153.9,319.3 L 154.5,317.3 L 155.1,315.2 L 155.8,313.1 L 156.5,311.1 L 157.2,309.0 L 158.0,306.9 L 158.8,304.9 L 159.6,302.8 L 160.5,300.7 L 161.3,298.7 L 162.2,296.6 L 163.1,294.5 L 164.1,292.5 L 165.0,290.4 L 166.0,288.3 L 167.0,286.3 L 168.0,284.2 L 169.1,282.1 L 170.1,280.1 L 171.2,278.0 L 172.3,275.9 L 173.5,273.9 L 174.6,271.8 L 175.8,269.7 L 177.0,267.7 L 178.2,265.6 L 179.4,263.5 L 180.6,261.5 L 181.9,259.4 L 183.2,257.3 L 184.4,255.3 L 185.8,253.2 L 187.1,251.1 L 188.4,249.1 L 189.8,247.0 L 191.2,244.9 L 192.6,242.9 L 194.0,240.8 L 195.4,238.7 L 196.9,236.7 L 198.3,234.6 L 199.8,232.5 L 201.3,230.5 L 202.8,228.4 L 204.3,226.3 L 205.9,224.3 L 207.4,222.2 L 209.0,220.1 L 210.6,218.1 L 212.2,216.0 L 213.8,213.9 L 215.4,211.9 L 217.0,209.8 L 218.7,207.7 L 220.4,205.7 L 222.0,203.6 L 223.7,201.5 L 225.5,199.5 L 227.2,197.4 L 228.9,195.3 L 230.7,193.3 L 232.5,191.2 L 234.2,189.1 L 236.0,187.1 L 237.8,185.0 L 239.7,182.9 L 241.5,180.9 L 243.3,178.8 L 245.2,176.7 L 247.1,174.7 L 249.0,172.6 L 250.9,170.5 L 252.8,168.5 L 254.7,166.4 L 256.6,164.3 L 258.6,162.3 L 260.6,160.2 L 262.5,158.1 L 264.5,156.1 L 266.5,154.0 L 268.5,151.9 L 270.6,149.9 L 272.6,147.8 L 274.6,145.7 L 276.7,143.7 L 278.8,141.6 L 280.9,139.5 L 283.0,137.5 L 285.1,135.4 L 287.2,133.3 L 289.3,131.3 L 291.5,129.2 L 293.6,127.1 L 295.8,125.1 L 298.0,123.0 L 300.2,120.9 L 302.4,118.9 L 304.6,116.8 L 306.8,114.7 L 309.0,112.7 L 311.3,110.6 L 313.5,108.5 L 315.8,106.5 L 318.1,104.4 L 320.4,102.3 L 322.7,100.3 L 325.0,98.2 L 327.3,96.1 L 329.7,94.1 L 332.0,92.0 L 332.0,92.0 L 335.6,94.1 L 339.2,96.1 L 342.7,98.2 L 346.2,100.3 L 349.7,102.3 L 353.2,104.4 L 356.6,106.5 L 360.0,108.5 L 363.4,110.6 L 366.8,112.7 L 370.1,114.7 L 373.4,116.8 L 376.7,118.9 L 380.0,120.9 L 383.2,123.0 L 386.4,125.1 L 389.6,127.1 L 392.8,129.2 L 395.9,131.3 L 399.0,133.3 L 402.1,135.4 L 405.1,137.5 L 408.1,139.5 L 411.1,141.6 L 414.1,143.7 L 417.1,145.7 L 420.0,147.8 L 422.9,149.9 L 425.7,151.9 L 428.6,154.0 L 431.4,156.1 L 434.2,158.1 L 436.9,160.2 L 439.7,162.3 L 442.4,164.3 L 445.0,166.4 L 447.7,168.5 L 450.3,170.5 L 452.9,172.6 L 455.5,174.7 L 458.0,176.7 L 460.5,178.8 L 463.0,180.9 L 465.5,182.9 L 467.9,185.0 L 470.3,187.1 L 472.7,189.1 L 475.1,191.2 L 477.4,193.3 L 479.7,195.3 L 481.9,197.4 L 484.2,199.5 L 486.4,201.5 L 488.6,203.6 L 490.7,205.7 L 492.9,207.7 L 495.0,209.8 L 497.0,211.9 L 499.1,213.9 L 501.1,216.0 L 503.1,218.1 L 505.0,220.1 L 507.0,222.2 L 508.9,224.3 L 510.7,226.3 L 512.6,228.4 L 514.4,230.5 L 516.2,232.5 L 517.9,234.6 L 519.7,236.7 L 521.4,238.7 L 523.0,240.8 L 524.7,242.9 L 526.3,244.9 L 527.9,247.0 L 529.4,249.1 L 531.0,251.1 L 532.4,253.2 L 533.9,255.3 L 535.3,257.3 L 536.7,259.4 L 538.1,261.5 L 539.5,263.5 L 540.8,265.6 L 542.1,267.7 L 543.3,269.7 L 544.5,271.8 L 545.7,273.9 L 546.9,275.9 L 548.0,278.0 L 549.1,280.1 L 550.2,282.1 L 551.2,284.2 L 552.2,286.3 L 553.1,288.3 L 554.1,290.4 L 555.0,292.5 L 555.9,294.5 L 556.7,296.6 L 557.5,298.7 L 558.3,300.7 L 559.0,302.8 L 559.7,304.9 L 560.4,306.9 L 561.0,309.0 L 561.6,311.1 L 562.2,313.1 L 562.7,315.2 L 563.2,317.3 L 563.6,319.3 L 564.1,321.4 L 564.4,323.5 L 564.8,325.5 L 565.1,327.6 L 565.3,329.7 L 565.6,331.7 L 565.7,333.8 L 565.9,335.9 L 566.0,337.9 L 566.0,340.0 Z" fill="#5b9dfa" opacity=".05"/>
+<path d="M 150.0,340.0 L 150.1,337.9 L 150.3,335.9 L 150.6,333.8 L 150.9,331.7 L 151.3,329.7 L 151.8,327.6 L 152.2,325.5 L 152.7,323.5 L 153.3,321.4 L 153.9,319.3 L 154.5,317.3 L 155.1,315.2 L 155.8,313.1 L 156.5,311.1 L 157.2,309.0 L 158.0,306.9 L 158.8,304.9 L 159.6,302.8 L 160.5,300.7 L 161.3,298.7 L 162.2,296.6 L 163.1,294.5 L 164.1,292.5 L 165.0,290.4 L 166.0,288.3 L 167.0,286.3 L 168.0,284.2 L 169.1,282.1 L 170.1,280.1 L 171.2,278.0 L 172.3,275.9 L 173.5,273.9 L 174.6,271.8 L 175.8,269.7 L 177.0,267.7 L 178.2,265.6 L 179.4,263.5 L 180.6,261.5 L 181.9,259.4 L 183.2,257.3 L 184.4,255.3 L 185.8,253.2 L 187.1,251.1 L 188.4,249.1 L 189.8,247.0 L 191.2,244.9 L 192.6,242.9 L 194.0,240.8 L 195.4,238.7 L 196.9,236.7 L 198.3,234.6 L 199.8,232.5 L 201.3,230.5 L 202.8,228.4 L 204.3,226.3 L 205.9,224.3 L 207.4,222.2 L 209.0,220.1 L 210.6,218.1 L 212.2,216.0 L 213.8,213.9 L 215.4,211.9 L 217.0,209.8 L 218.7,207.7 L 220.4,205.7 L 222.0,203.6 L 223.7,201.5 L 225.5,199.5 L 227.2,197.4 L 228.9,195.3 L 230.7,193.3 L 232.5,191.2 L 234.2,189.1 L 236.0,187.1 L 237.8,185.0 L 239.7,182.9 L 241.5,180.9 L 243.3,178.8 L 245.2,176.7 L 247.1,174.7 L 249.0,172.6 L 250.9,170.5 L 252.8,168.5 L 254.7,166.4 L 256.6,164.3 L 258.6,162.3 L 260.6,160.2 L 262.5,158.1 L 264.5,156.1 L 266.5,154.0 L 268.5,151.9 L 270.6,149.9 L 272.6,147.8 L 274.6,145.7 L 276.7,143.7 L 278.8,141.6 L 280.9,139.5 L 283.0,137.5 L 285.1,135.4 L 287.2,133.3 L 289.3,131.3 L 291.5,129.2 L 293.6,127.1 L 295.8,125.1 L 298.0,123.0 L 300.2,120.9 L 302.4,118.9 L 304.6,116.8 L 306.8,114.7 L 309.0,112.7 L 311.3,110.6 L 313.5,108.5 L 315.8,106.5 L 318.1,104.4 L 320.4,102.3 L 322.7,100.3 L 325.0,98.2 L 327.3,96.1 L 329.7,94.1 L 332.0,92.0" fill="none" stroke="#5b9dfa" stroke-width="1.9"/>
+<path d="M 566.0,340.0 L 566.0,337.9 L 565.9,335.9 L 565.7,333.8 L 565.6,331.7 L 565.3,329.7 L 565.1,327.6 L 564.8,325.5 L 564.4,323.5 L 564.1,321.4 L 563.6,319.3 L 563.2,317.3 L 562.7,315.2 L 562.2,313.1 L 561.6,311.1 L 561.0,309.0 L 560.4,306.9 L 559.7,304.9 L 559.0,302.8 L 558.3,300.7 L 557.5,298.7 L 556.7,296.6 L 555.9,294.5 L 555.0,292.5 L 554.1,290.4 L 553.1,288.3 L 552.2,286.3 L 551.2,284.2 L 550.2,282.1 L 549.1,280.1 L 548.0,278.0 L 546.9,275.9 L 545.7,273.9 L 544.5,271.8 L 543.3,269.7 L 542.1,267.7 L 540.8,265.6 L 539.5,263.5 L 538.1,261.5 L 536.7,259.4 L 535.3,257.3 L 533.9,255.3 L 532.4,253.2 L 531.0,251.1 L 529.4,249.1 L 527.9,247.0 L 526.3,244.9 L 524.7,242.9 L 523.0,240.8 L 521.4,238.7 L 519.7,236.7 L 517.9,234.6 L 516.2,232.5 L 514.4,230.5 L 512.6,228.4 L 510.7,226.3 L 508.9,224.3 L 507.0,222.2 L 505.0,220.1 L 503.1,218.1 L 501.1,216.0 L 499.1,213.9 L 497.0,211.9 L 495.0,209.8 L 492.9,207.7 L 490.7,205.7 L 488.6,203.6 L 486.4,201.5 L 484.2,199.5 L 481.9,197.4 L 479.7,195.3 L 477.4,193.3 L 475.1,191.2 L 472.7,189.1 L 470.3,187.1 L 467.9,185.0 L 465.5,182.9 L 463.0,180.9 L 460.5,178.8 L 458.0,176.7 L 455.5,174.7 L 452.9,172.6 L 450.3,170.5 L 447.7,168.5 L 445.0,166.4 L 442.4,164.3 L 439.7,162.3 L 436.9,160.2 L 434.2,158.1 L 431.4,156.1 L 428.6,154.0 L 425.7,151.9 L 422.9,149.9 L 420.0,147.8 L 417.1,145.7 L 414.1,143.7 L 411.1,141.6 L 408.1,139.5 L 405.1,137.5 L 402.1,135.4 L 399.0,133.3 L 395.9,131.3 L 392.8,129.2 L 389.6,127.1 L 386.4,125.1 L 383.2,123.0 L 380.0,120.9 L 376.7,118.9 L 373.4,116.8 L 370.1,114.7 L 366.8,112.7 L 363.4,110.6 L 360.0,108.5 L 356.6,106.5 L 353.2,104.4 L 349.7,102.3 L 346.2,100.3 L 342.7,98.2 L 339.2,96.1 L 335.6,94.1 L 332.0,92.0" fill="none" stroke="#5b9dfa" stroke-width="1.9"/>
+<circle cx="332.0" cy="92.0" r="4" fill="#5b9dfa"/>
+<text class="svg-lbl-sm" x="332.0" y="82" text-anchor="middle" fill="#5b9dfa">critical point</text>
+<text class="svg-lbl-sm" x="144" y="334" text-anchor="end" fill="#5b9dfa">saturated liquid</text>
+<text class="svg-lbl-sm" x="576" y="334" fill="#5b9dfa">saturated vapour</text>
+<text class="svg-lbl-sm" x="408" y="228" text-anchor="middle" fill="#6f84ab">two-phase region</text>
+<path d="M 548.0 278.0 C 578.0 238 606.0 204 622.0 154" fill="none" stroke="#22d3ee" stroke-width="2.6" marker-end="url(#phArw)"/>
+<path d="M 622.0 152.0 L 271.5 152.0" stroke="#22d3ee" stroke-width="2.6" marker-end="url(#phArw)"/>
+<path d="M 268.5 152.0 L 268.5 275" stroke="#22d3ee" stroke-width="2.6" marker-end="url(#phArw)"/>
+<path d="M 268.5 278.0 L 545.0 278.0" stroke="#22d3ee" stroke-width="2.6" marker-end="url(#phArw)"/>
+<circle cx="548.0" cy="278" r="6" fill="#86efac" stroke="#050b1a" stroke-width="1.6"/>
+<text class="svg-lbl" x="544.0" y="298" text-anchor="middle" fill="#86efac" font-weight="700">1</text>
+<circle cx="622.0" cy="152" r="6" fill="#fcd34d" stroke="#050b1a" stroke-width="1.6"/>
+<text class="svg-lbl" x="622.0" y="139" text-anchor="middle" fill="#fcd34d" font-weight="700">2</text>
+<circle cx="268.5" cy="152" r="6" fill="#fb7185" stroke="#050b1a" stroke-width="1.6"/>
+<text class="svg-lbl" x="256.5" y="143" text-anchor="end" fill="#fb7185" font-weight="700">3</text>
+<circle cx="268.5" cy="278" r="6" fill="#5b9dfa" stroke="#050b1a" stroke-width="1.6"/>
+<text class="svg-lbl" x="256.5" y="295" text-anchor="end" fill="#5b9dfa" font-weight="700">4</text>
+<text class="svg-lbl" x="640" y="207" fill="#eaf1ff" font-weight="700">1→2</text>
+<text class="svg-lbl-sm" x="640" y="222">COMPRESSOR</text>
+<text class="svg-lbl-sm" x="640" y="236">w = h₂ − h₁</text>
+<text class="svg-lbl" x="445" y="120" text-anchor="middle" fill="#eaf1ff" font-weight="700">2→3  CONDENSER</text>
+<text class="svg-lbl-sm" x="445" y="134" text-anchor="middle">heat rejected,  q = h₂ − h₃</text>
+<text class="svg-lbl" x="250" y="207" text-anchor="end" fill="#eaf1ff" font-weight="700">3→4</text>
+<text class="svg-lbl-sm" x="250" y="222" text-anchor="end">EXPANSION</text>
+<text class="svg-lbl-sm" x="250" y="236" text-anchor="end">throttling, h₄ = h₃</text>
+<text class="svg-lbl" x="408" y="318" text-anchor="middle" fill="#eaf1ff" font-weight="700">4→1  EVAPORATOR</text>
+<text class="svg-lbl-sm" x="408" y="332" text-anchor="middle">refrigerating effect,  q = h₁ − h₄</text>
+<rect x="70" y="52" width="214" height="50" rx="8" fill="rgba(10,36,114,0.55)" stroke="rgba(103,232,249,0.34)"/>
+<text class="svg-lbl" x="84" y="74" fill="#67e8f9" font-weight="700">COP = (h₁ − h₄) / (h₂ − h₁)</text>
+<text class="svg-lbl-sm" x="84" y="90">what you get ÷ what you pay for</text>
+      </svg>
+    </div>
+    <figcaption><b>Why the expansion leg is vertical:</b> the device does no work and is small enough to be adiabatic, so enthalpy is conserved — h₄ = h₃. It is the only irreversible process you deliberately design in, and it is where a plain thermostatic valve loses capacity that an electronic valve or an economiser recovers. <b>Why 1→2 leans right:</b> real compression is not isentropic; the gap between the ideal vertical-ish line and the actual one is the isentropic efficiency you should be asking the vendor to state.</figcaption>
+  </figure>
+
+  <div class="grid g2" style="margin:1.6em 0;">
+    <div class="card">
+      <h4 style="margin-top:0;">What each component actually constrains</h4>
+      <dl class="kv">
+        <dt>Compressor</dt><dd>lift, capacity, part-load</dd>
+        <dt>Condenser</dt><dd>head pressure ← ambient</dd>
+        <dt>Expansion device</dt><dd>superheat control</dd>
+        <dt>Evaporator</dt><dd>suction pressure, ADP</dd>
+      </dl>
+      <p style="font-size:var(--step--1);margin:.6em 0 0;color:var(--text-secondary);">In Doha the condenser is the binding constraint almost every time. Ambient sets head pressure, head pressure sets compressor work, and no amount of evaporator selection recovers it.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">Compressor types, and where each belongs</h4>
+      <div class="tw" style="margin:.6em 0 0;border:0;">
+        <table style="min-width:0;">
+          <tbody>
+            <tr><td><strong>Centrifugal</strong></td><td style="text-align:left;">Large plant, &gt;300 TR. Best full-load efficiency; surge limits turndown.</td></tr>
+            <tr><td><strong>Screw</strong></td><td style="text-align:left;">100–500 TR. Tolerates high lift — a real advantage in Gulf ambient.</td></tr>
+            <tr><td><strong>Scroll</strong></td><td style="text-align:left;">Small packaged, VRF. Good part-load in multiples.</td></tr>
+            <tr><td><strong>Reciprocating</strong></td><td style="text-align:left;">Legacy and small industrial. High lift, higher maintenance.</td></tr>
+            <tr><td><strong>Absorption</strong></td><td style="text-align:left;">Heat-driven. Only where waste heat is genuinely free.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">The review question that catches most chiller submittals</b>
+    <p style="margin-bottom:0;">A vendor quotes COP or kW/TR at <strong>AHRI 550/590 standard conditions — 29.4 °C entering condenser water</strong>. Worked example D in Course 2 arrives at 40.6 °C entering condenser water for a Doha tower on a design day. That is an 11 K gap, and chiller power rises steeply with condenser temperature. If the submittal does not carry a performance point at <em>your</em> condenser water temperature, the efficiency number in it is not the efficiency you will buy.</p>
+  </div>
+
+  <h3 id="c1-psychart">Reading the psychrometric chart</h3>
+  <p class="prose">The chart is a two-property map. Fix any two independent properties and every other one is determined — that is the whole idea. Below is the real chart with this guide's Doha state points plotted on it, so the abstractions have somewhere to land.</p>
+
+  <figure>
+    <div class="figbox">
+      <svg viewBox="0 0 706 476" role="img" aria-label="Psychrometric chart showing the saturation curve, relative humidity lines, and the plotted Doha state points: room condition, both outdoor design conditions, mixed air, supply air off the coil, and the apparatus dew point, with the coil process line drawn between them." style="min-width:620px;">
+        <defs>
+          <marker id="pcArw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,1 L9,5 L0,9 z" fill="#22d3ee"/>
+          </marker>
+        </defs>
+<g id="pcGrid">
+<line x1="70" y1="432.0" x2="70" y2="58.0" stroke="#5b9dfa" stroke-width=".5" opacity=".13"/>
+<text class="svg-num" x="70" y="447" text-anchor="middle">5</text>
+<line x1="135" y1="432.0" x2="135" y2="58.0" stroke="#5b9dfa" stroke-width=".5" opacity=".13"/>
+<text class="svg-num" x="135" y="447" text-anchor="middle">10</text>
+<line x1="199" y1="432.0" x2="199" y2="58.0" stroke="#5b9dfa" stroke-width=".5" opacity=".13"/>
+<text class="svg-num" x="199" y="447" text-anchor="middle">15</text>
+<line x1="264" y1="432.0" x2="264" y2="58.0" stroke="#5b9dfa" stroke-width=".5" opacity=".13"/>
+<text class="svg-num" x="264" y="447" text-anchor="middle">20</text>
+<line x1="329" y1="432.0" x2="329" y2="58.0" stroke="#5b9dfa" stroke-width=".5" opacity=".13"/>
+<text class="svg-num" x="329" y="447" text-anchor="middle">25</text>
+<line x1="393" y1="432.0" x2="393" y2="58.0" stroke="#5b9dfa" stroke-width=".5" opacity=".13"/>
+<text class="svg-num" x="393" y="447" text-anchor="middle">30</text>
+<line x1="458" y1="432.0" x2="458" y2="58.0" stroke="#5b9dfa" stroke-width=".5" opacity=".13"/>
+<text class="svg-num" x="458" y="447" text-anchor="middle">35</text>
+<line x1="523" y1="432.0" x2="523" y2="58.0" stroke="#5b9dfa" stroke-width=".5" opacity=".13"/>
+<text class="svg-num" x="523" y="447" text-anchor="middle">40</text>
+<line x1="587" y1="432.0" x2="587" y2="58.0" stroke="#5b9dfa" stroke-width=".5" opacity=".13"/>
+<text class="svg-num" x="587" y="447" text-anchor="middle">45</text>
+<line x1="652" y1="432.0" x2="652" y2="58.0" stroke="#5b9dfa" stroke-width=".5" opacity=".13"/>
+<text class="svg-num" x="652" y="447" text-anchor="middle">50</text>
+<line x1="70.0" y1="432.0" x2="652.0" y2="432.0" stroke="#5b9dfa" stroke-width=".5" opacity=".13"/>
+<text class="svg-num" x="659" y="435.5" text-anchor="start">0</text>
+<line x1="70.0" y1="369.7" x2="652.0" y2="369.7" stroke="#5b9dfa" stroke-width=".5" opacity=".13"/>
+<text class="svg-num" x="659" y="373.2" text-anchor="start">5</text>
+<line x1="70.0" y1="307.3" x2="652.0" y2="307.3" stroke="#5b9dfa" stroke-width=".5" opacity=".13"/>
+<text class="svg-num" x="659" y="310.8" text-anchor="start">10</text>
+<line x1="70.0" y1="245.0" x2="652.0" y2="245.0" stroke="#5b9dfa" stroke-width=".5" opacity=".13"/>
+<text class="svg-num" x="659" y="248.5" text-anchor="start">15</text>
+<line x1="70.0" y1="182.7" x2="652.0" y2="182.7" stroke="#5b9dfa" stroke-width=".5" opacity=".13"/>
+<text class="svg-num" x="659" y="186.2" text-anchor="start">20</text>
+<line x1="70.0" y1="120.3" x2="652.0" y2="120.3" stroke="#5b9dfa" stroke-width=".5" opacity=".13"/>
+<text class="svg-num" x="659" y="123.8" text-anchor="start">25</text>
+<line x1="70.0" y1="58.0" x2="652.0" y2="58.0" stroke="#5b9dfa" stroke-width=".5" opacity=".13"/>
+<text class="svg-num" x="659" y="61.5" text-anchor="start">30</text>
+</g>
+<path d="M 70,378.2 L 83,374.3 L 96,370.2 L 109,365.8 L 122,361.1 L 135,356.1 L 148,350.8 L 161,345.2 L 173,339.2 L 186,332.9 L 199,326.2 L 212,319.1 L 225,311.5 L 238,303.5 L 251,295.1 L 264,286.1 L 277,276.7 L 290,266.6 L 303,256.0 L 316,244.8 L 329,233.0 L 342,220.5 L 355,207.3 L 367,193.3 L 380,178.6 L 393,163.1 L 406,146.6 L 419,129.3 L 432,111.1 L 445,91.8 L 458,71.5" fill="none" stroke="#5b9dfa" stroke-width=".8" opacity=".34"/>
+<text class="svg-lbl-sm" x="454" y="66" text-anchor="end" fill="#5b9dfa">80% rh</text>
+<path d="M 70,391.7 L 83,388.8 L 96,385.7 L 109,382.4 L 122,378.9 L 135,375.2 L 148,371.3 L 161,367.1 L 173,362.6 L 186,357.9 L 199,352.9 L 212,347.6 L 225,342.0 L 238,336.0 L 251,329.8 L 264,323.1 L 277,316.1 L 290,308.6 L 303,300.8 L 316,292.5 L 329,283.7 L 342,274.5 L 355,264.7 L 367,254.4 L 380,243.5 L 393,232.0 L 406,219.9 L 419,207.2 L 432,193.8 L 445,179.6 L 458,164.7 L 471,149.0 L 484,132.5 L 497,115.1 L 510,96.8 L 523,77.5" fill="none" stroke="#5b9dfa" stroke-width=".8" opacity=".34"/>
+<text class="svg-lbl-sm" x="519" y="73" text-anchor="end" fill="#5b9dfa">60%</text>
+<path d="M 70,405.2 L 83,403.3 L 96,401.2 L 109,399.0 L 122,396.7 L 135,394.2 L 148,391.6 L 161,388.8 L 173,385.9 L 186,382.8 L 199,379.4 L 212,375.9 L 225,372.2 L 238,368.3 L 251,364.1 L 264,359.7 L 277,355.1 L 290,350.2 L 303,345.0 L 316,339.5 L 329,333.8 L 342,327.7 L 355,321.2 L 367,314.5 L 380,307.3 L 393,299.8 L 406,291.9 L 419,283.6 L 432,274.8 L 445,265.5 L 458,255.8 L 471,245.6 L 484,234.9 L 497,223.6 L 510,211.7 L 523,199.2 L 536,186.1 L 549,172.4 L 561,157.9 L 574,142.7 L 587,126.8 L 600,110.1 L 613,92.6 L 626,74.2" fill="none" stroke="#5b9dfa" stroke-width=".8" opacity=".34"/>
+<text class="svg-lbl-sm" x="622" y="69" text-anchor="end" fill="#5b9dfa">40%</text>
+<path d="M 70,418.6 L 83,417.7 L 96,416.6 L 109,415.5 L 122,414.4 L 135,413.2 L 148,411.9 L 161,410.5 L 173,409.0 L 186,407.5 L 199,405.8 L 212,404.1 L 225,402.2 L 238,400.3 L 251,398.2 L 264,396.0 L 277,393.7 L 290,391.3 L 303,388.7 L 316,386.0 L 329,383.2 L 342,380.2 L 355,377.0 L 367,373.7 L 380,370.2 L 393,366.5 L 406,362.6 L 419,358.5 L 432,354.2 L 445,349.7 L 458,344.9 L 471,339.9 L 484,334.7 L 497,329.2 L 510,323.4 L 523,317.3 L 536,311.0 L 549,304.3 L 561,297.3 L 574,290.0 L 587,282.3 L 600,274.3 L 613,265.9 L 626,257.1 L 639,247.9 L 652,238.3" fill="none" stroke="#5b9dfa" stroke-width=".8" opacity=".34"/>
+<path d="M 70,364.7 L 76,362.2 L 83,359.8 L 89,357.2 L 96,354.6 L 102,351.8 L 109,349.0 L 115,346.1 L 122,343.1 L 128,340.1 L 135,336.9 L 141,333.6 L 148,330.2 L 154,326.7 L 161,323.2 L 167,319.5 L 173,315.7 L 180,311.7 L 186,307.7 L 193,303.5 L 199,299.3 L 206,294.8 L 212,290.3 L 219,285.6 L 225,280.8 L 232,275.9 L 238,270.8 L 245,265.5 L 251,260.1 L 258,254.5 L 264,248.8 L 270,242.9 L 277,236.8 L 283,230.6 L 290,224.2 L 296,217.6 L 303,210.8 L 309,203.8 L 316,196.6 L 322,189.3 L 329,181.7 L 335,173.8 L 342,165.8 L 348,157.6 L 355,149.1 L 361,140.3 L 367,131.4 L 374,122.1 L 380,112.6 L 387,102.9 L 393,92.9 L 400,82.6 L 406,72.0 L 413,61.1" fill="none" stroke="#67e8f9" stroke-width="2.1"/>
+<line x1="70.0" y1="432.0" x2="652.0" y2="432.0" stroke="#a9bde0" stroke-width="1.2"/>
+<line x1="652.0" y1="432.0" x2="652.0" y2="58.0" stroke="#a9bde0" stroke-width="1.2"/>
+<text class="svg-lbl" x="361" y="466" text-anchor="middle">Dry-bulb temperature, °C</text>
+<text class="svg-lbl" x="686" y="245" text-anchor="middle" transform="rotate(90 686 245)">Humidity ratio, g/kg dry air</text>
+<path d="M 414,135.0 L 316,316.1" stroke="#fb7185" stroke-width="1.1" fill="none" stroke-dasharray="3 3" opacity=".55"/>
+<path d="M 326,298.3 L 173,324.5" stroke="#22d3ee" stroke-width="2.4" fill="none" marker-end="url(#pcArw)"/>
+<path d="M 173,324.5 L 151,328.3" stroke="#22d3ee" stroke-width="1.3" fill="none" stroke-dasharray="4 3" opacity=".7"/>
+<circle cx="316" cy="316.1" r="5" fill="#86efac" stroke="#050b1a" stroke-width="1.5"/>
+<text class="svg-lbl" x="328" y="307.1" text-anchor="start" fill="#86efac" font-weight="700">Room  24.0 °C / 50%</text>
+<circle cx="587" cy="352.3" r="5" fill="#fcd34d" stroke="#050b1a" stroke-width="1.5"/>
+<text class="svg-lbl" x="579" y="341.3" text-anchor="end" fill="#fcd34d" font-weight="700">OA Case 1  45.0 DB / 21.5 WB</text>
+<circle cx="414" cy="135.0" r="5" fill="#fb7185" stroke="#050b1a" stroke-width="1.5"/>
+<text class="svg-lbl" x="426" y="129.0" text-anchor="start" fill="#fb7185" font-weight="700">OA Case 2  31.6 DB / 27.8 DP</text>
+<circle cx="326" cy="298.3" r="5" fill="#5b9dfa" stroke="#050b1a" stroke-width="1.5"/>
+<text class="svg-lbl" x="339" y="312.3" text-anchor="start" fill="#5b9dfa" font-weight="700">Mixed air</text>
+<circle cx="173" cy="324.5" r="5" fill="#22d3ee" stroke="#050b1a" stroke-width="1.5"/>
+<text class="svg-lbl" x="163" y="314.5" text-anchor="end" fill="#22d3ee" font-weight="700">Supply off coil</text>
+<circle cx="151" cy="328.3" r="5" fill="#eaf1ff" stroke="#050b1a" stroke-width="1.5"/>
+<text class="svg-lbl" x="141" y="343.3" text-anchor="end" fill="#eaf1ff" font-weight="700">ADP</text>
+      </svg>
+    </div>
+    <figcaption><b>The single most important thing on this chart:</b> the two outdoor design points sit on opposite sides of the room condition. <span style="color:#fcd34d;">Case 1 (45.0 °C DB / 21.5 °C WB)</span> is hot and <em>drier than the room</em> — 10.7% RH, 6.40 g/kg against the room's 9.30 g/kg. <span style="color:#fb7185;">Case 2 (31.6 °C DB / 27.8 °C DP)</span> is cooler but carries 23.83 g/kg. The dashed rose line is the mixing line from outdoor to return air; the solid cyan arrow is the coil process at Case 2, and its dashed extension strikes the saturation curve at the apparatus dew point.</figcaption>
+  </figure>
+  <h4>The eight processes, as directions</h4>
+  <p class="prose">Every air-handling process is a vector on the chart. Learn the compass once and you can read any air-side schematic by eye.</p>
+
+  <figure>
+    <div class="figbox">
+      <svg viewBox="0 0 660 366" role="img" aria-label="Compass diagram showing the eight psychrometric processes as directions from a central state point: sensible heating and cooling horizontally, humidification and dehumidification vertically, and the four combined processes on the diagonals." style="min-width:560px;">
+        <line x1="330" y1="183" x2="330" y2="44"  stroke="#5b9dfa" stroke-width="2" opacity=".8"/>
+        <line x1="330" y1="183" x2="330" y2="322" stroke="#5b9dfa" stroke-width="2" opacity=".8"/>
+        <line x1="330" y1="183" x2="500" y2="183" stroke="#5b9dfa" stroke-width="2" opacity=".8"/>
+        <line x1="330" y1="183" x2="160" y2="183" stroke="#5b9dfa" stroke-width="2" opacity=".8"/>
+        <line x1="330" y1="183" x2="452" y2="85"  stroke="#6f84ab" stroke-width="1.6" opacity=".7"/>
+        <line x1="330" y1="183" x2="208" y2="281" stroke="#22d3ee" stroke-width="3" opacity="1"/>
+        <line x1="330" y1="183" x2="452" y2="281" stroke="#6f84ab" stroke-width="1.6" opacity=".7"/>
+        <line x1="330" y1="183" x2="208" y2="85"  stroke="#6f84ab" stroke-width="1.6" opacity=".7"/>
+        <circle cx="330" cy="183" r="7" fill="#eaf1ff" stroke="#050b1a" stroke-width="2"/>
+
+        <text class="svg-lbl" x="330" y="34" text-anchor="middle" fill="#5b9dfa" font-weight="700">Humidification</text>
+        <text class="svg-lbl-sm" x="330" y="20" text-anchor="middle">steam / spray · W↑ at constant t</text>
+        <text class="svg-lbl" x="330" y="340" text-anchor="middle" fill="#5b9dfa" font-weight="700">Dehumidification</text>
+        <text class="svg-lbl-sm" x="330" y="354" text-anchor="middle">desiccant · W↓ at constant t</text>
+        <text class="svg-lbl" x="510" y="180" fill="#5b9dfa" font-weight="700">Sensible heating</text>
+        <text class="svg-lbl-sm" x="510" y="194">reheat coil · t↑ at constant W</text>
+        <text class="svg-lbl" x="150" y="180" text-anchor="end" fill="#5b9dfa" font-weight="700">Sensible cooling</text>
+        <text class="svg-lbl-sm" x="150" y="194" text-anchor="end">dry coil · t↓ at constant W</text>
+        <text class="svg-lbl-sm" x="462" y="78" fill="#a9bde0">heating + humidification</text>
+        <text class="svg-lbl-sm" x="462" y="292" fill="#a9bde0">heating + dehumidification</text>
+        <text class="svg-lbl-sm" x="198" y="78" text-anchor="end" fill="#a9bde0">cooling + humidification</text>
+        <text class="svg-lbl-sm" x="198" y="66" text-anchor="end" fill="#6f84ab">(evaporative — useless at Doha's design DP)</text>
+        <text class="svg-lbl" x="198" y="292" text-anchor="end" fill="#22d3ee" font-weight="700">Cooling + dehumidification</text>
+        <text class="svg-lbl-sm" x="198" y="306" text-anchor="end" fill="#67e8f9">the comfort-cooling process — everything in C1 M3</text>
+
+        <text class="svg-lbl-sm" x="336" y="120" fill="#6f84ab">latent only</text>
+        <text class="svg-lbl-sm" x="400" y="176" fill="#6f84ab">sensible only</text>
+      </svg>
+    </div>
+    <figcaption><b>Note the process that is not available to you here.</b> Evaporative cooling — up and to the left — trades dry-bulb for moisture. It is superb in Riyadh's interior and near-worthless on Doha's coast, where the design dew point is 27.8 °C. The air has no capacity left to absorb water. Direct evaporative pre-cooling proposals for Qatar projects should be challenged on exactly this line.</figcaption>
+  </figure>
+
+  <h3 id="c1-exA">Worked example A — state points from two properties</h3>
+  <p class="prose">Given Doha's Case 1 outdoor design condition as dry bulb and wet bulb, derive every other property. This is the calculation the chart performs graphically.</p>
+
+  <div class="fml">
+    <span class="eq">p_ws(t) = exp( C₈/T + C₉ + C₁₀T + C₁₁T² + C₁₂T³ + C₁₃·ln T )</span>
+    <span class="eq">W      = [ (2501 − 2.326·t_wb)·W_s,wb − 1.006·(t − t_wb) ] / [ 2501 + 1.86·t − 4.186·t_wb ]</span>
+    <span class="eq">h      = 1.006·t + W·(2501 + 1.86·t)</span>
+    <span class="eq">v      = 0.287042·(t+273.15)·(1 + 1.607858·W) / p</span>
+    <span class="wh">T = absolute temperature, K      t = dry bulb, °C      t_wb = wet bulb, °C
+W = humidity ratio, kg/kg dry air     h = enthalpy, kJ/kg dry air     v = specific volume, m³/kg dry air
+p = barometric pressure, kPa          C₈…C₁₃ are the ASHRAE saturation-pressure constants</span>
+    <span class="src">ASHRAE Handbook — Fundamentals, Ch. 1 (Psychrometrics), Eq. 6, 33 and the enthalpy/volume relations. <span class="vb standard">Standard</span></span>
+  </div>
+
+  <div class="work">
+    <div class="stp"><b>Saturation pressure at the wet bulb</b>
+      <span class="r">p_ws(21.5 °C) = 2.56516 kPa</span></div>
+    <div class="stp"><b>Saturation humidity ratio at the wet bulb</b>
+      <span class="r">W_s,wb = 0.621945 × 2.56516 / (101.325 − 2.56516) = 0.016154 kg/kg = 16.154 g/kg</span></div>
+    <div class="stp"><b>Humidity ratio from the wet-bulb relation</b>
+      <span class="r">numerator&nbsp;&nbsp; = (2501 − 2.326×21.5)(0.016154) − 1.006(45.0 − 21.5) = 15.95284</span>
+      <span class="r">denominator = 2501 + 1.86(45.0) − 4.186(21.5) = 2494.701</span>
+      <span class="r">W = 15.95284 / 2494.701 = <strong>0.006395 kg/kg = 6.395 g/kg = 44.8 gr/lb</strong></span></div>
+    <div class="stp"><b>Vapour pressure and relative humidity</b>
+      <span class="r">p_w = 101.325 × 0.006395 / (0.621945 + 0.006395) = 1.03120 kPa</span>
+      <span class="r">p_ws(45.0 °C) = 9.59322 kPa  →  RH = 1.03120 / 9.59322 = <strong>10.75 %</strong></span></div>
+    <div class="stp"><b>Dew point — invert the saturation relation at p_w</b>
+      <span class="r">t_dp = <strong>7.42 °C</strong> (45.3 °F)</span></div>
+    <div class="stp"><b>Enthalpy</b>
+      <span class="r">h = 1.006(45.0) + 0.006395(2501 + 1.86×45.0) = 45.270 + 16.528 = <strong>61.80 kJ/kg = 26.57 Btu/lb</strong></span></div>
+    <div class="stp"><b>Specific volume</b>
+      <span class="r">v = 0.287042(318.15)(1 + 1.607858×0.006395)/101.325 = <strong>0.9105 m³/kg</strong></span></div>
+  </div>
+
+  <div class="res">
+    <div><span class="k">Dry bulb</span><span class="v">45.0</span><span class="u">°C · 113.0 °F</span></div>
+    <div><span class="k">Wet bulb</span><span class="v">21.5</span><span class="u">°C · 70.7 °F</span></div>
+    <div><span class="k">Humidity ratio</span><span class="v">6.40</span><span class="u">g/kg · 44.8 gr/lb</span></div>
+    <div><span class="k">Relative humidity</span><span class="v">10.8</span><span class="u">%</span></div>
+    <div><span class="k">Dew point</span><span class="v">7.42</span><span class="u">°C · 45.3 °F</span></div>
+    <div class="hero"><span class="k">Enthalpy</span><span class="v">61.80</span><span class="u">kJ/kg · 26.57 Btu/lb</span></div>
+  </div>
+
+  <div class="sanity">
+    <b class="nh">Sanity check before you accept it</b>
+    <p>Relative humidity came out at 10.8%. Does that pass a smell test for Doha in the afternoon? Yes — a 23.5 K wet-bulb depression is desert air, and the coast's humidity arrives at night and in the shoulder months, not at the 45 °C peak. If you had computed 40% RH at 45 °C you would be carrying 23 g/kg and an enthalpy near 105 kJ/kg, which is not a condition Doha reaches.</p>
+    <p style="margin-bottom:0;">Cross-check the specific volume: 0.9105 m³/kg is <strong>9.3% above</strong> the 0.8333 m³/kg standard-air basis. Hold onto that number — it is the reason the familiar 1.23 and 3010 shortcut coefficients drift in Module 2.</p>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>The three design states compared <span class="vb derived">Derived</span></caption>
+      <thead><tr><th>Property</th><th class="num si">Room</th><th class="num si">OA Case 1</th><th class="num si">OA Case 2</th><th class="num eng">Room (Eng)</th><th class="num eng">Case 1 (Eng)</th><th class="num eng">Case 2 (Eng)</th></tr></thead>
+      <tbody>
+        <tr><td>Dry bulb</td><td class="num si">24.00 °C</td><td class="num si">45.00 °C</td><td class="num si">31.60 °C</td><td class="num eng">75.2 °F</td><td class="num eng">113.0 °F</td><td class="num eng">88.9 °F</td></tr>
+        <tr><td>Wet bulb</td><td class="num si">17.07 °C</td><td class="num si">21.50 °C</td><td class="num si">28.66 °C</td><td class="num eng">62.7 °F</td><td class="num eng">70.7 °F</td><td class="num eng">83.6 °F</td></tr>
+        <tr><td>Dew point</td><td class="num si">12.95 °C</td><td class="num si">7.42 °C</td><td class="num si">27.80 °C</td><td class="num eng">55.3 °F</td><td class="num eng">45.3 °F</td><td class="num eng">82.0 °F</td></tr>
+        <tr><td>Humidity ratio</td><td class="num si">9.299 g/kg</td><td class="num si">6.395 g/kg</td><td class="num si">23.825 g/kg</td><td class="num eng">65.1 gr/lb</td><td class="num eng">44.8 gr/lb</td><td class="num eng">166.8 gr/lb</td></tr>
+        <tr><td>Relative humidity</td><td class="num si">50.0 %</td><td class="num si">10.8 %</td><td class="num si">80.4 %</td><td class="num eng">—</td><td class="num eng">—</td><td class="num eng">—</td></tr>
+        <tr><td>Specific volume</td><td class="num si">0.8544</td><td class="num si">0.9105</td><td class="num si">0.8964</td><td class="num eng">13.69 ft³/lb</td><td class="num eng">14.59 ft³/lb</td><td class="num eng">14.36 ft³/lb</td></tr>
+        <tr class="total"><td>Enthalpy</td><td class="num si">47.81</td><td class="num si">61.80</td><td class="num si">92.78</td><td class="num eng">20.56 Btu/lb</td><td class="num eng">26.57 Btu/lb</td><td class="num eng">39.89 Btu/lb</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">The number that decides your coil</b>
+    <p style="margin-bottom:0;">Per litre per second of ventilation air, relative to the room: <strong>Case 1 removes 11.5 g/h of moisture</strong> (a latent credit of 8.0 W per L/s), while <strong>Case 2 adds 58.3 g/h</strong> (a latent load of 40.5 W per L/s). Same building, same city, same code-required ventilation rate — and the latent duty swings by a factor of five <em>and changes sign</em>. Any load calculation that runs only the 45 °C condition has not seen the case that sizes the coil.</p>
+  </div>
+
+  <div class="quiz" id="c1m1q" data-quiz="c1m1">
+    <div class="quiz-hd"><b>Module 1 — practice questions</b><span class="sc" data-score>Not started</span></div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">1</span><p class="qt">On a pressure–enthalpy diagram, the expansion process is drawn as a vertical line. Why?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m1_1" value="a"><span>Entropy is constant across the device</span></label>
+        <label class="opt"><input type="radio" name="c1m1_1" value="b"><span>The device extracts no work and is effectively adiabatic, so enthalpy is conserved: h₄ = h₃</span></label>
+        <label class="opt"><input type="radio" name="c1m1_1" value="c"><span>Pressure is constant across the device</span></label>
+        <label class="opt"><input type="radio" name="c1m1_1" value="d"><span>The refrigerant does work on the valve seat</span></label>
+      </div>
+      <div class="fb" data-fb>Throttling is an isenthalpic process — no shaft work, negligible heat transfer, so h₄ = h₃. Entropy <em>increases</em> (it is irreversible), which is why the expansion device is the one loss you design in deliberately.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">2</span><p class="qt">A chiller submittal states 0.58 kW/TR with no qualifying condition. Which entering condenser water temperature does AHRI 550/590 use for nominal rating?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m1_2" value="a"><span>35.0 °C</span></label>
+        <label class="opt"><input type="radio" name="c1m1_2" value="b"><span>29.4 °C</span></label>
+        <label class="opt"><input type="radio" name="c1m1_2" value="c"><span>40.6 °C</span></label>
+        <label class="opt"><input type="radio" name="c1m1_2" value="d"><span>Whatever the site design wet bulb produces</span></label>
+      </div>
+      <div class="fb" data-fb>29.4 °C (85 °F). Worked example D lands a Doha tower at 40.6 °C entering condenser water on a design day — an 11 K gap. Chiller power climbs steeply with condensing temperature, so a quoted kW/TR with no stated condition tells you nothing about what you are buying.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">3</span><p class="qt">Doha Case 1 outdoor air holds 6.395 g/kg; the room is at 9.299 g/kg. What is the latent effect of ventilation air at this condition?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m1_3" value="a"><span>It adds latent load in proportion to the outdoor dry bulb</span></label>
+        <label class="opt"><input type="radio" name="c1m1_3" value="b"><span>It removes moisture from the space — a latent credit, not a load</span></label>
+        <label class="opt"><input type="radio" name="c1m1_3" value="c"><span>No latent effect, because the dry bulb is above room temperature</span></label>
+        <label class="opt"><input type="radio" name="c1m1_3" value="d"><span>It condenses on the coil and adds to the total</span></label>
+      </div>
+      <div class="fb" data-fb>The outdoor air is drier than the room, so it dehumidifies the space — roughly 8.0 W of latent credit per L/s. This is why Case 1 produces a grand sensible heat factor of 1.00 and a dry coil, and why it cannot be the case you select the coil on.</div>
+    </div>
+
+    <div class="q" data-a="c">
+      <div class="qs"><span class="qn">4</span><p class="qt">Which pair of properties can <em>not</em> be used together to fix a state on the psychrometric chart?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m1_4" value="a"><span>Dry bulb and wet bulb</span></label>
+        <label class="opt"><input type="radio" name="c1m1_4" value="b"><span>Dry bulb and enthalpy</span></label>
+        <label class="opt"><input type="radio" name="c1m1_4" value="c"><span>Humidity ratio and dew point</span></label>
+        <label class="opt"><input type="radio" name="c1m1_4" value="d"><span>Dry bulb and humidity ratio</span></label>
+      </div>
+      <div class="fb" data-fb>Dew point is a direct one-to-one function of humidity ratio at a fixed barometric pressure — they carry identical information, so together they fix nothing. You still need a second, independent property such as dry bulb.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">5</span><p class="qt">The apparatus dew point (ADP) is best described as:</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m1_5" value="a"><span>The dew point of the outdoor design air</span></label>
+        <label class="opt"><input type="radio" name="c1m1_5" value="b"><span>The saturated condition the coil surface must reach for the process line to close on the saturation curve</span></label>
+        <label class="opt"><input type="radio" name="c1m1_5" value="c"><span>The dew point of the air leaving the coil</span></label>
+        <label class="opt"><input type="radio" name="c1m1_5" value="d"><span>The chilled water supply temperature</span></label>
+      </div>
+      <div class="fb" data-fb>ADP is the effective saturated surface temperature — extend the coil process line until it strikes the saturation curve. It is <em>not</em> the chilled water temperature: the water runs colder than the ADP because heat must cross a tube wall and a film to get there.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">6</span><p class="qt">A coil's bypass factor represents:</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m1_6" value="a"><span>Air physically leaking around the coil casing</span></label>
+        <label class="opt"><input type="radio" name="c1m1_6" value="b"><span>The fraction of air that leaves at its entering condition, having never contacted the wetted surface</span></label>
+        <label class="opt"><input type="radio" name="c1m1_6" value="c"><span>Chilled water bypassing the coil through the three-way valve</span></label>
+        <label class="opt"><input type="radio" name="c1m1_6" value="d"><span>The ratio of latent load to total load</span></label>
+      </div>
+      <div class="fb" data-fb>It is the un-contacted fraction. More rows and tighter fin spacing drive it down — a 6-row coil typically sits near 0.10, which is what worked example C converges on (0.128). Casing leakage is a separate defect, and one worth writing into your inspection checklist.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">7</span><p class="qt">Why is direct evaporative cooling a poor proposal for a Doha project?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m1_7" value="a"><span>The dry-bulb temperature is too high for the media to survive</span></label>
+        <label class="opt"><input type="radio" name="c1m1_7" value="b"><span>At a 27.8 °C design dew point the air has almost no remaining capacity to absorb moisture, so there is little wet-bulb depression to trade on</span></label>
+        <label class="opt"><input type="radio" name="c1m1_7" value="c"><span>Water consumption is prohibited by QCS</span></label>
+        <label class="opt"><input type="radio" name="c1m1_7" value="d"><span>It cannot be integrated with a chilled water system</span></label>
+      </div>
+      <div class="fb" data-fb>Evaporative cooling trades sensible heat for moisture, and the trade only works where the wet-bulb depression is large. At Doha's dehumidification design condition the air is already near 80% RH. Note the trap: at the <em>Case 1</em> condition the depression is 23.5 K and it would work well — which is precisely why proposals get built on the wrong design day.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">8</span><p class="qt">Which compressor type is most often preferred for 100–500 TR duty in Gulf ambient, on the grounds of high-lift tolerance?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m1_8" value="a"><span>Centrifugal</span></label>
+        <label class="opt"><input type="radio" name="c1m1_8" value="b"><span>Screw</span></label>
+        <label class="opt"><input type="radio" name="c1m1_8" value="c"><span>Absorption</span></label>
+        <label class="opt"><input type="radio" name="c1m1_8" value="d"><span>Reciprocating</span></label>
+      </div>
+      <div class="fb" data-fb>Screw compressors handle high pressure ratios without the surge limit that constrains centrifugals — valuable when a Doha condenser pushes head pressure up on a design afternoon. Centrifugals still win on full-load efficiency in large plant; the choice is a trade, not a rule.</div>
+    </div>
+
+    <div class="q" data-a="47.81" data-tol="0.02" data-unit="kJ/kg">
+      <div class="qs"><span class="qn">9</span><p class="qt">Compute the enthalpy of moist air at 24.0 °C dry bulb with a humidity ratio of 9.299 g/kg. Use h = 1.006t + W(2501 + 1.86t).</p></div>
+      <div class="numq"><input type="number" step="0.01" data-in aria-label="Enthalpy in kilojoules per kilogram"><span class="un">kJ/kg dry air</span></div>
+      <div class="fb" data-fb>h = 1.006(24.0) + 0.009299(2501 + 1.86×24.0) = 24.144 + 23.669 = <strong>47.81 kJ/kg</strong> (20.56 Btu/lb). Note that the latent term is nearly half the total at ordinary room conditions — moisture is not a rounding error.</div>
+    </div>
+
+    <div class="q" data-a="10.75" data-tol="0.05" data-unit="%">
+      <div class="qs"><span class="qn">10</span><p class="qt">Air at 45.0 °C has a vapour pressure of 1.03120 kPa. Saturation pressure at 45.0 °C is 9.59322 kPa. What is the relative humidity, in percent?</p></div>
+      <div class="numq"><input type="number" step="0.1" data-in aria-label="Relative humidity in percent"><span class="un">%</span></div>
+      <div class="fb" data-fb>RH = p_w / p_ws = 1.03120 / 9.59322 = <strong>10.75%</strong>. Relative humidity is a ratio of <em>pressures</em>, not of moisture masses — which is why it falls as air is heated even though no water leaves.</div>
+    </div>
+
+    <div class="quiz-ft">
+      <button class="btn pri" type="button" data-check>Check answers</button>
+      <button class="btn" type="button" data-reset>Reset</button>
+      <span class="msg" data-msg></span>
+    </div>
+  </div>
+</section>
+<section id="c1m2">
+  <div class="mod-head">
+    <p class="eyebrow">Course 1 · Module 2</p>
+    <h2>Heat load calculation</h2>
+    <p class="lede">The load is the deliverable everything downstream depends on. Get it wrong high and you buy plant that never modulates properly; get it wrong low and you own the problem for the life of the building. This module builds it component by component, twice — once at each Doha design condition.</p>
+    <div class="tag-row">
+      <span class="chip acc">CLTD / CLF / SCL</span><span class="chip acc">ASHRAE 62.1</span>
+      <span class="chip">Sensible vs latent</span><span class="chip">Room vs coil load</span>
+    </div>
+  </div>
+
+  <h3>Three distinctions that must stay straight</h3>
+  <div class="grid g3" style="margin:1.4em 0;">
+    <div class="card">
+      <h4 style="margin-top:0;">External vs internal</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">External gains swing with sun and ambient and are what the CLTD tables address. Internal gains are largely constant while the building is occupied. Only external gains care what time it is.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">Sensible vs latent</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">Sensible changes temperature, latent changes moisture. They are added separately and met by different coil behaviour. A coil can be perfectly sized on total duty and still fail to hold humidity.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">Room vs coil load</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);"><strong>Ventilation air is not a room load.</strong> In a mixed-air system it never enters the room unconditioned — it hits the coil. Put it in the room load and you will oversize airflow and undersize nothing useful.</p>
+    </div>
+  </div>
+
+  <figure>
+    <div class="figbox">
+      <svg viewBox="0 0 736 372" role="img" aria-label="Stacked bars comparing where room sensible heat comes from at each of the two Doha design conditions, with percentage shares for each envelope and internal component." style="min-width:660px;">
+<text class="svg-ttl" x="16" y="20" fill="#eaf1ff">Room sensible heat — where it actually comes from</text>
+<text class="svg-lbl" x="16" y="50" fill="#a9bde0" font-weight="700">Case 1 · 45.0 °C DB  (peak sensible)</text>
+<text class="svg-num" x="16" y="66" fill="#67e8f9">8,225 W  ·  28,064 Btu/h</text>
+<rect x="250.0" y="32" width="74.6" height="34" fill="#fb7185" opacity=".85"><title>Roof: 1,306 W (15.9%)</title></rect>
+<text class="svg-num" x="287.3" y="53" text-anchor="middle" fill="#050b1a" font-weight="700">16%</text>
+<rect x="324.6" y="32" width="137.2" height="34" fill="#fcd34d" opacity=".85"><title>Glass solar: 2,401 W (29.2%)</title></rect>
+<text class="svg-num" x="393.2" y="53" text-anchor="middle" fill="#050b1a" font-weight="700">29%</text>
+<rect x="461.8" y="32" width="73.0" height="34" fill="#fbbf24" opacity=".85"><title>Glass conduction: 1,278 W (15.5%)</title></rect>
+<text class="svg-num" x="498.3" y="53" text-anchor="middle" fill="#050b1a" font-weight="700">16%</text>
+<rect x="534.8" y="32" width="33.0" height="34" fill="#f472b6" opacity=".85"><title>Opaque wall: 578 W (7.0%)</title></rect>
+<rect x="567.9" y="32" width="59.2" height="34" fill="#22d3ee" opacity=".85"><title>Equipment: 1,037 W (12.6%)</title></rect>
+<text class="svg-num" x="597.5" y="53" text-anchor="middle" fill="#050b1a" font-weight="700">13%</text>
+<rect x="627.1" y="32" width="38.6" height="34" fill="#86efac" opacity=".85"><title>People (sensible): 675 W (8.2%)</title></rect>
+<text class="svg-num" x="646.4" y="53" text-anchor="middle" fill="#050b1a" font-weight="700">8%</text>
+<rect x="665.7" y="32" width="38.2" height="34" fill="#67e8f9" opacity=".85"><title>Lighting: 668 W (8.1%)</title></rect>
+<text class="svg-num" x="684.8" y="53" text-anchor="middle" fill="#050b1a" font-weight="700">8%</text>
+<rect x="703.9" y="32" width="16.1" height="34" fill="#5b9dfa" opacity=".85"><title>Infiltration: 282 W (3.4%)</title></rect>
+<line x1="287.3" y1="68" x2="287.3" y2="76" stroke="#fb7185" stroke-width=".8" opacity=".6"/>
+<circle cx="287.3" cy="75" r="2" fill="#fb7185"/>
+<text class="svg-lbl-sm" x="293.3" y="79" fill="#fb7185">Roof — 1,306 W (16%)</text>
+<line x1="393.2" y1="68" x2="393.2" y2="91" stroke="#fcd34d" stroke-width=".8" opacity=".6"/>
+<circle cx="393.2" cy="90" r="2" fill="#fcd34d"/>
+<text class="svg-lbl-sm" x="399.2" y="94" fill="#fcd34d">Glass solar — 2,401 W (29%)</text>
+<line x1="498.3" y1="68" x2="498.3" y2="106" stroke="#fbbf24" stroke-width=".8" opacity=".6"/>
+<circle cx="498.3" cy="105" r="2" fill="#fbbf24"/>
+<text class="svg-lbl-sm" x="504.3" y="109" fill="#fbbf24">Glass conduction — 1,278 W (16%)</text>
+<text class="svg-lbl" x="16" y="200" fill="#a9bde0" font-weight="700">Case 2 · 27.8 °C DP  (peak latent)</text>
+<text class="svg-num" x="16" y="216" fill="#67e8f9">6,876 W  ·  23,461 Btu/h</text>
+<rect x="250.0" y="182" width="67.3" height="34" fill="#fb7185" opacity=".85"><title>Roof: 985 W (14.3%)</title></rect>
+<text class="svg-num" x="283.7" y="203" text-anchor="middle" fill="#050b1a" font-weight="700">14%</text>
+<rect x="317.3" y="182" width="164.1" height="34" fill="#fcd34d" opacity=".85"><title>Glass solar: 2,401 W (34.9%)</title></rect>
+<text class="svg-num" x="399.4" y="203" text-anchor="middle" fill="#050b1a" font-weight="700">35%</text>
+<rect x="481.4" y="182" width="45.6" height="34" fill="#fbbf24" opacity=".85"><title>Glass conduction: 668 W (9.7%)</title></rect>
+<text class="svg-num" x="504.3" y="203" text-anchor="middle" fill="#050b1a" font-weight="700">10%</text>
+<rect x="527.1" y="182" width="23.0" height="34" fill="#f472b6" opacity=".85"><title>Opaque wall: 337 W (4.9%)</title></rect>
+<rect x="550.1" y="182" width="70.9" height="34" fill="#22d3ee" opacity=".85"><title>Equipment: 1,037 W (15.1%)</title></rect>
+<text class="svg-num" x="585.5" y="203" text-anchor="middle" fill="#050b1a" font-weight="700">15%</text>
+<rect x="621.0" y="182" width="46.1" height="34" fill="#86efac" opacity=".85"><title>People (sensible): 675 W (9.8%)</title></rect>
+<text class="svg-num" x="644.0" y="203" text-anchor="middle" fill="#050b1a" font-weight="700">10%</text>
+<rect x="667.1" y="182" width="45.7" height="34" fill="#67e8f9" opacity=".85"><title>Lighting: 668 W (9.7%)</title></rect>
+<text class="svg-num" x="690.0" y="203" text-anchor="middle" fill="#050b1a" font-weight="700">10%</text>
+<rect x="712.8" y="182" width="7.2" height="34" fill="#5b9dfa" opacity=".85"><title>Infiltration: 105 W (1.5%)</title></rect>
+<line x1="283.7" y1="218" x2="283.7" y2="226" stroke="#fb7185" stroke-width=".8" opacity=".6"/>
+<circle cx="283.7" cy="225" r="2" fill="#fb7185"/>
+<text class="svg-lbl-sm" x="289.7" y="229" fill="#fb7185">Roof — 985 W (14%)</text>
+<line x1="399.4" y1="218" x2="399.4" y2="241" stroke="#fcd34d" stroke-width=".8" opacity=".6"/>
+<circle cx="399.4" cy="240" r="2" fill="#fcd34d"/>
+<text class="svg-lbl-sm" x="405.4" y="244" fill="#fcd34d">Glass solar — 2,401 W (35%)</text>
+<line x1="585.5" y1="218" x2="585.5" y2="256" stroke="#22d3ee" stroke-width=".8" opacity=".6"/>
+<circle cx="585.5" cy="255" r="2" fill="#22d3ee"/>
+<text class="svg-lbl-sm" x="591.5" y="259" fill="#22d3ee">Equipment — 1,037 W (15%)</text>
+<text class="svg-lbl-sm" x="16" y="340" fill="#6f84ab">envelope ◀ · ▶ internal</text>
+<rect x="16" y="344" width="9" height="9" rx="2" fill="#fb7185" opacity=".85"/>
+<text class="svg-lbl-sm" x="29" y="352" fill="#a9bde0">Roof</text>
+<rect x="67.6" y="344" width="9" height="9" rx="2" fill="#fcd34d" opacity=".85"/>
+<text class="svg-lbl-sm" x="80.6" y="352" fill="#a9bde0">Glass solar</text>
+<rect x="157.0" y="344" width="9" height="9" rx="2" fill="#fbbf24" opacity=".85"/>
+<text class="svg-lbl-sm" x="170.0" y="352" fill="#a9bde0">Glass conduction</text>
+<rect x="273.4" y="344" width="9" height="9" rx="2" fill="#f472b6" opacity=".85"/>
+<text class="svg-lbl-sm" x="286.4" y="352" fill="#a9bde0">Opaque wall</text>
+<rect x="362.79999999999995" y="344" width="9" height="9" rx="2" fill="#22d3ee" opacity=".85"/>
+<text class="svg-lbl-sm" x="375.79999999999995" y="352" fill="#a9bde0">Equipment</text>
+<rect x="441.4" y="344" width="9" height="9" rx="2" fill="#86efac" opacity=".85"/>
+<text class="svg-lbl-sm" x="454.4" y="352" fill="#a9bde0">People (sensible)</text>
+<rect x="563.2" y="344" width="9" height="9" rx="2" fill="#67e8f9" opacity=".85"/>
+<text class="svg-lbl-sm" x="576.2" y="352" fill="#a9bde0">Lighting</text>
+<rect x="636.4000000000001" y="344" width="9" height="9" rx="2" fill="#5b9dfa" opacity=".85"/>
+<text class="svg-lbl-sm" x="649.4000000000001" y="352" fill="#a9bde0">Infiltration</text>
+      </svg>
+    </div>
+    <figcaption><b>West glazing is the single largest sensible component in both cases</b> — 19% and 23% — despite being the <em>smaller</em> of the two glazed areas (11.52 m² against the south wall's 17.28 m²). Per square metre, west glass delivers 138 W against south glass at 47 W: three times the intensity. At Doha's 25° latitude the July sun passes almost overhead at noon, so a south façade sees mostly diffuse radiation, while the west façade takes the late-afternoon beam nearly head-on at the hour the peak occurs. <b>Design consequence:</b> external shading and low-SHGC glazing earn their cost on east and west elevations in the Gulf, and are close to wasted money on south.</figcaption>
+  </figure>
+
+  <h3 id="c1-cltd">The CLTD / CLF / SCL method</h3>
+  <p class="prose">A solid wall does not pass heat the instant the sun strikes it. Mass absorbs, stores and re-releases the gain hours later, and the radiant fraction of any gain warms surfaces first and the air afterwards. The CLTD family handles both lags with pre-computed tables: an equivalent temperature difference for opaque surfaces, a solar cooling load for glass, and a cooling load factor for internal gains.</p>
+
+  <div class="fml">
+    <span class="eq">Opaque surfaces   q = U · A · CLTD_corrected</span>
+    <span class="eq">CLTD_corrected    = (CLTD_table + LM) · K + (25.5 − t_indoor) + (t_outdoor,mean − 29.4)</span>
+    <span class="eq">Glass — solar     q = A · SC · SCL              SC = SHGC / 0.87</span>
+    <span class="eq">Glass — conduction q = U · A · CLTD_corrected   (no LM or K term)</span>
+    <span class="eq">Lighting          q = W_installed · F_ul · F_sa · CLF</span>
+    <span class="eq">People            q_s = N · SHG · CLF        q_l = N · LHG   (no CLF on latent)</span>
+    <span class="eq">Infiltration      q_s = 1.23 · V · Δt        q_l = 3010 · V · ΔW</span>
+    <span class="wh">U = thermal transmittance, W/m²·K        A = area, m²
+LM = latitude/month correction, K        K = surface colour factor (1.00 dark, 0.83 medium, 0.65 light)
+t_outdoor,mean = daily maximum − (daily range / 2), °C
+SC = shading coefficient          SCL = solar cooling load, W/m²
+F_ul = use factor                 F_sa = special allowance (ballast/driver)
+CLF = cooling load factor         SHG/LHG = sensible/latent gain per person, W
+V = airflow, L/s                  Δt in K, ΔW in kg/kg</span>
+    <span class="src">Method per ASHRAE Handbook — Fundamentals (1997), Ch. 28, Tables 30–34. Table values are project-specific. <span class="vb verify">Verify</span></span>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">The CLF rule that is most often broken</b>
+    <p style="margin-bottom:0;">Cooling load factors below 1.0 credit you for heat still stored in the structure at the calculation hour. That credit is only real if the plant runs continuously. <strong>If the system shuts down at night, CLF must be taken as 1.0</strong> — the stored energy has nowhere to go but into the morning pull-down. A Gulf office on a 06:00 start with CLF = 0.87 in the calculation is a building that will not hold setpoint until mid-morning in August.</p>
+  </div>
+
+  <h3 id="c1-exB">Worked example B — full zone heat load</h3>
+  <p class="prose">A top-floor south-west corner office module in Doha: 96 m² (12 m × 8 m), 3.0 m ceiling, exposed roof, two exposed façades at 40% glazing, ten occupants. QCS-compliant envelope. Computed at both design conditions.</p>
+
+  <div class="tw">
+    <table>
+      <caption>Zone definition <span class="vb derived">Derived</span> from the design-basis inputs</caption>
+      <thead><tr><th>Element</th><th class="num">Value</th><th class="num">English</th><th style="text-align:left;">Basis</th></tr></thead>
+      <tbody>
+        <tr><td>Floor area</td><td class="num">96.00 m²</td><td class="num">1 033 ft²</td><td style="text-align:left;">12 m × 8 m</td></tr>
+        <tr><td>Room volume</td><td class="num">288.0 m³</td><td class="num">10 171 ft³</td><td style="text-align:left;">96 m² × 3.0 m ceiling</td></tr>
+        <tr><td>Exposed roof</td><td class="num">96.00 m²</td><td class="num">1 033 ft²</td><td style="text-align:left;">top floor</td></tr>
+        <tr><td>Glazing — south</td><td class="num">17.28 m²</td><td class="num">186.0 ft²</td><td style="text-align:left;">12 m × 3.6 m × 0.40</td></tr>
+        <tr><td>Glazing — west</td><td class="num">11.52 m²</td><td class="num">124.0 ft²</td><td style="text-align:left;">8 m × 3.6 m × 0.40</td></tr>
+        <tr><td>Opaque wall — south</td><td class="num">25.92 m²</td><td class="num">279.0 ft²</td><td style="text-align:left;">gross less glazing</td></tr>
+        <tr><td>Opaque wall — west</td><td class="num">17.28 m²</td><td class="num">186.0 ft²</td><td style="text-align:left;">gross less glazing</td></tr>
+        <tr><td>Shading coefficient</td><td class="num">0.3218</td><td class="num">—</td><td style="text-align:left;">SHGC 0.28 ÷ 0.87</td></tr>
+        <tr class="sub"><td>Ventilation — 62.1 VRP</td><td class="num">53.8 L/s</td><td class="num">114.0 CFM</td><td style="text-align:left;">2.5×10 + 0.3×96, E<sub>z</sub> = 1.0</td></tr>
+        <tr class="sub"><td>Infiltration</td><td class="num">12.00 L/s</td><td class="num">25.4 CFM</td><td style="text-align:left;">0.15 ACH × 288 m³</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>Corrected CLTD values at each design condition <span class="vb derived">Derived</span> from <span class="vb verify">Verify</span>-tagged table entries</caption>
+      <thead><tr><th>Surface</th><th class="num">CLTD table</th><th class="num">LM</th><th class="num">K</th><th class="num si">Case 1 corrected</th><th class="num eng">Case 2 corrected</th></tr></thead>
+      <tbody>
+        <tr><td>Roof</td><td class="num">35 K</td><td class="num">0</td><td class="num">1.00</td><td class="num si">45.35 K</td><td class="num eng">34.20 K</td></tr>
+        <tr><td>Wall — south</td><td class="num">16 K</td><td class="num">−2</td><td class="num">1.00</td><td class="num si">24.35 K</td><td class="num eng">13.20 K</td></tr>
+        <tr><td>Wall — west</td><td class="num">20 K</td><td class="num">0</td><td class="num">1.00</td><td class="num si">30.35 K</td><td class="num eng">19.20 K</td></tr>
+        <tr><td>Glass — conduction</td><td class="num">13 K</td><td class="num">—</td><td class="num">—</td><td class="num si">23.35 K</td><td class="num eng">12.20 K</td></tr>
+        <tr class="sub"><td>Mean outdoor temperature</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num si">38.25 °C</td><td class="num eng">27.10 °C</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="prose" style="font-size:var(--step--1);color:var(--text-secondary);">Worked for the roof at Case 1: (35 + 0) × 1.00 + (25.5 − 24.0) + (38.25 − 29.4) = 35 + 1.5 + 8.85 = <strong>45.35 K</strong>. The +8.85 K term is Doha doing the work — it is the gap between the local mean outdoor temperature and the 29.4 °C the base tables assume.</p>
+
+  <div class="tw">
+    <table>
+      <caption>Component heat load, both design conditions <span class="vb derived">Derived</span></caption>
+      <thead><tr><th>Component</th><th class="num si">Case 1 · W</th><th class="num si">% RSH</th><th class="num eng">Case 2 · W</th><th class="num eng">% RSH</th><th class="num">Case 1 · Btu/h</th></tr></thead>
+      <tbody>
+        <tr><td>Roof</td><td class="num si">1 306</td><td class="num si">15.9%</td><td class="num eng">985</td><td class="num eng">14.3%</td><td class="num">4 457</td></tr>
+        <tr><td>Glass solar — west</td><td class="num si">1 594</td><td class="num si">19.4%</td><td class="num eng">1 594</td><td class="num eng">23.2%</td><td class="num">5 440</td></tr>
+        <tr><td>Glass solar — south</td><td class="num si">806</td><td class="num si">9.8%</td><td class="num eng">806</td><td class="num eng">11.7%</td><td class="num">2 752</td></tr>
+        <tr><td>Glass conduction — south</td><td class="num si">767</td><td class="num si">9.3%</td><td class="num eng">401</td><td class="num eng">5.8%</td><td class="num">2 616</td></tr>
+        <tr><td>Glass conduction — west</td><td class="num si">511</td><td class="num si">6.2%</td><td class="num eng">267</td><td class="num eng">3.9%</td><td class="num">1 744</td></tr>
+        <tr><td>Opaque wall — south</td><td class="num si">316</td><td class="num si">3.8%</td><td class="num eng">171</td><td class="num eng">2.5%</td><td class="num">1 077</td></tr>
+        <tr><td>Opaque wall — west</td><td class="num si">262</td><td class="num si">3.2%</td><td class="num eng">166</td><td class="num eng">2.4%</td><td class="num">895</td></tr>
+        <tr><td>Equipment</td><td class="num si">1 037</td><td class="num si">12.6%</td><td class="num eng">1 037</td><td class="num eng">15.1%</td><td class="num">3 538</td></tr>
+        <tr><td>People — sensible</td><td class="num si">675</td><td class="num si">8.2%</td><td class="num eng">675</td><td class="num eng">9.8%</td><td class="num">2 303</td></tr>
+        <tr><td>Lighting</td><td class="num si">668</td><td class="num si">8.1%</td><td class="num eng">668</td><td class="num eng">9.7%</td><td class="num">2 280</td></tr>
+        <tr><td>Infiltration — sensible</td><td class="num si">283</td><td class="num si">3.4%</td><td class="num eng">106</td><td class="num eng">1.5%</td><td class="num">964</td></tr>
+        <tr class="total"><td>Room sensible heat · RSH</td><td class="num si">8 225</td><td class="num si">100%</td><td class="num eng">6 876</td><td class="num eng">100%</td><td class="num">28 064</td></tr>
+        <tr><td>People — latent</td><td class="num si">550</td><td class="num si">—</td><td class="num eng">550</td><td class="num eng">—</td><td class="num">1 877</td></tr>
+        <tr><td>Infiltration — latent</td><td class="num si r">−98</td><td class="num si">—</td><td class="num eng g">+496</td><td class="num eng">—</td><td class="num r">−335</td></tr>
+        <tr class="total"><td>Room latent heat · RLH</td><td class="num si">452</td><td class="num si">—</td><td class="num eng">1 046</td><td class="num eng">—</td><td class="num">1 542</td></tr>
+        <tr><td>Outdoor-air load (at the coil)</td><td class="num si">826</td><td class="num si">—</td><td class="num eng">2 699</td><td class="num eng">—</td><td class="num">2 819</td></tr>
+        <tr class="total"><td>Grand total heat · GTH</td><td class="num si">9 503</td><td class="num si">2.70 TR</td><td class="num eng">10 621</td><td class="num eng">3.02 TR</td><td class="num">32 425</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="res">
+    <div><span class="k">Case 1 grand total</span><span class="v">2.70</span><span class="u">TR · 9 503 W</span></div>
+    <div class="hero"><span class="k">Case 2 grand total</span><span class="v">3.02</span><span class="u">TR · 10 621 W · governs</span></div>
+    <div><span class="k">Undersize if Case 1 only</span><span class="v">11.8</span><span class="u">%</span></div>
+    <div><span class="k">Load intensity</span><span class="v">110.6</span><span class="u">W/m² · 31.8 m²/TR</span></div>
+  </div>
+
+  <div class="sanity">
+    <b class="nh">Sanity check</b>
+    <p>31.8 m² per ton (342 ft²/TR) for a top-floor corner office with 40% glazing in Doha. Gulf offices with a QCS-compliant envelope generally land between 25 and 35 m²/TR, and worst-case corner zones sit at the tight end. This is inside the band and toward the efficient side — consistent with the low-E glazing (SHGC 0.28) and insulated roof (U = 0.30) specified.</p>
+    <p style="margin-bottom:0;"><strong>If your own calculation returns 15 m²/TR</strong> for a similar space, you have almost certainly double-counted ventilation into the room load, used CLF = 1.0 on everything, or left the glazing at clear-single SHGC. <strong>If it returns 55 m²/TR</strong>, check whether the roof was omitted or the solar orientation swapped.</p>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">Why the two cases disagree, and which one wins</b>
+    <p>Case 1 produces the larger <em>room sensible</em> load — 8 225 W against 6 876 W — because the 45 °C ambient drives conduction hard. Case 2 produces the larger <em>grand total</em> — 10 621 W against 9 503 W — because outdoor air at 23.8 g/kg carries a latent load of 2 699 W where Case 1's dry air carried only 826 W total.</p>
+      <p style="margin-bottom:0;">So the two cases size different things: <strong>Case 1 sizes the airflow, the ductwork and the fan. Case 2 sizes the coil and the chiller.</strong> Running only the 0.4% dry-bulb condition — the habit most load calculations fall into — undersizes the cooling coil by 11.8% and leaves the building unable to hold humidity on exactly the days occupants complain about it.</p>
+  </div>
+
+  <h3 id="c1-rts">Why RTS replaced CLTD, and when to still use CLTD</h3>
+  <p class="prose">ASHRAE withdrew the CLTD/CLF/SCL method from the <em>Fundamentals</em> handbook and replaced it with the Radiant Time Series. The reason is structural, not cosmetic.</p>
+
+  <div class="tw">
+    <table>
+      <caption>Method comparison <span class="vb standard">Standard</span></caption>
+      <thead><tr><th>Aspect</th><th style="text-align:left;">CLTD / CLF / SCL</th><th style="text-align:left;">Radiant Time Series (RTS)</th><th style="text-align:left;">Heat Balance (HB)</th></tr></thead>
+      <tbody>
+        <tr><td>Status</td><td style="text-align:left;">Withdrawn (1997 Fundamentals)</td><td style="text-align:left;">Current recommended simplified method</td><td style="text-align:left;">Rigorous reference method</td></tr>
+        <tr><td>How lag is handled</td><td style="text-align:left;">Baked into fixed tables for representative constructions</td><td style="text-align:left;">Explicit conduction time series + radiant time series coefficients</td><td style="text-align:left;">Simultaneous surface energy balance, solved hourly</td></tr>
+        <tr><td>By hand?</td><td style="text-align:left;">Yes — this is its whole advantage</td><td style="text-align:left;">Painful — 24-hour convolution per surface</td><td style="text-align:left;">No</td></tr>
+        <tr><td>Your construction not in the table</td><td style="text-align:left;">Pick the nearest group and accept the error</td><td style="text-align:left;">Generate coefficients for the actual assembly</td><td style="text-align:left;">Modelled directly</td></tr>
+        <tr><td>Where you meet it</td><td style="text-align:left;">Exams, hand checks, legacy Carrier E20</td><td style="text-align:left;">Current ASHRAE practice, spreadsheets</td><td style="text-align:left;">Inside HAP, TRACE, IES</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note good">
+    <b class="nh">The defensible position in a design review</b>
+    <p style="margin-bottom:0;">Use CLTD as a <strong>hand check</strong>, not as the submitted basis. Its enduring value is that one engineer with a calculator can reproduce it and catch an order-of-magnitude error in a software output in twenty minutes. Its weakness is that its tables encode specific wall constructions and a specific base condition, and the correction terms stretch further the more your project departs from them — a Doha project already carries a +8.85 K correction before anything else. If a subcontractor submits CLTD as the primary basis for a large plant, that is a legitimate technical comment: ask for RTS or a validated software output, and keep your CLTD as the independent check.</p>
+  </div>
+  <div class="quiz" id="c1m2q" data-quiz="c1m2">
+    <div class="quiz-hd"><b>Module 2 — practice questions</b><span class="sc" data-score>Not started</span></div>
+
+    <div class="q" data-a="c">
+      <div class="qs"><span class="qn">1</span><p class="qt">In a mixed-air system, where does the ventilation (outdoor air) load belong?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m2_1" value="a"><span>In the room sensible load, with the other envelope gains</span></label>
+        <label class="opt"><input type="radio" name="c1m2_1" value="b"><span>Split evenly between room and coil</span></label>
+        <label class="opt"><input type="radio" name="c1m2_1" value="c"><span>At the coil only — it never reaches the room unconditioned</span></label>
+        <label class="opt"><input type="radio" name="c1m2_1" value="d"><span>It is ignored if the building is positively pressurised</span></label>
+      </div>
+      <div class="fb" data-fb>Outdoor air is mixed with return air upstream of the coil, so it is a coil load. Putting it in the room load inflates the supply airflow — the classic route to an oversized fan and an unnecessarily large duct riser.</div>
+    </div>
+
+    <div class="q" data-a="45.35" data-tol="0.02" data-unit="K">
+      <div class="qs"><span class="qn">2</span><p class="qt">Correct the roof CLTD for Case 1. Table value 35 K, LM = 0, K = 1.00, indoor 24.0 °C, mean outdoor 38.25 °C. Use CLTD<sub>corr</sub> = (CLTD + LM)·K + (25.5 − t<sub>i</sub>) + (t<sub>o,mean</sub> − 29.4).</p></div>
+      <div class="numq"><input type="number" step="0.01" data-in aria-label="Corrected CLTD in kelvin"><span class="un">K</span></div>
+      <div class="fb" data-fb>(35 + 0)(1.00) + (25.5 − 24.0) + (38.25 − 29.4) = 35 + 1.5 + 8.85 = <strong>45.35 K</strong>. The final term carries almost 9 K on its own — that is the distance between Doha and the base condition the tables were built for.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">3</span><p class="qt">West glazing contributes 138 W/m² of solar load against south glazing's 47 W/m² in this July calculation. Why?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m2_3" value="a"><span>The west wall is larger, so it intercepts more radiation</span></label>
+        <label class="opt"><input type="radio" name="c1m2_3" value="b"><span>At 25° latitude the July sun passes near overhead, so a south façade receives mostly diffuse radiation while the west façade takes the late-afternoon beam near-normal at the peak hour</span></label>
+        <label class="opt"><input type="radio" name="c1m2_3" value="c"><span>West glazing was specified with a higher SHGC</span></label>
+        <label class="opt"><input type="radio" name="c1m2_3" value="d"><span>Prevailing wind raises the west surface temperature</span></label>
+      </div>
+      <div class="fb" data-fb>The west wall is in fact <em>smaller</em> (11.52 m² against 17.28 m²) and both use identical glazing. Solar geometry does it. In the Gulf, external shading and low-SHGC glass pay back on east and west and are close to wasted on south — the reverse of the temperate-climate intuition many textbooks teach.</div>
+    </div>
+
+    <div class="q" data-a="c">
+      <div class="qs"><span class="qn">4</span><p class="qt">When must cooling load factors (CLF) be taken as 1.0?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m2_4" value="a"><span>When the space is naturally ventilated</span></label>
+        <label class="opt"><input type="radio" name="c1m2_4" value="b"><span>When the construction is lightweight</span></label>
+        <label class="opt"><input type="radio" name="c1m2_4" value="c"><span>When the cooling system does not run continuously — it shuts down overnight</span></label>
+        <label class="opt"><input type="radio" name="c1m2_4" value="d"><span>Whenever the calculation hour is after 16:00</span></label>
+      </div>
+      <div class="fb" data-fb>CLF &lt; 1.0 credits heat still stored in the structure at the calculation hour. That credit only exists if the plant is there to remove it later. On a system that shuts down, the stored energy reappears as morning pull-down — take CLF = 1.0.</div>
+    </div>
+
+    <div class="q" data-a="1594" data-tol="0.02" data-unit="W">
+      <div class="qs"><span class="qn">5</span><p class="qt">Solar gain through the west glazing: area 11.52 m², SHGC 0.28, SCL 430 W/m². Remember the CLTD method uses shading coefficient, where SC = SHGC / 0.87.</p></div>
+      <div class="numq"><input type="number" step="1" data-in aria-label="Solar heat gain in watts"><span class="un">W</span></div>
+      <div class="fb" data-fb>SC = 0.28 / 0.87 = 0.3218; q = 11.52 × 0.3218 × 430 = <strong>1 594 W</strong>. Forgetting the 0.87 divisor and using SHGC directly understates the load by 13% — a common slip when mixing modern glazing data into a legacy method.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">6</span><p class="qt">Which design condition sizes the cooling coil for this Doha zone, and by how much would the other one miss it?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m2_6" value="a"><span>Case 1 (45.0 °C DB); Case 2 would undersize by about 12%</span></label>
+        <label class="opt"><input type="radio" name="c1m2_6" value="b"><span>Case 2 (27.8 °C DP); Case 1 would undersize by about 12%</span></label>
+        <label class="opt"><input type="radio" name="c1m2_6" value="c"><span>Case 1, because it has the higher room sensible load</span></label>
+        <label class="opt"><input type="radio" name="c1m2_6" value="d"><span>Either — they produce the same grand total</span></label>
+      </div>
+      <div class="fb" data-fb>Case 2 gives 10 621 W against Case 1's 9 503 W — an 11.8% margin, driven entirely by the outdoor-air latent load. Case 1 does have the higher room <em>sensible</em> load, and that is what sizes airflow. Different cases size different equipment; you need both.</div>
+    </div>
+
+    <div class="q" data-a="a">
+      <div class="qs"><span class="qn">7</span><p class="qt">Should a cooling load factor be applied to the latent gain from occupants?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m2_7" value="a"><span>No — latent gain is released as vapour and appears instantly; only sensible gain has a radiant fraction to store</span></label>
+        <label class="opt"><input type="radio" name="c1m2_7" value="b"><span>Yes, the same CLF as the sensible gain</span></label>
+        <label class="opt"><input type="radio" name="c1m2_7" value="c"><span>Yes, but only for heavyweight construction</span></label>
+        <label class="opt"><input type="radio" name="c1m2_7" value="d"><span>Only when the space is humidified</span></label>
+      </div>
+      <div class="fb" data-fb>Storage lag applies to the radiant portion of sensible gain warming surfaces. Moisture enters the air directly, so latent gain is instantaneous — no CLF.</div>
+    </div>
+
+    <div class="q" data-a="53.8" data-tol="0.02" data-unit="L/s">
+      <div class="qs"><span class="qn">8</span><p class="qt">ASHRAE 62.1 ventilation rate procedure: office space, 10 occupants, 96 m², R<sub>p</sub> = 2.5 L/s·person, R<sub>a</sub> = 0.3 L/s·m², E<sub>z</sub> = 1.0. Find V<sub>oz</sub>.</p></div>
+      <div class="numq"><input type="number" step="0.1" data-in aria-label="Zone outdoor airflow in litres per second"><span class="un">L/s</span></div>
+      <div class="fb" data-fb>V<sub>bz</sub> = 2.5(10) + 0.3(96) = 25 + 28.8 = 53.8 L/s; V<sub>oz</sub> = V<sub>bz</sub>/E<sub>z</sub> = <strong>53.8 L/s</strong> (114 CFM). Note the area term is larger than the people term here — which is exactly why demand control ventilation cannot turn the whole flow down (Course 4).</div>
+    </div>
+
+    <div class="q" data-a="c">
+      <div class="qs"><span class="qn">9</span><p class="qt">Why did ASHRAE withdraw CLTD/CLF/SCL in favour of the Radiant Time Series?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m2_9" value="a"><span>CLTD consistently underestimates loads</span></label>
+        <label class="opt"><input type="radio" name="c1m2_9" value="b"><span>RTS is easier to compute by hand</span></label>
+        <label class="opt"><input type="radio" name="c1m2_9" value="c"><span>CLTD bakes thermal lag into fixed tables tied to representative constructions and a fixed base condition; RTS makes the conduction and radiant time series explicit for the actual assembly</span></label>
+        <label class="opt"><input type="radio" name="c1m2_9" value="d"><span>CLTD cannot handle internal gains</span></label>
+      </div>
+      <div class="fb" data-fb>RTS is decidedly <em>harder</em> by hand — a 24-hour convolution per surface. That is the trade: transparency and applicability to real assemblies, in exchange for arithmetic. CLTD keeps its value as an independent hand check on software output.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">10</span><p class="qt">A subcontractor's load calculation for a similar Doha office returns 15 m²/TR. What is the most likely cause?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m2_10" value="a"><span>Nothing — that is normal for the Gulf</span></label>
+        <label class="opt"><input type="radio" name="c1m2_10" value="b"><span>Ventilation double-counted into the room load, CLF left at 1.0 throughout, or clear glazing SHGC used instead of the specified low-E value</span></label>
+        <label class="opt"><input type="radio" name="c1m2_10" value="c"><span>The roof was omitted</span></label>
+        <label class="opt"><input type="radio" name="c1m2_10" value="d"><span>They used RTS instead of CLTD</span></label>
+      </div>
+      <div class="fb" data-fb>15 m²/TR is roughly double the intensity this envelope should produce — an <em>over</em>-estimate, so look for loads counted twice or credits not taken. Omitting the roof would push the figure the other way, toward 55 m²/TR. Knowing which direction an error moves the answer is what makes the m²/TR check useful in review.</div>
+    </div>
+
+    <div class="quiz-ft">
+      <button class="btn pri" type="button" data-check>Check answers</button>
+      <button class="btn" type="button" data-reset>Reset</button>
+      <span class="msg" data-msg></span>
+    </div>
+  </div>
+</section>
+<section id="c1m3">
+  <div class="mod-head">
+    <p class="eyebrow">Course 1 · Module 3</p>
+    <h2>Psychrometry × heat load — selecting the coil</h2>
+    <p class="lede">Module 2 produced watts. Watts do not buy equipment. This module converts the load into the four numbers a supplier actually needs: airflow, supply air condition, apparatus dew point and total coil duty — and shows why the two Doha design cases hand you two different answers.</p>
+    <div class="tag-row">
+      <span class="chip acc">RSHF · GSHF · ESHF</span><span class="chip acc">Apparatus dew point</span>
+      <span class="chip">Bypass factor</span><span class="chip">Coil selection</span>
+    </div>
+  </div>
+
+  <h3>The three sensible heat factors</h3>
+  <p class="prose">Three ratios, three different jobs. Confusing them is the most common error in this part of the syllabus, so anchor each one to the question it answers.</p>
+
+  <div class="fml">
+    <span class="eq">RSHF = RSH / (RSH + RLH)                            → sets the slope of the room process line</span>
+    <span class="eq">GSHF = (RSH + OA_s) / GTH                           → describes the whole coil, mixed air to supply</span>
+    <span class="eq">ESHF = (RSH + BF·OA_s) / (RSH + BF·OA_s + RLH + BF·OA_l)   → the line whose extension gives ADP</span>
+    <span class="wh">RSH, RLH = room sensible and latent heat, W        OA_s, OA_l = outdoor-air sensible and latent, W
+GTH = grand total heat = RSH + RLH + OA_s + OA_l   BF = coil bypass factor
+The ESHF line is drawn from the room state; where it strikes the saturation curve is the apparatus dew point.</span>
+    <span class="src">Classical Carrier construction, as taught in the heat-load syllabus. <span class="vb standard">Standard</span></span>
+  </div>
+
+  <h3 id="c1-exC">Worked example C — coil selection at the governing case</h3>
+  <p class="prose">Carrying Example B's Case 2 loads forward: RSH 6 876 W, RLH 1 046 W, outdoor air 2 699 W, grand total 10 621 W. Supply air off the coil is taken at 13.0 °C.</p>
+
+  <div class="work">
+    <div class="stp"><b>Split the outdoor-air load into sensible and latent</b>
+      <span class="r">ṁ_oa = 53.8 L/s ÷ 0.8964 m³/kg = 0.06002 kg/s</span>
+      <span class="r">OA_s = 0.06002 × 1.0368 × (31.6 − 24.0) = 473 W&nbsp;&nbsp;&nbsp;OA_l = 2 699 − 473 = <strong>2 226 W</strong></span></div>
+    <div class="stp"><b>Sensible heat factors</b>
+      <span class="r">RSHF = 6 876 / 7 922 = <strong>0.8679</strong></span>
+      <span class="r">GSHF = (6 876 + 473) / 10 621 = <strong>0.6919</strong></span>
+      <span class="r">ESHF = (6 876 + 0.128×473) / (6 876 + 0.128×473 + 1 046 + 0.128×2 226) = <strong>0.8390</strong></span></div>
+    <div class="stp"><b>Solve the supply state from the room energy balance</b>
+      <span class="r">ṁ_da·cp·(t_room − t_supply) = RSH   and   ṁ_da·(h_room − h_supply) = RSH + RLH</span>
+      <span class="r">→ ṁ_da = <strong>0.61120 kg/s</strong>, supply = <strong>13.00 °C / 8.623 g/kg</strong> (92.5% RH, h = 34.85 kJ/kg)</span></div>
+    <div class="stp"><b>Supply airflow</b>
+      <span class="r">V = 0.61120 × 0.8219 × 1000 = <strong>502.3 L/s = 1 064 CFM</strong> (6.28 air changes per hour)</span></div>
+    <div class="stp"><b>Mixed-air state — mass balance of 53.8 L/s outdoor with the balance return</b>
+      <span class="r">outdoor fraction 9.8% by mass, 10.7% by volume</span>
+      <span class="r">mixed air = <strong>24.76 °C / 10.725 g/kg</strong> (55.0% RH, h = 52.23 kJ/kg)</span></div>
+    <div class="stp"><b>Apparatus dew point and bypass factor from the process line</b>
+      <span class="r">extend mixed-air → supply to saturation:  ADP = <strong>11.27 °C</strong></span>
+      <span class="r">BF = (13.00 − 11.27) / (24.76 − 11.27) = <strong>0.128</strong></span></div>
+    <div class="stp"><b>Coil duty</b>
+      <span class="r">q = 0.61120 × (52.23 − 34.85) = 10.621 kW = <strong>3.020 TR</strong>, coil SHR = <strong>0.693</strong></span></div>
+    <div class="stp"><b>Close the energy balance</b>
+      <span class="r">coil duty 10 621 W vs (RSH + RLH + OA) = 6 876 + 1 046 + 2 699 = 10 621 W → <strong>0.000% error</strong></span></div>
+  </div>
+
+  <div class="res">
+    <div><span class="k">Supply airflow</span><span class="v">502</span><span class="u">L/s · 1 064 CFM</span></div>
+    <div><span class="k">Supply condition</span><span class="v">13.0</span><span class="u">°C · 8.62 g/kg</span></div>
+    <div><span class="k">Apparatus dew point</span><span class="v">11.27</span><span class="u">°C · 52.3 °F</span></div>
+    <div><span class="k">Bypass factor</span><span class="v">0.128</span><span class="u">≈ 6-row coil</span></div>
+    <div class="hero"><span class="k">Coil duty</span><span class="v">3.02</span><span class="u">TR · 10.62 kW</span></div>
+    <div><span class="k">Coil SHR</span><span class="v">0.693</span><span class="u">31% latent</span></div>
+  </div>
+
+  <div class="note good">
+    <b class="nh">The classical construction, checked against the rigorous one</b>
+    <p style="margin-bottom:0;">Drawing the ESHF = 0.8390 line from the room condition to saturation gives ADP = <strong>11.47 °C</strong>. Solving the actual mass and energy balance and extending the real process line gives <strong>11.27 °C</strong>. The classical graphical method is within <strong>0.20 K</strong> here — comfortably good enough for selection, and a fair reason to trust the chart construction the course teaches. The rigorous route is used above only because it closes the energy balance exactly, which lets every number in this guide be checked against every other.</p>
+  </div>
+
+  <h3>The same zone at Case 1 — a dry coil</h3>
+  <p class="prose">Run the identical procedure at the 45 °C design condition and the coil behaves like a different machine.</p>
+
+  <div class="tw">
+    <table>
+      <caption>Coil behaviour at the two design conditions <span class="vb derived">Derived</span></caption>
+      <thead><tr><th>Quantity</th><th class="num si">Case 1 · 45.0 °C DB</th><th class="num eng">Case 2 · 27.8 °C DP</th><th style="text-align:left;">What it means</th></tr></thead>
+      <tbody>
+        <tr><td>Room sensible RSH</td><td class="num si">8 225 W</td><td class="num eng">6 876 W</td><td style="text-align:left;">Case 1 sizes airflow</td></tr>
+        <tr><td>Room latent RLH</td><td class="num si">452 W</td><td class="num eng">1 046 W</td><td style="text-align:left;">occupants dominate in Case 1</td></tr>
+        <tr><td>Outdoor-air sensible</td><td class="num si">1 266 W</td><td class="num eng">473 W</td><td style="text-align:left;">21 K vs 7.6 K temperature difference</td></tr>
+        <tr><td>Outdoor-air latent</td><td class="num si r">−440 W</td><td class="num eng g">+2 226 W</td><td style="text-align:left;"><strong>changes sign</strong></td></tr>
+        <tr><td>GSHF</td><td class="num si">0.999</td><td class="num eng">0.692</td><td style="text-align:left;">Case 1 is essentially all sensible</td></tr>
+        <tr><td>Coil SHR</td><td class="num si">0.998</td><td class="num eng">0.693</td><td style="text-align:left;">Case 1 coil runs <strong>dry</strong></td></tr>
+        <tr><td>Supply airflow</td><td class="num si">601 L/s</td><td class="num eng">502 L/s</td><td style="text-align:left;">16% turndown at Case 2</td></tr>
+        <tr class="total"><td>Grand total</td><td class="num si">9 503 W · 2.70 TR</td><td class="num eng">10 621 W · 3.02 TR</td><td style="text-align:left;">Case 2 governs the coil</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">What a dry coil means for the specification</b>
+    <p>At Case 1 the coil sensible heat ratio is 0.998 — the outdoor air is dry enough to absorb the entire occupant latent gain on its own, and almost no condensate forms. That is comfortable, but it has three consequences worth writing down:</p>
+    <ul style="margin-bottom:0;">
+      <li><strong>The apparatus dew point construction degenerates.</strong> With the process line nearly horizontal, ADP and bypass factor stop being meaningful selection quantities at this condition. Select on Case 2.</li>
+      <li><strong>Humidity control is unavailable when you might want it.</strong> A dry coil cannot dehumidify. Any space needing tight humidity (archives, laboratories, some clean areas) needs a separate strategy, not a bigger coil.</li>
+      <li><strong>Condensate drainage is still not optional.</strong> The plant runs wet for most of the year — the coil is only dry at this specific design extreme.</li>
+    </ul>
+  </div>
+
+  <div class="sanity">
+    <b class="nh">Selection verdict — carry these forward to Course 2</b>
+    <p style="margin-bottom:0;">Fan, duct and VAV box: <strong>601 L/s (1 274 CFM)</strong> from Case 1. Coil and chiller: <strong>3.02 TR (10.62 kW)</strong> from Case 2, at ADP 11.27 °C and coil SHR 0.693. Specify both duties on the equipment schedule. A supplier given only the total tonnage will select a coil with a sensible heat ratio near 0.75–0.80 by default, and it will not hold the room at 50% RH on a September morning in Doha.</p>
+  </div>
+
+  <div class="quiz" id="c1m3q" data-quiz="c1m3">
+    <div class="quiz-hd"><b>Module 3 — practice questions</b><span class="sc" data-score>Not started</span></div>
+
+    <div class="q" data-a="c">
+      <div class="qs"><span class="qn">1</span><p class="qt">Which sensible heat factor is used to locate the apparatus dew point?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m3_1" value="a"><span>RSHF — the room sensible heat factor</span></label>
+        <label class="opt"><input type="radio" name="c1m3_1" value="b"><span>GSHF — the grand sensible heat factor</span></label>
+        <label class="opt"><input type="radio" name="c1m3_1" value="c"><span>ESHF — the effective sensible heat factor, which weights the outdoor-air load by the bypass factor</span></label>
+        <label class="opt"><input type="radio" name="c1m3_1" value="d"><span>The coil SHR quoted by the manufacturer</span></label>
+      </div>
+      <div class="fb" data-fb>ESHF. It accounts for the fraction of outdoor air that bypasses the coil surface and reaches the room unchanged, which is precisely the portion that behaves like a room load. Draw the ESHF line from the room state; where it meets saturation is the ADP.</div>
+    </div>
+
+    <div class="q" data-a="0.128" data-tol="0.05" data-unit="—">
+      <div class="qs"><span class="qn">2</span><p class="qt">Mixed air enters a coil at 24.76 °C, leaves at 13.00 °C, and the apparatus dew point is 11.27 °C. Compute the bypass factor.</p></div>
+      <div class="numq"><input type="number" step="0.001" data-in aria-label="Bypass factor"><span class="un">dimensionless</span></div>
+      <div class="fb" data-fb>BF = (t_leaving − ADP) / (t_entering − ADP) = (13.00 − 11.27) / (24.76 − 11.27) = 1.73 / 13.49 = <strong>0.128</strong>. Typical of a 6-row coil. Fewer rows raise it; a 4-row coil near 0.20 would not reach this supply condition from this mixed-air state.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">3</span><p class="qt">At Case 1 the coil sensible heat ratio is 0.998. What follows?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m3_3" value="a"><span>The coil is oversized and should be reduced</span></label>
+        <label class="opt"><input type="radio" name="c1m3_3" value="b"><span>The coil runs essentially dry — almost no dehumidification occurs, and the ADP construction stops being a meaningful selection tool at this condition</span></label>
+        <label class="opt"><input type="radio" name="c1m3_3" value="c"><span>The chilled water temperature must be lowered</span></label>
+        <label class="opt"><input type="radio" name="c1m3_3" value="d"><span>Condensate drainage can be omitted</span></label>
+      </div>
+      <div class="fb" data-fb>A dry coil. The 45 °C outdoor air is so dry it absorbs the occupant latent gain unaided. Drainage is still required — the plant runs wet for most of the year; the coil is only dry at this one design extreme.</div>
+    </div>
+
+    <div class="q" data-a="502" data-tol="0.03" data-unit="L/s">
+      <div class="qs"><span class="qn">4</span><p class="qt">Dry-air mass flow is 0.61120 kg/s and the supply air specific volume is 0.8219 m³/kg. What is the supply airflow in L/s?</p></div>
+      <div class="numq"><input type="number" step="1" data-in aria-label="Supply airflow in litres per second"><span class="un">L/s</span></div>
+      <div class="fb" data-fb>V = 0.61120 × 0.8219 × 1000 = <strong>502 L/s</strong> (1 064 CFM). Note that airflow must be converted through the <em>supply</em> specific volume, not the room's — at 13 °C the air is denser, and using the room value would overstate the volume by about 4%.</div>
+    </div>
+
+    <div class="q" data-a="a">
+      <div class="qs"><span class="qn">5</span><p class="qt">A supplier is given only "3.02 TR" for this coil. What is the most likely failure mode?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m3_5" value="a"><span>They select on a default SHR near 0.75–0.80, and the coil cannot deliver the 0.693 required — the room drifts above 50% RH</span></label>
+        <label class="opt"><input type="radio" name="c1m3_5" value="b"><span>The coil will be physically too small to fit the AHU</span></label>
+        <label class="opt"><input type="radio" name="c1m3_5" value="c"><span>The chilled water flow will be wrong</span></label>
+        <label class="opt"><input type="radio" name="c1m3_5" value="d"><span>Nothing — total duty fully defines a coil</span></label>
+      </div>
+      <div class="fb" data-fb>Total duty alone does not define a coil. A schedule must carry entering and leaving conditions (or duty plus SHR), airflow, and the chilled water temperatures. This is a standard finding when reviewing equipment schedules — and it is far cheaper to catch at schedule stage than at commissioning.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">6</span><p class="qt">Why does this guide solve the supply state from a mass and energy balance rather than reading it off the ESHF construction?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m3_6" value="a"><span>The ESHF construction is wrong</span></label>
+        <label class="opt"><input type="radio" name="c1m3_6" value="b"><span>The balance closes to zero error, so every figure can be cross-checked; the ESHF construction agrees to within 0.20 K and remains perfectly adequate for selection</span></label>
+        <label class="opt"><input type="radio" name="c1m3_6" value="c"><span>ESHF cannot be used with outdoor air</span></label>
+        <label class="opt"><input type="radio" name="c1m3_6" value="d"><span>Because the coil runs dry</span></label>
+      </div>
+      <div class="fb" data-fb>Both work. ESHF gives ADP 11.47 °C against the rigorous 11.27 °C — a 0.20 K difference, immaterial for selection. The balance route was chosen so that coil duty and grand total heat reconcile exactly, which is what lets errors elsewhere in the guide be detected.</div>
+    </div>
+
+    <div class="q" data-a="c">
+      <div class="qs"><span class="qn">7</span><p class="qt">Between Case 1 and Case 2 the outdoor-air latent load moves from −440 W to +2 226 W. What must the air system be able to do?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m3_7" value="a"><span>Nothing special — size everything on the larger figure</span></label>
+        <label class="opt"><input type="radio" name="c1m3_7" value="b"><span>Run at constant volume with face-and-bypass control</span></label>
+        <label class="opt"><input type="radio" name="c1m3_7" value="c"><span>Turn down about 16% in airflow at Case 2 while delivering a higher total duty at a much lower sensible heat ratio</span></label>
+        <label class="opt"><input type="radio" name="c1m3_7" value="d"><span>Increase outdoor air at Case 2 to dilute the moisture</span></label>
+      </div>
+      <div class="fb" data-fb>Airflow falls from 601 to 502 L/s while coil duty <em>rises</em> from 2.70 to 3.02 TR. Increasing outdoor air at Case 2 would make it worse — outdoor air is the source of the moisture, which is exactly the reasoning behind demand control ventilation in Course 4.</div>
+    </div>
+
+    <div class="q" data-a="0.8679" data-tol="0.02" data-unit="—">
+      <div class="qs"><span class="qn">8</span><p class="qt">Room sensible heat is 6 876 W and room latent heat is 1 046 W. Compute RSHF.</p></div>
+      <div class="numq"><input type="number" step="0.0001" data-in aria-label="Room sensible heat factor"><span class="un">dimensionless</span></div>
+      <div class="fb" data-fb>RSHF = 6 876 / (6 876 + 1 046) = 6 876 / 7 922 = <strong>0.8679</strong>. Note this is materially higher than the coil SHR of 0.693 — the difference is the outdoor-air latent load, which the coil carries but the room never sees.</div>
+    </div>
+
+    <div class="quiz-ft">
+      <button class="btn pri" type="button" data-check>Check answers</button>
+      <button class="btn" type="button" data-reset>Reset</button>
+      <span class="msg" data-msg></span>
+    </div>
+  </div>
+</section>
+
+</div><!-- /panel-c1 -->
+<!-- ==================== COURSES 2-4 + REFERENCE (pending build) ============ -->
+<div class="panel" id="panel-c2" role="tabpanel" aria-labelledby="tab-c2" hidden>
+  <section id="c2-intro">
+    <div class="mod-head">
+      <p class="eyebrow">Course 2 · Modules 1–2</p>
+      <h2>Equipment selection, design &amp; sizing</h2>
+      <p class="lede">Turning Course 1's 3.02 TR zone duty into a chiller, a tower, a pump, a duct and a fan.</p>
+    </div>
+    <div class="note"><b class="nh">Section under construction</b>
+      <p style="margin-bottom:0;">Course 1 is complete and awaiting review. This course will carry: the chilled-water plant schematic, chiller and cooling-tower selection against Doha's 30.6 °C design wet bulb, primary/secondary versus variable-primary pumping, worked example D (block load → 98.1 TR plant, 13.74 L/s chilled water, 19.33 L/s condenser water, 364 mm duct at 5.76 m/s, 890 Pa external static, 1.37 W/(L/s) specific fan power), and a module quiz.</p>
+    </div>
+  </section>
+</div>
+
+<div class="panel" id="panel-c3" role="tabpanel" aria-labelledby="tab-c3" hidden>
+  <section id="c3-intro">
+    <div class="mod-head">
+      <p class="eyebrow">Course 3 · Modules 1–2</p>
+      <h2>Ventilation, life safety &amp; smoke extraction</h2>
+      <p class="lede">The one branch of the specialization sized by code and geometry rather than by thermal load.</p>
+    </div>
+    <div class="note"><b class="nh">Section under construction</b>
+      <p style="margin-bottom:0;">Will carry: stack effect and the neutral pressure plane, wind effect, stairwell and lift-lobby pressurization, car park ventilation and smoke extraction, atrium plume calculation, and worked example E (car park at 6 and 10 air changes per hour, stairwell governed by the open-door criterion at 3.78 m³/s with a door-force check at 81.5 N against the 133 N limit, and a 5 MW atrium fire requiring 96.8 m³/s of extract).</p>
+    </div>
+  </section>
+</div>
+
+<div class="panel" id="panel-c4" role="tabpanel" aria-labelledby="tab-c4" hidden>
+  <section id="c4-dcv">
+    <div class="mod-head">
+      <p class="eyebrow">Course 4 · Modules 1–2</p>
+      <h2>Cutting-edge technology</h2>
+      <p class="lede">Where the energy actually goes: part load, not design load.</p>
+    </div>
+    <div class="note"><b class="nh">Section under construction</b>
+      <p style="margin-bottom:0;">Will carry: demand control ventilation and why the CO₂ setpoint must be derived from the design ventilation rate rather than copied from a 1 000 ppm rule of thumb (this zone computes to 1 387 ppm), variable refrigerant flow topologies, fan types and the fan laws, and worked example F.</p>
+    </div>
+  </section>
+</div>
+
+<div class="panel" id="panel-ref" role="tabpanel" aria-labelledby="tab-ref" hidden>
+  <section id="r-ckl1">
+    <div class="mod-head">
+      <p class="eyebrow">Reference</p>
+      <h2>Checklists, formulae &amp; codes</h2>
+      <p class="lede">The part of the guide that outlives the certificate.</p>
+    </div>
+    <div class="note"><b class="nh">Section under construction</b>
+      <p style="margin-bottom:0;">Will carry five persistent review checklists (design basis, heat load calculation review, equipment datasheet and technical bid evaluation, vendor submittal review, commissioning and mechanical completion), a printable formula sheet with symbol and unit tables, and a codes register mapping ASHRAE 55 / 62.1 / 90.1 / Fundamentals, NFPA 92 and ISO against QCS.</p>
+    </div>
+  </section>
+</div>
+
+</main>
+</div><!-- /layout -->
+
+<div class="layout" style="padding-bottom:40px;">
+  <div></div>
+  <footer class="pg">
+    <p><strong>Doha HVAC Study Guide</strong> — a personal revision aid for the L&amp;T EduTech <em>Design of Ventilation &amp; Air Conditioning System for Buildings</em> specialization on Coursera. Not affiliated with, endorsed by, or derived from Coursera or L&amp;T EduTech course material.</p>
+    <p>Every calculation is reproducible from the inputs shown. Table values tagged <span class="vb verify">Verify</span> are representative magnitudes and must be replaced from the governing handbook or project basis of design before use in a deliverable. This guide is a study aid — it is not a stamped calculation and carries no professional warranty.</p>
+    <p style="margin-bottom:0;">Allan Ronald Dones · <a href="../index.html">allanronalddones.com</a></p>
+  </footer>
+</div>
+
+</div><!-- /shell -->
+
+<script>
+(function(){
+"use strict";
+
+/* ===================== storage (may throw in sandboxed frames) ============ */
+var KEY="ard-hvac-guide-v1";
+function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||"{}")||{}; }catch(e){ return {}; } }
+function save(o){ try{ localStorage.setItem(KEY,JSON.stringify(o)); }catch(e){} }
+var store=load();
+
+/* ===================== psychrometrics (ASHRAE Fundamentals Ch.1) ========== */
+var C8=-5.8002206e3,C9=1.3914993,C10=-4.8640239e-2,
+    C11=4.1764768e-5,C12=-1.4452093e-8,C13=6.5459673;
+function pws(t){ var T=t+273.15;
+  return Math.exp(C8/T+C9+C10*T+C11*T*T+C12*T*T*T+C13*Math.log(T))/1000; }
+function WfromPw(pw,p){ return 0.621945*pw/(p-pw); }
+function Wsat(t,p){ return WfromPw(pws(t),p); }
+function WfromRH(t,rh,p){ return WfromPw(rh*pws(t),p); }
+function enth(t,W){ return 1.006*t+W*(2501+1.86*t); }
+function vol(t,W,p){ return 0.287042*(t+273.15)*(1+1.607858*W)/p; }
+function WfromTwb(tdb,twb,p){ var Ws=Wsat(twb,p);
+  return ((2501-2.326*twb)*Ws-1.006*(tdb-twb))/(2501+1.86*tdb-4.186*twb); }
+function st(t,W,p){ return {t:t,W:W,h:enth(t,W),v:vol(t,W,p),
+  rh:(p*W/(0.621945+W))/pws(t)}; }
+
+/* ===================== unit helpers ====================================== */
+function TR(kw){ return kw/3.516852842; }
+function CFM(ls){ return ls*2.118880003; }
+function BTUH(w){ return w*3.412142; }
+function GPM(ls){ return ls*15.850323141; }
+function f1(x){ return x.toFixed(1); }
+function f2(x){ return x.toFixed(2); }
+function f0(x){ return Math.round(x).toLocaleString("en-US"); }
+
+/* ===================== read the design basis ============================== */
+function v(id){ var e=document.getElementById(id); return e?parseFloat(e.value):NaN; }
+var INPUTS=["dd_oa1_db","dd_oa1_wb","dd_dr1","dd_oa2_db","dd_oa2_dp","dd_dr2","dd_ct_wb",
+"dd_patm","dd_in_db","dd_in_rh","dd_tsup","dd_rp","dd_ra","dd_ez","dd_ach_inf","dd_Ls","dd_Lw",
+"dd_hftf","dd_hceil","dd_glaz","dd_uroof","dd_uwall","dd_uglass","dd_shgc","dd_people","dd_ps",
+"dd_pl","dd_lpd","dd_epd","dd_clf_p","dd_clf_l","dd_clf_e","dd_cltd_roof","dd_cltd_ws",
+"dd_cltd_ww","dd_cltd_gl","dd_lm_roof","dd_lm_ws","dd_lm_ww","dd_k","dd_scl_s","dd_scl_w"];
+var DEFAULTS={};
+INPUTS.forEach(function(id){ var e=document.getElementById(id); if(e) DEFAULTS[id]=e.value; });
+
+function solve(){
+  var p=v("dd_patm"), ti=v("dd_in_db"), tsup=v("dd_tsup");
+  var room=st(ti,WfromRH(ti,v("dd_in_rh")/100,p),p);
+  var Ls=v("dd_Ls"), Lw=v("dd_Lw"), hf=v("dd_hftf"), hc=v("dd_hceil"), gz=v("dd_glaz");
+  var Af=Ls*Lw, Vol=Af*hc;
+  var AgS=Ls*hf*gz, AgW=Lw*hf*gz, AwS=Ls*hf-AgS, AwW=Lw*hf-AgW;
+  var SC=v("dd_shgc")/0.87, N=v("dd_people");
+  var Voz=(v("dd_rp")*N+v("dd_ra")*Af)/v("dd_ez");
+  var Vinf=v("dd_ach_inf")*Vol/3.6;
+
+  function one(oa,DR){
+    var tom=oa.t-DR/2, K=v("dd_k");
+    function c(tab,lm,useK){ return (useK?(tab+lm)*K:tab)+(25.5-ti)+(tom-29.4); }
+    var cR=c(v("dd_cltd_roof"),v("dd_lm_roof"),true),
+        cS=c(v("dd_cltd_ws"),v("dd_lm_ws"),true),
+        cW=c(v("dd_cltd_ww"),v("dd_lm_ww"),true),
+        cG=c(v("dd_cltd_gl"),0,false);
+    var m_inf=Vinf/1000/oa.v, cpm=1.006+1.86*(oa.W+room.W)/2;
+    var infT=m_inf*(oa.h-room.h)*1000, infS=m_inf*cpm*(oa.t-ti)*1000;
+    var S={ "Roof":v("dd_uroof")*Af*cR, "Wall S":v("dd_uwall")*AwS*cS,
+      "Wall W":v("dd_uwall")*AwW*cW, "Glass cond S":v("dd_uglass")*AgS*cG,
+      "Glass cond W":v("dd_uglass")*AgW*cG, "Solar S":AgS*SC*v("dd_scl_s"),
+      "Solar W":AgW*SC*v("dd_scl_w"), "Lighting":v("dd_lpd")*Af*v("dd_clf_l"),
+      "People":N*v("dd_ps")*v("dd_clf_p"), "Equipment":v("dd_epd")*Af*v("dd_clf_e"),
+      "Infiltration":infS };
+    var RSH=0; for(var k in S) RSH+=S[k];
+    var RLH=N*v("dd_pl")+(infT-infS);
+    var m_oa=Voz/1000/oa.v, OA=m_oa*(oa.h-room.h)*1000;
+    var cpo=1.006+1.86*(oa.W+room.W)/2;
+    var OAs=m_oa*cpo*(oa.t-ti)*1000, OAl=OA-OAs;
+    var GTH=RSH+RLH+OA;
+    // supply state + mass flow from the room balance
+    var Ws=room.W, mda=1;
+    for(var i=0;i<300;i++){
+      var cp=1.006+1.86*(Ws+room.W)/2;
+      mda=(RSH/1000)/(cp*(ti-tsup));
+      var hs=room.h-((RSH+RLH)/1000)/mda;
+      Ws=(hs-1.006*tsup)/(2501+1.86*tsup);
+    }
+    var sup=st(tsup,Ws,p), Vsa=mda*sup.v*1000;
+    var m_ra=mda-m_oa;
+    var Wma=(m_oa*oa.W+m_ra*room.W)/mda, hma=(m_oa*oa.h+m_ra*room.h)/mda;
+    var ma=st((hma-2501*Wma)/(1.006+1.86*Wma),Wma,p);
+    var coil=mda*(ma.h-sup.h)*1000;
+    var cpc=1.006+1.86*(ma.W+sup.W)/2, qs=mda*cpc*(ma.t-sup.t)*1000;
+    // ADP: extend the mixed-air -> supply line to saturation
+    var adp=null, bf=null;
+    if(Math.abs(sup.t-ma.t)>1e-9){
+      var sl=(sup.W-ma.W)/(sup.t-ma.t);
+      var pr=function(x){ return Wsat(x,p)-(sup.W+sl*(x-sup.t)); };
+      var lo=0.5, hi=sup.t-1e-9;
+      if(pr(lo)<0&&pr(hi)>0){
+        for(var j=0;j<200;j++){ var mid=(lo+hi)/2; if(pr(mid)<0) lo=mid; else hi=mid; }
+        adp=(lo+hi)/2; bf=(sup.t-adp)/(ma.t-adp);
+      }
+    }
+    return {RSH:RSH,RLH:RLH,OA:OA,OAs:OAs,OAl:OAl,GTH:GTH,Vsa:Vsa,sup:sup,ma:ma,
+            coil:coil,shr:qs/coil,adp:adp,bf:bf,rshf:RSH/(RSH+RLH),
+            gshf:(RSH+OAs)/GTH,mda:mda};
+  }
+  var oa1=st(v("dd_oa1_db"),WfromTwb(v("dd_oa1_db"),v("dd_oa1_wb"),p),p);
+  var oa2=st(v("dd_oa2_db"),WfromPw(pws(v("dd_oa2_dp")),p),p);
+  return {r1:one(oa1,v("dd_dr1")), r2:one(oa2,v("dd_dr2")),
+          Af:Af, Voz:Voz, Vinf:Vinf, room:room, oa1:oa1, oa2:oa2};
+}
+
+function cell(k,val,u,hero){
+  return '<div'+(hero?' class="hero"':'')+'><span class="k">'+k+'</span><span class="v">'+
+    val+'</span><span class="u">'+u+'</span></div>';
+}
+function render(){
+  var el=document.getElementById("ddSummary"); if(!el) return;
+  var R;
+  try{ R=solve(); }catch(e){ el.innerHTML='<div><span class="k">Input error</span><span class="v">—</span><span class="u">check the values above</span></div>'; return; }
+  var a=R.r1,b=R.r2;
+  if(!isFinite(a.GTH)||!isFinite(b.GTH)){
+    el.innerHTML='<div><span class="k">Input error</span><span class="v">—</span><span class="u">check the values above</span></div>'; return; }
+  var gov = b.GTH>=a.GTH ? b : a, govName = b.GTH>=a.GTH ? "Case 2" : "Case 1";
+  var air = a.Vsa>=b.Vsa ? a.Vsa : b.Vsa, airName = a.Vsa>=b.Vsa ? "Case 1" : "Case 2";
+  var miss = Math.abs(b.GTH-a.GTH)/Math.min(a.GTH,b.GTH)*100;
+  var dirty=false;
+  INPUTS.forEach(function(id){ var e=document.getElementById(id);
+    if(e&&e.value!==DEFAULTS[id]) dirty=true; });
+  var html='';
+  html+=cell("Case 1 grand total",f2(TR(a.GTH/1000)),"TR · "+f0(a.GTH)+" W",false);
+  html+=cell("Case 2 grand total",f2(TR(b.GTH/1000)),"TR · "+f0(b.GTH)+" W",false);
+  html+=cell("Coil duty · "+govName,f2(TR(gov.GTH/1000)),"TR · "+f0(gov.GTH)+" W",true);
+  html+=cell("Airflow · "+airName,f0(air),"L/s · "+f0(CFM(air))+" CFM",false);
+  html+=cell("Single-case error",f1(miss),"% undersized",false);
+  html+=cell("Apparatus dew point",gov.adp!==null?gov.adp.toFixed(2):"n/a",
+        gov.adp!==null?"°C · BF "+gov.bf.toFixed(3):"dry coil",false);
+  html+=cell("Coil SHR",gov.shr.toFixed(3),
+        (100*(1-gov.shr)).toFixed(0)+"% latent",false);
+  html+=cell("Load intensity",f1(gov.GTH/R.Af),"W/m² · "+f1(R.Af/TR(gov.GTH/1000))+" m²/TR",false);
+  html+=cell("Ventilation · 62.1",f1(R.Voz),"L/s · "+f0(CFM(R.Voz))+" CFM",false);
+  el.innerHTML=html;
+  var lbl=document.getElementById("ddDirty");
+  if(lbl) lbl.hidden=!dirty;
+}
+
+INPUTS.forEach(function(id){
+  var e=document.getElementById(id);
+  if(e) e.addEventListener("input",render);
+});
+var rb=document.getElementById("btnReset");
+if(rb) rb.addEventListener("click",function(){
+  INPUTS.forEach(function(id){ var e=document.getElementById(id);
+    if(e) e.value=DEFAULTS[id]; });
+  render();
+});
+
+/* ===================== tabs ============================================== */
+var tabs=[].slice.call(document.querySelectorAll(".tab"));
+function activate(name,push){
+  tabs.forEach(function(t){
+    var on=t.dataset.panel===name;
+    t.setAttribute("aria-selected",on?"true":"false");
+  });
+  [].forEach.call(document.querySelectorAll(".panel"),function(p){
+    p.hidden = p.id!=="panel-"+name;
+  });
+  [].forEach.call(document.querySelectorAll("[data-rail]"),function(g){
+    g.hidden = g.dataset.rail!==name;
+  });
+  store.tab=name; save(store);
+  if(push) window.scrollTo({top:0,behavior:"smooth"});
+}
+tabs.forEach(function(t){
+  t.addEventListener("click",function(){ activate(t.dataset.panel,true); });
+  t.addEventListener("keydown",function(e){
+    var i=tabs.indexOf(t), n=null;
+    if(e.key==="ArrowRight") n=tabs[(i+1)%tabs.length];
+    if(e.key==="ArrowLeft")  n=tabs[(i-1+tabs.length)%tabs.length];
+    if(n){ e.preventDefault(); n.focus(); activate(n.dataset.panel,true); }
+  });
+});
+
+/* ===================== quizzes =========================================== */
+function gradeQuiz(box){
+  var qs=[].slice.call(box.querySelectorAll(".q")), right=0;
+  qs.forEach(function(q){
+    var fb=q.querySelector("[data-fb]"), numIn=q.querySelector("[data-in]"), ok=false;
+    if(numIn){
+      var want=parseFloat(q.dataset.a), tol=parseFloat(q.dataset.tol||"0.02");
+      var got=parseFloat(numIn.value);
+      ok = isFinite(got) && Math.abs(got-want) <= Math.abs(want*tol);
+      numIn.style.borderColor = numIn.value==="" ? "" : (ok?"var(--ok-500)":"var(--bad-500)");
+    } else {
+      var sel=q.querySelector('input[type="radio"]:checked');
+      ok = !!sel && sel.value===q.dataset.a;
+      [].forEach.call(q.querySelectorAll(".opt"),function(o){
+        o.classList.remove("ok","no","miss");
+        var inp=o.querySelector("input");
+        if(inp.value===q.dataset.a) o.classList.add(sel?(ok?"ok":"miss"):"miss");
+        if(inp.checked&&!ok) o.classList.add("no");
+      });
+    }
+    if(fb){ fb.classList.add("show");
+      fb.classList.remove("ok","no"); fb.classList.add(ok?"ok":"no");
+      if(!fb.querySelector("b")){
+        var b=document.createElement("b");
+        b.textContent = ok?"Correct":"Not quite";
+        fb.insertBefore(b,fb.firstChild);
+      } else { fb.querySelector("b").textContent = ok?"Correct":"Not quite"; }
+    }
+    if(ok) right++;
+  });
+  var sc=box.querySelector("[data-score]");
+  if(sc) sc.textContent=right+" / "+qs.length+" correct";
+  var msg=box.querySelector("[data-msg]");
+  if(msg){
+    var pc=Math.round(100*right/qs.length);
+    msg.textContent = pc===100 ? "All correct — move on."
+      : pc>=70 ? pc+"% — solid. Re-read the ones marked above."
+      : pc+"% — worth re-reading this module before the quiz counts for anything.";
+  }
+  store["quiz_"+box.dataset.quiz]=right; save(store); updateProgress();
+}
+function resetQuiz(box){
+  [].forEach.call(box.querySelectorAll('input[type="radio"]'),function(i){ i.checked=false; });
+  [].forEach.call(box.querySelectorAll("[data-in]"),function(i){ i.value=""; i.style.borderColor=""; });
+  [].forEach.call(box.querySelectorAll(".opt"),function(o){ o.classList.remove("ok","no","miss"); });
+  [].forEach.call(box.querySelectorAll("[data-fb]"),function(f){ f.classList.remove("show","ok","no"); });
+  var sc=box.querySelector("[data-score]"); if(sc) sc.textContent="Not started";
+  var msg=box.querySelector("[data-msg]"); if(msg) msg.textContent="";
+  delete store["quiz_"+box.dataset.quiz]; save(store); updateProgress();
+}
+[].forEach.call(document.querySelectorAll("[data-quiz]"),function(box){
+  var c=box.querySelector("[data-check]"), r=box.querySelector("[data-reset]");
+  if(c) c.addEventListener("click",function(){ gradeQuiz(box); });
+  if(r) r.addEventListener("click",function(){ resetQuiz(box); });
+});
+
+/* ===================== checklists ======================================== */
+[].forEach.call(document.querySelectorAll("[data-ckl]"),function(box){
+  var id=box.dataset.ckl, boxes=[].slice.call(box.querySelectorAll('input[type="checkbox"]'));
+  var saved=store["ckl_"+id]||[];
+  boxes.forEach(function(cb,i){ cb.checked=saved.indexOf(i)>=0; });
+  function upd(){
+    var on=[]; boxes.forEach(function(cb,i){ if(cb.checked) on.push(i); });
+    store["ckl_"+id]=on; save(store);
+    var cnt=box.querySelector("[data-cnt]");
+    if(cnt) cnt.textContent=on.length+" / "+boxes.length;
+    updateProgress();
+  }
+  boxes.forEach(function(cb){ cb.addEventListener("change",upd); });
+  upd();
+});
+
+/* ===================== progress ========================================== */
+function updateProgress(){
+  var qBoxes=[].slice.call(document.querySelectorAll("[data-quiz]"));
+  var cBoxes=[].slice.call(document.querySelectorAll("[data-ckl]"));
+  var got=0,tot=0;
+  qBoxes.forEach(function(b){
+    tot+=b.querySelectorAll(".q").length;
+    got+=(store["quiz_"+b.dataset.quiz]||0);
+  });
+  cBoxes.forEach(function(b){
+    tot+=b.querySelectorAll('input[type="checkbox"]').length;
+    got+=((store["ckl_"+b.dataset.ckl]||[]).length);
+  });
+  var pc = tot? Math.round(100*got/tot) : 0;
+  var pp=document.getElementById("progPct"), pb=document.getElementById("progBar"),
+      pt=document.getElementById("progTxt");
+  if(pp) pp.textContent=pc+"%";
+  if(pb) pb.style.width=pc+"%";
+  if(pt) pt.textContent=got+" of "+tot+" — quiz answers correct plus checklist items ticked.";
+  var qt=document.getElementById("qTotal");
+  if(qt) qt.textContent=qBoxes.reduce(function(s,b){ return s+b.querySelectorAll(".q").length; },0);
+}
+
+/* ===================== rail highlight ==================================== */
+var railLinks=[].slice.call(document.querySelectorAll(".rail a"));
+var obs = "IntersectionObserver" in window ? new IntersectionObserver(function(es){
+  es.forEach(function(e){
+    if(!e.isIntersecting) return;
+    railLinks.forEach(function(a){
+      a.classList.toggle("on", a.getAttribute("href")==="#"+e.target.id);
+    });
+  });
+},{rootMargin:"-90px 0px -70% 0px"}) : null;
+if(obs){ [].forEach.call(document.querySelectorAll("section[id], h3[id]"),function(s){ obs.observe(s); }); }
+
+/* ===================== boot ============================================== */
+render();
+updateProgress();
+activate(store.tab && document.getElementById("panel-"+store.tab) ? store.tab : "overview", false);
+})();
+</script>
+</body>
+</html>
