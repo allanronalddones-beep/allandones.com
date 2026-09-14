@@ -295,6 +295,12 @@
   .charge-out .cval.govern{color:var(--cyan-300);}
   .charge-out .cwhy{flex:1 1 260px;min-width:0;}
 
+  .remark-out{
+    background:rgba(5,14,32,0.6);border:1px solid rgba(91,157,250,0.2);border-radius:10px;
+    padding:14px 16px;font-family:'Cascadia Code','Consolas',monospace;font-size:11.5px;
+    line-height:1.65;color:var(--text-secondary);white-space:pre-wrap;word-break:break-word;
+  }
+
   .empty-note{
     color:var(--text-muted);font-size:12.5px;background:rgba(5,14,32,0.4);
     border:1px dashed rgba(91,157,250,0.22);border-radius:9px;padding:13px 15px;margin-bottom:11px;
@@ -316,7 +322,24 @@
     .result-tile .rvalue{color:#0a2472;}
     .result-tile .rlabel,.result-tile .rsub{color:#444;}
     .result-tile.headline{background:#eef2fa;border-color:#0a2472;}
-    input,select{background:#fff;border:1px solid #ccd6e8;color:#111;}
+    /* The screen rules use attribute selectors, which outrank a bare `input`
+       here — so the print overrides must match that specificity or higher. */
+    input[type="number"],input[type="text"],select,textarea{
+      background:#fff !important;border:1px solid #ccd6e8 !important;color:#111 !important;
+    }
+    input[readonly],select:disabled{background:#eef2fa !important;color:#0a2472 !important;}
+    input[type="checkbox"]{accent-color:#0a2472;}
+    label,.toggle-row label{color:#333;}
+    label .unit{color:#0a2472;}
+    .note-inline{color:#555;}
+    .formula-chip{color:#333;}
+    .charge-out,.charge-out .cwhy{color:#444;}
+    .charge-out .cval,.charge-out .cval.govern{color:#0a2472;}
+    ul.audit li{color:#333;}
+    ul.audit li .clause{color:#555;}
+    table.ref td.zero{color:#555;}
+    table.ref .fn{color:#92400e;}
+    .result-tile .rsub,.result-tile.headline .rsub{color:#444;}
     table.ref{min-width:0;font-size:9.5px;}
     table.ref thead th{background:#eef2fa !important;color:#0a2472 !important;}
     table.ref td.grp{background:#f3f7ff !important;color:#333 !important;}
@@ -332,7 +355,7 @@
     ol.notes,footer{color:#333;}
     .table-scroll{overflow:visible;}
     .mode-switch,.rowdel{display:none !important;}
-    .builder-row,.empty-note{background:#f6f9ff;border-color:#ccd6e8;color:#333;}
+    .builder-row,.empty-note,.remark-out{background:#f6f9ff;border-color:#ccd6e8;color:#333;}
     .builder-row .brtitle,.charge-out .cval{color:#111;}
     .charge-out .cval.govern{color:#0a2472;}
     input[readonly]{background:#eef2fa;color:#0a2472;}
@@ -429,6 +452,16 @@
       </div>
     </div>
 
+    <div class="field-row single" style="margin-bottom:16px">
+      <div>
+        <label>Building type<span class="note-inline" id="btNote">ISO applies the full construction / occupancy / exposure method.</span></label>
+        <select id="buildingType">
+          <option value="full">Non-residential, or residential over 2 storeys</option>
+          <option value="res">1 or 2 family dwelling, not over 2 storeys</option>
+        </select>
+      </div>
+    </div>
+
     <div class="field-row three">
       <div><label>Project</label><input type="text" id="idProject" placeholder="Project name / number"></div>
       <div><label>Building / structure</label><input type="text" id="idBuilding" placeholder="Building reference"></div>
@@ -445,8 +478,39 @@
     <!-- ================= LEFT: INPUTS ================= -->
     <div>
 
+      <!-- ============ R · RESIDENTIAL SHORTCUT ============ -->
+      <div class="card" id="resCard" hidden>
+        <h2><span class="num">R</span>Residential Shortcut — Table A</h2>
+        <p class="hint">For 1 and 2 family dwellings not exceeding 2 storeys in height, ISO assigns the needed fire flow directly from the distance to the neighbouring building. The construction, occupancy and exposure method is not used.</p>
+
+        <div class="field-row">
+          <div>
+            <label>Distance between buildings <span class="unit uLen">ft</span>
+              <span class="note-inline">Distance to the nearest neighbouring building</span>
+            </label>
+            <input type="number" class="conv-len" id="resDist" step="any" placeholder="e.g. 20">
+          </div>
+          <div>
+            <label>Higher flow requested by the fire official <span class="unit">gpm</span>
+              <span class="note-inline">Optional — governs if higher than Table A</span>
+            </label>
+            <input type="number" id="resRequested" step="any" placeholder="optional">
+          </div>
+        </div>
+
+        <div class="table-scroll">
+          <table class="ref" style="min-width:320px">
+            <caption>Table A — 1 and 2 family dwellings not exceeding 2 storeys</caption>
+            <thead><tr><th>Distance between buildings</th><th>Needed fire flow</th></tr></thead>
+            <tbody id="tblResBody"></tbody>
+          </table>
+        </div>
+
+        <ul class="audit" id="resTrace" style="margin-top:14px"></ul>
+      </div>
+
       <!-- ============ 1 · CONSTRUCTION FACTOR ============ -->
-      <div class="card">
+      <div class="card" id="cardC">
         <h2><span class="num">1</span>Construction Factor, C</h2>
         <p class="hint">C = 18 F √A. Effective area is not the gross floor area — the builder applies the ISO rule for the construction class you select.</p>
 
@@ -537,7 +601,7 @@
       </div>
 
       <!-- ============ 2 · OCCUPANCY FACTOR ============ -->
-      <div class="card">
+      <div class="card" id="cardO">
         <h2><span class="num">2</span>Occupancy Factor, O</h2>
         <p class="hint">Assigned from the occupancy combustibility class of the building as a whole, not of the worst single tenant.</p>
 
@@ -577,7 +641,7 @@
       </div>
 
       <!-- ============ 3 · EXPOSURE AND COMMUNICATION ============ -->
-      <div class="card">
+      <div class="card" id="cardXP">
         <h2><span class="num">3</span>Exposure and Communication, X + P</h2>
         <p class="hint">Enter the factors directly, or let the builders read Tables 330.A and 330.B for you and stamp the cell each charge came from.</p>
 
@@ -651,57 +715,124 @@
         </div>
       </div>
 
+      <!-- ============ 4 · SPRINKLER SYSTEM AND FIRE PUMP ============ -->
+      <div class="card" id="sprCard">
+        <h2><span class="num">4</span>Automatic Sprinkler System &amp; Fire Pump</h2>
+        <p class="hint">Where a sprinkler system is proposed, the source worksheet stops using the ISO calculation and takes the sprinkler demand plus the outside hose allowance instead.</p>
+
+        <div class="toggle-row">
+          <input type="checkbox" id="sprProposed">
+          <label for="sprProposed">An automatic sprinkler system is proposed for this building</label>
+        </div>
+
+        <div id="sprPanel" hidden>
+          <div class="field-row">
+            <div>
+              <label>Automatic sprinkler system flow requirement, ASSF <span class="unit">gpm</span>
+                <span class="note-inline">Where several systems are proposed, the highest demanding system or zone</span>
+              </label>
+              <input type="number" id="sprAssf" step="any" placeholder="e.g. 750">
+            </div>
+            <div>
+              <label>Additional outside hose allowance <span class="unit">gpm</span>
+                <span class="note-inline">Per the fire official, if desired — in addition to the ASSF</span>
+              </label>
+              <input type="number" id="sprHose" step="any" placeholder="e.g. 250">
+            </div>
+          </div>
+
+          <hr class="divider-line">
+
+          <p class="hint" style="padding-left:0;margin-bottom:12px">Fire pump design points, where a fire pump is required.</p>
+          <div class="field-row">
+            <div>
+              <label>Fire pump design flow <span class="unit">gpm</span></label>
+              <input type="number" id="pumpFlow" step="any" placeholder="optional">
+            </div>
+            <div>
+              <label>Total dynamic head, TDH <span class="unit uLen">ft</span></label>
+              <input type="number" class="conv-len" id="pumpTdh" step="any" placeholder="optional">
+            </div>
+          </div>
+
+          <ul class="audit" id="sprTrace" style="margin-top:4px"></ul>
+        </div>
+      </div>
+
     </div>
 
     <!-- ================= RIGHT: RESULTS ================= -->
     <div>
 
-      <!-- ============ 4 · NEEDED FIRE FLOW ============ -->
+      <!-- ============ 5 · NEEDED FIRE FLOW ============ -->
       <div class="card">
-        <h2><span class="num">4</span>Needed Fire Flow</h2>
-        <p class="hint">NFF = (C)(O)(1 + (X + P)), rounded to the nearest 250 gpm below 2,500 gpm and to the nearest 500 gpm above it.</p>
+        <h2><span class="num">5</span>Needed Fire Flow</h2>
+        <p class="hint" id="nffHint">NFF = (C)(O)(1 + (X + P)), rounded to the nearest 250 gpm below 2,500 gpm and to the nearest 500 gpm above it.</p>
 
         <div class="result-grid">
           <div class="result-tile headline">
-            <div class="rlabel">Needed Fire Flow — no sprinkler credit</div>
+            <div class="rlabel" id="outNffLabel">Needed Fire Flow — no sprinkler credit</div>
             <div class="rvalue" id="outNff">—</div>
             <div class="rsub" id="outNffSub">Enter the effective area to begin</div>
           </div>
-          <div class="result-tile">
+          <div class="result-tile" id="tileRaw">
             <div class="rlabel">Calculated, before rounding</div>
             <div class="rvalue" id="outNffRaw">—</div>
             <div class="rsub" id="outNffRawSub">&nbsp;</div>
           </div>
-          <div class="result-tile">
+          <div class="result-tile" id="tileStep">
             <div class="rlabel">Rounding step applied</div>
             <div class="rvalue" id="outStep">—</div>
             <div class="rsub" id="outStepSub">&nbsp;</div>
+          </div>
+          <div class="result-tile" id="tileIso" hidden>
+            <div class="rlabel">ISO calculated flow, for reference</div>
+            <div class="rvalue" id="outIsoRef">—</div>
+            <div class="rsub" id="outIsoRefSub">Non-sprinklered method</div>
+          </div>
+          <div class="result-tile" id="tilePump" hidden>
+            <div class="rlabel">Fire pump design point</div>
+            <div class="rvalue" id="outPump">—</div>
+            <div class="rsub" id="outPumpSub">&nbsp;</div>
           </div>
         </div>
 
         <div class="formula-strip" id="nffStrip"></div>
       </div>
 
-      <!-- ============ 5 · LIMIT AUDIT ============ -->
+      <!-- ============ 6 · LIMIT AUDIT ============ -->
       <div class="card">
-        <h2><span class="num">5</span>Limit Audit</h2>
+        <h2><span class="num">6</span>Limit Audit</h2>
         <p class="hint">Every ISO limit that bit on this calculation, named, so the result is traceable against the source worksheet.</p>
         <ul class="audit" id="auditList"></ul>
       </div>
 
-      <!-- ============ 6 · VERIFICATION ============ -->
+      <!-- ============ 7 · VERIFICATION ============ -->
       <div class="card">
-        <h2><span class="num">6</span>Built-in Verification</h2>
+        <h2><span class="num">7</span>Built-in Verification</h2>
         <p class="hint">Runs on every keystroke. A red row means the tool disagrees with its own source data and the result must not be used.</p>
         <div class="selftest" id="selfTest"></div>
+      </div>
+
+      <!-- ============ 8 · CALCULATION SHEET ============ -->
+      <div class="card">
+        <h2><span class="num">8</span>Calculation Sheet</h2>
+        <p class="hint">The record to attach to a submission — the governing figure, how it was reached, and the limits and lookups behind it.</p>
+        <div class="remark-out" id="remarkOut">—</div>
+        <div class="btn-row no-print" style="margin-top:12px">
+          <button type="button" class="btn" id="btnCopyRemark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            Copy to clipboard
+          </button>
+        </div>
       </div>
 
     </div>
   </div>
 
-  <!-- ============ 7 · REFERENCE TABLES ============ -->
+  <!-- ============ 9 · REFERENCE TABLES ============ -->
   <div class="card">
-    <h2><span class="num">7</span>Reference — ISO Data Tables</h2>
+    <h2><span class="num">9</span>Reference — ISO Data Tables</h2>
     <p class="hint">Transcribed from the tables carried in the source worksheet. The builders in section 3 read 330.A and 330.B directly and name the cell they used.</p>
 
     <div class="table-scroll">
@@ -802,9 +933,9 @@
     </div>
   </div>
 
-  <!-- ============ 8 · BASIS AND LIMITATIONS ============ -->
+  <!-- ============ 10 · BASIS AND LIMITATIONS ============ -->
   <div class="card">
-    <h2><span class="num">8</span>Basis, Departures and Limitations</h2>
+    <h2><span class="num">10</span>Basis, Departures and Limitations</h2>
     <p class="hint">Where this tool differs from the spreadsheet it was derived from, and why.</p>
     <ol class="notes">
       <li><b>Method source.</b> ISO, <i>Guide for Determination of Needed Fire Flow</i>, Edition 05-2006, as reproduced in a 2011 utility screening worksheet. The tables in section 7 and the worked example are transcribed from that document. No utility branding, disclaimer or sign-off form is reproduced.</li>
@@ -817,7 +948,9 @@
       <li><b>Several exposures or communications.</b> Each is charged separately and the <b>highest single charge</b> governs, per ISO Example 3, which charges two exposing buildings at 0.14 and 0.17 and carries 0.17 forward. Charges are not summed across sides. The same treatment is applied to communications by extension, which the source does not demonstrate; see also note 4.</li>
       <li><b>Wood-shingle adder, order of operations.</b> ISO states that 500 gpm is added to the needed fire flow but does not fix whether the addition precedes or follows rounding. This tool adds it to the <b>calculated</b> flow before rounding, so the reported result always lands on the ISO rounding grid. Where the adder applies, the Limit Audit states the assumption.</li>
       <li><b>Units.</b> ISO's coefficient 18 in C = 18 F √A is dimensional — it holds only for A in ft² and C in US gpm — and the rounding rules are defined in 250 and 500 gpm steps. The SI switch converts the area input and the displayed flows; the calculation basis stays US customary. The gpm figure is the governing value; the SI conversion is shown beneath it.</li>
-      <li><b>No sprinkler credit.</b> This is the non-sprinklered NFF. The sprinkler-system flow path, outside hose allowance, fire-pump design points and the residential shortcut table are Phase 3.</li>
+      <li><b>Sprinkler path: shown alongside, not blanked.</b> Where a sprinkler system is proposed the source worksheet stops using the ISO calculation and takes the sprinkler demand plus the outside hose allowance, with a 500 gpm floor. Its calculated-NFF cell then reports <code>N/A</code>. This tool applies the same governing rule but keeps the ISO figure on screen as a reference point instead of blanking it, marked as not governing. Erasing a number that was correctly computed removes the reader's ability to see how far apart the two bases are, which is exactly what a reviewer wants to know.</li>
+      <li><b>Residential shortcut.</b> Table A applies only to 1 and 2 family dwellings not exceeding 2 storeys in height, and assigns the flow from the separation distance alone — no construction, occupancy or exposure factors, so none of their limits can bite. A higher flow requested by the fire official governs over the table where it is higher. Selecting this building type hides the full method rather than leaving both paths live, because only one of them can be the answer.</li>
+      <li><b>The 500 gpm floor on the sprinkler total.</b> The source applies it unconditionally, so its sign-off sheet shows 500 gpm even with no sprinkler data entered at all. Here the total is withheld until an ASSF is entered, and the floor is flagged when it actually bites.</li>
       <li><b>Duration and storage.</b> NFF is a flow, not a volume. It does not by itself size a tank, a pump or a supply main.</li>
     </ol>
   </div>
@@ -896,6 +1029,15 @@
     ['Single Class B fire door at one end of passageway',                      0,0.30,0.20,0.10, 0.25,0.20,0.10, 0.35,0.25,0.15],
     ['Single Class A fire door at each end, or double Class A at one end',     0,0,0,0,          0,0,0,          0,0,0],
     ['Single Class B fire door at each end, or double Class B at one end',     0,0.10,0.05,0,    0,0,0,          0.15,0.10,0]
+  ];
+
+  /* Table A, Sign Off Sheet — 1 and 2 family dwellings not exceeding 2 storeys.
+     ISO assigns the needed fire flow straight from the separation distance. */
+  const RES_TABLE = [
+    {max:10,       label:'10 ft or less',   nff:1500},
+    {max:30,       label:'11 – 30 ft',      nff:1000},
+    {max:100,      label:'31 – 100 ft',     nff:750},
+    {max:Infinity, label:'More than 100 ft', nff:500}
   ];
 
   /* Band edges and column keys for the two lookup tables. Held next to the
@@ -1050,6 +1192,20 @@
     return {P: v, why: 'Table 330.B · ' + P_COL_LABEL[col] + ' · ' + P_PROT_LABEL[c.prot]};
   }
 
+  /* ---- Residential shortcut, Table A ---- Feet in, band out. */
+  function residentialBandFt(distFt){
+    if (!(distFt > 0)) return null;
+    for (let i = 0; i < RES_TABLE.length; i++) if (distFt <= RES_TABLE[i].max) return RES_TABLE[i];
+    return null;
+  }
+
+  /* ---- Sprinkler path ---- ASSF plus the outside hose allowance, 500 gpm floor. */
+  function sprinklerTotal(assf, hose){
+    if (!(assf > 0)) return null;
+    const sum = assf + (hose > 0 ? hose : 0);
+    return {sum: sum, total: Math.max(sum, 500), floored: sum < 500};
+  }
+
   function num(id){ const v = parseFloat($(id).value); return isFinite(v) ? v : 0; }
   function numOrNull(id){
     const s = $(id).value.trim();
@@ -1159,9 +1315,33 @@
                        c:'Calculated ' + fmt(f.was,0) + ' gpm. ISO minimum needed fire flow.'})
   };
 
-  function renderAudit(res, inp){
+  function renderAudit(res, inp, gov){
     const ul = $('auditList');
     const items = [];
+
+    if (gov && gov.path === 'res'){
+      if (gov.nff === null){
+        items.push(traceHtml('empty', 'Awaiting the distance between buildings.', 'Table A assigns the flow from the separation distance alone.'));
+      } else {
+        items.push(traceHtml('ok', 'Table A shortcut — no ISO factor limits apply.',
+          'The construction, occupancy, exposure and communication factors are not used on this path, so none of their limits can bite.'));
+        if (gov.requested > (gov.tableA || 0)){
+          items.push(traceHtml('cap', 'Fire official request governs over Table A.',
+            fmt(gov.requested,0) + ' gpm requested against ' + fmt(gov.tableA || 0,0) + ' gpm from Table A.'));
+        }
+      }
+      ul.innerHTML = items.join('');
+      return;
+    }
+
+    if (gov && gov.path === 'spr'){
+      items.push(traceHtml('info', 'Sprinkler path governs — the ISO calculated flow is set aside.',
+        'The limits below still describe the ISO calculation shown for reference; they do not act on the governing total.'));
+      if (gov.spr && gov.spr.floored){
+        items.push(traceHtml('cap', 'Sprinkler total raised to the 500 gpm minimum.',
+          'ASSF plus outside hose allowance came to ' + fmt(gov.spr.sum,0) + ' gpm.'));
+      }
+    }
 
     if (inp.aFt2 === null || !(inp.aFt2 > 0)){
       items.push('<li class="empty"><span><b>Awaiting the effective area.</b><span class="clause">Enter A in section 1 to run the calculation.</span></span></li>');
@@ -1287,6 +1467,43 @@
       );
     })();
 
+    /* Table A must return the right band on both sides of every edge. */
+    (function(){
+      const cases = [
+        [1,1500],[10,1500],[10.5,1000],[11,1000],[30,1000],[30.5,750],[31,750],
+        [100,750],[100.5,500],[101,500],[500,500]
+      ];
+      let bad = [];
+      cases.forEach(function(c){
+        const b = residentialBandFt(c[0]);
+        if (!b || b.nff !== c[1]) bad.push(c[0] + ' ft: ' + (b ? b.nff : 'null') + ' vs ' + c[1]);
+      });
+      rows.push(
+        '<div class="st-row"><span><span class="stname">Residential Table A — both sides of every band edge</span>' +
+        '<span class="stdet">' + cases.length + ' distances across the 10, 30 and 100 ft edges' +
+        (bad.length ? ' · ' + bad.join('; ') : '') + '</span></span>' +
+        '<span class="badge ' + (bad.length ? 'bad' : 'ok') + '">' + (bad.length ? bad.length + ' failed' : 'Pass') + '</span></div>'
+      );
+    })();
+
+    /* Sprinkler total: ASSF plus hose, floored at 500 gpm. */
+    (function(){
+      const cases = [[750,250,1000,false],[200,100,500,true],[500,0,500,false],[400,0,500,true],[3000,500,3500,false]];
+      let bad = [];
+      cases.forEach(function(c){
+        const r = sprinklerTotal(c[0], c[1]);
+        if (!r || r.total !== c[2] || r.floored !== c[3]) bad.push(c[0] + '+' + c[1] + ': ' + (r ? r.total : 'null') + ' vs ' + c[2]);
+      });
+      const none = sprinklerTotal(0, 250);
+      if (none !== null) bad.push('no ASSF should give no total');
+      rows.push(
+        '<div class="st-row"><span><span class="stname">Sprinkler total — ASSF + outside hose, 500 gpm floor</span>' +
+        '<span class="stdet">' + (cases.length + 1) + ' cases including the floor and the no-ASSF case' +
+        (bad.length ? ' · ' + bad.join('; ') : '') + '</span></span>' +
+        '<span class="badge ' + (bad.length ? 'bad' : 'ok') + '">' + (bad.length ? bad.length + ' failed' : 'Pass') + '</span></div>'
+      );
+    })();
+
     /* Vector C — the effective-area rule against ISO Example 3's own geometry. */
     (function(){
       const ea = effectiveArea(1, [{name:'Ground', area:2250, unprot:false}, {name:'Second', area:810, unprot:false}]);
@@ -1334,6 +1551,204 @@
     return fmt(gpm * LPS_PER_GPM, 1) + ' L/s &nbsp;·&nbsp; ' + fmt(gpm * M3H_PER_GPM, 1) + ' m³/h';
   }
 
+  /* Which of the three paths governs, and the tiles that go with it.
+     Path 1: the ISO calculation. Path 2: sprinkler demand plus outside hose.
+     Path 3: the residential Table A shortcut. */
+  function renderResult(inp, res){
+    const bt = $('buildingType').value;
+    const sprOn = $('sprProposed').checked;
+    const show = function(id, on){ $(id).hidden = !on; };
+
+    show('resCard', bt === 'res');
+    ['cardC','cardO','cardXP','sprCard'].forEach(function(id){ show(id, bt !== 'res'); });
+    show('sprPanel', sprOn);
+    $('btNote').textContent = bt === 'res'
+      ? 'ISO assigns the flow from Table A; the construction, occupancy and exposure method is not used.'
+      : 'ISO applies the full construction / occupancy / exposure method.';
+
+    const setHead = function(label, value, sub){
+      $('outNffLabel').textContent = label;
+      $('outNff').innerHTML = value === null ? '—' : fmt(value, 0) + '<span class="runit">gpm</span>';
+      $('outNffSub').innerHTML = sub;
+    };
+
+    /* ---- Path 3: residential ---- */
+    if (bt === 'res'){
+      show('tileRaw', false); show('tileStep', false); show('tileIso', false); show('tilePump', false);
+      $('nffHint').textContent = 'Table A assigns the needed fire flow directly from the distance to the nearest neighbouring building.';
+
+      const distFt = toFt(parseFloat($('resDist').value) || 0);
+      const band = residentialBandFt(distFt);
+      const requested = parseFloat($('resRequested').value) || 0;
+      const tableA = band ? band.nff : null;
+      const nff = (tableA === null && !(requested > 0)) ? null : Math.max(tableA || 0, requested);
+
+      setHead('Needed Fire Flow — Table A', nff,
+        nff === null ? 'Enter the distance between buildings' : flowSub(nff) + ' &nbsp;·&nbsp; 1 or 2 family dwelling, not over 2 storeys');
+      $('nffStrip').innerHTML = band
+        ? '<span class="formula-chip">Table A · ' + band.label + '</span><span class="formula-chip">' + fmt(band.nff,0) + ' gpm</span>' +
+          (requested > 0 ? '<span class="formula-chip">fire official ' + fmt(requested,0) + ' gpm</span>' : '')
+        : '<span class="formula-chip">Table A · awaiting the separation distance</span>';
+
+      const t = $('resTrace');
+      if (!band && !(requested > 0)){
+        t.innerHTML = traceHtml('empty', 'Enter the distance between buildings.', 'Table A assigns the flow from the separation distance alone.');
+      } else {
+        const items = [];
+        if (band) items.push(traceHtml('ok', 'Table A · ' + band.label + ' → ' + fmt(band.nff,0) + ' gpm.',
+          'Distance entered: ' + fmt(distFt,0) + ' ft. For 1 and 2 family dwellings not exceeding 2 storeys in height.'));
+        if (requested > 0){
+          const higher = requested > (tableA || 0);
+          items.push(traceHtml(higher ? 'cap' : 'info',
+            higher ? 'Fire official request of ' + fmt(requested,0) + ' gpm governs.' : 'Fire official request of ' + fmt(requested,0) + ' gpm does not govern.',
+            higher ? 'Higher than the Table A figure of ' + fmt(tableA || 0,0) + ' gpm.' : 'Table A gives ' + fmt(tableA || 0,0) + ' gpm, which is higher.'));
+        }
+        t.innerHTML = items.join('');
+      }
+      return {path:'res', nff:nff, tableA:tableA, band:band, requested:requested, distFt:distFt};
+    }
+
+    /* ---- Paths 1 and 2: the full method, with or without a sprinkler system ---- */
+    $('nffHint').textContent = 'NFF = (C)(O)(1 + (X + P)), rounded to the nearest 250 gpm below 2,500 gpm and to the nearest 500 gpm above it.';
+
+    const assf = parseFloat($('sprAssf').value) || 0;
+    const hose = parseFloat($('sprHose').value) || 0;
+    const spr  = sprOn ? sprinklerTotal(assf, hose) : null;
+    const pumpFlow = parseFloat($('pumpFlow').value) || 0;
+    const pumpTdh  = parseFloat($('pumpTdh').value) || 0;
+
+    show('tilePump', sprOn && (pumpFlow > 0 || pumpTdh > 0));
+    if (pumpFlow > 0 || pumpTdh > 0){
+      $('outPump').innerHTML = (pumpFlow > 0 ? fmt(pumpFlow,0) + '<span class="runit">gpm</span>' : '—');
+      $('outPumpSub').innerHTML = (pumpTdh > 0 ? 'TDH ' + fmt(pumpTdh,1) + ' ' + lenUnit() : 'TDH not stated') +
+        (pumpFlow > 0 ? ' &nbsp;·&nbsp; ' + flowSub(pumpFlow) : '');
+    }
+
+    const sprTrace = $('sprTrace');
+    if (sprOn){
+      show('tileRaw', false); show('tileStep', false); show('tileIso', true);
+      $('outIsoRef').innerHTML = res.NFF === undefined ? '—' : fmt(res.NFF, 0) + '<span class="runit">gpm</span>';
+      $('outIsoRefSub').textContent = res.NFF === undefined
+        ? 'Non-sprinklered method — inputs incomplete'
+        : 'Non-sprinklered method — does not govern here';
+
+      setHead('Total Needed Fire Flow — sprinkler system proposed', spr ? spr.total : null,
+        spr ? flowSub(spr.total) + ' &nbsp;·&nbsp; ASSF + outside hose allowance'
+            : 'Enter the automatic sprinkler system flow requirement');
+      $('nffStrip').innerHTML =
+        '<span class="formula-chip">Total = ASSF + outside hose</span>' +
+        '<span class="formula-chip">ASSF = ' + fmt(assf,0) + '</span>' +
+        '<span class="formula-chip">hose = ' + fmt(hose,0) + '</span>' +
+        '<span class="formula-chip">500 gpm minimum</span>';
+
+      if (!spr){
+        sprTrace.innerHTML = traceHtml('empty', 'Enter the sprinkler system flow requirement.',
+          'Where several systems are proposed, use the highest demanding system or zone.');
+      } else {
+        const items = [traceHtml('ok', 'Total Needed Fire Flow ' + fmt(spr.total,0) + ' gpm.',
+          fmt(assf,0) + ' gpm ASSF + ' + fmt(hose,0) + ' gpm outside hose allowance = ' + fmt(spr.sum,0) + ' gpm.')];
+        if (spr.floored) items.push(traceHtml('cap', 'Raised to the 500 gpm minimum.',
+          'ASSF plus hose allowance came to ' + fmt(spr.sum,0) + ' gpm. The source worksheet applies a 500 gpm floor to this total.'));
+        items.push(traceHtml('info', 'The ISO calculated flow does not govern while a sprinkler system is proposed.',
+          'The source worksheet reports the calculated figure as N/A in this case. It is kept on screen here as a reference point rather than blanked — see note 11.'));
+        sprTrace.innerHTML = items.join('');
+      }
+      return {path:'spr', nff: spr ? spr.total : null, assf:assf, hose:hose, spr:spr,
+              isoNff: res.NFF, pumpFlow:pumpFlow, pumpTdh:pumpTdh};
+    }
+
+    show('tileRaw', true); show('tileStep', true); show('tileIso', false);
+    sprTrace.innerHTML = '';
+    if (res.NFF !== undefined){
+      setHead('Needed Fire Flow — no sprinkler credit', res.NFF,
+        flowSub(res.NFF) + ' &nbsp;·&nbsp; no automatic sprinkler credit applied');
+      $('outNffRaw').innerHTML = fmt(res.nffRaw, 2) + '<span class="runit">gpm</span>';
+      $('outNffRawSub').innerHTML = fmt(res.C,0) + ' × ' + res.O.toFixed(2) + ' × (1 + ' + res.XP.toFixed(2) + ')' + (inp.wood ? ' + 500' : '');
+      $('outStep').innerHTML = fmt(res.step, 0) + '<span class="runit">gpm</span>';
+      $('outStepSub').textContent = res.step === 250 ? 'Calculated flow below 2,500 gpm' : 'Calculated flow at or above 2,500 gpm';
+      $('nffStrip').innerHTML =
+        '<span class="formula-chip">NFF = (C)(O)(1 + (X + P))</span>' +
+        '<span class="formula-chip">C = ' + fmt(res.C,0) + '</span>' +
+        '<span class="formula-chip">O = ' + res.O.toFixed(2) + '</span>' +
+        '<span class="formula-chip">X + P = ' + res.XP.toFixed(2) + '</span>';
+    } else {
+      setHead('Needed Fire Flow — no sprinkler credit', null, 'Enter the effective area to begin');
+      $('outNffRaw').innerHTML = '—'; $('outNffRawSub').innerHTML = '&nbsp;';
+      $('outStep').innerHTML = '—';   $('outStepSub').innerHTML = '&nbsp;';
+      $('nffStrip').innerHTML = '<span class="formula-chip">NFF = (C)(O)(1 + (X + P))</span>';
+    }
+    return {path:'iso', nff: res.NFF === undefined ? null : res.NFF};
+  }
+
+  /* The calculation sheet: one plain-text record of what governed and why. */
+  function renderRemark(inp, res, gov){
+    const L = [];
+    const id = [];
+    if ($('idProject').value)  id.push('Project: ' + $('idProject').value);
+    if ($('idBuilding').value) id.push('Building: ' + $('idBuilding').value);
+    if ($('idBy').value)       id.push('Prepared by: ' + $('idBy').value);
+    id.push(new Date().toISOString().slice(0,10));
+
+    L.push('NEEDED FIRE FLOW — ISO Guide for Determination of Needed Fire Flow, Ed. 05-2006');
+    L.push(id.join('  ·  '));
+    L.push('');
+
+    if (gov.path === 'res'){
+      L.push('Building type: 1 or 2 family dwelling not exceeding 2 storeys — ISO Table A shortcut.');
+      if (gov.band) L.push('Distance between buildings ' + fmt(gov.distFt,0) + ' ft (' + gov.band.label + ') → Table A ' + fmt(gov.band.nff,0) + ' gpm.');
+      if (gov.requested > 0) L.push('Higher flow requested by the fire official: ' + fmt(gov.requested,0) + ' gpm.');
+      L.push('');
+      L.push('GOVERNING NEEDED FIRE FLOW: ' + (gov.nff === null ? 'incomplete' : fmt(gov.nff,0) + ' gpm  (' + fmt(gov.nff*LPS_PER_GPM,1) + ' L/s, ' + fmt(gov.nff*M3H_PER_GPM,1) + ' m³/h)'));
+    } else {
+      if (res.C !== undefined){
+        L.push('Construction Class ' + inp.cls + ' (' + CLASS_NAME[inp.cls].replace(/^Class \d+ — /,'') + '), F = ' + inp.F +
+               ', effective area ' + fmt(inp.aFt2,0) + ' ft² over ' + inp.storeys + (inp.storeys === 1 ? ' storey' : ' storeys') +
+               ' → C = ' + fmt(res.C,0) + ' gpm.');
+      }
+      if (res.O !== undefined) L.push('Occupancy factor O = ' + res.O.toFixed(2) + '.');
+      if (res.XP !== undefined) L.push('Exposure X = ' + inp.X.toFixed(2) + ', communication P = ' + inp.P.toFixed(2) + ', (X + P) = ' + res.XP.toFixed(2) + '.');
+      if (res.NFF !== undefined){
+        L.push('NFF = (' + fmt(res.C,0) + ')(' + res.O.toFixed(2) + ')(1 + ' + res.XP.toFixed(2) + ')' + (inp.wood ? ' + 500' : '') +
+               ' = ' + fmt(res.nffRaw,2) + ' gpm → ' + fmt(res.NFF,0) + ' gpm (nearest ' + fmt(res.step,0) + ' gpm).');
+      }
+      if (gov.path === 'spr'){
+        L.push('');
+        L.push('Automatic sprinkler system proposed.');
+        L.push('ASSF ' + fmt(gov.assf,0) + ' gpm + outside hose allowance ' + fmt(gov.hose,0) + ' gpm = ' + (gov.spr ? fmt(gov.spr.sum,0) : '—') + ' gpm' +
+               (gov.spr && gov.spr.floored ? ', raised to the 500 gpm minimum' : '') + '.');
+        if (gov.pumpFlow > 0 || gov.pumpTdh > 0){
+          L.push('Fire pump design point: ' + (gov.pumpFlow > 0 ? fmt(gov.pumpFlow,0) + ' gpm' : 'flow not stated') +
+                 (gov.pumpTdh > 0 ? ' at ' + fmt(gov.pumpTdh,1) + ' ' + lenUnit() + ' TDH' : '') + '.');
+        }
+        L.push('The ISO calculated flow of ' + (res.NFF === undefined ? '—' : fmt(res.NFF,0) + ' gpm') + ' does not govern while a sprinkler system is proposed.');
+      }
+      L.push('');
+      L.push('GOVERNING NEEDED FIRE FLOW: ' + (gov.nff === null ? 'incomplete' : fmt(gov.nff,0) + ' gpm  (' + fmt(gov.nff*LPS_PER_GPM,1) + ' L/s, ' + fmt(gov.nff*M3H_PER_GPM,1) + ' m³/h)'));
+    }
+
+    const auditText = ($('auditList').innerText || '').replace(/\s*\n\s*/g, ' — ').trim();
+    if (auditText){ L.push(''); L.push('Limits and notes: ' + auditText); }
+
+    if (xpMode === 'build' && exposures.length){
+      L.push('');
+      L.push('Lookups:');
+      exposures.forEach(function(i){
+        L.push('  ' + ($('ex_' + i + '_name').value || 'Exposure') + ' — ' + $('ex_' + i + '_val').textContent + ' · ' +
+               ($('ex_' + i + '_why').innerText || '').replace(/\s+/g,' ').replace(/ — governs X$/,'').trim());
+      });
+      comms.forEach(function(i){
+        L.push('  ' + ($('cm_' + i + '_name').value || 'Communication') + ' — ' + $('cm_' + i + '_val').textContent + ' · ' +
+               ($('cm_' + i + '_why').innerText || '').replace(/\s+/g,' ').replace(/ — governs P$/,'').trim());
+      });
+    }
+
+    L.push('');
+    L.push('Basis: ISO Needed Fire Flow is an insurance-rating quantity, not a code-compliance demand.');
+    L.push('Confirm the governing fire-water demand against the applicable code, the project specification and the authority having jurisdiction.');
+
+    $('remarkOut').textContent = L.join('\n');
+  }
+
   function recalc(){
     const inp = readInputs();
     const res = solve(inp);
@@ -1371,33 +1786,13 @@
     $('outXP').textContent = xp.toFixed(2);
     $('outXPsub').textContent = xpRaw > 0.60 ? 'Limited from ' + xpRaw.toFixed(2) + ' — ISO maximum 0.60' : 'ISO maximum 0.60';
 
-    // ---- Section 4
-    if (res.NFF !== undefined){
-      $('outNff').innerHTML = fmt(res.NFF, 0) + '<span class="runit">gpm</span>';
-      $('outNffSub').innerHTML = flowSub(res.NFF) + ' &nbsp;·&nbsp; no automatic sprinkler credit applied';
-      $('outNffRaw').innerHTML = fmt(res.nffRaw, 2) + '<span class="runit">gpm</span>';
-      $('outNffRawSub').innerHTML = fmt(res.C,0) + ' × ' + res.O.toFixed(2) + ' × (1 + ' + res.XP.toFixed(2) + ')' +
-        (inp.wood ? ' + 500' : '');
-      $('outStep').innerHTML = fmt(res.step, 0) + '<span class="runit">gpm</span>';
-      $('outStepSub').textContent = res.step === 250 ? 'Calculated flow below 2,500 gpm' : 'Calculated flow at or above 2,500 gpm';
-      $('nffStrip').innerHTML =
-        '<span class="formula-chip">NFF = (C)(O)(1 + (X + P))</span>' +
-        '<span class="formula-chip">C = ' + fmt(res.C,0) + '</span>' +
-        '<span class="formula-chip">O = ' + res.O.toFixed(2) + '</span>' +
-        '<span class="formula-chip">X + P = ' + res.XP.toFixed(2) + '</span>';
-    } else {
-      $('outNff').innerHTML = '—';
-      $('outNffSub').textContent = 'Enter the effective area to begin';
-      $('outNffRaw').innerHTML = '—';
-      $('outNffRawSub').innerHTML = '&nbsp;';
-      $('outStep').innerHTML = '—';
-      $('outStepSub').innerHTML = '&nbsp;';
-      $('nffStrip').innerHTML = '<span class="formula-chip">NFF = (C)(O)(1 + (X + P))</span>';
-    }
+    // ---- Sections 4 and 5 — the governing result across the three paths
+    const gov = renderResult(inp, res);
 
-    renderAudit(res, inp);
+    renderAudit(res, inp, gov);
     renderSelfTest();
-    return {inp:inp, res:res};
+    renderRemark(inp, res, gov);
+    return {inp:inp, res:res, gov:gov};
   }
 
   /* ============================================================
@@ -1429,6 +1824,10 @@
       h += '</tr>';
     });
     $('tblPBody').innerHTML = h;
+
+    $('tblResBody').innerHTML = RES_TABLE.slice().reverse().map(function(b){
+      return '<tr><td>' + b.label + '</td><td>' + fmt(b.nff, 0) + ' gpm</td></tr>';
+    }).join('');
   }
 
   /* ============================================================
@@ -1817,6 +2216,26 @@
       ['NFF governing', res.NFF === undefined ? '' : (res.NFF * M3H_PER_GPM).toFixed(1), 'm3/h', ''],
       []
     ];
+
+    const gov = s.gov || {};
+    rows.push(['Governing result']);
+    rows.push(['Building type', $('buildingType').value === 'res' ? '1 or 2 family dwelling, not over 2 storeys' : 'Non-residential, or residential over 2 storeys', '', '']);
+    rows.push(['Path', gov.path === 'res' ? 'Residential Table A' : gov.path === 'spr' ? 'Automatic sprinkler system proposed' : 'ISO calculation, no sprinkler credit', '', '']);
+    if (gov.path === 'res'){
+      rows.push(['Distance between buildings', gov.distFt ? gov.distFt.toFixed(0) : '', 'ft', gov.band ? gov.band.label : '']);
+      rows.push(['Table A needed fire flow', gov.tableA === null ? '' : gov.tableA, 'gpm', '']);
+      rows.push(['Fire official request', gov.requested || 0, 'gpm', gov.requested > (gov.tableA || 0) ? 'governs' : '']);
+    }
+    if (gov.path === 'spr'){
+      rows.push(['ASSF requirement', gov.assf, 'gpm', 'highest demanding system or zone']);
+      rows.push(['Additional outside hose allowance', gov.hose, 'gpm', '']);
+      rows.push(['ASSF + hose', gov.spr ? gov.spr.sum : '', 'gpm', gov.spr && gov.spr.floored ? 'raised to the 500 gpm minimum' : '']);
+      rows.push(['Fire pump design flow', gov.pumpFlow || '', 'gpm', '']);
+      rows.push(['Fire pump TDH', gov.pumpTdh || '', units === 'si' ? 'm' : 'ft', '']);
+      rows.push(['ISO calculated flow', gov.isoNff === undefined ? '' : gov.isoNff, 'gpm', 'does not govern while a sprinkler system is proposed']);
+    }
+    rows.push(['GOVERNING NEEDED FIRE FLOW', gov.nff === null || gov.nff === undefined ? '' : gov.nff, 'gpm', '']);
+    rows.push([]);
     const trace = function(id){
       const el = $(id);
       return el && el.offsetParent !== null ? (el.innerText || '').replace(/\s+/g,' ').trim() : '';
@@ -1865,7 +2284,10 @@
     floorIds = []; exposures = []; comms = [];
     $('floorBody').innerHTML = ''; $('expList').innerHTML = ''; $('commList').innerHTML = '';
     buildOccRows();
-    ['idProject','idBuilding','idBy','cArea'].forEach(function(id){ $(id).value = ''; });
+    ['idProject','idBuilding','idBy','cArea','resDist','resRequested','sprAssf','sprHose','pumpFlow','pumpTdh']
+      .forEach(function(id){ $(id).value = ''; });
+    $('buildingType').value = 'full';
+    $('sprProposed').checked = false;
     $('cClass').value = '1';
     $('cF').value = '1.5';
     $('cStoreys').value = '2';
@@ -1910,6 +2332,20 @@
   $('occModeBuild')  .addEventListener('click', function(){ setMode('occ','build'); });
   $('xpModeDirect')  .addEventListener('click', function(){ setMode('xp','direct'); });
   $('xpModeBuild')   .addEventListener('click', function(){ setMode('xp','build'); });
+
+  $('buildingType').addEventListener('change', syncBuilders);
+  $('sprProposed').addEventListener('change', syncBuilders);
+  ['resDist','resRequested','sprAssf','sprHose','pumpFlow','pumpTdh'].forEach(function(id){
+    $(id).addEventListener('input', recalc);
+  });
+  $('btnCopyRemark').addEventListener('click', function(){
+    const b = this;
+    navigator.clipboard.writeText($('remarkOut').textContent).then(function(){
+      const was = b.lastChild.textContent;
+      b.lastChild.textContent = ' Copied';
+      setTimeout(function(){ b.lastChild.textContent = was; }, 1400);
+    }).catch(function(){});
+  });
 
   $('btnAddFloor').addEventListener('click', function(){ addFloor(); syncBuilders(); });
   $('btnAddExp')  .addEventListener('click', function(){ addExposure(); syncBuilders(); });
