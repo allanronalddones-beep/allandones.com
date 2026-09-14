@@ -963,8 +963,13 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
     </div>
     <figcaption><b>The single most important thing on this chart:</b> the two outdoor design points sit on opposite sides of the room condition. <span style="color:#fcd34d;">Case 1 (45.0 °C DB / 21.5 °C WB)</span> is hot and <em>drier than the room</em> — 10.7% RH, 6.40 g/kg against the room's 9.30 g/kg. <span style="color:#fb7185;">Case 2 (31.6 °C DB / 27.8 °C DP)</span> is cooler but carries 23.83 g/kg. The dashed rose line is the mixing line from outdoor to return air; the solid cyan arrow is the coil process at Case 2, and its dashed extension strikes the saturation curve at the apparatus dew point.</figcaption>
   </figure>
-  <h4>The eight processes, as directions</h4>
-  <p class="prose">Every air-handling process is a vector on the chart. Learn the compass once and you can read any air-side schematic by eye.</p>
+  <h4>The processes, as directions &mdash; and why the course counts nine</h4>
+  <p class="prose">Every air-handling process is a vector on the chart. Learn the compass once and you can read any air-side schematic by eye. The compass below shows <strong>eight distinct directions</strong>; Module&nbsp;3 enumerates <strong>nine processes</strong>.</p>
+
+  <div class="note">
+    <b class="nh">The ninth is a duplicate, not a ninth direction</b>
+    <p style="margin-bottom:0;">The course's list runs: sensible cooling, sensible heating, humidification, dehumidification, heating and humidification, <strong>cooling and humidification (evaporative cooling)</strong>, <strong>evaporative cooling</strong>, cooling and dehumidification, heating and dehumidification. Items&nbsp;6 and&nbsp;7 are the same process &mdash; a move up and to the left along a line of constant wet bulb. Counting it twice does not create a ninth direction on the chart. Worth knowing because an assessment question may ask for nine; the geometry only supports eight.</p>
+  </div>
 
   <figure>
     <div class="figbox">
@@ -1000,6 +1005,16 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
     </div>
     <figcaption><b>Note the process that is not available to you here.</b> Evaporative cooling — up and to the left — trades dry-bulb for moisture. It is superb in Riyadh's interior and near-worthless on Doha's coast, where the design dew point is 27.8 °C. The air has no capacity left to absorb water. Direct evaporative pre-cooling proposals for Qatar projects should be challenged on exactly this line.</figcaption>
   </figure>
+
+  <div class="note warn">
+    <b class="nh">Two of the course's process descriptions state the physics backwards</b>
+    <p style="margin-bottom:0;">On <strong>heating and humidification</strong> the lecture lists &ldquo;vapour pressure drops, relative humidity falls&rdquo;. Vapour pressure <em>must rise</em> &mdash; humidity ratio and vapour pressure are monotonically related at fixed barometric pressure, so if W rises p<sub>v</sub> rises. Relative humidity is genuinely ambiguous here and may go either way depending on whether heating or humidification dominates; do not memorise a direction for it. On <strong>heating and dehumidification</strong> (desiccant) the lecture says relative humidity rises &mdash; it falls, since dry bulb up and moisture down both push it down. Both are recorded in <a href="#c1-errors">Where the course material is wrong</a>.</p>
+  </div>
+
+  <div class="note good">
+    <b class="nh">The one entry that looks wrong and is right</b>
+    <p style="margin-bottom:0;">In <strong>cooling and dehumidification</strong> &mdash; the workhorse process, and the only one that matters for comfort cooling in Doha &mdash; <strong>relative humidity rises</strong>, even though moisture is being removed. The air is cooled faster than it is dried, so it ends up closer to saturation. Leaving-coil air at 90&ndash;95% RH is normal. This is why supply air feels damp at the diffuser, why reheat exists, and why <strong>measuring RH at the coil discharge tells you nothing useful</strong> about whether the space will be comfortable. Judge dehumidification by humidity ratio or dew point, never by RH at the coil.</p>
+  </div>
 
   <h3 id="c1-exA">Worked example A — state points from two properties</h3>
   <p class="prose">Given Doha's Case 1 outdoor design condition as dry bulb and wet bulb, derive every other property. This is the calculation the chart performs graphically.</p>
