@@ -50,6 +50,7 @@
   --v-derived:#86efac; --v-derived-bg:rgba(34,197,94,0.10);
   --v-standard:#5b9dfa; --v-standard-bg:rgba(47,126,240,0.10);
   --v-verify:#fcd34d;  --v-verify-bg:rgba(245,158,11,0.10);
+  --v-course:#c4b5fd;  --v-course-bg:rgba(167,139,250,0.13);
 
   /* Input / output tinting carried over from the other tools:
      amber = you type here, green = calculated. */
@@ -225,6 +226,7 @@ li::marker{color:var(--blue-300);}
 .vb.derived{color:var(--v-derived); background:var(--v-derived-bg);}
 .vb.standard{color:var(--v-standard); background:var(--v-standard-bg);}
 .vb.verify{color:var(--v-verify); background:var(--v-verify-bg);}
+.vb.course{color:var(--v-course); background:var(--v-course-bg);}
 
 /* ---------- tables ---------- */
 .tw{overflow-x:auto; margin:1.3em 0; border:1px solid var(--card-border); border-radius:var(--radius-sm);
@@ -446,19 +448,24 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
   </div>
   <div class="rail-group" data-rail="c1" hidden>
     <h4>C1 · Heat load</h4>
-    <a href="#c1m1"><span class="rm">M1</span>Refrigeration &amp; psychrometry</a>
+    <a href="#c1m1"><span class="rm">M1</span>Fundamentals &amp; refrigeration</a>
     <a href="#c1-phchart"><span class="rm">·</span>The vapour-compression cycle</a>
     <a href="#c1-psychart"><span class="rm">·</span>Reading the chart</a>
     <a href="#c1-exA"><span class="rm">A</span>Worked: state points</a>
     <a href="#c1m1q"><span class="rm">?</span>Quiz M1</a>
-    <a href="#c1m2"><span class="rm">M2</span>Heat load calculation</a>
-    <a href="#c1-cltd"><span class="rm">·</span>CLTD / CLF / SCL method</a>
-    <a href="#c1-exB"><span class="rm">B</span>Worked: full load</a>
+    <a href="#c1m2"><span class="rm">M2</span>Heat load &amp; psychrometry 1</a>
+    <a href="#c1-etd"><span class="rm">·</span>Transmission &amp; Carrier ETD</a>
+    <a href="#c1-cltd"><span class="rm">·</span>The ASHRAE CLTD track</a>
+    <a href="#c1-exB"><span class="rm">B</span>Worked: full load (Doha)</a>
     <a href="#c1-rts"><span class="rm">·</span>Why RTS replaced CLTD</a>
+    <a href="#c1-hier"><span class="rm">·</span>The heat-factor hierarchy</a>
+    <a href="#c1-coil"><span class="rm">·</span>Coil, bypass factor, ADP</a>
     <a href="#c1m2q"><span class="rm">?</span>Quiz M2</a>
-    <a href="#c1m3"><span class="rm">M3</span>Psychrometry × load</a>
+    <a href="#c1m3"><span class="rm">M3</span>Heat load &amp; psychrometry 2</a>
+    <a href="#c1-exB2"><span class="rm">B2</span>Worked: the course calc</a>
     <a href="#c1-exC"><span class="rm">C</span>Worked: coil selection</a>
     <a href="#c1m3q"><span class="rm">?</span>Quiz M3</a>
+    <a href="#c1-errors"><span class="rm">!</span>Where the course is wrong</a>
   </div>
   <div class="rail-group" data-rail="c2" hidden>
     <h4>C2 · Equipment</h4>
@@ -512,14 +519,20 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
   <div class="grid g4" style="margin:1.8em 0;">
     <div class="card tight"><span class="k" style="font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;color:var(--text-muted);font-weight:750;">Courses</span><div class="num" style="font-size:var(--step-2);color:var(--cyan-300);font-weight:700;">4</div></div>
     <div class="card tight"><span class="k" style="font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;color:var(--text-muted);font-weight:750;">Modules</span><div class="num" style="font-size:var(--step-2);color:var(--cyan-300);font-weight:700;">9</div></div>
-    <div class="card tight"><span class="k" style="font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;color:var(--text-muted);font-weight:750;">Worked examples</span><div class="num" style="font-size:var(--step-2);color:var(--cyan-300);font-weight:700;">6</div></div>
+    <div class="card tight"><span class="k" style="font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;color:var(--text-muted);font-weight:750;">Worked examples</span><div class="num" style="font-size:var(--step-2);color:var(--cyan-300);font-weight:700;">7</div></div>
     <div class="card tight"><span class="k" style="font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;color:var(--text-muted);font-weight:750;">Practice questions</span><div class="num" style="font-size:var(--step-2);color:var(--cyan-300);font-weight:700;" id="qTotal">—</div></div>
   </div>
 
+  <div class="note good">
+    <b class="nh">Course 1 is now built from the course material itself</b>
+    <p><strong>Course 1 has been rewritten against the lecture transcripts and technical study notes for Modules 1&ndash;3</strong> &mdash; all 20 video items of Module&nbsp;1, the 15 lectures of Module&nbsp;2 and the 14 of Module&nbsp;3. Any statement traceable to those lectures carries a <span class="vb course">Course</span> tag. <strong>Courses 2, 3 and 4 remain reconstructed</strong> from published course descriptions and established design method &mdash; they carry no Course tags, and should be read as revision rather than as a record of what was taught.</p>
+    <p style="margin-bottom:0;">Nothing here reproduces lecture text or graded questions. The transcripts were used the way you would use a vendor design manual to check a calculation &mdash; to correct method, terminology, sequence and emphasis. The practice questions remain authored from first principles.</p>
+  </div>
+
   <div class="note trap">
-    <b class="nh">Read this before you use a single number</b>
-    <p>This guide was written <strong>without access to the Coursera platform</strong>. The course pages could not be reached from the environment that produced it, so nothing here is a transcript of the lectures, slides or graded quizzes. It is reconstructed from the published course and specialization descriptions, the codes those courses name, and established design method.</p>
-    <p style="margin-bottom:0;">Two consequences you must hold onto: the <strong>practice questions are written from first principles, not copied from Coursera</strong> — treat them as revision, not as a leaked question bank; and every table value that would normally be read out of an ASHRAE handbook is tagged <span class="vb verify">Verify</span> and left editable, because it was set from established magnitudes rather than read off the page.</p>
+    <b class="nh">The correction that matters most &mdash; this course does not teach CLTD</b>
+    <p>An earlier version of this guide presented Course&nbsp;1's envelope method as ASHRAE <strong>CLTD&nbsp;/&nbsp;CLF&nbsp;/&nbsp;SCL</strong>. That was wrong. The course teaches the <strong>Carrier <em>Handbook of Air Conditioning System Design</em></strong> method &mdash; <strong>Equivalent Temperature Difference (ETD)</strong>, <strong>Shading Coefficient</strong>, and Carrier solar heat gain tables. Both are legacy table methods that bury thermal lag in pre-computed values, but they are different tables, with different base conditions and different correction procedures. They are not interchangeable, and citing one when you used the other is the kind of error a reviewer will find.</p>
+    <p style="margin-bottom:0;">The Carrier ETD tables are stated for <strong>95&nbsp;&deg;F outdoor DB, 80&nbsp;&deg;F room, 20&nbsp;&deg;F daily range, 40&deg;&nbsp;N latitude</strong>. Doha is <strong>25.3&deg;&nbsp;N</strong> at roughly <strong>45&nbsp;&deg;C</strong> design dry bulb with a design wet bulb near 31&nbsp;&deg;C. <strong>Every one of those four table parameters is wrong for your projects.</strong> The method has correction procedures; the base tables do not transfer.</p>
   </div>
 </section>
 
@@ -537,6 +550,10 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
       <p style="margin:.75em 0 0;font-size:var(--step--1);line-height:1.55;">Quoted from a named clause of a code or standard, cited inline. Confirm the <em>edition</em> your project mandates — values move between editions.</p>
     </div>
     <div class="card">
+      <span class="vb course">Course</span>
+      <p style="margin:.75em 0 0;font-size:var(--step--1);line-height:1.55;">Traceable to a named lecture in Modules&nbsp;1&ndash;3. It is what the course <em>teaches</em> &mdash; which is not always what current practice requires, and occasionally not even correct. Where the two diverge, both are shown.</p>
+    </div>
+    <div class="card">
       <span class="vb verify">Verify</span>
       <p style="margin:.75em 0 0;font-size:var(--step--1);line-height:1.55;">A representative magnitude, not a read table value. <strong>Never carry one of these into a deliverable</strong> without replacing it from the handbook or your project basis of design.</p>
     </div>
@@ -544,7 +561,7 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
 
   <div class="note">
     <b class="nh">Why the Verify tag exists rather than a confident-looking table</b>
-    <p style="margin-bottom:0;">CLTD, SCL, CLF, shading coefficients and climatic design data all live in copyrighted ASHRAE tables that could not be opened while writing this. Reproducing them from memory to four significant figures would look authoritative and be untrustworthy — the worst combination in a technical document. Instead the method is exact, the magnitudes are defensible, and every one of them is an input box you overwrite.</p>
+    <p style="margin-bottom:0;">Carrier ETD and solar heat gain tables, ASHRAE CLTD/SCL/CLF, shading coefficients and climatic design data all live in copyrighted handbooks that are not reproduced here. Restating them from memory to four significant figures would look authoritative and be untrustworthy &mdash; the worst combination in a technical document. Instead the <em>method</em> is exact and fully traceable, the magnitudes are defensible, and every one of them is an input box you overwrite. The transcripts tell us which method the course applies and what its table basis is; they do not licence reprinting the tables themselves.</p>
   </div>
 </section>
 <section id="s-design">
@@ -637,19 +654,39 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
 </section>
 <section id="s-map">
   <h2>Specialization map</h2>
-  <p class="prose">Four courses, nine modules. The order is not arbitrary — each course consumes the output of the one before it. A heat load error in C1 does not stay in C1; it propagates into the chiller you select in C2 and the fan you specify in C4.</p>
+  <p class="prose">Four courses, nine modules. The order is not arbitrary &mdash; each course consumes the output of the one before it. A heat load error in C1 does not stay in C1; it propagates into the chiller you select in C2 and the fan you specify in C4. <strong>Course 1 below is drawn from the lecture material; Courses 2&ndash;4 are reconstructed</strong>, and the Source column says which is which.</p>
 
   <div class="tw">
     <table>
       <caption>Course structure and what each one produces</caption>
-      <thead><tr><th>Course</th><th style="text-align:left;">Modules</th><th style="text-align:left;">Governing method</th><th style="text-align:left;">Output it hands forward</th></tr></thead>
+      <thead><tr><th>Course</th><th style="text-align:left;">Modules</th><th style="text-align:left;">Governing method</th><th style="text-align:left;">Output it hands forward</th><th style="text-align:left;">Source</th></tr></thead>
       <tbody>
-        <tr><td><strong>C1</strong> Basics of Air Conditioning &amp; Heat Load</td><td style="text-align:left;">3</td><td style="text-align:left;">Psychrometry; CLTD/CLF/SCL</td><td style="text-align:left;">Zone loads, airflow, coil duty, ADP</td></tr>
-        <tr><td><strong>C2</strong> Equipment Selection, Design &amp; Sizing</td><td style="text-align:left;">2</td><td style="text-align:left;">Block load, diversity, hydraulics</td><td style="text-align:left;">Chiller, pump, tower, duct, ESP</td></tr>
-        <tr><td><strong>C3</strong> Ventilation, Life Safety &amp; Smoke Extraction</td><td style="text-align:left;">2</td><td style="text-align:left;">NFPA 92; ASHRAE 62.1; NBC</td><td style="text-align:left;">Pressurization and extract rates</td></tr>
-        <tr><td><strong>C4</strong> Cutting-edge Technology</td><td style="text-align:left;">2</td><td style="text-align:left;">DCV; VRF; fan laws</td><td style="text-align:left;">Part-load and energy strategy</td></tr>
+        <tr><td><strong>C1</strong> Basics of Air Conditioning &amp; Heat Load</td><td style="text-align:left;">3</td><td style="text-align:left;"><strong>Carrier ETD &amp; Shading Coefficient</strong>; psychrometry</td><td style="text-align:left;">Zone loads, dehumidified airflow, ESHF, ADP</td><td style="text-align:left;"><span class="vb course">Course</span></td></tr>
+        <tr><td><strong>C2</strong> Equipment Selection, Design &amp; Sizing</td><td style="text-align:left;">2</td><td style="text-align:left;">Block load, diversity, hydraulics</td><td style="text-align:left;">Chiller, pump, tower, duct, ESP</td><td style="text-align:left;"><span class="vb verify">Reconstructed</span></td></tr>
+        <tr><td><strong>C3</strong> Ventilation, Life Safety &amp; Smoke Extraction</td><td style="text-align:left;">2</td><td style="text-align:left;">NFPA 92; ASHRAE 62.1; NBC</td><td style="text-align:left;">Pressurization and extract rates</td><td style="text-align:left;"><span class="vb verify">Reconstructed</span></td></tr>
+        <tr><td><strong>C4</strong> Cutting-edge Technology</td><td style="text-align:left;">2</td><td style="text-align:left;">DCV; VRF; fan laws</td><td style="text-align:left;">Part-load and energy strategy</td><td style="text-align:left;"><span class="vb verify">Reconstructed</span></td></tr>
       </tbody>
     </table>
+  </div>
+
+  <h3>Course 1 as actually delivered <span class="vb course">Course</span></h3>
+  <p class="prose">The three modules do not divide the way the topic names suggest. Coil performance &mdash; bypass factor and apparatus dew point &mdash; is taught in Module&nbsp;2, not Module&nbsp;3; and Module&nbsp;3's centre of gravity is a single five-part worked calculation that assembles everything Module&nbsp;2 defined.</p>
+
+  <div class="tw">
+    <table>
+      <caption>Module structure, item counts and what each one actually covers</caption>
+      <thead><tr><th>Module</th><th class="num">Items</th><th style="text-align:left;">Covers</th></tr></thead>
+      <tbody>
+        <tr><td><strong>M1</strong> Fundamentals of Air-conditioning &amp; Refrigeration</td><td class="num">20 videos<br>5 lessons</td><td style="text-align:left;">Definitions and industrial applications &middot; properties of air and vapour, Dalton and ideal gas &middot; psychrometric properties &middot; four major components &middot; four psychrometric processes &middot; air streams and AHU arrangement &middot; classification of AC systems (DX, chillers, VRF) &middot; history and natural refrigeration &middot; heat transfer modes and the ton of refrigeration &middot; <strong>Carnot cycle</strong> &middot; <strong>vapour-compression cycle</strong> &middot; <strong>subcooling and superheat</strong> &middot; compressors, evaporators, condensers, expansion devices &middot; refrigerants and their classification &middot; <strong>vapour absorption and thermoelectric</strong></td></tr>
+        <tr><td><strong>M2</strong> Heat Load Calculations &amp; Psychrometry &mdash; Part 1</td><td class="num">15 lectures<br>4 scenarios</td><td style="text-align:left;">Outside and inside design conditions, the <strong>coincident-condition principle</strong> &middot; thermal comfort and its four variables &middot; ventilation air and the Ventilation Rate Procedure &middot; solar heat gain through glass &middot; solar angles and shading &middot; <strong>transmission heat gain, thermal storage, time lag and ETD</strong> &middot; U-factor by layered resistance &middot; internal heat &mdash; occupants, lighting, appliances, motors, system gains &middot; infiltration, wind pressure and stack effect &middot; sensible and latent heat &middot; the <strong>RSHF &rarr; ESHF &rarr; GSHF hierarchy</strong> &middot; <strong>cooling coil, bypass factor, apparatus dew point</strong>, on-coil and off-coil</td></tr>
+        <tr><td><strong>M3</strong> Heat Load Calculations &amp; Psychrometry &mdash; Part 2</td><td class="num">14 lectures<br>3 scenarios</td><td style="text-align:left;">Input data required before calculating &middot; <strong>the complete five-part worked heat load calculation</strong> &middot; safety factors &middot; effective and grand-total quantities &middot; dehumidified air quantity &middot; the <strong>six psychrometric properties</strong> and every chart element &middot; chart example calculation &middot; <strong>the nine psychrometric processes</strong> &middot; climate classification by chart region &middot; four worked process examples</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">Where the guide previously had the boundaries wrong</b>
+    <p style="margin-bottom:0;">Coil selection, bypass factor and apparatus dew point were presented here as Module&nbsp;3 material. They are <strong>Module&nbsp;2, Group&nbsp;5</strong>. Conversely the full psychrometric-property treatment and the nine processes are <strong>Module&nbsp;3</strong>, not Module&nbsp;1. And the module's most valuable single artefact &mdash; the five-part worked calculation that assembles every component into one auditable sheet &mdash; was absent from this guide altogether. It is now Worked example&nbsp;B2.</p>
   </div>
 </section>
 
@@ -702,16 +739,16 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
 
         <g>
           <rect x="424" y="18" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(103,232,249,0.34)" stroke-width="1"/>
-          <text class="svg-lbl" x="440" y="40" fill="#eaf1ff" font-weight="700">M1 · Refrigeration cycle &amp; psychrometric properties</text>
-          <text class="svg-lbl-sm" x="440" y="56">Vapour-compression cycle · compressor, condenser, expansion device, evaporator · refrigerants &amp; GWP · the chart and its eight processes</text>
+          <text class="svg-lbl" x="440" y="40" fill="#eaf1ff" font-weight="700">M1 · Fundamentals of Air-conditioning &amp; Refrigeration</text>
+          <text class="svg-lbl-sm" x="440" y="56">Carnot &amp; vapour-compression cycles · subcooling and superheat · compressors, evaporators, condensers, expansion devices · refrigerants · VARS &amp; thermoelectric</text>
 
           <rect x="424" y="92" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(103,232,249,0.34)" stroke-width="1"/>
-          <text class="svg-lbl" x="440" y="114" fill="#eaf1ff" font-weight="700">M2 · Heat load calculation</text>
-          <text class="svg-lbl-sm" x="440" y="130">CLTD / CLF / SCL · solar and transmission gain · lighting, people, equipment · infiltration · ASHRAE 62.1 ventilation · sensible vs latent</text>
+          <text class="svg-lbl" x="440" y="114" fill="#eaf1ff" font-weight="700">M2 · Heat Load Calculations &amp; Psychrometry — Part 1</text>
+          <text class="svg-lbl-sm" x="440" y="130">Design conditions &amp; MCWB · comfort · ventilation VRP · solar geometry · Carrier ETD &amp; U-factor · internal heat · infiltration · coil, bypass factor, ADP</text>
 
           <rect x="424" y="166" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(103,232,249,0.34)" stroke-width="1"/>
-          <text class="svg-lbl" x="440" y="188" fill="#eaf1ff" font-weight="700">M3 · Psychrometry × heat load</text>
-          <text class="svg-lbl-sm" x="440" y="204">RSHF · GSHF · ESHF · apparatus dew point · bypass factor · coil selection · supply air temperature and airflow</text>
+          <text class="svg-lbl" x="440" y="188" fill="#eaf1ff" font-weight="700">M3 · Heat Load Calculations &amp; Psychrometry — Part 2</text>
+          <text class="svg-lbl-sm" x="440" y="204">The complete five-part worked calculation · RSH → ERSH → GTH hierarchy · dehumidified air quantity · six properties · the nine processes</text>
 
           <rect x="424" y="238" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(34,211,238,0.34)" stroke-width="1"/>
           <text class="svg-lbl" x="440" y="260" fill="#eaf1ff" font-weight="700">M1 · High-side equipment</text>
@@ -739,7 +776,7 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
         </g>
       </svg>
     </div>
-    <figcaption><b>Reading it:</b> the branch order is the dependency order. C1 M2 produces the load that C2 M1 turns into a chiller; C1 M3 produces the airflow that C2 M2 turns into a duct and C4 M2 turns into a fan power. C3 is the one branch that does not descend from the load — it is sized by code, from occupancy and geometry, and is often the branch that gets reviewed last and found wanting.</figcaption>
+    <figcaption><b>Reading it:</b> the branch order is the dependency order. C1 M2 defines and sizes every load component; C1 M3 assembles them into a grand total and a dehumidified air quantity, which C2 M1 turns into a chiller and C2 M2 into a duct and a fan. C3 is the one branch that does not descend from the load &mdash; it is sized by code, from occupancy and geometry, and is often the branch reviewed last and found wanting. <b>Note the C1 branch is drawn from the lecture material; C2&ndash;C4 are reconstructed.</b></figcaption>
   </figure>
 </section>
 
@@ -750,11 +787,12 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
 <section id="c1m1">
   <div class="mod-head">
     <p class="eyebrow">Course 1 · Module 1</p>
-    <h2>Refrigeration cycle &amp; psychrometric properties</h2>
-    <p class="lede">Two instruments underpin everything that follows: the pressure–enthalpy diagram, which tells you what the machine is doing, and the psychrometric chart, which tells you what the air is doing. Learn to read both and the rest of the specialization is bookkeeping.</p>
+    <h2>Fundamentals of Air-conditioning &amp; Refrigeration</h2>
+    <p class="lede">Twenty video items across five lessons, and two instruments underpin everything that follows: the pressure&ndash;enthalpy diagram, which tells you what the machine is doing, and the psychrometric chart, which tells you what the air is doing. Learn to read both and the rest of the specialization is bookkeeping.</p>
     <div class="tag-row">
-      <span class="chip acc">Vapour-compression cycle</span><span class="chip acc">Psychrometry</span>
-      <span class="chip">Refrigerants</span><span class="chip">Components</span>
+      <span class="chip acc">Carnot &amp; vapour-compression</span><span class="chip acc">Psychrometric properties</span>
+      <span class="chip">Components</span><span class="chip">Refrigerants</span><span class="chip">VARS &amp; thermoelectric</span>
+      <span class="chip">System classification</span>
     </div>
   </div>
 
@@ -1146,11 +1184,12 @@ p = barometric pressure, kPa          C₈…C₁₃ are the ASHRAE saturation-p
 <section id="c1m2">
   <div class="mod-head">
     <p class="eyebrow">Course 1 · Module 2</p>
-    <h2>Heat load calculation</h2>
+    <h2>Heat Load Calculations &amp; Psychrometry &mdash; Part 1</h2>
     <p class="lede">The load is the deliverable everything downstream depends on. Get it wrong high and you buy plant that never modulates properly; get it wrong low and you own the problem for the life of the building. This module builds it component by component, twice — once at each Doha design condition.</p>
     <div class="tag-row">
-      <span class="chip acc">CLTD / CLF / SCL</span><span class="chip acc">ASHRAE 62.1</span>
-      <span class="chip">Sensible vs latent</span><span class="chip">Room vs coil load</span>
+      <span class="chip acc">Carrier ETD</span><span class="chip acc">ASHRAE 62.1</span>
+      <span class="chip">Sensible vs latent</span><span class="chip">RSHF &middot; ESHF &middot; GSHF</span>
+      <span class="chip">Bypass factor &amp; ADP</span><span class="chip">Room vs coil load</span>
     </div>
   </div>
 
@@ -1246,8 +1285,85 @@ p = barometric pressure, kPa          C₈…C₁₃ are the ASHRAE saturation-p
     <figcaption><b>West glazing is the single largest sensible component in both cases</b> — 19% and 23% — despite being the <em>smaller</em> of the two glazed areas (11.52 m² against the south wall's 17.28 m²). Per square metre, west glass delivers 138 W against south glass at 47 W: three times the intensity. At Doha's 25° latitude the July sun passes almost overhead at noon, so a south façade sees mostly diffuse radiation, while the west façade takes the late-afternoon beam nearly head-on at the hour the peak occurs. <b>Design consequence:</b> external shading and low-SHGC glazing earn their cost on east and west elevations in the Gulf, and are close to wasted money on south.</figcaption>
   </figure>
 
-  <h3 id="c1-cltd">The CLTD / CLF / SCL method</h3>
-  <p class="prose">A solid wall does not pass heat the instant the sun strikes it. Mass absorbs, stores and re-releases the gain hours later, and the radiant fraction of any gain warms surfaces first and the air afterwards. The CLTD family handles both lags with pre-computed tables: an equivalent temperature difference for opaque surfaces, a solar cooling load for glass, and a cooling load factor for internal gains.</p>
+  <h3 id="c1-etd">Transmission heat gain &mdash; and why steady state is wrong <span class="vb course">Course</span></h3>
+  <p class="prose">A solid wall does not pass heat the instant the sun strikes it. Only a fraction of the arriving energy reaches the room air; the rest is absorbed into the roof, walls, floor and furniture, held there, and released hours later. The course calls these the <strong>heat storage effect</strong> and the <strong>time lag effect</strong>, and together they force the single most important distinction in load calculation.</p>
+
+  <div class="note">
+    <b class="nh">Heat gain is not cooling load</b>
+    <p>At the afternoon peak, <strong>cooling load &lt; instantaneous heat gain</strong> &mdash; part of the arriving energy is still in the building mass. Later in the day, <strong>cooling load &gt; instantaneous heat gain</strong> &mdash; the stored energy comes back out on top of whatever is still arriving. The two quantities are different and offset in time.</p>
+    <p style="margin-bottom:0;">This is the most commonly muddled pair of terms in load-calculation review, vendor submissions included. Because ambient temperature and solar radiation vary continuously over 24 hours, the honest treatment is <strong>transient</strong>; every table method in this guide is a device for making a transient problem look steady so it can be done by hand.</p>
+  </div>
+
+  <h4>Equivalent Temperature Difference &mdash; the Carrier method</h4>
+  <p class="prose">ETD is a <strong>synthetic</strong> temperature difference: the &Delta;T that would produce the observed total heat flow once solar intensity, time lag and the indoor/outdoor temperatures are all folded in. It is not a temperature difference you could measure.</p>
+
+  <div class="fml">
+    <span class="eq">Opaque wall / roof   q = U &middot; A &middot; &Delta;T_e            &Delta;T_e = Equivalent Temperature Difference</span>
+    <span class="eq">Glass &mdash; transmission q = U &middot; A &middot; &Delta;T            actual &Delta;T; glass has negligible mass, so no lag</span>
+    <span class="eq">Glass &mdash; solar        q = SHG &middot; A_glass &middot; SF     SF = shading factor / shading coefficient</span>
+    <span class="eq">Partition            q = U &middot; A &middot; (&Delta;T &minus; 5&deg;F)   unconditioned space, per the course rule</span>
+    <span class="eq">U-factor             U = 1 / R_total     R_total = 1/h_o + &Sigma;(&Delta;x/k) + 1/h_i</span>
+    <span class="wh">&Delta;T_e varies with time of day, orientation, wall construction and latitude.
+SHG is read from Carrier solar heat gain tables by latitude, month, hour and orientation.
+h_o, h_i = outside and inside surface (film) coefficients   &Delta;x = layer thickness   k = conductivity
+Series resistances add &mdash; which is why added insulation gives diminishing returns.</span>
+    <span class="src">Carrier <em>Handbook of Air Conditioning System Design</em>, as taught in Modules&nbsp;2&ndash;3. <span class="vb course">Course</span></span>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">The ETD table basis is wrong for Doha in all four parameters</b>
+    <p>The course states its ETD table basis explicitly. Set it against your projects:</p>
+    <div class="tw" style="margin:1em 0;">
+      <table>
+        <caption>Carrier ETD table basis vs Doha <span class="vb course">Course</span> / <span class="vb verify">Verify</span></caption>
+        <thead><tr><th>Parameter</th><th class="num">Carrier table basis</th><th class="num">Doha</th><th style="text-align:left;">Consequence</th></tr></thead>
+        <tbody>
+          <tr><td>Outdoor design DB</td><td class="num">95 &deg;F (35 &deg;C)</td><td class="num">&asymp; 113 &deg;F (45 &deg;C)</td><td style="text-align:left;">driving potential understated</td></tr>
+          <tr><td>Room DB</td><td class="num">80 &deg;F (26.7 &deg;C)</td><td class="num">75 &deg;F (24 &deg;C)</td><td style="text-align:left;">correction required</td></tr>
+          <tr><td>Daily range</td><td class="num">20 &deg;F (11.1 K)</td><td class="num">&asymp; 24 &deg;F (13.5 K)</td><td style="text-align:left;">storage behaviour differs</td></tr>
+          <tr class="total"><td>Latitude</td><td class="num">40&deg; N</td><td class="num">25.3&deg; N</td><td style="text-align:left;"><strong>solar geometry wholly different</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-bottom:0;">The Carrier method has correction procedures for the first three. It has none for the fourth that survives a 15&deg; latitude shift intact. <strong>Answer the graded assessment with ETD and SC. Do not put either into a design basis memo</strong> without stating the source &mdash; a reviewer working to ASHRAE <em>Fundamentals</em> expects RTS or Heat Balance, and expects SHGC rather than SC.</p>
+  </div>
+
+  <h4>U-factor by layered resistance <span class="vb course">Course</span></h4>
+  <p class="prose">The course builds U from the electrical analogy &mdash; temperature difference is potential, heat flow is current, and the layers are resistances in series. Its worked wall, in the original Imperial units:</p>
+
+  <div class="tw">
+    <table>
+      <caption>Composite wall &mdash; the course's worked U-factor <span class="vb course">Course</span></caption>
+      <thead><tr><th>Layer</th><th class="num">Thickness</th><th class="num">R, h&middot;ft&sup2;&middot;&deg;F/Btu</th></tr></thead>
+      <tbody>
+        <tr><td>Outside air film</td><td class="num">&mdash;</td><td class="num">0.25</td></tr>
+        <tr><td>Cement plaster, outside</td><td class="num">1 in (25 mm)</td><td class="num">1.60</td></tr>
+        <tr><td>Face brick</td><td class="num">8 in (200 mm)</td><td class="num">0.10</td></tr>
+        <tr><td>Cement plaster, inside</td><td class="num">0.5 in (12.5 mm)</td><td class="num">0.20</td></tr>
+        <tr><td>Inside air film</td><td class="num">&mdash;</td><td class="num">0.68</td></tr>
+        <tr class="total"><td>R<sub>total</sub></td><td class="num">&mdash;</td><td class="num">2.83</td></tr>
+        <tr class="total"><td>U = 1 / R<sub>total</sub></td><td class="num">&mdash;</td><td class="num">0.353 &asymp; 0.35 Btu/h&middot;ft&sup2;&middot;&deg;F</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note good">
+    <b class="nh">The film resistances are a review tell worth recognising on sight</b>
+    <p style="margin-bottom:0;"><strong>0.68</strong> is the inside surface, still air. <strong>0.25</strong> is the outside surface at 7.5 mph &mdash; the <em>summer</em> value. The winter value at 15 mph is <strong>0.17</strong>. Seeing 0.17 in a submitted <em>cooling</em> load calculation is the fastest available indication that the whole calculation has been lifted from a heating template. In SI, U = 0.35 Btu/h&middot;ft&sup2;&middot;&deg;F &equiv; <strong>2.00 W/m&sup2;&middot;K</strong> &mdash; four times the 0.50 W/m&sup2;&middot;K this guide's Doha design basis assumes, and a useful reminder that the course's worked envelope is not a QCS-compliant one.</p>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">Partitions, ceilings and floors &mdash; and a unit trap the course sets and then resolves</b>
+    <p>A partition is any surface whose far side is unconditioned or at a different temperature. The course applies a fixed offset: the unconditioned space runs <strong>5 degrees below</strong> the outdoor design condition, giving <code>&Delta;T_partition = &Delta;T &minus; 5</code>.</p>
+    <p>Module&nbsp;2 narrates that offset as <strong>5 &deg;C</strong> inside an all-Fahrenheit worked context &mdash; an apparent 4 &deg;F error applied to every partition, ceiling and floor in the building, in the same direction. <strong>Module&nbsp;3 settles it</strong>: it applies 21 &minus; 5 = 16 &deg;F explicitly. The offset is <strong>5 &deg;F</strong>, and the Module&nbsp;2 narration is the error.</p>
+    <p style="margin-bottom:0;">The engineering objection survives the resolution. <strong>Do not use a fixed offset at all on project work.</strong> Take the unconditioned space temperature from an energy balance on that space or from the specification. The rule fails badly for a <em>service floor</em> &mdash; unconditioned, full of equipment rejecting heat, and frequently <em>hotter</em> than ambient rather than 5 &deg;F cooler. That floor is a ceiling partition for the space below and a floor partition for the space above, and the rule of thumb gets both wrong.</p>
+  </div>
+
+  <h3 id="c1-cltd">The same problem in ASHRAE form &mdash; CLTD / CLF / SCL</h3>
+  <div class="note">
+    <b class="nh">Why both methods appear in this guide</b>
+    <p style="margin-bottom:0;">The course teaches Carrier ETD. This guide's live calculator, the Doha design basis above and Worked example&nbsp;B below are built on <strong>ASHRAE CLTD/CLF/SCL</strong> &mdash; a different legacy table family with its own base condition (29.4 &deg;C mean outdoor, 25.5 &deg;C indoor) and its own correction terms. Both collapse thermal lag into tables; neither is current ASHRAE practice. They are kept separate here deliberately: <strong>ETD is the exam answer, CLTD is the hand-check this guide computes, and RTS or Heat Balance is the design answer.</strong> Mixing their tables produces a number with no traceable basis.</p>
+  </div>
 
   <div class="fml">
     <span class="eq">Opaque surfaces   q = U · A · CLTD_corrected</span>
@@ -1376,6 +1492,83 @@ V = airflow, L/s                  Δt in K, ΔW in kg/kg</span>
     <b class="nh">The defensible position in a design review</b>
     <p style="margin-bottom:0;">Use CLTD as a <strong>hand check</strong>, not as the submitted basis. Its enduring value is that one engineer with a calculator can reproduce it and catch an order-of-magnitude error in a software output in twenty minutes. Its weakness is that its tables encode specific wall constructions and a specific base condition, and the correction terms stretch further the more your project departs from them — a Doha project already carries a +8.85 K correction before anything else. If a subcontractor submits CLTD as the primary basis for a large plant, that is a legitimate technical comment: ask for RTS or a validated software output, and keep your CLTD as the independent check.</p>
   </div>
+  <h3 id="c1-hier">The heat-factor hierarchy <span class="vb course">Course</span></h3>
+  <p class="prose">This is the least intuitive content in the module and the most examinable. It is a <strong>hierarchy</strong>, and once the levels are straight the definitions follow from them. The quantity that separates each level from the next is the <strong>bypass factor</strong>.</p>
+
+  <div class="fml">
+    <span class="eq">ROOM       RSHF = RSH / RTH                       RTH = RSH + RLH</span>
+    <span class="eq">EFFECTIVE  ESHF = ERSH / ERTH                     ERTH = ERSH + ERLH      &larr; gives ADP</span>
+    <span class="eq">EQUIPMENT  GSHF = TSH / GTH                        GTH  = TSH + TLH</span>
+    <span class="wh">ERSH = RSH + sensible load of the BYPASSED outdoor air (+ safety factor)
+ERLH = RLH + latent load of the BYPASSED outdoor air  (+ safety factor)
+TSH  = ERSH + sensible heat of outdoor air NOT bypassed + return duct gain + return duct leakage
+       + dehumidifier pump power + piping losses
+TLH  = ERLH + latent heat of outdoor air NOT bypassed + return duct leakage</span>
+    <span class="src">Module&nbsp;2 &sect;4.3, restated as the calculation entry point in Module&nbsp;3. <span class="vb course">Course</span></span>
+  </div>
+
+  <div class="note">
+    <b class="nh">What each level is a property of</b>
+    <p style="margin-bottom:0;"><strong>RSHF is a property of the room.</strong> <strong>GSHF is a property of the apparatus.</strong> <strong>ESHF sits between them and is the one you enter the ADP table with.</strong> The bypass factor is what separates them &mdash; at BF = 0 the effective and grand levels converge. The reason ESHF is defined at all is so that it can be used to find the apparatus dew point; it has no other purpose, which is worth remembering when the definitions start to blur.</p>
+  </div>
+
+  <h3 id="c1-coil">Cooling coil, bypass factor and apparatus dew point <span class="vb course">Course</span></h3>
+  <p class="prose">A coil surface transfers heat under a <strong>temperature potential</strong> and moisture under a <strong>vapour-pressure potential</strong>. A dry surface has only the first and delivers sensible cooling alone. A wetted surface has both &mdash; and a coil is only wetted when its surface sits <strong>below the dew point of the entering air</strong>.</p>
+
+  <div class="note trap">
+    <b class="nh">The commissioning failure this explains</b>
+    <p style="margin-bottom:0;">Raise chilled water supply temperature far enough and the coil surface climbs above the entering air dew point. The coil then runs <strong>dry</strong>: it still satisfies the thermostat, its rated capacity is unchanged on paper, and space humidity climbs steadily with nobody able to say why. Temperature is satisfied; moisture is not being removed at all. This is a recurring finding on systems where chilled water setpoint has been raised to chase plant efficiency.</p>
+  </div>
+
+  <div class="fml">
+    <span class="eq">Bypass factor       BF = (0.1)^(n/4)          n = number of coil rows</span>
+    <span class="eq">Contact factor      CF = 1 &minus; BF</span>
+    <span class="eq">Dehumidified rise   &Delta;t = t_R &minus; t_ADP</span>
+    <span class="eq">Dehumidified air    CFM = ERSH / [ 1.08 &middot; (t_R &minus; t_ADP) &middot; (1 &minus; BF) ]</span>
+    <span class="wh">t_R = room dry bulb, &deg;F      t_ADP = apparatus dew point (coil surface temperature), &deg;F
+ERSH = effective room sensible heat, Btu/h        1.08 = standard-air sensible coefficient
+ADP is read from tables against the inside design condition and ESHF.
+Note (1 &minus; BF) is the contact factor &mdash; this is the ordinary sensible-heat airflow equation with a contact correction.</span>
+    <span class="src">Module&nbsp;2 &sect;5.2&ndash;5.3. The equation's grouping is reconstructed from dimensional analysis; the narration is ambiguous. <span class="vb course">Course</span></span>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>Bypass factor against row count &mdash; the course correlation <span class="vb course">Course</span></caption>
+      <thead><tr><th class="num">Rows n</th><th class="num">BF = 0.1<sup>n/4</sup></th><th class="num">Contact factor</th><th style="text-align:left;">Comment</th></tr></thead>
+      <tbody>
+        <tr><td class="num">2</td><td class="num">0.316</td><td class="num">0.684</td><td style="text-align:left;">will not reach a low supply condition</td></tr>
+        <tr><td class="num">4</td><td class="num">0.100</td><td class="num">0.900</td><td style="text-align:left;">the rule of thumb the correlation is anchored on</td></tr>
+        <tr class="total"><td class="num">6</td><td class="num">0.032</td><td class="num">0.968</td><td style="text-align:left;">used in the Module&nbsp;3 worked calculation</td></tr>
+        <tr><td class="num">8</td><td class="num">0.010</td><td class="num">0.990</td><td style="text-align:left;">deep coil, high air-side pressure drop</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">The correlation contradicts the lecture that presents it</b>
+    <p>The formula depends on <strong>row count alone</strong>. The same lecture lists <strong>fin spacing</strong> and <strong>air velocity</strong> as factors affecting bypass factor &mdash; tighter fins lower it, higher face velocity raises it. Both statements cannot be complete.</p>
+    <p style="margin-bottom:0;">Treat <code>BF = 0.1<sup>n/4</sup></code> as a first-pass estimate valid only at typical fin spacing and face velocity. For any real selection take the bypass factor, or the equivalent leaving-air condition, from <strong>manufacturer rated coil data at the actual entering condition, face velocity and fluid temperatures</strong>. This is exactly the sort of parameter that belongs in vendor data review rather than in a correlation.</p>
+  </div>
+
+  <div class="note">
+    <b class="nh">Why a high bypass factor is a permanent energy penalty, not a coil detail</b>
+    <p style="margin-bottom:0;">To deliver the same room condition when more air bypasses the surface untreated, the <em>treated</em> fraction must be cooled further &mdash; which <strong>drives the required ADP down</strong>. A lower ADP needs a lower chilled water or evaporating temperature, which means <strong>lower COP and higher energy consumption for the same delivered cooling</strong>, every operating hour for the life of the plant. The course states the chain (higher BF &rarr; lower ADP &rarr; worse machine performance) without drawing the conclusion; the conclusion is that bypass factor is worth catching at vendor data review, because the client pays for it either way.</p>
+  </div>
+
+  <h4>On-coil and off-coil temperature &mdash; the module's most consequential simplification</h4>
+  <p class="prose">The course gives on-coil temperature as <strong>room + 1&ndash;2 &deg;C</strong> and off-coil as <strong>&asymp; 13 &deg;C</strong>. The second is a defensible generic comfort target. The first is only valid for a system with little or no outdoor air.</p>
+
+  <div class="note trap">
+    <b class="nh">Do not carry the on-coil rule of thumb onto a Gulf project</b>
+    <p>The moment fresh air is introduced, on-coil is the <strong>mixed-air</strong> condition &mdash; a mass-weighted mixture of return and outdoor air. Worked at Doha conditions, 24 &deg;C room, 46 &deg;C ambient, 20% outdoor air by mass:</p>
+    <div class="fml" style="margin:.9em 0;">
+      <span class="eq">t_mix = 0.20 &times; 46 + 0.80 &times; 24 = 9.2 + 19.2 = <strong>28.4 &deg;C</strong></span>
+      <span class="wh">against the rule-of-thumb 25&ndash;26 &deg;C &mdash; 2.4 to 3.4 K higher on dry bulb alone.</span>
+    </div>
+    <p style="margin-bottom:0;">The <strong>humidity-ratio error is far larger than the temperature error</strong>, because Doha outdoor air carries several times the moisture of the return air. The latent term dominates. Consequences compound in one direction: coil entering condition understated &rarr; coil undersized; latent capacity understated &rarr; <strong>space humidity not held even when temperature is satisfied</strong>; chilled water flow and &Delta;T selected against the wrong entering condition. <strong>Always compute mixed air from an actual mass and energy balance</strong> at the design outdoor condition and the design outdoor-air fraction. The error becomes severe wherever the fresh-air fraction is high &mdash; hospitals, laboratories, kitchens, any high-ACH space.</p>
+  </div>
+
   <div class="quiz" id="c1m2q" data-quiz="c1m2">
     <div class="quiz-hd"><b>Module 2 — practice questions</b><span class="sc" data-score>Not started</span></div>
 
@@ -1484,12 +1677,148 @@ V = airflow, L/s                  Δt in K, ΔW in kg/kg</span>
 <section id="c1m3">
   <div class="mod-head">
     <p class="eyebrow">Course 1 · Module 3</p>
-    <h2>Psychrometry × heat load — selecting the coil</h2>
-    <p class="lede">Module 2 produced watts. Watts do not buy equipment. This module converts the load into the four numbers a supplier actually needs: airflow, supply air condition, apparatus dew point and total coil duty — and shows why the two Doha design cases hand you two different answers.</p>
+    <h2>Heat Load Calculations &amp; Psychrometry &mdash; Part 2</h2>
+    <p class="lede">Module&nbsp;2 supplied the <em>components</em> of a cooling load. Module&nbsp;3 <strong>assembles</strong> them into one complete, auditable calculation, then develops the psychrometric framework used to size the apparatus that serves it. Its centre of gravity is a single five-part worked example &mdash; and that is where the study time belongs.</p>
     <div class="tag-row">
-      <span class="chip acc">RSHF · GSHF · ESHF</span><span class="chip acc">Apparatus dew point</span>
-      <span class="chip">Bypass factor</span><span class="chip">Coil selection</span>
+      <span class="chip acc">The complete worked calculation</span><span class="chip acc">Six properties</span>
+      <span class="chip">The nine processes</span><span class="chip">Dehumidified air quantity</span>
+      <span class="chip">Safety factors</span><span class="chip">Coil selection</span>
     </div>
+  </div>
+
+  <h3 id="c1-exB2">Worked example B2 &mdash; the course's complete calculation <span class="vb course">Course</span></h3>
+  <p class="prose">Five lecture parts assembled into one auditable sheet. This is the only place in the course where every component is brought together, and it is what the graded assessment draws on. It is worked in <strong>Imperial units for a Bangalore office</strong> &mdash; reproduce it as given, then read the Doha comparison that follows.</p>
+
+  <div class="tw">
+    <table>
+      <caption>Design basis <span class="vb course">Course</span></caption>
+      <thead><tr><th>Parameter</th><th style="text-align:left;">Value</th></tr></thead>
+      <tbody>
+        <tr><td>Location / latitude</td><td style="text-align:left;">Bangalore, 12.58&deg; N &middot; altitude 921 m AMSL <em>(stated but not applied &mdash; see the flag below)</em></td></tr>
+        <tr><td>Space</td><td style="text-align:left;">Office 10 m &times; 8 m = 80 m&sup2; = 861.1 ft&sup2; &middot; 25 persons &middot; top floor</td></tr>
+        <tr><td>Exposures</td><td style="text-align:left;">North fully glazed &middot; East blockwork &middot; South partition to unconditioned &middot; West adjoins conditioned corridor (<strong>no load</strong>) &middot; roof exposed &middot; floor over conditioned space (no load)</td></tr>
+        <tr><td>Outdoor design</td><td style="text-align:left;">96 &deg;F DB / 78 &deg;F WB / 45% RH / &asymp; 116 gr/lb</td></tr>
+        <tr><td>Indoor design</td><td style="text-align:left;">75 &deg;F DB / 55% RH / 71.5 gr/lb</td></tr>
+        <tr class="sub"><td>Driving differences</td><td style="text-align:left;">&Delta;T = 21 &deg;F &nbsp;&middot;&nbsp; &Delta;W = 44.8 gr/lb</td></tr>
+        <tr><td>U-values, Btu/h&middot;ft&sup2;&middot;&deg;F</td><td style="text-align:left;">wall 0.36 &middot; glass 0.31 &middot; roof 0.10 &middot; partition 0.40</td></tr>
+        <tr><td>ETD applied</td><td style="text-align:left;">wall (E) 14 &deg;F &middot; roof 32 &deg;F &middot; partition &Delta;T 16 &deg;F &middot; <strong>glass uses the actual 21 &deg;F</strong></td></tr>
+        <tr class="total"><td>Coil &amp; ventilation</td><td style="text-align:left;">BF = 0.032 (6-row coil) &middot; ventilation 180 cfm</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">Which &Delta;T goes on which surface &mdash; the most examinable subtlety in the course</b>
+    <p style="margin-bottom:0;"><strong>Glass takes the actual 21 &deg;F</strong>, because glass is thin and has negligible thermal mass, so there is no lag to fold in. <strong>Opaque wall and roof take ETD</strong>, which already contains solar absorption and time lag. <strong>Partition takes &Delta;T &minus; 5 &deg;F.</strong> Mixing these up is common and material. Note the roof: ETD 32 &deg;F against an actual air &Delta;T of only 21 &deg;F &mdash; because solar absorption drives the outer surface far above ambient. The roof has the <em>lowest</em> U-value in the building (0.10) and still produces the third-largest envelope line item, purely through area &times; ETD. <strong>Roof insulation is the highest-leverage envelope intervention on a top floor at low latitude.</strong></p>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>Room sensible heat &mdash; component build-up <span class="vb course">Course</span></caption>
+      <thead><tr><th>Component</th><th style="text-align:left;">Arithmetic</th><th class="num">Btu/h</th><th class="num">% RSH</th></tr></thead>
+      <tbody>
+        <tr><td>Solar gain through glass (N)</td><td style="text-align:left;">0.27 &times; 33 &times; 236.8</td><td class="num">2 110</td><td class="num">8.0%</td></tr>
+        <tr><td>Transmission through glass (N)</td><td style="text-align:left;">0.31 &times; 236.8 &times; 21</td><td class="num">1 542</td><td class="num">5.8%</td></tr>
+        <tr><td>Transmission through wall (E)</td><td style="text-align:left;">0.36 &times; 295.9 &times; 14</td><td class="num">1 491</td><td class="num">5.6%</td></tr>
+        <tr><td>Transmission through partition (S)</td><td style="text-align:left;">0.40 &times; 236.8 &times; 16</td><td class="num">1 516</td><td class="num">5.7%</td></tr>
+        <tr><td>Lighting &mdash; 70% to room</td><td style="text-align:left;">0.7 &times; 860 &times; 1.08 &times; 3.41 &times; 0.7</td><td class="num">1 552</td><td class="num">5.9%</td></tr>
+        <tr><td><strong>Computers</strong></td><td style="text-align:left;">120 W &times; 25 &times; 3.41</td><td class="num">10 230</td><td class="num">38.7%</td></tr>
+        <tr><td>Plotter</td><td style="text-align:left;">500 W &times; 3.41</td><td class="num">1 705</td><td class="num">6.5%</td></tr>
+        <tr><td>People &mdash; sensible</td><td style="text-align:left;">245 &times; 25</td><td class="num">6 125</td><td class="num">23.2%</td></tr>
+        <tr><td>Infiltration &mdash; bypassed OA</td><td style="text-align:left;">0.032 &times; 1.08 &times; 180 &times; 21</td><td class="num">131</td><td class="num">0.5%</td></tr>
+        <tr class="total"><td>Room sensible heat &middot; RSH</td><td style="text-align:left;">&mdash;</td><td class="num">26 402</td><td class="num">100%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">The computers alone are 39% of room sensible &mdash; more than the entire envelope</b>
+    <p style="margin-bottom:0;">Solar, transmission, partition and lighting together come to 6 658 Btu/h. The IT load alone is 10 230. This is the &ldquo;internal loads have grown as envelopes improved&rdquo; trend made concrete, and it has continued past this course's vintage. <strong>The equipment schedule is the highest-risk input in the whole calculation</strong>, and it is an information dependency on the client, not an engineering judgement. A 25% error in assumed IT load moves the total more than a wholesale change of glazing specification &mdash; which is why an undocumented internal-load assumption is one of the two most common roots of an &ldquo;the AHU is undersized&rdquo; change-order argument.</p>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>Latent, plenum and the route to grand total heat <span class="vb course">Course</span></caption>
+      <thead><tr><th>Block</th><th style="text-align:left;">Component</th><th class="num">Btu/h</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="3"><strong>Room latent</strong></td><td style="text-align:left;">People latent &mdash; 205 &times; 25</td><td class="num">5 125</td></tr>
+        <tr><td style="text-align:left;">Infiltration latent &mdash; 0.032 &times; 0.68 &times; 180 &times; 44.8</td><td class="num">175</td></tr>
+        <tr class="total"><td style="text-align:left;">RLH</td><td class="num">5 300</td></tr>
+
+        <tr><td rowspan="7"><strong>Return air<br>(plenum)</strong></td><td style="text-align:left;">Solar through glass above false ceiling</td><td class="num">957</td></tr>
+        <tr><td style="text-align:left;">Transmission through glass above FC</td><td class="num">700</td></tr>
+        <tr><td style="text-align:left;">Transmission through wall above FC</td><td class="num">678</td></tr>
+        <tr><td style="text-align:left;"><strong>Transmission through ROOF</strong> &mdash; 0.10 &times; 860 &times; 32</td><td class="num">2 752</td></tr>
+        <tr><td style="text-align:left;">Transmission through partition above FC</td><td class="num">689</td></tr>
+        <tr><td style="text-align:left;">Lighting &mdash; 30% to plenum</td><td class="num">665</td></tr>
+        <tr class="total"><td style="text-align:left;">Return air sensible</td><td class="num">6 444</td></tr>
+
+        <tr><td rowspan="2"><strong>Safety factor</strong></td><td style="text-align:left;">Sensible &mdash; 12.5% of RSH</td><td class="num">3 300</td></tr>
+        <tr><td style="text-align:left;">Latent &mdash; 5% of RLH</td><td class="num">265</td></tr>
+
+        <tr><td rowspan="3"><strong>Effective</strong></td><td style="text-align:left;">ERSH = 26 402 + 3 300</td><td class="num">29 702</td></tr>
+        <tr><td style="text-align:left;">ERLH = 5 300 + 265</td><td class="num">5 565</td></tr>
+        <tr class="total"><td style="text-align:left;">ERTH</td><td class="num">35 267</td></tr>
+
+        <tr><td rowspan="3"><strong>Un-bypassed OA</strong><br><span style="font-weight:400;color:var(--text-muted);">CF = 1 &minus; 0.032 = 0.968</span></td><td style="text-align:left;">Sensible &mdash; 1.08 &times; 0.968 &times; 180 &times; 21</td><td class="num">3 952</td></tr>
+        <tr><td style="text-align:left;">Latent &mdash; 0.68 &times; 0.968 &times; 180 &times; 44.8</td><td class="num">5 308</td></tr>
+        <tr><td style="text-align:left;">Return duct gain &mdash; 2% of return air</td><td class="num">129</td></tr>
+
+        <tr><td rowspan="3"><strong>Grand total</strong></td><td style="text-align:left;">TSH = 29 702 + 3 952 + 6 444 + 129</td><td class="num">40 227</td></tr>
+        <tr><td style="text-align:left;">TLH = 5 565 + 5 308</td><td class="num">10 873</td></tr>
+        <tr class="total"><td style="text-align:left;"><strong>GTH = TSH + TLH</strong></td><td class="num"><strong>51 100</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="res">
+    <div><span class="k">Grand total heat</span><span class="v">4.26</span><span class="u">TR &middot; 51 100 Btu/h</span></div>
+    <div><span class="k">ESHF</span><span class="v">0.842</span><span class="u">29 702 / 35 267</span></div>
+    <div><span class="k">Apparatus dew point</span><span class="v">55.2</span><span class="u">&deg;F &middot; from ESHF table</span></div>
+    <div class="hero"><span class="k">Dehumidified air</span><span class="v">1 435</span><span class="u">cfm</span></div>
+    <div><span class="k">Area per ton</span><span class="v">202</span><span class="u">ft&sup2;/TR</span></div>
+    <div><span class="k">Outdoor air fraction</span><span class="v">12.5</span><span class="u">%</span></div>
+  </div>
+
+  <div class="work">
+    <div class="stp"><b>Closing the calculation &mdash; dehumidified air quantity</b>
+      <span class="r">CFM = ERSH / [ (t_R &minus; ADP) &times; CF &times; 1.08 ]</span>
+      <span class="r">&nbsp;&nbsp;&nbsp;&nbsp; = 29 702 / [ (75 &minus; 55.2) &times; 0.968 &times; 1.08 ] = 29 702 / 20.699 = <strong>1 435 cfm</strong></span></div>
+  </div>
+
+  <div class="sanity">
+    <b class="nh">Sanity check &mdash; and the reason you must not carry it to Doha</b>
+    <p>337 cfm/TR sits below the familiar 400 cfm/TR, which is consistent with the low ESHF of 0.84. About 10 air changes per hour, 12.5% outdoor air &mdash; all ordinary for an office.</p>
+    <p style="margin-bottom:0;"><strong>202 ft&sup2;/TR would be generous in Doha.</strong> Against this Bangalore basis, Doha's sensible driver is roughly <strong>1.8&times;</strong> and its latent driver roughly <strong>2.0&times;</strong>. The load is not merely larger &mdash; its <em>shape</em> changes. The sensible/latent balance shifts toward latent, which moves the required coil SHR, the ADP and the whole dehumidification strategy. <strong>A design intuition calibrated on this example will systematically under-provide dehumidification capacity in the Gulf.</strong></p>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">What the worked example leaves out &mdash; and it all points one way</b>
+    <p>The Heat Load Estimation lecture defines these as room sensible components. <strong>None of them appears in the calculation:</strong></p>
+    <div class="tw" style="margin:1em 0;">
+      <table>
+        <thead><tr><th>Omitted</th><th class="num">Typical magnitude</th><th style="text-align:left;">Effect</th></tr></thead>
+        <tbody>
+          <tr><td>Supply duct heat gain</td><td class="num">1&ndash;3% of sensible</td><td style="text-align:left;">understates coil duty</td></tr>
+          <tr><td><strong>Supply duct leakage</strong></td><td class="num">5&ndash;15%</td><td style="text-align:left;"><strong>potentially the largest single omission</strong></td></tr>
+          <tr><td>Fan motor heat</td><td class="num">2&ndash;5%</td><td style="text-align:left;">understates coil duty</td></tr>
+          <tr><td>Pipe losses / pump heat</td><td class="num">&mdash;</td><td style="text-align:left;">defined in TSH, never computed</td></tr>
+          <tr><td>Vapour transmission</td><td class="num">&mdash;</td><td style="text-align:left;">minor in an office; large in a pool or process space</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-bottom:0;">Note the irony: a blanket <strong>12.5% safety factor is applied while several of the specific items it nominally covers are simply absent</strong>. That is the argument against blanket factors in one paragraph &mdash; they <em>substitute</em> for itemised rigour rather than supplementing it. <strong>When reviewing a submitted load calculation, the presence or absence of duct gain, duct leakage and fan heat as explicit line items tells you immediately whether it was built from a proper template or copied from a teaching example.</strong></p>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">Challenge the safety factors &mdash; 12.5% sensible and 5% latent have no stated basis</b>
+    <p>Three objections worth having ready, because &ldquo;that is what we always do&rdquo; is not a defensible technical-query response:</p>
+    <ol>
+      <li><strong>It compounds with conservatisms already present.</strong> ETD tables are conservative, the design condition is already a 0.4&ndash;2% exceedance case, nameplate equipment ratings overstate real dissipation, and coincident peaking is already improbable. Stacking 12.5% on top sizes a plant for a condition that will not occur.</li>
+      <li><strong>Oversizing is not a safe failure.</strong> It degrades part-load efficiency, promotes short-cycling and &mdash; critically in a humid climate &mdash; <strong>worsens dehumidification at part load</strong>, because an oversized coil satisfies the sensible thermostat before it has run long enough to remove moisture. The failure mode of an oversized system in Doha is a cold, clammy space with a satisfied thermostat and a humidity complaint.</li>
+      <li><strong>The asymmetry is unexplained.</strong> If the rationale is occupancy uncertainty, occupants carry both sensible <em>and</em> latent load &mdash; at an occupant SHR of 0.54 the latent uplift should be comparable, not less than half. It reads as convention, not reasoning.</li>
+    </ol>
+    <p style="margin-bottom:0;"><strong>Better practice:</strong> identify which inputs are actually uncertain, apply a justified allowance to those line items, and record the justification. An itemised margin is easier to defend in a technical query and easier to release later when the client wants capital cost out.</p>
   </div>
 
   <h3>The three sensible heat factors</h3>
@@ -1663,6 +1992,95 @@ The ESHF line is drawn from the room state; where it strikes the saturation curv
       <button class="btn" type="button" data-reset>Reset</button>
       <span class="msg" data-msg></span>
     </div>
+  </div>
+</section>
+
+<section id="c1-errors">
+  <div class="mod-head">
+    <p class="eyebrow">Course 1 &middot; Modules 1&ndash;3</p>
+    <h2>Where the course material is wrong</h2>
+    <p class="lede">Sixty-odd defects were identified across the three modules while these notes were built. Most are harmless narration artefacts. A minority would propagate into a design if carried forward unexamined, and two invert a safety classification. They are recorded here so you are not caught by them in the assessment <em>and</em> do not carry them onto a project.</p>
+    <div class="tag-row">
+      <span class="chip acc">Verified against source</span><span class="chip">Assessment vs design</span>
+      <span class="chip">Review checklist</span>
+    </div>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">Answer the exam as taught. Design to the correction.</b>
+    <p style="margin-bottom:0;">These two things are not the same, and the gap is the point of this section. A graded assessment may well mark the lecture's answer correct. A design reviewer working to ASHRAE will not. Where the two diverge below, both are given &mdash; the <strong>As taught</strong> column is what earns the mark, the <strong>Correction</strong> column is what you put in a deliverable.</p>
+  </div>
+
+  <h3>A &middot; Errors that would propagate into a design</h3>
+  <div class="tw">
+    <table>
+      <caption>Carry these into project work and they cost money or safety <span class="vb course">Course</span></caption>
+      <thead><tr><th>Module</th><th style="text-align:left;">As taught</th><th style="text-align:left;">Correction</th><th style="text-align:left;">Why it bites</th></tr></thead>
+      <tbody>
+        <tr><td class="num">M1</td><td style="text-align:left;">&ldquo;Class&nbsp;A refrigerants are non-toxic with <strong>less than</strong> 400 ppm concentration&rdquo;</td><td style="text-align:left;"><strong>Inverted.</strong> Per ASHRAE&nbsp;34, Class&nbsp;A is OEL <strong>&ge;&nbsp;400 ppm</strong> (lower toxicity); Class&nbsp;B is OEL <strong>&lt;&nbsp;400 ppm</strong></td><td style="text-align:left;">A safety classification stated backwards. Consequential for machinery-room and occupied-space refrigerant selection</td></tr>
+        <tr><td class="num">M1</td><td style="text-align:left;">Class&nbsp;3 flammability limit &ldquo;is 0.10 kg/m&sup3;&rdquo;</td><td style="text-align:left;">Class&nbsp;3 is LFL <strong>&le;</strong> 0.10 kg/m&sup3; with heat of combustion <strong>&ge;</strong> 19 kJ/kg &mdash; lower, not equal</td><td style="text-align:left;">Boundary condition on a flammability class</td></tr>
+        <tr><td class="num">M2</td><td style="text-align:left;">Motor heat gain <code>Q = input &times; (1 &minus; &eta;)</code>, presented as general</td><td style="text-align:left;">One of <strong>three</strong> ASHRAE cases. Both motor and driven equipment in the space &rarr; <strong>Q = P/&eta;</strong>, the <em>whole</em> electrical input</td><td style="text-align:left;"><strong>Substantially understates</strong> the very common case &mdash; in-line pumps or fans inside a conditioned plant room. A silent error: the calculation looks complete</td></tr>
+        <tr><td class="num">M2</td><td style="text-align:left;">On-coil temperature = room + 1&ndash;2&nbsp;&deg;C</td><td style="text-align:left;">Valid only at near-zero outdoor air. Otherwise compute the <strong>mixed-air condition</strong> from a mass balance</td><td style="text-align:left;">Coil undersized; latent capacity understated; <strong>space humidity not held</strong>. Severe at high fresh-air fractions</td></tr>
+        <tr><td class="num">M2</td><td style="text-align:left;">Ventilation stops at <code>V_bz</code></td><td style="text-align:left;">Divide by <strong>E<sub>z</sub></strong>; apply <strong>E<sub>v</sub></strong> on multi-zone recirculating systems</td><td style="text-align:left;">E<sub>z</sub> = 0.8 for ceiling-supplied warm air is a <strong>25% increase</strong>. Produces post-handover IAQ non-conformances invisible at FAT and TAB</td></tr>
+        <tr><td class="num">M2</td><td style="text-align:left;">Lighting power density per &ldquo;ASHRAE 19.1&rdquo;, ballast factor 1.25</td><td style="text-align:left;"><strong>No such standard</strong> &mdash; it is <strong>ASHRAE 90.1</strong>. LED driver losses are 10&ndash;15% and usually already inside the quoted luminaire wattage</td><td style="text-align:left;">Applying 1.25 on top of an LED rating <strong>overstates lighting load by ~25%</strong>, and oversizing is not a safe failure</td></tr>
+        <tr><td class="num">M3</td><td style="text-align:left;">Site stated at 921 m altitude; sea-level psychrometrics used throughout</td><td style="text-align:left;">Internally inconsistent. At 921 m, W = 79.7 gr/lb not 71.5, and 1.08&nbsp;/&nbsp;0.68&nbsp;/&nbsp;4.5 become <strong>0.967&nbsp;/&nbsp;0.609&nbsp;/&nbsp;4.030</strong></td><td style="text-align:left;">Doha is at sea level so this does not bite directly &mdash; but the <em>class</em> of error does. A submission using 1.08 unmodified at 900 m overstates air-side sensible by ~12%</td></tr>
+        <tr class="total"><td class="num">M2/M3</td><td style="text-align:left;">Carrier ETD tables, 40&deg;&nbsp;N / 95&nbsp;&deg;F / 80&nbsp;&deg;F / 20&nbsp;&deg;F range</td><td style="text-align:left;">Use <strong>RTS or Heat Balance</strong> with real Doha climatic data for design; keep ETD as a hand check only</td><td style="text-align:left;"><strong>All four table parameters are wrong for Qatar.</strong> The single largest applicability gap in the course</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>B &middot; What the course defines and then never uses</h3>
+  <div class="note warn">
+    <b class="nh">Every omission runs in the same direction &mdash; undersizing</b>
+    <p style="margin-bottom:0;">Supply duct heat gain, supply duct leakage (the course itself cites 5&ndash;15%), fan motor heat, pipe and pump losses, and vapour transmission are all carefully defined in the lectures and all absent from the worked calculation. A learner using that calculation as a template produces a structurally incomplete sheet. <strong>Their presence or absence as explicit line items is the fastest single check on a submitted load calculation.</strong> The 12.5% blanket safety factor nominally covers them, which is precisely the problem &mdash; a blanket factor substitutes for itemised rigour instead of supplementing it.</p>
+  </div>
+
+  <h3>C &middot; The course contradicting itself</h3>
+  <div class="tw">
+    <table>
+      <caption>Same course, two values, no reconciliation</caption>
+      <thead><tr><th>Item</th><th class="num">Module 2</th><th class="num">Module 3</th><th style="text-align:left;">Resolution</th></tr></thead>
+      <tbody>
+        <tr><td>Ballast factor, same lamp type</td><td class="num">1.25</td><td class="num">1.08</td><td style="text-align:left;"><strong>Unreconciled &mdash; a 16% swing.</strong> Take it from the luminaire schedule, not from either</td></tr>
+        <tr><td>Comfort RH band</td><td class="num">30&ndash;70%</td><td class="num">40&ndash;60%</td><td style="text-align:left;"><strong>Unreconciled.</strong> 40&ndash;60% is the better target; neither is the ASHRAE&nbsp;55 criterion, which uses humidity-ratio limits</td></tr>
+        <tr><td>Partition temperature offset</td><td class="num">&ldquo;5 &deg;C&rdquo;</td><td class="num">21 &minus; 5 = 16 &deg;F</td><td style="text-align:left; " class="g"><strong>Resolved: 5 &deg;F.</strong> Module 2's narration is the error. The objection to fixed offsets stands</td></tr>
+        <tr><td>Bypass factor correlation</td><td class="num">BF = 0.1<sup>n/4</sup></td><td class="num">0.032 for 6 rows</td><td style="text-align:left;" class="g"><strong>Consistent</strong> &mdash; 0.1<sup>1.5</sup> = 0.0316 &check;</td></tr>
+        <tr><td>E<sub>z</sub> / E<sub>v</sub> in ventilation</td><td class="num">omitted</td><td class="num">omitted</td><td style="text-align:left;" class="r"><strong>Gap persists across both modules</strong></td></tr>
+        <tr><td>Air-side coefficients</td><td class="num">flagged as standard-air</td><td class="num">used unmodified at 921 m</td><td style="text-align:left;" class="r">Module 3 fails to apply Module 2's own density caveat</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>D &middot; Statements that are simply incorrect</h3>
+  <div class="tw">
+    <table>
+      <caption>Physics errors in the narration &mdash; know them, do not repeat them</caption>
+      <thead><tr><th>Topic</th><th style="text-align:left;">Stated</th><th style="text-align:left;">Correct</th></tr></thead>
+      <tbody>
+        <tr><td>Heating + humidification</td><td style="text-align:left;">&ldquo;vapour pressure drops, relative humidity falls&rdquo;</td><td style="text-align:left;"><strong>Vapour pressure must rise</strong> &mdash; W and p<sub>v</sub> are monotonically related. RH <strong>may rise or fall</strong> depending on which effect dominates; do not memorise a direction</td></tr>
+        <tr><td>Heating + dehumidification</td><td style="text-align:left;">&ldquo;relative humidity rises&rdquo;</td><td style="text-align:left;"><strong>RH falls</strong> &mdash; DB up and moisture down both drive it down</td></tr>
+        <tr><td>Evaporative cooling</td><td style="text-align:left;">heat transferred <strong>to</strong> the steam</td><td style="text-align:left;">Reversed. Heat flows <strong>from the air</strong> to the evaporating water</td></tr>
+        <tr><td>Solar radiation</td><td style="text-align:left;">&ldquo;contains both sensible and latent components&rdquo;</td><td style="text-align:left;">Transmitted solar radiation is <strong>purely sensible</strong>. Shortwave radiation has no latent component</td></tr>
+        <tr><td>Humidity ratio basis</td><td style="text-align:left;">&ldquo;pounds of moist air&rdquo;</td><td style="text-align:left;">Always per pound of <strong>dry</strong> air &mdash; dry-air mass is conserved through humidification, moist-air mass is not</td></tr>
+        <tr><td>Real compression</td><td style="text-align:left;">&ldquo;adiabatic and irreversible &hellip; even though it can be isentropic&rdquo;</td><td style="text-align:left;">Garbled. Real compression is <strong>non-adiabatic and irreversible, therefore not isentropic</strong></td></tr>
+        <tr><td>Declination</td><td style="text-align:left;">23&deg; S winter / 23.5&deg; N summer</td><td style="text-align:left;"><strong>&plusmn;23.45&deg;</strong> at both solstices. The asymmetry is not real</td></tr>
+        <tr><td>Standard atmosphere</td><td style="text-align:left;">760 mmHg = &ldquo;1.1325 bar&rdquo;</td><td style="text-align:left;"><strong>1.01325 bar</strong> = 101 325 Pa</td></tr>
+        <tr><td>Absorption chiller vacuum</td><td style="text-align:left;">&ldquo;vacuum conditions of 754 mmHg&rdquo;</td><td style="text-align:left;">754 mmHg <em>of vacuum</em> &mdash; about <strong>6 mmHg absolute</strong></td></tr>
+        <tr><td>Outdoor CO&sub2;</td><td style="text-align:left;">300&ndash;500 ppm</td><td style="text-align:left;">Ambient passed <strong>420 ppm</strong>. Since the criterion is a <em>differential above outdoor</em>, a DCV setpoint built on an assumed 350 ppm is wrong. <strong>Measure locally</strong></td></tr>
+        <tr><td>CO&sub2; 700 ppm</td><td style="text-align:left;">presented as the ASHRAE limit</td><td style="text-align:left;">Informative guidance on odour acceptability. <strong>62.1 compliance is cfm-based</strong>, not CO&sub2;-based. Using CO&sub2; as an indicator is fine; calling it the compliance criterion is not</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>E &middot; Chart readings that do not reconcile</h3>
+  <div class="note warn">
+    <b class="nh">Treat every enthalpy figure read off a chart in this course as suspect</b>
+    <p style="margin-bottom:0;">Two independent instances, both high, both in the same direction. The chart example gives <strong>32 Btu/lb</strong> at 78&nbsp;&deg;F DB / 65&nbsp;&deg;F WB where the correct value is <strong>&asymp; 29.9&ndash;30.1</strong> &mdash; about 7% high. The sensible-heating example gives <strong>&Delta;h = 5 Btu/lb</strong> where <code>c<sub>p</sub>&Delta;T</code> gives <strong>3.71</strong> &mdash; 35% high. The likely cause is the staggered enthalpy scale, which sits to the left of the saturation curve and is easy to read against the wrong tick. <strong>For any sensible process, verify enthalpy change against c<sub>p</sub>&Delta;T rather than the chart.</strong> Four of the five other properties in the same example reproduce to within 0.2%, so the state points are sound &mdash; it is specifically the enthalpy scale being misread.</p>
+  </div>
+
+  <div class="note good">
+    <b class="nh">What this section is actually for</b>
+    <p style="margin-bottom:0;">Not to disparage the course &mdash; the method it teaches is coherent, the worked calculation reconciles to 0.005%, and the Carrier framework is still what much of the region's consultancy base was trained on. The point is that <strong>you are reviewing other people's calculations for a living</strong>, and a great many of them were produced by engineers taught exactly this material. Recognising these specific defects on sight &mdash; a missing E<sub>z</sub>, a motor formula applied to the wrong case, an on-coil temperature taken as room + 2&nbsp;K, a ballast factor stacked on an LED rating &mdash; is worth more in a design review than the syllabus itself.</p>
   </div>
 </section>
 
@@ -2654,6 +3072,39 @@ resistance changes — a closing damper moves you along a different curve entire
 
   <div class="tw">
     <table>
+      <caption>Course 1 as taught &mdash; Carrier method, Imperial units <span class="vb course">Course</span></caption>
+      <thead><tr><th style="text-align:left;">Quantity</th><th style="text-align:left;">Relation</th></tr></thead>
+      <tbody>
+        <tr><td>Opaque wall / roof</td><td style="text-align:left;"><code>q = U&middot;A&middot;&Delta;T_e</code> &nbsp;&mdash; ETD, tables at 95&nbsp;&deg;F / 80&nbsp;&deg;F / 20&nbsp;&deg;F range / 40&deg;&nbsp;N</td></tr>
+        <tr><td>Glass &mdash; transmission</td><td style="text-align:left;"><code>q = U&middot;A&middot;&Delta;T</code> &nbsp;(actual &Delta;T; no lag)</td></tr>
+        <tr><td>Glass &mdash; solar</td><td style="text-align:left;"><code>q = SHG &middot; A_glass &middot; SF</code> &nbsp;&middot;&nbsp; <code>SC &asymp; SHGC / 0.87</code></td></tr>
+        <tr><td>Partition</td><td style="text-align:left;"><code>q = U&middot;A&middot;(&Delta;T &minus; 5&deg;F)</code> &nbsp;&mdash; fixed offset; prefer an energy balance</td></tr>
+        <tr><td>U-factor</td><td style="text-align:left;"><code>U = 1 / [1/h_o + &Sigma;(&Delta;x/k) + 1/h_i]</code> &nbsp;&middot;&nbsp; films: 0.68 inside, 0.25 outside summer, 0.17 winter</td></tr>
+        <tr><td>Lighting</td><td style="text-align:left;"><code>q = A &middot; LPD &middot; BF &middot; 3.41 &middot; f_space</code> &nbsp;(70% room / 30% plenum for recessed)</td></tr>
+        <tr><td>Motor &mdash; three cases</td><td style="text-align:left;">both in space <code>P/&eta;</code> &middot; motor in, driven out <code>P(1&minus;&eta;)/&eta;</code> &middot; motor out, driven in <code>P</code></td></tr>
+        <tr><td>Air-side shortcuts</td><td style="text-align:left;"><code>q_s = 1.08&middot;CFM&middot;&Delta;T</code> &middot; <code>q_l = 0.68&middot;CFM&middot;&Delta;W(gr/lb)</code> &middot; <code>q_t = 4.5&middot;CFM&middot;&Delta;h</code></td></tr>
+        <tr><td>Altitude correction</td><td style="text-align:left;">multiply all three coefficients by <code>P_actual / 14.696</code></td></tr>
+        <tr><td>Bypassed OA</td><td style="text-align:left;"><code>q_s = BF&middot;1.08&middot;V&middot;&Delta;T</code> &middot; <code>q_l = BF&middot;0.68&middot;V&middot;&Delta;W</code> &nbsp;&rarr; room load</td></tr>
+        <tr><td>Un-bypassed OA</td><td style="text-align:left;"><code>q_s = (1&minus;BF)&middot;1.08&middot;V&middot;&Delta;T</code> &middot; <code>q_l = (1&minus;BF)&middot;0.68&middot;V&middot;&Delta;W</code> &nbsp;&rarr; coil load</td></tr>
+        <tr><td>Heat-factor hierarchy</td><td style="text-align:left;"><code>RSHF = RSH/RTH</code>; &nbsp;<code>ESHF = ERSH/ERTH</code>; &nbsp;<code>GSHF = TSH/GTH</code></td></tr>
+        <tr><td>Effective quantities</td><td style="text-align:left;"><code>ERSH = RSH + bypassed OA_s + safety</code>; &nbsp;<code>ERLH = RLH + bypassed OA_l + safety</code></td></tr>
+        <tr><td>Grand totals</td><td style="text-align:left;"><code>TSH = ERSH + OA_s,unbyp + RA gain + duct gain</code>; &nbsp;<code>TLH = ERLH + OA_l,unbyp</code></td></tr>
+        <tr><td>Bypass / contact factor</td><td style="text-align:left;"><code>BF = 0.1^(n/4)</code>; &nbsp;<code>CF = 1 &minus; BF</code> &nbsp;&mdash; first-pass only; use rated data</td></tr>
+        <tr class="total"><td>Dehumidified air quantity</td><td style="text-align:left;"><code>CFM = ERSH / [1.08 &middot; (t_R &minus; ADP) &middot; (1 &minus; BF)]</code></td></tr>
+        <tr><td>Tons of refrigeration</td><td style="text-align:left;"><code>TR = GTH / 12 000</code></td></tr>
+        <tr><td>Enthalpy (IP)</td><td style="text-align:left;"><code>h = 0.240t + W(1061 + 0.444t)</code> &nbsp;&middot;&nbsp; 1 lb = 7 000 grains</td></tr>
+        <tr><td>Moisture mass balance</td><td style="text-align:left;"><code>&#7745;_da = (moisture rate) / &Delta;W</code> &nbsp;&mdash; sets air mass flow in any drying or dehumidification problem</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">The course's enthalpy constants differ slightly from ASHRAE's</b>
+    <p style="margin-bottom:0;">Module&nbsp;1 gives <code>h = 1.005t + W(2501 + 1.88t)</code> and <code>W = 0.622&middot;p_v/(p_t &minus; p_v)</code>. ASHRAE <em>Fundamentals</em> Ch.&nbsp;1 uses <strong>1.006</strong>, <strong>1.86</strong> and <strong>0.621945</strong> &mdash; which is what this guide's calculator runs on. The difference is immaterial for study and below chart-reading resolution, but use the ASHRAE constants in anything you submit, and be aware the two will not agree in the last digit.</p>
+  </div>
+
+  <div class="tw">
+    <table>
       <caption>Ventilation, life safety and DCV</caption>
       <thead><tr><th style="text-align:left;">Quantity</th><th style="text-align:left;">Relation</th></tr></thead>
       <tbody>
@@ -2706,6 +3157,10 @@ resistance changes — a closing damper moves you along a different curve entire
         <tr><td><strong>NFPA 88A</strong></td><td style="text-align:left;">Parking structures</td><td style="text-align:left;">Car park ventilation and CO control</td></tr>
         <tr><td><strong>ISO 5149 / EN 378</strong></td><td style="text-align:left;">Refrigerating systems — safety and environmental requirements</td><td style="text-align:left;">VRF refrigerant concentration limits in occupied spaces</td></tr>
         <tr><td><strong>ISO 16890</strong></td><td style="text-align:left;">Air filter classification</td><td style="text-align:left;">Filter selection and the mid-life pressure drop used in ESP</td></tr>
+        <tr><td><strong>Carrier <em>Handbook of AC System Design</em></strong></td><td style="text-align:left;">Manufacturer handbook &mdash; ETD tables, solar heat gain tables, shading coefficients, ADP tables</td><td style="text-align:left;"><strong>The method Course 1 actually teaches.</strong> Not a consensus standard; base tables are 40&deg;&nbsp;N</td></tr>
+        <tr><td><strong>ISHRAE Handbook 2014</strong></td><td style="text-align:left;">Indian practice &mdash; occupant heat gain, ADP tables, design climatic data</td><td style="text-align:left;">Cited throughout Course 1. <strong>Not a Qatar anchor standard</strong>; use ASHRAE Fundamentals Ch. 18 and Ch. 14 instead</td></tr>
+        <tr><td><strong>NBC 2016 (India)</strong></td><td style="text-align:left;">Indian national building code &mdash; ventilation rates as reproduced in the lectures</td><td style="text-align:left;">Pedagogically fine, <strong>contractually irrelevant in Qatar</strong></td></tr>
+        <tr><td><strong>ASHRAE 34</strong></td><td style="text-align:left;">Designation and safety classification of refrigerants</td><td style="text-align:left;">Toxicity and flammability classes &mdash; the course states the toxicity classes inverted</td></tr>
         <tr><td><strong>QCS (Qatar Construction Specifications)</strong></td><td style="text-align:left;">The governing national specification; adopts and amends international standards</td><td style="text-align:left;">Envelope U-values, glazing SHGC, ventilation and life-safety requirements</td></tr>
       </tbody>
     </table>
@@ -2719,10 +3174,15 @@ resistance changes — a closing damper moves you along a different curve entire
 
 <section id="r-src">
   <h3>Sources &amp; limits of this guide</h3>
+  <div class="note good">
+    <b class="nh">How this guide was produced &mdash; Course 1</b>
+    <p><strong>Course 1 is built from the course's own material</strong>: the verbatim lecture transcripts for all 20 video items of Module&nbsp;1, and the technical study notes covering the 15 lectures of Module&nbsp;2 and the 14 of Module&nbsp;3. That source set was assembled from the Coursera on-demand subtitle assets and the module documents, and independently verified &mdash; 41 numerical checks against ASHRAE psychrometric formulations, of which 40 reproduce the lecture values, and the complete worked heat load calculation reconciles end-to-end to <strong>0.005%</strong>.</p>
+    <p style="margin-bottom:0;">Statements traceable to those lectures carry a <span class="vb course">Course</span> tag. <strong>No lecture text is reproduced here.</strong> The transcripts were used to establish what the course teaches, in what sequence, with what table basis and what defects &mdash; the way a vendor design manual is used to check a calculation. The practice questions remain authored from first principles; the graded assessments for Modules&nbsp;1 and&nbsp;2 contain no text in any case, and the Module&nbsp;3 paper exists only as images that were not transcribed.</p>
+  </div>
+
   <div class="note trap">
-    <b class="nh">How this guide was produced, and what that means for you</b>
-    <p>It was written <strong>without access to the Coursera platform</strong> — the course pages could not be reached from the environment that produced it. Nothing here is a transcript of the lectures, slides or graded quizzes. The structure follows the published course and specialization descriptions; the engineering follows the codes those courses name and established design method.</p>
-    <p style="margin-bottom:0;">Practical consequences: <strong>the practice questions are authored from first principles, not reproduced from Coursera</strong> — they are revision, not a question bank, and reproducing the real ones would breach the honor code in any case. Every value that would normally be read from a copyrighted ASHRAE table is tagged <span class="vb verify">Verify</span> and left editable. <strong>Replace those before any figure here reaches a deliverable.</strong></p>
+    <b class="nh">Courses 2, 3 and 4 are still reconstructed</b>
+    <p style="margin-bottom:0;">No transcripts were available for <em>Air Conditioning Equipment Selection</em>, <em>Ventilation, Life Safety &amp; Smoke Extraction</em> or <em>Cutting-edge Technology</em>. Those three panels follow the published course descriptions, the codes they name, and established design method &mdash; they carry <strong>no Course tags</strong>, and nothing in them should be taken as a record of what was actually taught. Every value that would normally be read from a copyrighted handbook table remains tagged <span class="vb verify">Verify</span> and editable throughout the guide. <strong>Replace those before any figure here reaches a deliverable.</strong></p>
   </div>
 
   <h4>Verification performed</h4>
@@ -2732,6 +3192,7 @@ resistance changes — a closing damper moves you along a different curve entire
     <li>Psychrometric routines were checked against ASHRAE reference values: p<sub>ws</sub>(25 °C) = 3.16922 kPa against a published 3.1698 kPa.</li>
     <li>Results were cross-checked against independent rules of thumb — m²/TR, GPM/TR, duct velocity, specific fan power — each stated in the relevant sanity-check block.</li>
     <li>The classical ESHF/ADP graphical construction was checked against the rigorous mass-and-energy solution and agrees within 0.20 K.</li>
+    <li><strong>Course 1 content was checked against the lecture material itself</strong> &mdash; the five-part worked calculation reconciles to 0.005%, the bypass-factor correlation is consistent across Modules 2 and 3 (0.1<sup>1.5</sup> = 0.0316 &asymp; 0.032 for a 6-row coil), and roughly sixty defects in the course material were identified and are recorded in <a href="#c1-errors">Where the course material is wrong</a>.</li>
   </ul>
 
   <h4>Course pages this guide covers</h4>
@@ -2753,7 +3214,7 @@ resistance changes — a closing damper moves you along a different curve entire
 <div class="layout" style="padding-bottom:40px;">
   <div></div>
   <footer class="pg">
-    <p><strong>Doha HVAC Study Guide</strong> — a personal revision aid for the L&amp;T EduTech <em>Design of Ventilation &amp; Air Conditioning System for Buildings</em> specialization on Coursera. Not affiliated with, endorsed by, or derived from Coursera or L&amp;T EduTech course material.</p>
+    <p><strong>Doha HVAC Study Guide</strong> &mdash; a personal revision aid for the L&amp;T EduTech <em>Design of Ventilation &amp; Air Conditioning System for Buildings</em> specialization on Coursera. Not affiliated with or endorsed by Coursera or L&amp;T EduTech. Course 1 was written with reference to the course lecture material to establish method, sequence and table basis; <strong>no lecture text, slide content or assessment question is reproduced here</strong>, and all commentary, worked Doha examples and practice questions are original.</p>
     <p>Every calculation is reproducible from the inputs shown. Table values tagged <span class="vb verify">Verify</span> are representative magnitudes and must be replaced from the governing handbook or project basis of design before use in a deliverable. This guide is a study aid — it is not a stamped calculation and carries no professional warranty.</p>
     <p style="margin-bottom:0;">Allan Ronald Dones · <a href="/">allanronalddones.com</a></p>
   </footer>
