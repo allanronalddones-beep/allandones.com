@@ -470,10 +470,22 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
   <div class="rail-group" data-rail="c2" hidden>
     <h4>C2 · Equipment</h4>
     <a href="#c2-intro"><span class="rm">M1</span>High side &amp; low side</a>
+    <a href="#c2-errors"><span class="rm">!</span>Where the course is wrong</a>
     <a href="#c2-plant"><span class="rm">·</span>Plant schematic</a>
-    <a href="#c2-chiller"><span class="rm">·</span>Chillers &amp; cooling towers</a>
-    <a href="#c2-pump"><span class="rm">·</span>Pumping arrangements</a>
+    <a href="#c2-ahri"><span class="rm">M3</span>AHRI 550/590 datum</a>
+    <a href="#c2-chiller"><span class="rm">·</span>Chillers &amp; condenser temp</a>
+    <a href="#c2-tower"><span class="rm">·</span>Cooling tower design</a>
+    <a href="#c2-pump"><span class="rm">M4</span>Pumping arrangements</a>
+    <a href="#c2-dist"><span class="rm">·</span>Distribution schemes</a>
+    <a href="#c2-head"><span class="rm">·</span>Pump head &amp; NPSH</a>
     <a href="#c2-exD"><span class="rm">D</span>Worked: plant sizing</a>
+    <a href="#c2-pipe"><span class="rm">M5</span>Pipe sizing</a>
+    <a href="#c2-ahu"><span class="rm">M2</span>AHU selection</a>
+    <a href="#c2-ahusel"><span class="rm">G</span>Worked: 50 TR AHU</a>
+    <a href="#c2-ductsize"><span class="rm">·</span>Duct sizing methods</a>
+    <a href="#c2-esp"><span class="rm">M6</span>External static pressure</a>
+    <a href="#c2-insul"><span class="rm">·</span>Insulation &amp; acoustics</a>
+    <a href="#c2-cond"><span class="rm">H</span>Worked: condensation</a>
     <a href="#c2-duct"><span class="rm">·</span>Bid evaluation points</a>
     <a href="#c2q"><span class="rm">?</span>Quiz C2</a>
   </div>
@@ -516,7 +528,7 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
 <div class="panel" id="panel-overview" role="tabpanel" aria-labelledby="tab-overview">
 
 <section id="s-start">
-  <p class="eyebrow">L&amp;T EduTech · Coursera specialization · 4 courses · 9 modules</p>
+  <p class="eyebrow">L&amp;T EduTech · Coursera specialization · 4 courses · 13 modules</p>
   <h1>Design of Ventilation &amp; Air&nbsp;Conditioning Systems</h1>
   <p class="lede">A working study guide for the whole specialization — psychrometry, heat load, equipment selection, smoke control and demand-based ventilation — with every method carried through to a number against <strong>Doha design conditions</strong>, in SI and English units side by side.</p>
 
@@ -529,7 +541,7 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
 
   <div class="note good">
     <b class="nh">Course 1 is now built from the course material itself</b>
-    <p><strong>Courses 1 and 3 have been rewritten against the course's own lecture material.</strong> Course&nbsp;1 draws on all 20 video items of Module&nbsp;1 and the technical study notes for Modules&nbsp;2&ndash;3; Course&nbsp;3 on the full 15-item Module&nbsp;1 transcript, two standalone calculation transcripts, and the Module&nbsp;2 technical digest. Any statement traceable to those lectures carries a <span class="vb course">Course</span> tag. <strong>Courses 2 and 4 remain reconstructed</strong> from published course descriptions and established design method &mdash; they carry no Course tags, and should be read as revision rather than as a record of what was taught.</p>
+    <p><strong>Courses 1, 2 and 3 have been rewritten against the course's own lecture material.</strong> Course&nbsp;1 draws on all 20 video items of Module&nbsp;1 and the technical study notes for Modules&nbsp;2&ndash;3; Course&nbsp;2 on the review guides of all six of its modules; Course&nbsp;3 on the full 15-item Module&nbsp;1 transcript, two standalone calculation transcripts, and the Module&nbsp;2 technical digest. Any statement traceable to those lectures carries a <span class="vb course">Course</span> tag. <strong>Course 4 alone remains reconstructed</strong> from the published course description and established design method &mdash; it carries no Course tags, and should be read as revision rather than as a record of what was taught.</p>
     <p style="margin-bottom:0;">Nothing here reproduces lecture text or graded questions. The transcripts were used the way you would use a vendor design manual to check a calculation &mdash; to correct method, terminology, sequence and emphasis. The practice questions remain authored from first principles.</p>
   </div>
 
@@ -658,7 +670,7 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
 </section>
 <section id="s-map">
   <h2>Specialization map</h2>
-  <p class="prose">Four courses, nine modules. The order is not arbitrary &mdash; each course consumes the output of the one before it. A heat load error in C1 does not stay in C1; it propagates into the chiller you select in C2 and the fan you specify in C4. <strong>Course 1 below is drawn from the lecture material; Courses 2&ndash;4 are reconstructed</strong>, and the Source column says which is which.</p>
+  <p class="prose">Four courses, thirteen modules &mdash; <strong>not the nine an earlier draft of this guide claimed</strong>, because Course&nbsp;2 turned out to carry six modules rather than two. The order is not arbitrary: each course consumes the output of the one before it. A heat load error in C1 does not stay in C1; it propagates into the chiller you select in C2 and the fan you specify in C4. <strong>Courses 1, 2 and 3 below are drawn from the lecture material; Course&nbsp;4 is still reconstructed</strong>, and the Source column says which is which.</p>
 
   <div class="tw">
     <table>
@@ -666,9 +678,9 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
       <thead><tr><th>Course</th><th style="text-align:left;">Modules</th><th style="text-align:left;">Governing method</th><th style="text-align:left;">Output it hands forward</th><th style="text-align:left;">Source</th></tr></thead>
       <tbody>
         <tr><td><strong>C1</strong> Basics of Air Conditioning &amp; Heat Load</td><td style="text-align:left;">3</td><td style="text-align:left;"><strong>Carrier ETD &amp; Shading Coefficient</strong>; psychrometry</td><td style="text-align:left;">Zone loads, dehumidified airflow, ESHF, ADP</td><td style="text-align:left;"><span class="vb course">Course</span></td></tr>
-        <tr><td><strong>C2</strong> Equipment Selection, Design &amp; Sizing</td><td style="text-align:left;">2</td><td style="text-align:left;">Block load, diversity, hydraulics</td><td style="text-align:left;">Chiller, pump, tower, duct, ESP</td><td style="text-align:left;"><span class="vb verify">Reconstructed</span></td></tr>
+        <tr><td><strong>C2</strong> Equipment Selection, Design &amp; Sizing</td><td style="text-align:left;">6</td><td style="text-align:left;">AHRI 550/590 rating datum; hydraulics; Colebrook-White; equal friction</td><td style="text-align:left;">Chiller, tower, AHU, pump, pipe, duct, ESP, insulation</td><td style="text-align:left;"><span class="vb course">Course</span></td></tr>
         <tr><td><strong>C3</strong> Ventilation, Life Safety &amp; Smoke Extraction</td><td style="text-align:left;">2</td><td style="text-align:left;"><strong>NBC India 2016</strong>; ASHRAE Applications Ch. 52; NFPA 92</td><td style="text-align:left;">Pressurization and extract rates</td><td style="text-align:left;"><span class="vb course">Course</span></td></tr>
-        <tr><td><strong>C4</strong> Cutting-edge Technology</td><td style="text-align:left;">2</td><td style="text-align:left;">DCV; VRF; fan laws</td><td style="text-align:left;">Part-load and energy strategy</td><td style="text-align:left;"><span class="vb verify">Reconstructed</span></td></tr>
+        <tr><td><strong>C4</strong> Cutting-edge Technology</td><td style="text-align:left;">2 <span class="vb verify">Verify</span></td><td style="text-align:left;">DCV; VRF; fan laws</td><td style="text-align:left;">Part-load and energy strategy</td><td style="text-align:left;"><span class="vb verify">Reconstructed</span></td></tr>
       </tbody>
     </table>
   </div>
@@ -692,95 +704,138 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
     <b class="nh">Where the guide previously had the boundaries wrong</b>
     <p style="margin-bottom:0;">Coil selection, bypass factor and apparatus dew point were presented here as Module&nbsp;3 material. They are <strong>Module&nbsp;2, Group&nbsp;5</strong>. Conversely the full psychrometric-property treatment and the nine processes are <strong>Module&nbsp;3</strong>, not Module&nbsp;1. And the module's most valuable single artefact &mdash; the five-part worked calculation that assembles every component into one auditable sheet &mdash; was absent from this guide altogether. It is now Worked example&nbsp;B2.</p>
   </div>
+
+  <h3>Course 2 as actually delivered <span class="vb course">Course</span></h3>
+  <p class="prose">This is the course whose shape the guide had most wrong. It was listed here as two modules on &ldquo;block load, diversity and hydraulics&rdquo;. It is <strong>six modules</strong>, and diversity is barely in it &mdash; the centre of gravity is equipment selection data sheets, hydraulics, and two long worked calculations (pipe and duct sizing; external static pressure).</p>
+
+  <div class="tw">
+    <table>
+      <caption>Module structure and what each one actually covers</caption>
+      <thead><tr><th>Module</th><th style="text-align:left;">Covers</th></tr></thead>
+      <tbody>
+        <tr><td><strong>M1</strong> High Side and Low Side Equipment</td><td style="text-align:left;">The plant end to end &middot; the high-side / low-side division &middot; chiller and compressor families with capacity and COP ranges &middot; cooling tower introduction &middot; AHU, FCU, package and VRF units &middot; ducts, materials and pressure classes</td></tr>
+        <tr class="total"><td><strong>M2</strong> Air Handling Units</td><td style="text-align:left;"><strong>The selection chain &mdash; which load parameter determines which machine parameter</strong> &middot; casing, coil, filter, drain pan, heat recovery wheel and UV-C construction &middot; ASHRAE 52.2, MERV and HEPA &middot; fan types and the <strong>fan laws</strong> &middot; CAV, VAV and DCV &middot; controls &middot; <strong>the certification map</strong> &middot; <strong>the worked 50 TR / 21,000 cfm selection</strong> &middot; and, as a second half, chilled water pump classification, construction, affinity laws, BEP, cavitation, seals and bearings</td></tr>
+        <tr class="total"><td><strong>M3</strong> Chiller and Cooling Tower System</td><td style="text-align:left;">Subcooling &middot; compressor classification with capacity and COP by type &middot; condenser and evaporator types &middot; <strong>AHRI 550/590 standard rating conditions</strong>, ASME BPVC&nbsp;VIII, ASHRAE&nbsp;15, AHRI&nbsp;575 &middot; COP, EER, IPLV, NPLV, kW/ton &middot; <strong>FAT and SAT scopes</strong> &middot; absorption chillers &middot; TCO, safety controls and maintenance tiers &middot; <strong>cooling tower classification, materials, components, range, approach, COC and the worked water balance</strong></td></tr>
+        <tr><td><strong>M4</strong> Chilled Water Pumping System</td><td style="text-align:left;">Direct vs reverse return &middot; tandem vs headered pumps &middot; constant primary, primary&ndash;secondary and variable primary &middot; <strong>pump head &mdash; open vs closed circuit</strong> &middot; NPSH available and required &middot; affinity laws. <strong>This is the module carrying error E-1</strong> &mdash; Darcy-Weisbach stated, Fanning factors supplied</td></tr>
+        <tr><td><strong>M5</strong> Piping and Duct Design</td><td style="text-align:left;">GPM per TR for chilled and condenser water &middot; friction and velocity limits and <strong>which one governs at which size</strong> &middot; pipe materials, reducers, pressure testing &middot; <strong>three duct sizing methods</strong> &mdash; equal friction, velocity reduction, static regain &middot; equivalent diameter, aspect ratio, hanger spacing, SMACNA sealing and leakage testing</td></tr>
+        <tr class="total"><td><strong>M6</strong> External Static Pressure and Insulation</td><td style="text-align:left;"><strong>ESP vs ISP</strong> &middot; the three pressure terms &middot; Darcy-Weisbach done correctly with Colebrook-White &middot; <strong>the flow-direction rule</strong> and fitting loss coefficients &middot; <strong>the critical path and the twelve-section ESP worksheet</strong> &middot; thermal insulation thresholds, <strong>condensation control</strong>, personnel protection, fire indices, materials and jacketing &middot; <strong>acoustics, silencer types and placement</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">Two structural corrections this guide now carries</b>
+    <p style="margin-bottom:0;">First, the count: <strong>six modules, not two</strong>, which moves the specialization from nine modules to thirteen. Second, and more consequential for anyone using the course as a design reference: <strong>Modules&nbsp;4 and&nbsp;6 teach the same friction calculation and contradict each other.</strong> Module&nbsp;4 states Darcy-Weisbach and then supplies Fanning friction factors &mdash; four times too small. Module&nbsp;6 does it correctly with Colebrook-White. Where they disagree, Module&nbsp;6 is right, and the reconciliation is in <a href="#c2-errors">Where the course material is wrong</a>.</p>
+  </div>
 </section>
 
 <section id="s-mind">
   <h2>Master mind map</h2>
   <figure>
     <div class="figbox">
-      <svg viewBox="0 0 1140 700" role="img" aria-label="Mind map of the four courses and nine modules of the specialization, showing the key topics inside each module." style="min-width:940px;">
+      <svg viewBox="0 0 1140 1024" role="img" aria-label="Mind map of the four courses and thirteen modules of the specialization, showing the key topics inside each module." style="min-width:940px;">
         <defs>
           <linearGradient id="mmRoot" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0" stop-color="#1450c9"/><stop offset="1" stop-color="#0a2472"/>
           </linearGradient>
         </defs>
 
-        <path d="M176 350 C194 350 194 118 208 118" fill="none" stroke="#67e8f9" stroke-width="1.6" opacity="0.6"/>
-        <path d="M176 350 C194 350 194 300 208 300" fill="none" stroke="#22d3ee" stroke-width="1.6" opacity="0.6"/>
-        <path d="M176 350 C194 350 194 462 208 462" fill="none" stroke="#5b9dfa" stroke-width="1.6" opacity="0.6"/>
-        <path d="M176 350 C194 350 194 608 208 608" fill="none" stroke="#2f7ef0" stroke-width="1.6" opacity="0.6"/>
+        <path d="M176 512 C194 512 194 118 208 118" fill="none" stroke="#67e8f9" stroke-width="1.6" opacity="0.6"/>
+        <path d="M176 512 C194 512 194 467 208 467" fill="none" stroke="#22d3ee" stroke-width="1.6" opacity="0.6"/>
+        <path d="M176 512 C194 512 194 779 208 779" fill="none" stroke="#5b9dfa" stroke-width="1.6" opacity="0.6"/>
+        <path d="M176 512 C194 512 194 943 208 943" fill="none" stroke="#2f7ef0" stroke-width="1.6" opacity="0.6"/>
 
-        <path d="M384 118 C406 118 406 44 424 44"   fill="none" stroke="#67e8f9" stroke-width="1.3" opacity="0.45"/>
+        <path d="M384 118 C406 118 406 44 424 44" fill="none" stroke="#67e8f9" stroke-width="1.3" opacity="0.45"/>
         <path d="M384 118 C406 118 406 118 424 118" fill="none" stroke="#67e8f9" stroke-width="1.3" opacity="0.45"/>
         <path d="M384 118 C406 118 406 192 424 192" fill="none" stroke="#67e8f9" stroke-width="1.3" opacity="0.45"/>
-        <path d="M384 300 C406 300 406 264 424 264" fill="none" stroke="#22d3ee" stroke-width="1.3" opacity="0.45"/>
-        <path d="M384 300 C406 300 406 336 424 336" fill="none" stroke="#22d3ee" stroke-width="1.3" opacity="0.45"/>
-        <path d="M384 462 C406 462 406 426 424 426" fill="none" stroke="#5b9dfa" stroke-width="1.3" opacity="0.45"/>
-        <path d="M384 462 C406 462 406 498 424 498" fill="none" stroke="#5b9dfa" stroke-width="1.3" opacity="0.45"/>
-        <path d="M384 608 C406 608 406 572 424 572" fill="none" stroke="#2f7ef0" stroke-width="1.3" opacity="0.45"/>
-        <path d="M384 608 C406 608 406 644 424 644" fill="none" stroke="#2f7ef0" stroke-width="1.3" opacity="0.45"/>
+        <path d="M384 467 C406 467 406 282 424 282" fill="none" stroke="#22d3ee" stroke-width="1.3" opacity="0.45"/>
+        <path d="M384 467 C406 467 406 356 424 356" fill="none" stroke="#22d3ee" stroke-width="1.3" opacity="0.45"/>
+        <path d="M384 467 C406 467 406 430 424 430" fill="none" stroke="#22d3ee" stroke-width="1.3" opacity="0.45"/>
+        <path d="M384 467 C406 467 406 504 424 504" fill="none" stroke="#22d3ee" stroke-width="1.3" opacity="0.45"/>
+        <path d="M384 467 C406 467 406 578 424 578" fill="none" stroke="#22d3ee" stroke-width="1.3" opacity="0.45"/>
+        <path d="M384 467 C406 467 406 652 424 652" fill="none" stroke="#22d3ee" stroke-width="1.3" opacity="0.45"/>
+        <path d="M384 779 C406 779 406 742 424 742" fill="none" stroke="#5b9dfa" stroke-width="1.3" opacity="0.45"/>
+        <path d="M384 779 C406 779 406 816 424 816" fill="none" stroke="#5b9dfa" stroke-width="1.3" opacity="0.45"/>
+        <path d="M384 943 C406 943 406 906 424 906" fill="none" stroke="#2f7ef0" stroke-width="1.3" opacity="0.45"/>
+        <path d="M384 943 C406 943 406 980 424 980" fill="none" stroke="#2f7ef0" stroke-width="1.3" opacity="0.45"/>
 
-        <rect x="24" y="318" width="152" height="64" rx="11" fill="url(#mmRoot)" stroke="#5b9dfa" stroke-width="1.4"/>
-        <text class="svg-ttl" x="100" y="343" text-anchor="middle" fill="#eaf1ff">Ventilation &amp; AC</text>
-        <text class="svg-ttl" x="100" y="359" text-anchor="middle" fill="#eaf1ff">System Design</text>
-        <text class="svg-lbl-sm" x="100" y="373" text-anchor="middle" fill="#a9bde0">4 courses · 9 modules</text>
+        <rect x="24" y="480" width="152" height="64" rx="11" fill="url(#mmRoot)" stroke="#5b9dfa" stroke-width="1.4"/>
+        <text class="svg-ttl" x="100" y="505" text-anchor="middle" fill="#eaf1ff">Ventilation &amp; AC</text>
+        <text class="svg-ttl" x="100" y="521" text-anchor="middle" fill="#eaf1ff">System Design</text>
+        <text class="svg-lbl-sm" x="100" y="535" text-anchor="middle" fill="#a9bde0">4 courses &middot; 13 modules</text>
 
-        <rect x="208" y="92"  width="176" height="52" rx="9" fill="rgba(103,232,249,0.10)" stroke="#67e8f9" stroke-width="1.3"/>
-        <text class="svg-ttl" x="222" y="114" fill="#67e8f9">C1 · Heat Load</text>
+        <rect x="208" y="92" width="176" height="52" rx="9" fill="rgba(103,232,249,0.10)" stroke="#67e8f9" stroke-width="1.3"/>
+        <text class="svg-ttl" x="222" y="114" fill="#67e8f9">C1 &middot; Heat Load</text>
         <text class="svg-lbl-sm" x="222" y="130" fill="#a9bde0">the foundation everything uses</text>
 
-        <rect x="208" y="274" width="176" height="52" rx="9" fill="rgba(34,211,238,0.10)" stroke="#22d3ee" stroke-width="1.3"/>
-        <text class="svg-ttl" x="222" y="296" fill="#22d3ee">C2 · Equipment</text>
-        <text class="svg-lbl-sm" x="222" y="312" fill="#a9bde0">turning load into hardware</text>
+        <rect x="208" y="441" width="176" height="52" rx="9" fill="rgba(34,211,238,0.10)" stroke="#22d3ee" stroke-width="1.3"/>
+        <text class="svg-ttl" x="222" y="463" fill="#22d3ee">C2 &middot; Equipment</text>
+        <text class="svg-lbl-sm" x="222" y="479" fill="#a9bde0">turning load into hardware</text>
 
-        <rect x="208" y="436" width="176" height="52" rx="9" fill="rgba(91,157,250,0.10)" stroke="#5b9dfa" stroke-width="1.3"/>
-        <text class="svg-ttl" x="222" y="458" fill="#5b9dfa">C3 · Life Safety</text>
-        <text class="svg-lbl-sm" x="222" y="474" fill="#a9bde0">code-driven, not comfort-driven</text>
+        <rect x="208" y="753" width="176" height="52" rx="9" fill="rgba(91,157,250,0.10)" stroke="#5b9dfa" stroke-width="1.3"/>
+        <text class="svg-ttl" x="222" y="775" fill="#5b9dfa">C3 &middot; Life Safety</text>
+        <text class="svg-lbl-sm" x="222" y="791" fill="#a9bde0">code-driven, not comfort-driven</text>
 
-        <rect x="208" y="582" width="176" height="52" rx="9" fill="rgba(47,126,240,0.10)" stroke="#2f7ef0" stroke-width="1.3"/>
-        <text class="svg-ttl" x="222" y="604" fill="#2f7ef0">C4 · Technology</text>
-        <text class="svg-lbl-sm" x="222" y="620" fill="#a9bde0">part-load is where energy goes</text>
+        <rect x="208" y="917" width="176" height="52" rx="9" fill="rgba(47,126,240,0.10)" stroke="#2f7ef0" stroke-width="1.3"/>
+        <text class="svg-ttl" x="222" y="939" fill="#2f7ef0">C4 &middot; Technology</text>
+        <text class="svg-lbl-sm" x="222" y="955" fill="#a9bde0">part-load is where energy goes</text>
 
         <g>
           <rect x="424" y="18" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(103,232,249,0.34)" stroke-width="1"/>
-          <text class="svg-lbl" x="440" y="40" fill="#eaf1ff" font-weight="700">M1 · Fundamentals of Air-conditioning &amp; Refrigeration</text>
-          <text class="svg-lbl-sm" x="440" y="56">Carnot &amp; vapour-compression cycles · subcooling and superheat · compressors, evaporators, condensers, expansion devices · refrigerants · VARS &amp; thermoelectric</text>
+          <text class="svg-lbl" x="440" y="40" fill="#eaf1ff" font-weight="700">M1 &middot; Fundamentals of Air-conditioning &amp; Refrigeration</text>
+          <text class="svg-lbl-sm" x="440" y="56">Carnot &amp; vapour-compression cycles &middot; subcooling and superheat &middot; compressors, evaporators, condensers, expansion devices &middot; refrigerants &middot; VARS &amp; thermoelectric</text>
 
           <rect x="424" y="92" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(103,232,249,0.34)" stroke-width="1"/>
-          <text class="svg-lbl" x="440" y="114" fill="#eaf1ff" font-weight="700">M2 · Heat Load Calculations &amp; Psychrometry — Part 1</text>
-          <text class="svg-lbl-sm" x="440" y="130">Design conditions &amp; MCWB · comfort · ventilation VRP · solar geometry · Carrier ETD &amp; U-factor · internal heat · infiltration · coil, bypass factor, ADP</text>
+          <text class="svg-lbl" x="440" y="114" fill="#eaf1ff" font-weight="700">M2 &middot; Heat Load Calculations &amp; Psychrometry &mdash; Part 1</text>
+          <text class="svg-lbl-sm" x="440" y="130">Design conditions &amp; MCWB &middot; comfort &middot; ventilation VRP &middot; solar geometry &middot; Carrier ETD &amp; U-factor &middot; internal heat &middot; infiltration &middot; coil, bypass factor, ADP</text>
 
           <rect x="424" y="166" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(103,232,249,0.34)" stroke-width="1"/>
-          <text class="svg-lbl" x="440" y="188" fill="#eaf1ff" font-weight="700">M3 · Heat Load Calculations &amp; Psychrometry — Part 2</text>
-          <text class="svg-lbl-sm" x="440" y="204">The complete five-part worked calculation · RSH → ERSH → GTH hierarchy · dehumidified air quantity · six properties · the nine processes</text>
+          <text class="svg-lbl" x="440" y="188" fill="#eaf1ff" font-weight="700">M3 &middot; Heat Load Calculations &amp; Psychrometry &mdash; Part 2</text>
+          <text class="svg-lbl-sm" x="440" y="204">The complete five-part worked calculation &middot; RSH &rarr; ERSH &rarr; GTH hierarchy &middot; dehumidified air quantity &middot; six properties &middot; the nine processes</text>
 
-          <rect x="424" y="238" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(34,211,238,0.34)" stroke-width="1"/>
-          <text class="svg-lbl" x="440" y="260" fill="#eaf1ff" font-weight="700">M1 · High-side equipment</text>
-          <text class="svg-lbl-sm" x="440" y="276">Centrifugal, screw, reciprocating and absorption chillers · cooling towers, range and approach · condenser water circuit</text>
+          <rect x="424" y="256" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(34,211,238,0.34)" stroke-width="1"/>
+          <text class="svg-lbl" x="440" y="278" fill="#eaf1ff" font-weight="700">M1 &middot; High side and low side equipment</text>
+          <text class="svg-lbl-sm" x="440" y="294">Plant architecture end to end &middot; chiller and compressor families &middot; cooling tower basics &middot; AHU, FCU and package units &middot; duct pressure classes</text>
 
-          <rect x="424" y="310" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(34,211,238,0.34)" stroke-width="1"/>
-          <text class="svg-lbl" x="440" y="332" fill="#eaf1ff" font-weight="700">M2 · Low-side equipment &amp; distribution</text>
-          <text class="svg-lbl-sm" x="440" y="348">Air handling units · chilled-water pumping arrangements · pipe and duct sizing · external static pressure · insulation</text>
+          <rect x="424" y="330" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(34,211,238,0.34)" stroke-width="1"/>
+          <text class="svg-lbl" x="440" y="352" fill="#eaf1ff" font-weight="700">M2 &middot; Air handling units</text>
+          <text class="svg-lbl-sm" x="440" y="368">Selection chain from load parameters &middot; casing, coil and filter construction &middot; MERV and HEPA &middot; fan types and fan laws &middot; certification map &middot; worked 50 TR selection &middot; pumps</text>
 
-          <rect x="424" y="400" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(91,157,250,0.34)" stroke-width="1"/>
-          <text class="svg-lbl" x="440" y="422" fill="#eaf1ff" font-weight="700">M1 · Ventilation and Life Safety</text>
-          <text class="svg-lbl-sm" x="440" y="438">Bernoulli, wind effect, stack effect · three airflow methods — ACPH, heat dissipation, contaminant dilution · staircase pressurization</text>
+          <rect x="424" y="404" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(34,211,238,0.34)" stroke-width="1"/>
+          <text class="svg-lbl" x="440" y="426" fill="#eaf1ff" font-weight="700">M3 &middot; Chiller and cooling tower system</text>
+          <text class="svg-lbl-sm" x="440" y="442">AHRI 550/590 rating datum &middot; compressor COP ranges &middot; ASME BPVC VIII, ASHRAE 15, AHRI 575 &middot; FAT and SAT &middot; absorption &middot; range, approach, COC and the water balance</text>
 
-          <rect x="424" y="472" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(91,157,250,0.34)" stroke-width="1"/>
-          <text class="svg-lbl" x="440" y="494" fill="#eaf1ff" font-weight="700">M2 · Smoke Extraction</text>
-          <text class="svg-lbl-sm" x="440" y="510">Lift well and lobby pressurization · four smoke control families · car park, office, atrium · ACPH vs heat-release sizing</text>
+          <rect x="424" y="478" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(34,211,238,0.34)" stroke-width="1"/>
+          <text class="svg-lbl" x="440" y="500" fill="#eaf1ff" font-weight="700">M4 &middot; Chilled water pumping system</text>
+          <text class="svg-lbl-sm" x="440" y="516">Direct vs reverse return &middot; tandem vs headered pumps &middot; constant, primary&ndash;secondary and variable primary &middot; pump head and NPSH &middot; affinity laws &mdash; and the Darcy/Fanning error</text>
 
-          <rect x="424" y="546" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(47,126,240,0.34)" stroke-width="1"/>
-          <text class="svg-lbl" x="440" y="568" fill="#eaf1ff" font-weight="700">M1 · Demand control ventilation &amp; VRF</text>
-          <text class="svg-lbl-sm" x="440" y="584">CO₂-based outdoor air reset · the area component you may not turn down · VRF heat pump vs heat recovery</text>
+          <rect x="424" y="552" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(34,211,238,0.34)" stroke-width="1"/>
+          <text class="svg-lbl" x="440" y="574" fill="#eaf1ff" font-weight="700">M5 &middot; Piping and duct design</text>
+          <text class="svg-lbl-sm" x="440" y="590">GPM per TR rules &middot; friction and velocity limits &middot; pipe materials and pressure testing &middot; three duct sizing methods &middot; equivalent diameter, aspect ratio, hangers, SMACNA sealing</text>
 
-          <rect x="424" y="618" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(47,126,240,0.34)" stroke-width="1"/>
-          <text class="svg-lbl" x="440" y="640" fill="#eaf1ff" font-weight="700">M2 · Fans</text>
-          <text class="svg-lbl-sm" x="440" y="656">Centrifugal and axial types · the fan laws · specific fan power · system curve and operating point</text>
+          <rect x="424" y="626" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(34,211,238,0.34)" stroke-width="1"/>
+          <text class="svg-lbl" x="440" y="648" fill="#eaf1ff" font-weight="700">M6 &middot; External static pressure and insulation</text>
+          <text class="svg-lbl-sm" x="440" y="664">ESP vs ISP &middot; flow-direction rule and fitting coefficients &middot; the critical path worksheet &middot; condensation control &middot; flame spread and jacketing &middot; acoustics and silencer placement</text>
+
+          <rect x="424" y="716" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(91,157,250,0.34)" stroke-width="1"/>
+          <text class="svg-lbl" x="440" y="738" fill="#eaf1ff" font-weight="700">M1 &middot; Ventilation and Life Safety</text>
+          <text class="svg-lbl-sm" x="440" y="754">Bernoulli, wind effect, stack effect &middot; three airflow methods &mdash; ACPH, heat dissipation, contaminant dilution &middot; staircase pressurization</text>
+
+          <rect x="424" y="790" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(91,157,250,0.34)" stroke-width="1"/>
+          <text class="svg-lbl" x="440" y="812" fill="#eaf1ff" font-weight="700">M2 &middot; Smoke Extraction</text>
+          <text class="svg-lbl-sm" x="440" y="828">Lift well and lobby pressurization &middot; four smoke control families &middot; car park, office, atrium &middot; ACPH vs heat-release sizing</text>
+
+          <rect x="424" y="880" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(47,126,240,0.34)" stroke-width="1"/>
+          <text class="svg-lbl" x="440" y="902" fill="#eaf1ff" font-weight="700">M1 &middot; Demand control ventilation &amp; VRF</text>
+          <text class="svg-lbl-sm" x="440" y="918">CO&#8322;-based outdoor air reset &middot; the area component you may not turn down &middot; VRF heat pump vs heat recovery</text>
+
+          <rect x="424" y="954" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(47,126,240,0.34)" stroke-width="1"/>
+          <text class="svg-lbl" x="440" y="976" fill="#eaf1ff" font-weight="700">M2 &middot; Fans</text>
+          <text class="svg-lbl-sm" x="440" y="992">Centrifugal and axial types &middot; the fan laws &middot; specific fan power &middot; system curve and operating point</text>
         </g>
       </svg>
     </div>
-    <figcaption><b>Reading it:</b> the branch order is the dependency order. C1 M2 defines and sizes every load component; C1 M3 assembles them into a grand total and a dehumidified air quantity, which C2 M1 turns into a chiller and C2 M2 into a duct and a fan. C3 is the one branch that does not descend from the load &mdash; it is sized by code, from occupancy and geometry, and is often the branch reviewed last and found wanting. <b>Note the C1 branch is drawn from the lecture material; C2&ndash;C4 are reconstructed.</b></figcaption>
+    <figcaption><b>Reading it:</b> the branch order is the dependency order. C1 M2 defines and sizes every load component; C1 M3 assembles them into a grand total and a dehumidified air quantity, which C2 M3 turns into a chiller and a tower, C2 M2 into an AHU, and C2 M5 and M6 into a duct, a fan and the static pressure that fan must produce. C3 is the one branch that does not descend from the load &mdash; it is sized by code, from occupancy and geometry, and is often the branch reviewed last and found wanting. <b>Note the C1, C2 and C3 branches are drawn from the lecture material; C4 is still reconstructed.</b></figcaption>
   </figure>
 </section>
 
@@ -1387,7 +1442,7 @@ p = barometric pressure, kPa          C₈…C₁₃ are the ASHRAE saturation-p
 
   <div class="note warn">
     <b class="nh">The percentile is a contractual decision, not an engineering default</b>
-    <p style="margin-bottom:0;">0.4% is roughly <strong>35 hours per year</strong> of exceedance; 2% is roughly <strong>175 hours</strong>. The choice changes installed capacity materially, and with it electrical load, plant room size and capital cost. On a QatarEnergy project it is normally fixed by the project technical specification. <strong>Where it is not, it is a scope and cost question &mdash; raise it as a formal technical query rather than assume it.</strong> An assumption made here propagates all the way into a change-order argument, and the contemporaneous record of who chose the percentile is what decides which party carries it.</p>
+    <p style="margin-bottom:0;">0.4% is roughly <strong>35 hours per year</strong> of exceedance; 2% is roughly <strong>175 hours</strong>. The choice changes installed capacity materially, and with it electrical load, plant room size and capital cost. On a major Gulf EPC project it is normally fixed by the project technical specification. <strong>Where it is not, it is a scope and cost question &mdash; raise it as a formal technical query rather than assume it.</strong> An assumption made here propagates all the way into a change-order argument, and the contemporaneous record of who chose the percentile is what decides which party carries it.</p>
   </div>
 
   <h3 id="c1-comfort">Thermal comfort &mdash; and the framework the course never introduces <span class="vb course">Course</span></h3>
@@ -2620,13 +2675,57 @@ The ESHF line is drawn from the room state; where it strikes the saturation curv
 
 <section id="c2-intro">
   <div class="mod-head">
-    <p class="eyebrow">Course 2 · Modules 1–2</p>
-    <h2>Equipment selection, design &amp; sizing</h2>
-    <p class="lede">Course 1 produced a zone duty. This course turns it into hardware you can put on a schedule and defend in a bid evaluation — a chiller, a tower, two pump circuits, a duct and a fan — and shows where the numbers a vendor quotes stop meaning what you think they mean.</p>
+    <p class="eyebrow">Course 2 · Modules 1–6</p>
+    <h2>Air Conditioning Equipment Selection, Design and Sizing</h2>
+    <p class="lede">Course 1 produced a zone duty. This course turns it into hardware you can put on a schedule and defend in a bid evaluation &mdash; a chiller, a tower, two pump circuits, a pipe, a duct and a fan &mdash; and shows where the numbers a vendor quotes stop meaning what you think they mean. <strong>Six modules, not two</strong>: high side and low side equipment, air handling units, chillers and cooling towers, chilled water pumping, piping and duct design, and external static pressure and insulation.</p>
     <div class="tag-row">
-      <span class="chip acc">High side</span><span class="chip acc">Low side</span>
-      <span class="chip">Hydraulics</span><span class="chip">Technical bid evaluation</span>
+      <span class="chip acc">AHRI 550/590</span><span class="chip acc">Distribution schemes</span>
+      <span class="chip">Pipe &amp; duct sizing</span><span class="chip">ESP calculation</span>
+      <span class="chip">Insulation &amp; acoustics</span><span class="chip">Technical bid evaluation</span>
     </div>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">Jurisdictional warning &mdash; and a pattern, not a slip</b>
+    <p>Four separate defects in this course are the same defect: <strong>it is written to an Indian code and climate base.</strong> Motors are certified to <strong>IS standards</strong> (Module&nbsp;2); pipe standards are cited as <strong>IS 1239 and IS 3589</strong> (Module&nbsp;5); fire dampers cite <strong>NBC 2016 and CSIR-CBRI</strong> (Module&nbsp;1); and the insulation worked example uses <strong>ASHRAE climate zone 1A &mdash; very hot and <em>humid</em></strong> (Module&nbsp;6).</p>
+    <p style="margin-bottom:0;">For a Qatar project the motor standard is <strong>IEC</strong>, the pipe standard is <strong>ASME B36.10M</strong> (which the same lecture also cites), the damper chain is <strong>QCDD / NFPA 90A / UL 555 / UL 555S</strong>, and <strong>Qatar is climate zone 1B &mdash; very hot, <em>dry</em></strong>, so the stated R-value has no standing. That is not a defect in the course; it is a defect in using the course unchecked. <strong>Every standard, climate zone and regulatory citation in this specialization needs verifying against your project stack before it is relied on.</strong></p>
+  </div>
+
+  <h3 id="c2-errors">Where the course material is wrong <span class="vb course">Course</span></h3>
+  <p class="prose">Twelve defects were identified across the six modules. Two would change a calculation result if used as written, and the first is the most consequential error in the entire specialization.</p>
+
+  <div class="note trap">
+    <b class="nh">E-1 &mdash; Darcy-Weisbach stated, Fanning friction factors supplied. Head loss understated fourfold.</b>
+    <p>Module&nbsp;4 states the <strong>Darcy-Weisbach</strong> equation and then gives the friction coefficient as <code>f = 16/Re</code> laminar and <code>f = 0.079/Re<sup>0.25</sup></code> turbulent.</p>
+    <div class="fml" style="margin:1em 0;">
+      <span class="eq">Those are <strong>Fanning</strong> factors. The Darcy factor is <strong>four times</strong> the Fanning factor:</span>
+      <span class="eq">  Darcy laminar   f = 64/Re          Fanning laminar   f = 16/Re</span>
+      <span class="eq">  Darcy Blasius   f = 0.316/Re^0.25   Fanning Blasius   f = 0.079/Re^0.25</span>
+      <span class="wh">Use Darcy factors in the Darcy form   h_f = f (L/D)(v&sup2;/2g)
+or Fanning factors in the Fanning form  h_f = 4f (L/D)(v&sup2;/2g).
+NEVER mix them &mdash; substituting Fanning factors into the Darcy form understates head loss by 4&times;.</span>
+    </div>
+    <p style="margin-bottom:0;"><strong>Module&nbsp;6 performs the same calculation correctly</strong>, using Colebrook-White with absolute roughness. Where the two modules disagree, Module&nbsp;6 is right. Note why the error is invisible inside the course itself: <strong>Module&nbsp;4's own worked example reads friction from charts rather than from the equation</strong>, so its numbers come out fine. It will not come out fine in a calculation that uses the equation as stated.</p>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>The remaining eleven &mdash; none should reach a project document <span class="vb course">Course</span></caption>
+      <thead><tr><th class="num">ID</th><th class="num">Module</th><th style="text-align:left;">Error</th><th style="text-align:left;">Correction</th></tr></thead>
+      <tbody>
+        <tr class="total"><td class="num">E-2</td><td class="num">5</td><td style="text-align:left;"><strong>Concentric</strong> reducer specified at a pump suction to prevent air pockets</td><td style="text-align:left;"><strong>Wrong, and it contradicts the same course.</strong> Module&nbsp;2 correctly requires <strong>eccentric</strong> reducers at suction to avoid a vapour pocket. Eccentric flat-side-up at suction; concentric at discharge</td></tr>
+        <tr><td class="num">E-3</td><td class="num">1, 5</td><td style="text-align:left;">Duct pressure classification mutually inconsistent between the two modules, with an unexplained gap</td><td style="text-align:left;"><strong>Neither matches the SMACNA class series</strong> (0.5, 1, 2, 3, 4, 6, 10 in w.g.). Use SMACNA directly; cite neither table</td></tr>
+        <tr><td class="num">E-4</td><td class="num">2</td><td style="text-align:left;">IS standards cited for motors in the certification map</td><td style="text-align:left;">IS is Indian; the motor standard is <strong>IEC</strong>. The rest of that map &mdash; AMCA, AHRI, ASHRAE 52.2, UL, EN &mdash; is correct and does carry over</td></tr>
+        <tr><td class="num">E-5</td><td class="num">5</td><td style="text-align:left;">IS 1239 and IS 3589 cited as governing pipe standards</td><td style="text-align:left;"><strong>ASME B36.10M</strong>, cited in the same lecture, is the one that carries over</td></tr>
+        <tr><td class="num">E-6</td><td class="num">3</td><td style="text-align:left;">&ldquo;ASHRAE 19.1&rdquo; cited for minimum chiller efficiency</td><td style="text-align:left;"><strong>No such standard.</strong> Almost certainly <strong>ASHRAE 90.1</strong> &mdash; the same mis-citation appears in Course&nbsp;1's lighting lecture</td></tr>
+        <tr><td class="num">E-7</td><td class="num">1, 3</td><td style="text-align:left;">Compressor COP and capacity ranges conflict between modules &mdash; absorption 0.6&ndash;1.3 vs 0.6&ndash;1.9; screw water-cooled to 6.0 vs 6.7; centrifugal stated in TR in one and kW in the other</td><td style="text-align:left;"><strong>Treat every figure as indicative. Never use as selection or TBE data</strong></td></tr>
+        <tr><td class="num">E-8</td><td class="num">6</td><td style="text-align:left;">Insulation example uses ASHRAE climate zone <strong>1A</strong> &mdash; very hot and <em>humid</em></td><td style="text-align:left;">Qatar is a hot-<em>dry</em> zone &mdash; <strong>0B</strong> under ASHRAE 169-2020, <strong>1B</strong> under the earlier edition. <span class="vb verify">Verify</span> against the edition cited. Either way the stated R-value of 1.06 m&sup2;&middot;K/W has no standing here, and QCS may impose its own regardless</td></tr>
+        <tr><td class="num">E-9</td><td class="num">6</td><td style="text-align:left;">XPS described as having &ldquo;low water vapour diffusion resistance, making it suitable for humid conditions&rdquo;</td><td style="text-align:left;"><strong>Backwards.</strong> Low diffusion resistance means vapour passes <em>more</em> easily &mdash; the opposite of what a below-ambient application needs</td></tr>
+        <tr><td class="num">E-10</td><td class="num">6</td><td style="text-align:left;">Nitrile rubber listed as vapour <em>permeable</em> in the material table, while the same lecture describes its low permeability and built-in vapour retarder</td><td style="text-align:left;"><strong>Self-contradictory. The descriptive text is right; the table entry is wrong.</strong> Nitrile's closed cell and high &mu; are exactly why it is the HVAC cold-line default</td></tr>
+        <tr><td class="num">E-11</td><td class="num">3</td><td style="text-align:left;">Cooling tower worked calculation not reproducible &mdash; wet bulb stated 72 &deg;F then used as 73 &deg;F; drift stated 0.02% then computed as 0.002%</td><td style="text-align:left;">Method sound, numbers are not. Indicative of the arithmetic care in that module</td></tr>
+        <tr><td class="num">E-12</td><td class="num">6</td><td style="text-align:left;">Straw thermal conductivity stated as 0.008 W/m&middot;K</td><td style="text-align:left;"><strong>Physically implausible</strong> &mdash; below aerogel and below still air (&asymp;0.026). Almost certainly 0.08</td></tr>
+      </tbody>
+    </table>
   </div>
 
   <h3 id="c2-plant">The plant, end to end</h3>
@@ -2712,6 +2811,86 @@ The ESHF line is drawn from the room state; where it strikes the saturation curv
     <figcaption><b>Read the two water temperatures against each other.</b> Chilled water leaves at 6.0 °C to make an 11.27 °C apparatus dew point. Condenser water returns at 40.6 °C because Doha's design wet bulb is 30.6 °C and a tower cannot beat its approach. The compressor spans that gap — and the gap here is far wider than the one the chiller was rated across.</figcaption>
   </figure>
 
+  <h3 id="c2-ahri">AHRI 550/590 &mdash; the rating datum, and what it is not <span class="vb course">Course</span></h3>
+  <p class="prose">AHRI 550/590 governs how liquid chilling packages are <strong>rated and tested</strong> &mdash; factory-made vapour compression water chilling and heating packages of at least 135 000 Btu/h. Below that threshold, ASHRAE/ANSI/AHRI/ISO 13256 applies. These are the conditions every catalogue figure you will ever be quoted is measured at.</p>
+
+  <div class="grid g2" style="margin:1.5em 0;">
+    <div class="card">
+      <h4 style="margin-top:0;">Air-cooled chiller &mdash; standard rating</h4>
+      <dl class="kv">
+        <dt>Entering chilled water</dt><dd>12.2 &deg;C · 54 &deg;F</dd>
+        <dt>Leaving chilled water</dt><dd>6.7 &deg;C · 44 &deg;F</dd>
+        <dt><strong>Entering condenser air, DB</strong></dt><dd><strong>35.0 &deg;C · 95 &deg;F</strong></dd>
+        <dt>Evaporator flow</dt><dd>2.4 GPM/TR</dd>
+      </dl>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">Water-cooled chiller &mdash; standard rating</h4>
+      <dl class="kv">
+        <dt>Entering chilled water</dt><dd>12.2 &deg;C · 54 &deg;F</dd>
+        <dt>Leaving chilled water</dt><dd>6.7 &deg;C · 44 &deg;F</dd>
+        <dt>Condenser water to tower</dt><dd>35.0 &deg;C · 95 &deg;F</dd>
+        <dt><strong>Condenser water from tower</strong></dt><dd><strong>29.4 &deg;C · 85 &deg;F</strong></dd>
+        <dt>Evaporator / condenser flow</dt><dd>2.4 / 3.0 GPM/TR</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">The air-cooled datum is the more brutal of the two in Qatar</b>
+    <p>The guide's existing argument &mdash; that a water-cooled machine rated at <strong>29.4 &deg;C entering condenser water</strong> will actually see about 40.6 &deg;C from a Doha tower &mdash; is one half of the picture. The course supplies the other half: an <strong>air-cooled machine is rated at 35 &deg;C entering condenser <em>air</em></strong>.</p>
+    <p style="margin-bottom:0;">A Gulf design ambient of 47&ndash;50 &deg;C is <strong>12 to 15 K above that datum</strong>, and air-cooled capacity falls with ambient <em>precisely when the building load peaks</em>. On a water-cooled machine the tower is limited by <strong>wet bulb</strong>, not dry bulb &mdash; which in a 47 &deg;C DB / 30 &deg;C WB climate is the more favourable reference. <strong>The course states neither point.</strong> It is the single most useful thing to carry from Module&nbsp;3 into an equipment comparison: a nameplate air-cooled tonnage is not a Gulf tonnage, and the derating must be quantified from vendor curves rather than assumed.</p>
+  </div>
+
+  <div class="note good">
+    <b class="nh">The vendor's own filing system proves the point</b>
+    <p style="margin-bottom:0;">OEMs issue chiller selections in <strong>two forms &mdash; one at AHRI conditions and one at design conditions</strong>. The existence of the second sheet is the manufacturer's own acknowledgement that the AHRI sheet does not describe the machine on your site. <strong>Ask for both, every time, and evaluate on the second.</strong> Part-load EER at 100 / 75 / 50 / 25% loading is what IPLV is computed from &mdash; and note the distinction the course draws: <strong>IPLV</strong> is the AHRI part-load method at <em>standard</em> rating conditions; <strong>NPLV</strong> is the same method at <em>non-standard</em> conditions, which is what a machine not designed to run at the AHRI point actually needs.</p>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>The standards map beyond AHRI 550/590 <span class="vb course">Course</span></caption>
+      <thead><tr><th>Standard</th><th style="text-align:left;">Scope</th></tr></thead>
+      <tbody>
+        <tr><td><strong>ASHRAE 15</strong></td><td style="text-align:left;">Safety standard for refrigeration systems. All liquid chillers and new refrigerants must comply. <strong>May impose additional equipment-room requirements</strong> &mdash; a frequently missed cost and coordination item</td></tr>
+        <tr><td><strong>ASME BPVC VIII</strong></td><td style="text-align:left;">Design and construction of <strong>refrigerant pressure vessels</strong>, except where design pressure &le; 103 kPa. <strong>Does not apply to the water side</strong> of evaporators or condensers unless design pressure &gt; 2 070 kPa or design temperature &gt; 99 &deg;C</td></tr>
+        <tr><td><strong>AHRI 575</strong></td><td style="text-align:left;">Method for measuring unit <strong>sound levels within an equipment space</strong></td></tr>
+        <tr class="sub"><td>ASHRAE 147</td><td style="text-align:left;">Recommended chiller monitoring points</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Three things the course states that belong in a review checklist</h4>
+  <div class="grid g3" style="margin:1.4em 0;">
+    <div class="card">
+      <h4 style="margin-top:0;">Motor heat is a room load</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">Total heat rejected = compressor work + evaporator load + motor inefficiency. But in an <strong>open-type compressor</strong> (motor separate, shaft-coupled) the motor heat goes straight to the surrounding air &mdash; so the condenser rejects only compressor work and evaporator load, and <strong>the motor heat must be removed by the plant room's own ventilation or AC</strong>. Miss it and the plant room runs hot with a correctly sized condenser.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">Fouling has a velocity window</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">The fouling factor is the thermal resistance of deposits on the heat transfer surface, in h&middot;ft&sup2;&middot;&deg;F/Btu. <strong>ASHRAE recommends a minimum condenser water velocity of 1 m/s and a maximum of 3.3 m/s</strong> &mdash; below the minimum, deposits settle; above the maximum, tube erosion. Both ends are checkable against a submitted selection.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">Subcooling is free capacity</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">Subcooling ensures liquid refrigerant reaches the expansion device fully liquid. It <strong>reduces flashing and increases refrigeration effect for the same compression work</strong> &mdash; visible on the p&ndash;h diagram as the condensing line extending below saturation. It can occur in a water-cooled condenser's subcooler section or in a separate exchanger.</p>
+    </div>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>Factory and site acceptance testing &mdash; the structure to demand <span class="vb course">Course</span></caption>
+      <thead><tr><th>FAT &mdash; at the vendor's works, before shipping</th><th style="text-align:left;">SAT &mdash; after installation</th></tr></thead>
+      <tbody>
+        <tr><td style="text-align:left;">Visual inspection<br><strong>Performance test at 25 / 50 / 75 / 100% load, each per AHRI 550/590</strong><br>Alarms verification<br>Acoustic fitness test</td><td style="text-align:left;">Pre-test conditions and preliminary equipment checks<br>Chilled water system visual checks; pump operation<br>Unit start-up; refrigerant circuit parameter verification<br>Chilled water, condenser water and compressor parameters<br>Alarms and sensor calibration verification<br>Performance test at available load<br><strong>Parameter trending for a minimum of 6 hours</strong><br>Set point verification</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note">
+    <b class="nh">The clause worth writing into a purchase order</b>
+    <p style="margin-bottom:0;">&ldquo;Performance test at 25, 50, 75 and 100% load, each per AHRI 550/590&rdquo; is a <strong>contractual sentence, not a formality</strong> &mdash; it is what converts a claimed IPLV into a witnessed one, and part-load is where a chiller spends its life. Likewise the SAT's <strong>six-hour minimum parameter trend</strong>: a chiller that satisfies an instantaneous reading and drifts over six hours has a control or charge problem that a snapshot will not reveal.</p>
+  </div>
+
   <h3 id="c2-chiller">Cooling towers set the condenser temperature, and the condenser sets the bill</h3>
   <p class="prose">A cooling tower cannot cool water below the ambient wet bulb. What it achieves is the wet bulb plus an <strong>approach</strong> — the margin the tower is selected for. Range is the temperature drop across the tower, fixed by flow and heat rejection, not by tower size.</p>
 
@@ -2741,6 +2920,91 @@ colder condenser water and a more efficient chiller. Range is set by the flow yo
     <p style="margin-bottom:0;">On this 98 TR plant that is roughly <strong>57 kW rising to 80 kW</strong> at design. Second-law efficiency is not actually constant across the range, so treat +40% as an argument, not an answer. The argument is this: <strong>a kW/TR figure with no stated condenser condition is not a number you can evaluate a bid on.</strong> Ask for the performance point at your condenser water temperature, and ask for it in writing.</p>
   </div>
 
+  <h3 id="c2-tower">Cooling tower design &mdash; the parameters, the tower ton, and the water you must buy <span class="vb course">Course</span></h3>
+  <p class="prose">Above, the tower was treated as the thing that sets condenser temperature. Here it is treated as a machine to be selected and a water account to be balanced &mdash; which in a country that desalinates its water is a running cost, not a footnote.</p>
+
+  <div class="tw">
+    <table>
+      <caption>The six parameters a tower is selected on <span class="vb course">Course</span></caption>
+      <thead><tr><th style="text-align:left;">Parameter</th><th style="text-align:left;">Definition</th><th style="text-align:left;">What actually controls it</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Range</strong></td><td style="text-align:left;">Entering &minus; leaving water temperature</td><td style="text-align:left;"><strong>Heat load and circulation rate. Not tower size, and not wet bulb.</strong> If the wet bulb rises at constant load and flow, both water temperatures rise and the range is unchanged</td></tr>
+        <tr class="total"><td><strong>Approach</strong></td><td style="text-align:left;">Leaving water &minus; ambient <strong>wet bulb</strong></td><td style="text-align:left;">Tower size. <strong>Size expands exponentially as approach reduces</strong> &mdash; more cells, more fans, more auxiliary power. Modern towers commonly go below 5 &deg;F</td></tr>
+        <tr><td><strong>Effectiveness</strong></td><td style="text-align:left;">Range &divide; (Range + Approach)</td><td style="text-align:left;">How much of the available thermal potential the tower actually uses</td></tr>
+        <tr><td><strong>COC</strong></td><td style="text-align:left;">Dissolved solids in circulating water &divide; dissolved solids in make-up</td><td style="text-align:left;">Water chemistry and the blowdown rate you are prepared to run</td></tr>
+        <tr><td><strong>Blowdown / bleed</strong></td><td style="text-align:left;">Draining concentrated water, replaced by fresh make-up</td><td style="text-align:left;">Computed from cycles of concentration and evaporation loss</td></tr>
+        <tr><td><strong>L/G ratio</strong></td><td style="text-align:left;">Liquid-to-gas mass flow ratio</td><td style="text-align:left;">Tuned seasonally by water-box loading and fan blade angle</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">The nominal cooling tower ton &mdash; and the reconciliation the course states without showing</b>
+    <p>A nominal tower ton is the capacity to cool <strong>54 mL/s of water from 95 &deg;F (35 &deg;C) to 85 &deg;F (29.4 &deg;C) at 78 &deg;F (25.6 &deg;C) entering wet bulb</strong>. The course also states thermal capability as <strong>1.25 kW of heat dissipation per kW of evaporator cooling</strong>. Those two statements look unrelated. They are the same statement.</p>
+    <div class="work" style="margin:1em 0;">
+      <div class="stp"><b>Test the 54 mL/s figure against the 1.25 uplift</b>
+        <span class="r">per kW of <em>chiller</em> cooling, heat rejected = 1.25 kW; range = 35 &minus; 29.4 = 5.6 K</span>
+        <span class="r">&#7745; = 1,250 / (4,187 &times; 5.6) = 0.0533 kg/s = <strong>53.3 mL/s per kW of cooling &asymp; the stated 54</strong></span></div>
+      <div class="stp"><b>Convert to the familiar rule of thumb</b>
+        <span class="r">per ton: 53.3 &times; 3.517 = 187.5 mL/s = <strong>2.97 GPM &asymp; 3 GPM per ton</strong></span>
+        <span class="r">heat rejected per ton = 1.25 &times; 12,000 = <strong>15,000 BTU/h</strong> &mdash; 12,000 cooling plus ~3,000 of compression work</span></div>
+    </div>
+    <p style="margin-bottom:0;"><strong>The trap is the unstated basis.</strong> 54 mL/s is per kW of <em>evaporator</em> duty, not per tower ton. Read it as a tower figure and you undersize the condenser circuit by a factor of 3.5. The useful form to carry is the last line: <strong>a tower ton rejects 15,000 BTU/h at 3 GPM</strong>, and a chiller ton and a tower ton are not the same ton.</p>
+  </div>
+
+  <h4>The worked water balance &mdash; 1,000 GPM, 95 &rarr; 85 &deg;F, 3 cycles</h4>
+  <div class="tw">
+    <table>
+      <caption>Tower water account, reproduced and checked <span class="vb course">Course</span> &middot; arithmetic <span class="vb derived">Derived</span></caption>
+      <thead><tr><th style="text-align:left;">Quantity</th><th style="text-align:left;">Formula</th><th class="num">Result</th><th style="text-align:left;">Check</th></tr></thead>
+      <tbody>
+        <tr><td>Range</td><td style="text-align:left;">95 &minus; 85</td><td class="num">10 &deg;F</td><td style="text-align:left;">&#10003;</td></tr>
+        <tr><td>Approach</td><td style="text-align:left;">85 &minus; WB</td><td class="num">12 &deg;F</td><td style="text-align:left;"><strong>Not reproducible.</strong> The lecture states WB = 72 &deg;F then uses 73 &deg;F. 12 &deg;F requires 73. This is <strong>error E-11</strong></td></tr>
+        <tr><td>Effectiveness</td><td style="text-align:left;">R &divide; (R + A)</td><td class="num">0.455</td><td style="text-align:left;">&#10003; on the 12 &deg;F approach</td></tr>
+        <tr><td>Heat rejection</td><td style="text-align:left;">GPM &times; Range &times; 500</td><td class="num">5,000 MBH</td><td style="text-align:left;">&#10003; &mdash; the 500 is 8.33 lb/gal &times; 60 min &times; 1 BTU/lb&middot;&deg;F</td></tr>
+        <tr class="total"><td><strong>Evaporation</strong></td><td style="text-align:left;">GPM &times; Range &divide; 1,000</td><td class="num">10 GPM</td><td style="text-align:left;">&#10003; &mdash; the familiar <strong>1% of flow per 10 &deg;F of range</strong></td></tr>
+        <tr><td>Drift</td><td style="text-align:left;">0.00002 &times; GPM</td><td class="num">0.02 GPM</td><td style="text-align:left;">Arithmetic &#10003;, but the lecture calls 0.00002 &ldquo;0.02%&rdquo;. It is <strong>0.002%</strong> &mdash; which is the drift eliminator specification. Same E-11</td></tr>
+        <tr><td>Bleed</td><td style="text-align:left;">E &divide; (C &minus; 1)</td><td class="num">5 GPM</td><td style="text-align:left;">&#10003;</td></tr>
+        <tr class="total"><td><strong>Make-up</strong></td><td style="text-align:left;">E &times; C &divide; (C &minus; 1)</td><td class="num">15 GPM</td><td style="text-align:left;">&#10003; &mdash; <strong>1.5% of circulation, continuously</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">Why the cycles of concentration decision is a Gulf decision</b>
+    <p style="margin-bottom:0;">Make-up = E &times; C/(C&minus;1). Going from 3 cycles to 5 cuts make-up from 15 to 12.5 GPM &mdash; a 17% water saving on a plant that runs it every hour of every cooling season. But cycles concentrate whatever is in the make-up, and <strong>tower water chloride runs 2 to 10 times the make-up level</strong> through exactly that mechanism. On desalinated or blended Gulf make-up, raising cycles to save water raises chloride toward the level that takes the tower out of G-235 galvanized steel and into type 316 stainless. <strong>That is a water-cost against capital-cost trade, and it has to be made with a make-up water analysis in hand, not from a default.</strong> Ask for the analysis before the tower is specified, not after it corrodes.</p>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>Tower materials &mdash; and the water chemistry that selects them <span class="vb course">Course</span></caption>
+      <thead><tr><th style="text-align:left;">Material</th><th style="text-align:left;">Position and the specific number</th></tr></thead>
+      <tbody>
+        <tr class="total"><td><strong>Galvanized steel, G-235</strong></td><td style="text-align:left;">The most cost-effective packaged-tower material. <strong>G-235 is the heaviest commercially available mill galvanising &mdash; 2.3 oz of zinc per ft&sup2; (717 g/m&sup2;)</strong>, that being what the designation means. Compatible with most HVAC water chemistries. If a submittal offers G-90, it is offering roughly <em>two fifths</em> of the zinc</td></tr>
+        <tr class="total"><td><strong>Stainless steel</strong></td><td style="text-align:left;">The usual upgrade; <strong>submerged parts benefit most</strong>. Type 304 common, <strong>type 316 for highly corrosive environments</strong>. Typically &ge;16% Cr, &ge;6% Ni. <strong>Chloride is the strongest corrosion driver</strong>, and the tower concentrates it</td></tr>
+        <tr><td>Concrete</td><td style="text-align:left;">Large field-erected duty. Most durable, most expensive. <strong>Calcium-deficient water &mdash; a negative saturation index &mdash; erodes concrete</strong>; treatment should hold a slightly positive index</td></tr>
+        <tr><td>FRP, pultruded</td><td style="text-align:left;">Fastest-growing segment; complex single mouldings such as fan blades and cylinders. Tough, light, wide pH tolerance. <strong>Fire-retardant FRP can eliminate the fire protection system</strong> &mdash; itself up to a tenth of tower cost</td></tr>
+        <tr><td>Wood</td><td style="text-align:left;">Historic. Douglas fir supports microbial growth; <strong>delignification is controlled by holding pH strictly between 7 and 7.5</strong>. Drift over 1%, larger footprint. Not a current option</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid g2" style="margin:1.4em 0;">
+    <div class="card">
+      <h4 style="margin-top:0;">The numbers worth carrying from the component lecture</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);"><strong>Drift eliminators</strong> reduce drift to <strong>&lt; 0.002% of water flow</strong> &mdash; PVC, minimum 10 mm sheet thickness, 25 mm stiffness, UV coated, able to carry maintenance personnel. <strong>Cold water basin</strong> volume rule of thumb: <strong>three times the circulation rate in GPM</strong>. <strong>Sump entry velocity &lt; 3 fps</strong>; screens at <strong>&frac12; in square mesh, 1 fps</strong> net through the open area. <strong>Drive shafts spin near 1,800 rpm and must be dynamically balanced</strong> &mdash; imbalance is a direct cause of tower vibration and wear. V-belt drives typically below 50 hp; gear units above. <strong>Packaged towers below 10,000 GPM</strong> (HVAC 50 to 1,000+ tons); field-erected 10,000 to 350,000 GPM.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">Fill, louvers and the choices behind them</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);"><strong>Splash fill</strong> &mdash; water cascades over staggered bars; <strong>suits low-quality recirculating water with high solids</strong> and tolerates high temperature. <strong>Film fill</strong> &mdash; thin PVC honeycomb; <strong>larger surface area and better heat transfer, but shorter life</strong> and intolerant of solids. On dusty Gulf sites with high-TDS make-up, the film-fill efficiency argument is exactly the one that gets defeated by fouling. <strong>Louvers are a cross-flow feature</strong>; counter-flow designs often omit them. They are a barrier against splash-out, debris, noise and <em>sunlight</em> &mdash; and excluding light from the basin is what suppresses algae.</p>
+    </div>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">Legionella &mdash; the five-step routine, and why the fill is the target</b>
+    <p style="margin-bottom:0;">Inspect <strong>at least monthly</strong>; sediment, scale and slime each support legionella growth and survival. Keep basin surfaces clean and <strong>vacuum sediment without draining the system</strong>. <strong>Descale the fill</strong> &mdash; warm, wet, enormous surface area, continuously aerated, it is the ideal bacterial environment and the single highest-risk component. Clean the fill with a purpose cleaner <em>alongside</em> proper biocides, not instead of them. Clean the tower to reduce the nutrients available. Two layout rules follow directly: <strong>site selection at planning stage for sound, plume and drift</strong>, and an <strong>equalisation line between sumps where two or more towers run in tandem</strong>, because a clogged orifice or strainer otherwise drives one sump low and the other over.</p>
+  </div>
+
   <h3 id="c2-pump">Pumping arrangements — where the operating cost hides</h3>
   <div class="grid g3" style="margin:1.4em 0;">
     <div class="card">
@@ -2761,6 +3025,131 @@ colder condenser water and a more efficient chiller. Range is set by the flow yo
     <b class="nh">Low delta-T syndrome — why your ΔT choice is a commissioning risk</b>
     <p style="margin-bottom:0;">Designing at a wide ΔT saves pumping energy (below: 8 K needs 25% less flow than 6 K, and 25% less pump power). But if coils are selected on optimistic entering conditions, or three-way valves leak, or control valves are oversized, the plant never achieves the design return temperature. Flow rises to compensate, pumps run out, and chillers load up on flow rather than tonnage. <strong>The wider your design ΔT, the less margin you have before this bites</strong> — so a wide ΔT must be matched by two-way valves, correctly sized control valves, and coil selections you have actually checked.</p>
   </div>
+  <h3 id="c2-dist">Distribution schemes &mdash; and the origin of low &Delta;T syndrome <span class="vb course">Course</span></h3>
+  <p class="prose">Two upstream decisions shape the hydraulics before any scheme is chosen: how the pipework returns, and how pumps attach to chillers.</p>
+
+  <div class="grid g2" style="margin:1.4em 0;">
+    <div class="card">
+      <h4 style="margin-top:0;">Direct vs reverse return</h4>
+      <p style="font-size:var(--step--1);margin:0 0 .6em;color:var(--text-secondary);"><strong>Direct return</strong> &mdash; pressure differential is <em>not</em> uniform across the heat exchangers. The nearest sees a much greater differential than the farthest; its control valve may run nearly closed, which is unstable, while the farthest may lack the differential to reach its required flow at all.</p>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);"><strong>Reverse return</strong> &mdash; consistent differential across every exchanger, so balancing is straightforward. The penalty is more piping length. <em>Open loops &mdash; condenser water with a tower &mdash; are direct return by nature; there are no individual terminals to balance.</em></p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">Tandem vs headered pumps</h4>
+      <p style="font-size:var(--step--1);margin:0 0 .6em;color:var(--text-secondary);"><strong>Tandem</strong> &mdash; one pump dedicated per chiller. Handles unequally sized chillers without control valves and lets pump selection follow each evaporator's pressure drop. But <strong>a standby pump cannot be started automatically by the BMS</strong> &mdash; it is a manual operation, and adding standby needs extensive pipework and isolation valves.</p>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);"><strong>Headered</strong> &mdash; pump discharges joined to a common manifold. Any pump serves any chiller, so an outage does not take out a specific machine, and multiple pumps on one chiller can raise primary flow to mitigate low &Delta;T. But <strong>a single pump failure can fail the whole plant</strong> &mdash; flow to every chiller drops at once and each flow switch trips.</p>
+    </div>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">Where low &Delta;T syndrome actually comes from &mdash; it is designed in, not commissioned in</b>
+    <p>In a <strong>constant primary flow</strong> scheme, constant-speed pumps deliver fixed flow at all times and supply temperature varies to meet demand. A <strong>3-way mixing valve</strong> at each AHU lets water bypass the coil at part load.</p>
+    <p>At design, water enters the coil at 44 &deg;F and leaves at 54 &deg;F, all flow through the coil, no bypass. At roughly 50% load the 3-way valve throttles the coil and lets <strong>44 &deg;F water bypass straight into the 54 &deg;F return line</strong>.</p>
+    <p style="margin-bottom:0;">Chiller capacity is proportional to flow &times; &Delta;T. <strong>With flow fixed at design, &Delta;T must collapse as load falls</strong> &mdash; and the mixed bypass water drives the return temperature entering the chiller lower still. Since peak conditions occur perhaps <strong>1% of operating hours, the plant spends 99% of its life in this degraded state.</strong> The course describes this scheme as obsolete and no longer in use, and the reason is structural rather than operational: the 3-way valve <em>is</em> the mechanism.</p>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>The three schemes compared <span class="vb course">Course</span></caption>
+      <thead><tr><th>&nbsp;</th><th style="text-align:left;">Constant primary</th><th style="text-align:left;">Constant primary + variable secondary</th><th style="text-align:left;">Primary variable</th></tr></thead>
+      <tbody>
+        <tr><td>Terminal control valve</td><td style="text-align:left;"><strong>3-way</strong></td><td style="text-align:left;">2-way or PICV</td><td style="text-align:left;">2-way</td></tr>
+        <tr><td>Installation cost</td><td style="text-align:left;">Lowest</td><td style="text-align:left;"><strong>Highest</strong> &mdash; extra pumps, pipework, valves</td><td style="text-align:left;">Medium &mdash; no second pump set</td></tr>
+        <tr><td>Pumping cost</td><td style="text-align:left;"><strong>Highest</strong></td><td style="text-align:left;">Moderate</td><td style="text-align:left;"><strong>Lowest</strong></td></tr>
+        <tr><td>Low &Delta;T exposure</td><td style="text-align:left;">Highest &mdash; inherent</td><td style="text-align:left;">Present</td><td style="text-align:left;"><strong>Lowest</strong></td></tr>
+        <tr class="total"><td>Control complexity</td><td style="text-align:left;">Lowest</td><td style="text-align:left;">Moderate</td><td style="text-align:left;"><strong>Highest</strong> &mdash; needs coordinated chiller, valve and pump control, longer commissioning, an experienced operator</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note">
+    <b class="nh">Two sizing rules that distinguish the middle scheme from the third</b>
+    <p style="margin-bottom:0;">In <strong>primary&ndash;secondary</strong>, the <strong>decoupler</strong> hydraulically separates the loops. It is <strong>sized for the diameter of the largest chiller</strong>, with a pressure drop equivalent to <strong>6 to 10 pipe diameters</strong>. Secondary pump speed is modulated on the differential pressure measured <strong>across the farthest AHU on the critical path</strong>. In <strong>primary variable</strong>, the decoupler is replaced by a <strong>bypass with a normally closed control valve</strong> that opens only to hold minimum evaporator flow, and is <strong>sized for the minimum flow of the largest chiller</strong>. The manufacturer's minimum evaporator flow governs, and <strong>to avoid laminar flow it should not fall below 40%</strong>. That 40% figure is the number to check in a submittal before accepting a variable-primary scheme.</p>
+  </div>
+
+  <h3 id="c2-head">Pump head &mdash; and the distinction that changes the whole calculation <span class="vb course">Course</span></h3>
+
+  <div class="fml">
+    <span class="eq">Total static head    = vertical height, source surface to discharge point   &mdash; independent of flow</span>
+    <span class="eq">Frictional head      &prop; (flow rate)&sup2;                                 &mdash; pipes, valves, equipment</span>
+    <span class="eq">Total dynamic head   TDH = total static head + frictional losses</span>
+    <span class="eq">Flooded suction      TDH = h_d &minus; h_s     water above the pump &rarr; suction head positive, pump head DECREASES</span>
+    <span class="eq">Suction lift         TDH = h_d + h_s     pump above the water &rarr; suction head negative, pump head INCREASES</span>
+    <span class="src">Module&nbsp;4 &sect;1.5. Worked illustration: static 20 m + friction 8.6 m = TDH 28.6 m. <span class="vb course">Course</span></span>
+  </div>
+
+  <div class="note good">
+    <b class="nh">The single most transferable idea in Module 4</b>
+    <div class="tw" style="margin:1em 0;">
+      <table>
+        <thead><tr><th>Circuit</th><th style="text-align:left;">Definition</th><th style="text-align:left;">Total dynamic head</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Open loop</strong> &mdash; condenser water</td><td style="text-align:left;">fluid contacts atmospheric pressure at delivery, suction or both</td><td style="text-align:left;"><strong>static head + frictional losses</strong></td></tr>
+          <tr class="total"><td><strong>Closed loop</strong> &mdash; chilled water</td><td style="text-align:left;">fluid never contacts atmosphere</td><td style="text-align:left;"><strong>frictional losses only</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-bottom:0;"><strong>The static head term appears or vanishes depending on whether the circuit is open.</strong> A centralised plant has both &mdash; closed on the chilled water side, open on the condenser side. Getting it wrong in either direction produces a badly sized pump: include static head on a closed loop and you oversize; omit it on an open loop and the tower water never arrives.</p>
+  </div>
+
+  <h4>NPSH &mdash; and the margin rule</h4>
+  <div class="fml">
+    <span class="eq">NPSHa = h_sp &plusmn; h_s &minus; h_f &minus; h_vp</span>
+    <span class="wh">h_sp = head at the liquid surface &mdash; 10.33 m for a tank open to atmosphere
+h_s  = static suction head or lift &mdash; SIGN depends on whether the pump sits above or below the source
+h_f  = suction pipe friction head        h_vp = vapour pressure head at operating temperature
+NPSHr is given by the pump manufacturer. NPSHa is a property of YOUR installation.</span>
+    <span class="src">Module&nbsp;4 &sect;1.6. <span class="vb course">Course</span></span>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>The three NPSH regions &mdash; and why region B is the dangerous one <span class="vb course">Course</span></caption>
+      <thead><tr><th class="num">Region</th><th style="text-align:left;">Condition</th><th style="text-align:left;">Action</th></tr></thead>
+      <tbody>
+        <tr><td class="num">A</td><td style="text-align:left;">NPSHa exceeds NPSHr by <strong>&ge; 0.5 m</strong></td><td style="text-align:left;">Safe. <strong>0.5 m is the standard industry margin</strong></td></tr>
+        <tr class="total"><td class="num">B</td><td style="text-align:left;">NPSHa &gt; NPSHr but the margin is below 0.5 m</td><td style="text-align:left;"><strong>Discrete region</strong> &mdash; may drop below NPSHr at any moment. Operation must be closely monitored</td></tr>
+        <tr><td class="num">C</td><td style="text-align:left;">NPSHa &lt; NPSHr</td><td style="text-align:left;"><strong>Cavitation will occur and will damage the pump</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">NPSHa falls as flow rises &mdash; check it at the top of the curve, not the duty point</b>
+    <p style="margin-bottom:0;">Suction friction losses grow with flow, so NPSHa is a <em>falling</em> curve plotted against the manufacturer's <em>rising</em> NPSHr curve. A pump comfortably in region&nbsp;A at duty can be in region&nbsp;B or C at run-out &mdash; which is exactly where a pump ends up when a system is commissioned with dampers or valves more open than design. <strong>Ask for the NPSHa/NPSHr plot across the operating range, not a single number at duty.</strong> Anchor the sign convention on the physical case rather than the algebra: <strong>pump above the source &rarr; suction lift &rarr; NPSHa reduced.</strong></p>
+  </div>
+
+  <h4>The worked primary pump head calculation</h4>
+  <p class="prose">Three chillers at 225&nbsp;TR, two working and one standby, chilled water 54&nbsp;&deg;F in / 42&nbsp;&deg;F out.</p>
+
+  <div class="work">
+    <div class="stp"><b>Flow rate</b>
+      <span class="r">working capacity = 2 &times; 225 = 450 TR ;  &Delta;T = 12 &deg;F</span>
+      <span class="r">total flow = (24 &divide; &Delta;T) &times; TR = (24 &divide; 12) &times; 450 = <strong>900 US GPM</strong> ; <strong>450 GPM per pump</strong></span></div>
+    <div class="stp"><b>Walk the circuit section by section, primary pump discharge to secondary pump suction</b>
+      <span class="r">A&ndash;B pump discharge with NRV and butterfly valve &middot; B&ndash;C header 1 including the tee</span>
+      <span class="r">C&ndash;D&ndash;E&ndash;F chiller supply, <strong>evaporator</strong>, chiller discharge &middot; F&ndash;G header 2 &middot; G&ndash;H secondary suction with valve and Y-strainer</span></div>
+    <div class="stp"><b>Section A&ndash;B, worked</b>
+      <span class="r">150 mm pipe, 0.755 m, 450 GPM &rarr; from the closed-circuit chart <strong>1.35 ft per 100 ft</strong>, velocity <strong>1.52 m/s</strong></span>
+      <span class="r">friction head = 0.03375 ft = <strong>0.010 m</strong></span></div>
+    <div class="stp"><b>Valve and fitting equivalents at 150 mm</b>
+      <span class="r">butterfly valve <strong>7 ft</strong> &middot; non-return valve <strong>60 ft</strong> of equivalent pipe</span>
+      <span class="r">tee, 150 &rarr; 200 mm sudden enlargement: d&#8321;/d&#8322; = 0.75 &rarr; K &asymp; 0.2 &rarr; <strong>0.024 m</strong></span></div>
+    <div class="stp"><b>Sum, and apply the allowance</b>
+      <span class="r">pipe and fitting friction 1.221 m + valve and coil friction 4.79 m + <strong>15% allowance on pipe and fittings</strong> 0.18 m</span>
+      <span class="r">total <strong>6.19 m</strong> &rarr; selected pump head <strong>7 m at 450 US GPM</strong></span></div>
+  </div>
+
+  <div class="note">
+    <b class="nh">The reusable part is the sheet, not the answer</b>
+    <p style="margin-bottom:0;">The course's calculation sheet format &mdash; one row per component, with columns for description, diameter, flow rate, actual length (m), equivalent length (ft), pressure loss per 100 ft, total drop (ft) and total drop (m) &mdash; is a directly reusable review template, where <strong>total &Delta;P = equivalent length &times; pressure loss &divide; 100</strong>. Three figures are worth holding: <strong>a chiller evaporator is 2 to 5 m</strong> (4 m assumed here), the <strong>safety allowance is 10&ndash;15% on pipe and fittings</strong>, and chiller pressure loss splits two ways &mdash; <strong>evaporator loss feeds the primary pump head, condenser loss feeds the condenser pump head</strong>. Note also three substitution rules for reading the Carrier tables: read a <strong>balancing valve as a globe valve</strong>, a <strong>butterfly valve as a gate valve</strong>, and an HVAC <strong>non-return valve as a swing check</strong>.</p>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">Two cautions on this worked example</b>
+    <p style="margin-bottom:0;">The calculation uses <strong>54/42 &deg;F &mdash; a 12 &deg;F &Delta;T</strong> &mdash; while the rest of the course, and the AHRI standard rating condition, use <strong>54/44 &deg;F, a 10 &deg;F &Delta;T</strong>. The example is internally consistent; just never mix its flow result with the 10 &deg;F basis. And the valve equivalent-length narration is garbled &mdash; it states butterfly 7 ft and NRV 60 ft, then says &ldquo;in both cases the pipe length must be seven feet&rdquo;. <strong>Read the table, not the narration, and verify both against the Carrier handbook.</strong> Note finally that in chilled water systems <strong>pumping is 6 to 12% of total annual plant energy</strong> &mdash; enough to matter, not enough to justify compromising the chiller.</p>
+  </div>
+
 </section>
 
 <section id="c2-exD">
@@ -2817,6 +3206,446 @@ colder condenser water and a more efficient chiller. Range is set by the flow yo
   <div class="note">
     <b class="nh">Where the two judgement calls could bite</b>
     <p style="margin-bottom:0;">The 30% perimeter fraction and the 0.90 diversity factor together moved the answer from a naive 5 100 × 110.6 = 564 kW down to 345 kW — a factor of 1.63. <strong>Both must be stated explicitly in the basis of design and agreed, not buried in a spreadsheet.</strong> If a reviewer disagrees with either, the plant size changes materially, and that is a conversation to have at design stage rather than after the chillers are ordered.</p>
+  </div>
+
+  <h3 id="c2-pipe">Pipe sizing &mdash; three limits, and which one binds <span class="vb course">Course</span></h3>
+
+  <div class="fml">
+    <span class="eq">Flow           US GPM per TR = 24 / &Delta;T(&deg;F)          chilled water, from Q = &#7745;&middot;c_p&middot;&Delta;T</span>
+    <span class="eq">Friction       limit 4 ft of water per 100 ft of pipe   ASHRAE recommended range 1 to 4</span>
+    <span class="eq">Velocity       8 to 10 ft/s  (2.4 to 3 m/s)</span>
+    <span class="eq">Condenser      US GPM per TR = 30 / &Delta;T(&deg;F)          at HRR = 1.25 only</span>
+    <span class="wh">HRR = Heat Rejection Ratio = heat rejected &divide; heat absorbed. ALWAYS greater than one, because
+heat rejected includes the work of compression. For commercial HVAC vapour compression, HRR = 1.15 to 1.25.
+At any other HRR, go back to the derivation &mdash; do not reuse the 30/&Delta;T shortcut.</span>
+    <span class="src">Module&nbsp;5 &sect;1A.4&ndash;1A.5. <span class="vb course">Course</span></span>
+  </div>
+
+  <div class="note good">
+    <b class="nh">The rule that tells you which limit is actually binding</b>
+    <p style="margin-bottom:0;">For <strong>chilled water</strong>: pipes <strong>&le; 4 in (100 mm) &mdash; friction governs</strong>, because velocity is low at small sizes within the recommended friction range; <strong>larger pipes &mdash; velocity governs</strong>, because friction is low at large sizes within the recommended velocity range. For <strong>condenser water</strong> the crossover sits higher: <strong>&ge; 8 in velocity governs, &le; 6 in friction governs</strong>. Knowing which limit binds tells you which number to argue about in a review &mdash; and the reason both limits exist: too <em>low</em> a friction target means an oversized pipe or an exotic material with a long payback; too <em>high</em> means a bigger pump motor and higher first <em>and</em> operating cost. Too high a velocity gives turbulence at joints, noise, vibration and wall erosion.</p>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>Two worked sizings <span class="vb course">Course</span></caption>
+      <thead><tr><th>Case</th><th style="text-align:left;">Working</th><th style="text-align:left;">Result</th></tr></thead>
+      <tbody>
+        <tr><td>25 TR, &Delta;T 10 &deg;F, chilled water</td><td style="text-align:left;">flow = (24/10) &times; 25 = 60 US GPM. A 2 in pipe gives &asymp; 6 ft/100 ft &mdash; <strong>over the 4 ft limit</strong>. 2&frac12; in gives &asymp; 3 ft/100 ft at 4.2 ft/s</td><td style="text-align:left;"><strong>65 mm</strong> &mdash; friction governs</td></tr>
+        <tr class="total"><td>1 000 TR, &Delta;T 10 &deg;F, chilled water</td><td style="text-align:left;">flow = 2 400 US GPM, read from a chart built for velocity restricted to 8 ft/s at &ge; 125 mm</td><td style="text-align:left;"><strong>300 mm</strong> &mdash; velocity governs</td></tr>
+        <tr><td>25 TR, condenser water, HRR 1.25</td><td style="text-align:left;">flow = (30/10) &times; 25 = 75 US GPM</td><td style="text-align:left;"><strong>80 mm</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">Two piping rules worth memorising, and one that is wrong in the course</b>
+    <p><strong>Coils must be piped counterflow.</strong> Chilled water supply enters at the <strong>bottom</strong>, on the opposite side to the airflow; return leaves from the <strong>top</strong>. Counterflow lets the water and air temperature ranges overlap &mdash; water 44&rarr;55 &deg;F against air 77&rarr;54 &deg;F in the course's example. <strong>Parallel piping cannot achieve that</strong>, and it is a drawing-review check that takes five seconds.</p>
+    <p style="margin-bottom:0;"><strong>Pressure testing: 1.5 &times; design working pressure, held 24 hours</strong>, any leak repaired and the system <em>re-tested</em> &mdash; and <strong>joints are insulated only after the test passes</strong>. But note error <strong>E-2</strong>: Module&nbsp;5 specifies a <strong>concentric</strong> reducer at pump suction to prevent air pockets. That is wrong and contradicts Module&nbsp;2, which correctly requires <strong>eccentric</strong> reducers at suction &mdash; flat side up, so no vapour pocket can form. Concentric belongs at the discharge.</p>
+  </div>
+
+  <h3 id="c2-ahu">Air handling unit selection &mdash; from load parameters to a signed data sheet <span class="vb course">Course</span></h3>
+  <p class="prose">The chiller makes cold water; the AHU is where that water is converted back into a room condition. Course&nbsp;2 teaches the selection as a chain in which each load parameter determines exactly one machine parameter. That mapping is the most directly transferable thing in the module, because it is also the order in which a submittal should be checked.</p>
+
+  <div class="tw">
+    <table>
+      <caption>What each load parameter determines &mdash; the selection chain <span class="vb course">Course</span></caption>
+      <thead><tr><th style="text-align:left;">Load input</th><th style="text-align:left;">Determines</th><th style="text-align:left;">Where it is checked</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Total heat gain</strong></td><td style="text-align:left;">Cooling capacity of the unit, in TR</td><td style="text-align:left;">Against the room-by-room heat load summary</td></tr>
+        <tr class="total"><td><strong>Sensible</strong> heat gain</td><td style="text-align:left;"><strong>Dehumidified air quantity &rarr; the fan capacity</strong></td><td style="text-align:left;">Against RSH &divide; (&rho;&middot;c<sub>p</sub>&middot;&Delta;t). Course&nbsp;1 &sect;&nbsp;<a href="#c1-hier">heat-factor hierarchy</a> is the same equation</td></tr>
+        <tr class="total"><td><strong>Latent</strong> heat gain</td><td style="text-align:left;"><strong>Number of coil rows</strong></td><td style="text-align:left;">Against the bypass factor the design needs: BF = (0.1)<sup>n/4</sup></td></tr>
+        <tr><td>Chilled water in / out</td><td style="text-align:left;">Water flow rate, L/s or GPM</td><td style="text-align:left;">Must match the chiller's design &Delta;T, not a different one</td></tr>
+        <tr><td>On-coil and off-coil air</td><td style="text-align:left;">Coil selection verification</td><td style="text-align:left;">Against the psychrometric process line the load calculation produced</td></tr>
+        <tr><td>Filtration requirement</td><td style="text-align:left;"><strong>Total static pressure of the fan</strong></td><td style="text-align:left;">At the <em>final</em> (dirty) filter &Delta;P, never the clean value</td></tr>
+        <tr><td>Noise criteria (set by unit location)</td><td style="text-align:left;">Need for attenuation &mdash; see <a href="#c2-insul">acoustics</a></td><td style="text-align:left;">Against the NC target for the served space</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">The one substitution that quietly invalidates the whole chain</b>
+    <p style="margin-bottom:0;">Fan selection must be made at the <strong>final, dirty-filter pressure drop</strong>. The gap between the clean and dirty &Delta;P across a multi-stage bank is routinely the single largest uncertainty in an ESP figure &mdash; and it is a one-way error. A fan sized on clean-filter resistance cannot hold design airflow before the first filter change, and no amount of commissioning recovers it. Ask which value was used, and ask to see the filter data sheet that produced it.</p>
+  </div>
+
+  <h4>Construction &mdash; what the specification has to say for each component</h4>
+  <div class="tw">
+    <table>
+      <caption>AHU component construction, as specified by the course <span class="vb course">Course</span></caption>
+      <thead><tr><th style="text-align:left;">Component</th><th style="text-align:left;">Specified construction</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Casing</strong></td><td style="text-align:left;">Extruded aluminium frame; double-skin panels &mdash; <strong>outer skin &ge; 0.6 mm pre-plasticized GI, inner skin &ge; 0.6 mm plain GI</strong>. Insulation <strong>&ge; 40 mm indoor, &ge; 50 mm outdoor</strong> (PUF or fibreglass). Hospital duty uses an <strong>aluminium inner skin</strong> to reduce contamination risk. Certified to <strong>EN or AHRI</strong></td></tr>
+        <tr><td><strong>Filters</strong></td><td style="text-align:left;">Suction side, heavy-gauge galvanized frame with vertical stiffeners, frame-to-frame sealant and gaskets for a leak-tight bank. Flat or angular, single or multi-stage. Rated to <strong>ASHRAE 52.2</strong></td></tr>
+        <tr><td><strong>Coils</strong></td><td style="text-align:left;">Copper tube, aluminium fin, <strong>mechanically bonded</strong>. <strong>Hydrophilic corrosion-resistant fins where the atmosphere is corrosive</strong> &mdash; that is the default reading for a Gulf coastal site, not an option. Performance <strong>certified by AHRI</strong></td></tr>
+        <tr><td><strong>Drain pan</strong></td><td style="text-align:left;">Heavy GI or stainless, <strong>insulated</strong> &mdash; the pan carries water at coil temperature and will otherwise sweat onto whatever is beneath it</td></tr>
+        <tr><td><strong>Heat recovery wheel</strong></td><td style="text-align:left;">Recovers <strong>sensible and latent</strong> energy from exhaust &mdash; <strong>60&ndash;80%</strong> of the waste energy in a typical arrangement. Certified <strong>AHRI</strong></td></tr>
+        <tr><td><strong>Fan</strong></td><td style="text-align:left;">Generates the static pressure to overcome every loss in the unit and the ductwork. Certified <strong>AMCA</strong></td></tr>
+        <tr><td><strong>UV-C lamps</strong></td><td style="text-align:left;">At the coil &mdash; sterilise airborne organisms, suppress mould on the coil face, reduce odours</td></tr>
+        <tr><td><strong>Vibration isolators</strong></td><td style="text-align:left;">Spring isolators between fan assembly and casing, so vibration does not reach panels or structure</td></tr>
+        <tr><td><strong>Dampers</strong></td><td style="text-align:left;">Mixing box return/outside air proportioning. <strong>UL listed</strong></td></tr>
+        <tr><td>Motors</td><td style="text-align:left;">The course cites <strong>IS standards</strong> here. <strong>That is error E-4</strong> &mdash; IS is the Indian standard; the motor standard on a Gulf project is <strong>IEC</strong>. Every other entry in this certification map carries over unchanged</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Filtration &mdash; the ratings that appear in a specification</h4>
+  <div class="tw">
+    <table>
+      <caption>Filter metrics and ratings <span class="vb course">Course</span></caption>
+      <thead><tr><th style="text-align:left;">Metric</th><th style="text-align:left;">Definition and the number that matters</th></tr></thead>
+      <tbody>
+        <tr><td><strong>MERV</strong></td><td style="text-align:left;">Minimum Efficiency Reporting Value, from the <strong>ASHRAE 52.2</strong> test method. Capacity to trap particles <strong>0.3 to 10 &micro;m</strong>. Higher is better &mdash; MERV 14 outperforms MERV 8</td></tr>
+        <tr class="total"><td><strong>HEPA</strong></td><td style="text-align:left;">Dry extended-media, replaceable. Collection efficiency <strong>99.97&ndash;99.997% at 0.3 &micro;m</strong> at rated airflow. <strong>Maximum clean-filter pressure drop 2.54 cm w.g.</strong> (25 mm w.c. &asymp; 249 Pa). Clean rooms and hospitals</td></tr>
+        <tr><td>Initial &Delta;P</td><td style="text-align:left;">Across the <strong>clean</strong> filter</td></tr>
+        <tr><td>Final &Delta;P</td><td style="text-align:left;">Across the filter at <strong>maximum dust-holding capacity</strong> &mdash; this is the fan-selection value</td></tr>
+        <tr><td>Service life</td><td style="text-align:left;">The operating period between initial and final &Delta;P</td></tr>
+        <tr><td>Dust-holding capacity</td><td style="text-align:left;">Mass of dust retained, in grains per ft&sup2;</td></tr>
+        <tr><td>Activated carbon</td><td style="text-align:left;">Recommended where <strong>VOCs</strong> are present. Chemical filters near industrial areas</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note">
+    <b class="nh">Filtration and dilution solve two different problems</b>
+    <p style="margin-bottom:0;">Filtration handles <strong>particulates</strong>. Outside air handles <strong>gases</strong> &mdash; CO<sub>2</sub>, odours, VOCs &mdash; by dilution. No MERV rating reduces a CO<sub>2</sub> concentration, and no outside-air rate substitutes for a filter bank. A submittal that answers an IAQ requirement with filtration alone has answered half of it. The ventilation side of the argument is in <a href="#c3-airflow">Course&nbsp;3</a>.</p>
+  </div>
+
+  <h4>Fan types, and the law that decides the control strategy</h4>
+  <div class="grid g3" style="margin:1.4em 0;">
+    <div class="card">
+      <h4 style="margin-top:0;">Forward curved</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">Blade tips curve with rotation. <strong>Low flow, low static pressure</strong>, low cost, low noise. Small AHUs only &mdash; it has no headroom for a high-ESP system.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">Backward curved &middot; aerofoil</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">Higher speed, so heavier construction. <strong>Handles high static pressure with good efficiency across a wide range of system resistance.</strong> Aerofoil blading is the highest-efficiency profile. The default for a real AHU.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">Plug / plenum &middot; EC</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">Mixed-flow or single-inlet centrifugal running <strong>without a spiral housing</strong> &mdash; less space and better efficiency than a DIDW centrifugal, with good acoustics. EC adds an electronically commutated external rotor, energy-optimised for variable flow. Twin-fan arrays give redundancy and turndown.</p>
+    </div>
+  </div>
+
+  <div class="fml">
+    <span class="eq">Fan law 1   Q &prop; N            flow varies directly with speed</span>
+    <span class="eq">Fan law 2   P &prop; N&sup2;           static pressure varies with the square of speed</span>
+    <span class="eq">Fan law 3   W &prop; N&sup3;           shaft power varies with the cube of speed</span>
+    <span class="wh">Halving fan speed takes power to one eighth. That single fact is the whole argument for a
+variable speed drive, and it is why a VFD is the default rather than an upgrade &mdash; not an
+energy-saving accessory but the consequence of a cube law. A VFD varies supply frequency
+to vary motor speed; four-pole and six-pole AC induction motors are the usual AHU choices.</span>
+    <span class="src">Fan laws per AMCA / ASHRAE Fundamentals Ch. 21. <span class="vb standard">Standard</span></span>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>Flow control &mdash; three systems that are routinely confused <span class="vb course">Course</span></caption>
+      <thead><tr><th style="text-align:left;">System</th><th style="text-align:left;">What it varies</th><th style="text-align:left;">Where it belongs</th></tr></thead>
+      <tbody>
+        <tr><td><strong>CAV</strong></td><td style="text-align:left;">Nothing &mdash; rated airflow at all times</td><td style="text-align:left;">24/7 near-constant occupancy: warehouses, contact centres, manufacturing. Also venues with intermittent but predictable occupancy</td></tr>
+        <tr><td><strong>VAV</strong></td><td style="text-align:left;"><strong>Airflow, to hold room temperature.</strong> VAV boxes damper each zone on thermostat input; AHU fan speed follows duct static pressure through a VFD</td><td style="text-align:left;">Diverse, variable sensible loads across many zones</td></tr>
+        <tr class="total"><td><strong>DCV</strong></td><td style="text-align:left;"><strong>Fresh air, in response to occupancy</strong> &mdash; VAV boxes modulating outdoor air on <strong>CO<sub>2</sub></strong> level</td><td style="text-align:left;">Variable occupancy. <strong>Distinct from VAV</strong>: VAV serves temperature, DCV serves ventilation. A specification that names one and describes the other is a specification you send back</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4 id="c2-ahusel">The worked selection &mdash; 50 TR, 21,000 cfm, and four checks the course does not make</h4>
+  <p class="prose">The course works a 50 TR unit at 21,000 cfm with no mixing box, fresh air delivered directly into the AHU room. The figures below are the vendor's; the checks beneath them are the arithmetic a reviewer should run before signing.</p>
+
+  <div class="tw">
+    <table>
+      <caption>Fan selection data sheet as presented, with the review check against each line <span class="vb course">Course</span> &middot; checks <span class="vb derived">Derived</span></caption>
+      <thead><tr><th style="text-align:left;">Parameter</th><th class="num">Stated</th><th style="text-align:left;">Check to apply</th></tr></thead>
+      <tbody>
+        <tr><td>Air volume</td><td class="num">21,000 cfm</td><td style="text-align:left;">9.911 m&sup3;/s. Against 50 TR that is <strong>420 cfm/TR</strong> &mdash; above the 400 cfm/TR comfort norm, so this is a high-sensible selection. Confirm it against the RSHF, not against a rule of thumb</td></tr>
+        <tr><td>Total static pressure</td><td class="num">74 mm w.c.</td><td style="text-align:left;"><strong>725.7 Pa.</strong> Total, so ISP + ESP &mdash; must reconcile line by line with the <a href="#c2-esp">ESP worksheet</a>, including the dirty-filter value</td></tr>
+        <tr><td>Outlet air velocity</td><td class="num">9.8 m/s</td><td style="text-align:left;">Course target <strong>9&ndash;10 m/s</strong>. Implies an outlet of <strong>1.011 m&sup2;</strong>. Higher velocity buys a smaller casing and pays for it in discharge noise and system effect</td></tr>
+        <tr><td>Total fan efficiency</td><td class="num">80.3%</td><td style="text-align:left;">Credible for backward-curved or aerofoil blading at this duty</td></tr>
+        <tr class="total"><td>Fan absorbed power</td><td class="num">9.67 kW</td><td style="text-align:left;"><strong>Does not follow from the two lines above.</strong> See the reconciliation below &mdash; the gap is real and it is the question to put to the vendor</td></tr>
+        <tr class="total"><td>Recommended motor rating</td><td class="num">15 kW</td><td style="text-align:left;">That is <strong>55% above absorbed power</strong>, not the ~15% the course states. See below &mdash; both are right, and the reason matters</td></tr>
+        <tr><td>Motor speed / max fan speed</td><td class="num">960 / 1,200 rpm</td><td style="text-align:left;">Duty at 930 rpm on the performance curve, so there is speed headroom. Max power absorption 22 kW is the operating envelope, not a selection figure</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="work">
+    <div class="stp"><b>Reconcile the absorbed power against the stated efficiency</b>
+      <span class="r">Q = 21,000 cfm &times; 0.00047195 = 9.911 m&sup3;/s&nbsp;&nbsp;&nbsp;&Delta;p = 74 mm w.c. &times; 9.80665 = 725.7 Pa</span>
+      <span class="r">air power = 9.911 &times; 725.7 = <strong>7.192 kW</strong>&nbsp;&nbsp;&nbsp;&rarr; at &eta; = 0.803, shaft power = 7.192 / 0.803 = <strong>8.96 kW</strong></span>
+      <span class="r">stated absorbed power 9.67 kW &rarr; implied overall efficiency <strong>74.4%</strong>, not 80.3%</span></div>
+    <div class="stp"><b>Where the missing 0.71 kW goes</b>
+      <span class="r">8.96 / 9.67 = 0.926 &rarr; a <strong>7.4% transmission loss</strong>, which is exactly a belt drive</span>
+      <span class="r">&rarr; 80.3% is the <strong>fan total efficiency at the impeller</strong>; 9.67 kW is the power <strong>at the motor input</strong>, drive losses included</span></div>
+    <div class="stp"><b>Why a 9.67 kW fan takes a 15 kW motor</b>
+      <span class="r">course rule: motor &ge; 1.15 &times; absorbed = 1.15 &times; 9.67 = <strong>11.12 kW</strong></span>
+      <span class="r">IEC frame series: &hellip; 7.5, <strong>11</strong>, <strong>15</strong>, 18.5, 22 kW &rarr; 11 kW is <em>below</em> 11.12, so the next standard frame is <strong>15 kW</strong></span>
+      <span class="r">the 15% rule sets a minimum; the frame series rounds it up. The apparent 55% margin is a consequence of the catalogue, not of the design</span></div>
+    <div class="stp"><b>Cross-check the water side against the chiller</b>
+      <span class="r">50 TR = 175.8 kW; CHW at 6.7 &rarr; 12.2 &deg;C gives &Delta;T = 5.5 K</span>
+      <span class="r">flow = 175.8 / (4.187 &times; 5.5) = <strong>7.64 L/s = 121 GPM = 2.42 GPM/TR</strong></span>
+      <span class="r">against the pipe-sizing rule 24 / &Delta;T(&deg;F) = 24 / 9.9 = <strong>2.42 GPM/TR</strong> &rarr; the two agree exactly</span></div>
+  </div>
+
+  <div class="res">
+    <div><span class="k">Air power</span><span class="v">7.19</span><span class="u">kW at 9.911 m&sup3;/s, 725.7 Pa</span></div>
+    <div><span class="k">Shaft power at &eta; 80.3%</span><span class="v">8.96</span><span class="u">kW &mdash; at the impeller</span></div>
+    <div class="hero"><span class="k">Stated absorbed power</span><span class="v">9.67</span><span class="u">kW &mdash; at the motor input</span></div>
+    <div><span class="k">Implied drive loss</span><span class="v">7.4</span><span class="u">% &mdash; consistent with a belt drive</span></div>
+    <div><span class="k">Motor, 15% rule</span><span class="v">11.1</span><span class="u">kW required &rarr; 15 kW frame</span></div>
+    <div><span class="k">Chilled water flow</span><span class="v">7.64</span><span class="u">L/s &middot; 121 GPM &middot; 2.42 GPM/TR</span></div>
+  </div>
+
+  <div class="note good">
+    <b class="nh">The question this reconciliation produces &mdash; and it is the right one</b>
+    <p style="margin-bottom:0;">&ldquo;Is the quoted absorbed power at the <strong>fan shaft</strong> or at the <strong>motor input</strong>, and does the quoted efficiency include drive losses?&rdquo; Two vendors answering that question differently will produce fan power figures differing by 7&ndash;8% on identical machines, and the difference propagates straight into the specific fan power you are contractually obliged to meet and into the electrical load schedule the MEP coordination is built on. A selection sheet that does not say which basis it uses is incomplete, regardless of how many decimal places it carries.</p>
+  </div>
+
+  <h4>What the OEM needs from you, and what you need back</h4>
+  <div class="grid g2" style="margin:1.4em 0;">
+    <div class="card">
+      <h4 style="margin-top:0;">Issue to the OEM at selection stage</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);"><strong>Handing</strong> &mdash; defined by viewing <em>from the front of the filter</em>, which fixes right and left hand and therefore where the chilled water, coil and drain connections and the fan/motor access door go. <strong>Discharge orientation</strong> &mdash; top or side, stated before selection, never after. Air volume, total static pressure, on-coil and off-coil conditions, filtration stages, noise criterion, and the space envelope.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">Demand back from the OEM</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">Fan curve with the duty point marked &mdash; <strong>away from surge, toward the right of the curve</strong>. Coil sheet giving <strong>sensible and latent separately</strong>, air-side &Delta;P (149.8 Pa in the worked case, which feeds the ESP), water-side &Delta;P (which feeds the <a href="#c2-head">pump head</a>) and water temperatures matching the selected chiller. <strong>Foundation details and static/dynamic weights</strong> &mdash; the civil and structural teams cannot design pedestals without them, and they are the item most often missing at the first submission.</p>
+    </div>
+  </div>
+
+  <h3 id="c2-ductsize">Duct sizing &mdash; three methods <span class="vb course">Course</span></h3>
+
+  <div class="tw">
+    <table>
+      <caption>Which method, and what it costs you <span class="vb course">Course</span></caption>
+      <thead><tr><th>Method</th><th style="text-align:left;">Principle</th><th style="text-align:left;">Strength</th><th style="text-align:left;">Limitation</th></tr></thead>
+      <tbody>
+        <tr class="total"><td><strong>Equal friction</strong></td><td style="text-align:left;">Constant pressure loss per unit length throughout &mdash; <strong>most projects use 0.1 in w.g. per 100 ft</strong> (&asymp; 25 Pa per 30 m) along the index path</td><td style="text-align:left;">Simple; <strong>automatically reduces velocity in the flow direction</strong>, lowering noise. The most widely used method, best for CAV</td><td style="text-align:left;"><strong>No equalisation of branch pressure drops</strong> unless the system is symmetrical &mdash; volume control dampers must be added to balance</td></tr>
+        <tr><td><strong>Velocity reduction</strong></td><td style="text-align:left;">Suitable velocities chosen for main and branches; sizes follow from flow and velocity</td><td style="text-align:left;">Easiest way to size ducts; velocities can be tuned for noise</td><td style="text-align:left;"><strong>Requires considerable experience and judgement.</strong> Simple layouts only</td></tr>
+        <tr><td><strong>Static regain</strong></td><td style="text-align:left;">Velocity reduced systematically so the <strong>static pressure regained at each reduction offsets the friction in the next section</strong> &mdash; &Delta;P_r = R &times; (VP&#8321; &minus; VP&#8322;), R typically 0.50 to 0.95</td><td style="text-align:left;">Consistent static pressure at every branch and outlet; system stays balanced. <strong>Excellent for VAV</strong> and long high-velocity runs</td><td style="text-align:left;">All downstream ductwork sized at minimum velocity &rarr; <strong>ducts become very large at the ends of long branches</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="work">
+    <div class="stp"><b>Worked equal-friction sizing &mdash; 5 000 cfm office main</b>
+      <span class="r">1. Select max velocity from the application table &mdash; office supply main: <strong>2 000 fpm</strong></span>
+      <span class="r">2. Select friction rate: <strong>0.1 in w.c. per 100 ft</strong> &nbsp;&middot;&nbsp; 3. Design flow: 5 000 cfm</span></div>
+    <div class="stp"><b>Read the friction chart at that intersection, then check against the velocity ceiling</b>
+      <span class="r">velocity <strong>1 500 fpm</strong> &check; (below 2 000) ; diameter <strong>25 in</strong></span></div>
+    <div class="stp"><b>Convert to rectangular via equivalent diameter</b>
+      <span class="r">D_e = 1.30 (A&middot;B)^0.625 &divide; (A+B)^0.25 &nbsp; with short side 14 in &rarr; long side <strong>40 in</strong></span>
+      <span class="r">aspect ratio = A &divide; B ; <strong>maximum 4:1 is good industrial practice</strong></span></div>
+    <div class="stp"><b>Hold the friction rate constant and size every remaining section from its own flow</b>
+      <span class="r">ESP then estimated as the friction rate &times; the <strong>equivalent length of the index run</strong></span></div>
+  </div>
+
+  <h3 id="c2-esp">External static pressure &mdash; the distinction that governs the review <span class="vb course">Course</span></h3>
+
+  <div class="note trap">
+    <b class="nh">ESP is not total static pressure, and confusing them undersizes the fan</b>
+    <div class="tw" style="margin:1em 0;">
+      <table>
+        <thead><tr><th>Term</th><th style="text-align:left;">Definition</th><th style="text-align:left;">How it is obtained</th></tr></thead>
+        <tbody>
+          <tr><td><strong>ESP</strong> &mdash; external static pressure</td><td style="text-align:left;">Total resistance <strong>external to the packaged unit</strong> &mdash; supply and return ductwork plus all fittings and accessories</td><td style="text-align:left;">pressure difference between supply and return duct</td></tr>
+          <tr class="total"><td><strong>ISP</strong> &mdash; internal static pressure</td><td style="text-align:left;">Total <strong>internal equipment resistance</strong> &mdash; the coil and filter inside the AHU. Applies equally to heat recovery wheels and treated fresh air units</td><td style="text-align:left;">measurable by differential pressure sensor across filter and coil</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-bottom:0;">A vendor quoting <strong>&ldquo;total static pressure&rdquo; is quoting ISP + ESP</strong>. A vendor quoting <strong>&ldquo;external static pressure&rdquo; is quoting only the duct side</strong>. Read which one the data sheet says, because <strong>this is exactly how a fan gets selected with insufficient capability</strong> &mdash; and note the related trap from Module&nbsp;2: fan selection must be made at the <strong>final (dirty) filter pressure drop, not the initial</strong>. The gap between clean and dirty across a multi-stage filter bank is frequently the largest single uncertainty in the whole ESP calculation.</p>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">The flow-direction rule &mdash; read this before opening any fitting table</b>
+    <div class="tw" style="margin:1em 0;">
+      <table>
+        <thead><tr><th>System</th><th style="text-align:left;">Direction</th><th style="text-align:left;">Start at</th><th style="text-align:left;">Along the path</th><th style="text-align:left;">Fittings are</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Supply</strong> &mdash; AC, pressurisation</td><td style="text-align:left;">fan &rarr; space (&ldquo;from fan&rdquo;)</td><td style="text-align:left;">the equipment</td><td style="text-align:left;">flow and duct size <strong>reduce</strong></td><td style="text-align:left;"><strong>diverging</strong></td></tr>
+          <tr class="total"><td><strong>Return / exhaust</strong> &mdash; ventilation, smoke extraction</td><td style="text-align:left;">space &rarr; fan (&ldquo;to fan&rdquo;)</td><td style="text-align:left;">the air terminal</td><td style="text-align:left;">flow and duct size <strong>increase</strong></td><td style="text-align:left;"><strong>converging</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-bottom:0;"><strong>The ASHRAE and SMACNA tables are direction-specific. A diverging-flow coefficient applied to an exhaust system gives the wrong answer, and the course names this the single most common error in a hand ESP calculation.</strong></p>
+  </div>
+
+  <div class="work">
+    <div class="stp"><b>Velocity pressure &mdash; the quantity every fitting loss is multiplied by</b>
+      <span class="r">P_v = &frac12;&rho;v&sup2; ;  for standard air at &rho; = 1.204 kg/m&sup3;: <strong>P_v = 0.602 v&sup2;</strong> Pa, v in m/s</span>
+      <span class="r">P_total = P_static + P_velocity ; loss for a fitting = <strong>C &times; P_v</strong></span></div>
+    <div class="stp"><b>Worked section A&ndash;B of a twelve-section critical path</b>
+      <span class="r">1 900 cfm = 897 L/s &middot; 400 &times; 400 mm &rarr; equivalent diameter <strong>438 mm</strong> &rarr; velocity <strong>5.95 m/s</strong></span>
+      <span class="r">duct piece: 0.5 m &times; 0.9 Pa/m = <strong>0.45 Pa</strong></span>
+      <span class="r">90&deg; elbow, C = 0.33: 0.33 &times; 0.602 &times; 5.95&sup2; = <strong>7.03 Pa</strong> &rarr; section total <strong>7.48 Pa</strong></span></div>
+    <div class="stp"><b>Elbow loss coefficients come from r/W and H/W</b>
+      <span class="r">C = K &times; C_p, with K the angle factor (<strong>K = 1 for 90&deg;</strong>). Long smooth radius elbow: <strong>r = W/2 + 150 mm</strong></span>
+      <span class="r">worked: W = 600, H = 450 &rarr; r = 450 &rarr; r/W = 0.75, H/W = 0.75 &rarr; C_p = 0.48 &rarr; <strong>C = 0.48</strong></span></div>
+    <div class="stp"><b>Sum the critical path and apply the allowance</b>
+      <span class="r">supply critical path total <strong>132.17 Pa</strong> ; safety factor <strong>15%</strong> (course states 10&ndash;15% by layout)</span>
+      <span class="r">return duct calculated identically &rarr; <strong>total ESP = supply + return</strong></span></div>
+  </div>
+
+  <div class="note good">
+    <b class="nh">The critical path is not the longest path</b>
+    <p style="margin-bottom:0;">The course is precise about this and it is worth quoting: <strong>&ldquo;the critical path is the airflow path along which the maximum pressure loss is likely to occur. It is independent of duct length &mdash; the longest path may or may not be the critical path.&rdquo;</strong> It depends on the combination of length, fittings and accessories, and the course notes it can be a sub-branch at around two-thirds of the distance. In the worked layout the longest run <em>also</em> had the most fittings, so the two coincided &mdash; which is exactly the case that lets a designer form the wrong habit. <strong>Identify it by computing candidates, not by measuring.</strong></p>
+  </div>
+
+  <div class="note">
+    <b class="nh">Fitting practice &mdash; the pressure-drop hierarchy worth carrying to a drawing review</b>
+    <p style="margin-bottom:0;">At a <strong>branch take-off</strong>, best to worst: <strong>smooth radius &gt; turning vanes &gt; no vanes, square</strong>. At a <strong>tee</strong>, best to worst: <strong>radial tee without vanes &gt; 45&deg; tee without vanes &gt; 90&deg; tee <em>with</em> turning vanes</strong> &mdash; the vanes disrupt flow uniformity and raise branch losses, which is counter-intuitive and worth remembering. Take branches off through a <strong>45&deg; shoe piece</strong> rather than a direct tap, finish with a smooth bend rather than a tee, use <strong>radius elbows instead of square</strong> where space permits, and use <strong>turning vanes only on low-velocity systems where a radius elbow will not fit</strong>. Two further course positions: keep the <strong>divergence angle &le; 20&deg;</strong> and the <strong>aspect ratio as close to 1.0 as possible and never above 4</strong>; and &ldquo;<strong>reducing duct sizes saves money</strong>&rdquo; is a misconception &mdash; sheet metal is cheaper than the labour to assemble and seal the extra joints.</p>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>Duct hanger spacing &mdash; a number that is easy to check on site <span class="vb course">Course</span></caption>
+      <thead><tr><th>Duct size</th><th class="num">Maximum hanger spacing</th></tr></thead>
+      <tbody>
+        <tr><td>Less than 4 ft</td><td class="num">8 ft</td></tr>
+        <tr><td>4 ft to 10 ft</td><td class="num">6 ft</td></tr>
+        <tr class="total"><td>Greater than 10 ft</td><td class="num">4 ft</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">Duct sealing &mdash; what is approved and what is not</b>
+    <p style="margin-bottom:0;">Maximum permitted leakage is a function of <strong>duct surface area, SMACNA leakage class C<sub>L</sub>, and test pressure</strong>, expressed as cfm per 100 ft&sup2; of surface. <strong>Approved sealants:</strong> water-based, non-toxic, water-resistant, high solid content; flexible gaskets; mastic with mesh tape; fibre-reinforced mastic. <strong>Not suitable: foil tapes, pressure-sensitive tapes, and cloth-based duct tapes</strong> &mdash; a specific, checkable list, and the last one is what turns up on site most often. Testing is either <em>leakage to outside</em> (pressurise space and ductwork together, measure the flow needed to equalise) or <em>total duct leakage</em> (seal all registers, pressurise with a calibrated blower, convert fan pressure to a cfm leakage rate). SMACNA covers pressure classes <strong>up to 10 in w.c.</strong> and defines gauges, connections, reinforcement and tie rods.</p>
+  </div>
+
+  <h3 id="c2-insul">Insulation and acoustics &mdash; the two disciplines that finish the system <span class="vb course">Course</span></h3>
+  <p class="prose">Module&nbsp;6 ends the specialization on the two items that are specified last, installed last, and are the first to be value-engineered. Both are governed by calculations that are short, defensible, and almost never performed.</p>
+
+  <div class="fml">
+    <span class="eq">ISO / EN definition:   k &gt; 0.065 W/m&middot;K &rarr; building material</span>
+    <span class="eq">                       k &lt; 0.065 W/m&middot;K &rarr; thermal insulation</span>
+    <span class="wh">Cold lines   below 6 &deg;C        Warm lines   6 to 100 &deg;C        Heating lines   above 100 &deg;C
+Insulating capability is the inverse of thermal conductivity. Lower k is better insulation.</span>
+    <span class="src">Threshold and line categories as stated by the course. <span class="vb course">Course</span></span>
+  </div>
+
+  <h4 id="c2-cond">Condensation control &mdash; the calculation that governs every chilled water line in Qatar</h4>
+  <p class="prose">Two separate problems: stopping condensation on the <em>outside</em> of the insulation, and stopping water vapour migrating <em>through</em> it. The first is a thickness calculation. The second is a vapour barrier, and the vapour barrier is the component that fails first.</p>
+
+  <div class="fml">
+    <span class="eq">Step 1   required surface temperature  t_s = dew point + 2 K</span>
+    <span class="eq">Step 2   minimum thickness              L = (k / h) &times; (t_fluid &minus; t_s) / (t_s &minus; t_ambient)</span>
+    <span class="wh">h = 5.7 W/m&sup2;&middot;K is the still-air outside surface film coefficient. The expression is just a
+steady-state balance across the insulation and the surface film:
+    q = h (t_s &minus; t_amb) = (k / L)(t_s &minus; t_fluid)
+Note what it does as the ambient approaches the dew point: the denominator collapses,
+and the required thickness runs away to infinity.</span>
+    <span class="src">Method per the course; film coefficient per ASHRAE Fundamentals Ch. 23. <span class="vb standard">Standard</span></span>
+  </div>
+
+  <div class="work">
+    <div class="stp"><b>Reproduce the course example &mdash; 5 &deg;C fluid, 30 &deg;C ambient, 70% RH, nitrile rubber k = 0.036</b>
+      <span class="r">dew point at 30 &deg;C / 70% RH = <strong>23.93 &deg;C</strong> (Magnus) &mdash; the course states 23.93 &deg;C &#10003;</span>
+      <span class="r">t_s = 23.93 + 2 = 25.93 &deg;C</span>
+      <span class="r">L = (0.036 / 5.7) &times; (5 &minus; 25.93) / (25.93 &minus; 30) = <strong>0.0325 m = 32.5 mm</strong> &mdash; the course states 32.4 mm &#10003;</span></div>
+    <div class="stp"><b>Now run the same calculation on a humid Gulf night &mdash; 33 &deg;C, 80% RH</b>
+      <span class="r">dew point = 29.087 &deg;C&nbsp;&nbsp;&nbsp;t_s = 31.087 &deg;C&nbsp;&nbsp;&nbsp;(t_s &minus; t_amb) = &minus;1.913 K</span>
+      <span class="r">L = 0.006316 &times; (5 &minus; 31.087) / (31.087 &minus; 33) = <strong>0.0861 m = 86.1 mm</strong></span></div>
+    <div class="stp"><b>And at ASHRAE&rsquo;s own recommendation for outdoor design &mdash; 90% RH</b>
+      <span class="r">at 35 &deg;C / 90% RH the dew point is <strong>33.11 &deg;C</strong>, so t_s = 35.11 &deg;C &mdash; <strong>above the 35 &deg;C ambient</strong></span>
+      <span class="r">&rarr; the denominator changes sign. <strong>No thickness of any insulation satisfies the +2 K margin.</strong></span>
+      <span class="r">designing to the dew point itself, with zero margin: L = 0.006316 &times; (5 &minus; 33.11) / (33.11 &minus; 35) = <strong>94.0 mm</strong></span></div>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>The same 5 &deg;C line, four ambients &mdash; nitrile rubber, k = 0.036 W/m&middot;K <span class="vb derived">Derived</span></caption>
+      <thead><tr><th style="text-align:left;">Condition</th><th class="num">Dew point</th><th class="num">Required surface</th><th class="num">Minimum thickness</th></tr></thead>
+      <tbody>
+        <tr><td>Plant room, 24 &deg;C / 60% RH</td><td class="num">15.8 &deg;C</td><td class="num">17.8 &deg;C</td><td class="num">12.9 mm</td></tr>
+        <tr><td>Course example, 30 &deg;C / 70% RH</td><td class="num">23.9 &deg;C</td><td class="num">25.9 &deg;C</td><td class="num">32.5 mm</td></tr>
+        <tr class="total"><td>Humid Gulf night, 33 &deg;C / 80% RH</td><td class="num">29.1 &deg;C</td><td class="num">31.1 &deg;C</td><td class="num">86.1 mm</td></tr>
+        <tr class="total"><td>ASHRAE outdoor guidance, 35 &deg;C / 90% RH</td><td class="num">33.1 &deg;C</td><td class="num">35.1 &deg;C</td><td class="num">no solution &mdash; 94.0 mm at zero margin</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">The governing case is the highest dew point, not the highest dry bulb</b>
+    <p>Everything about a Gulf summer invites you to size insulation on the 45&ndash;50 &deg;C design dry bulb. That is the wrong hour. A hot, dry afternoon gives the surface film a large temperature difference to work with and the required thickness comes out <em>small</em>. The condensation case is the <strong>humid coastal night</strong> &mdash; a lower dry bulb sitting only a few kelvin above a very high dew point &mdash; and the required thickness there is two to three times larger. Size on the annual design dry bulb and the line will sweat in August at three in the morning.</p>
+    <p style="margin-bottom:0;">The second conclusion is harder. <strong>ASHRAE recommends designing outdoor insulation to withstand 90% relative humidity</strong> &mdash; and at that humidity the +2 K surface margin is mathematically unreachable at any thickness, because the film cannot reject heat to air barely 2 K warmer than the surface. So the honest engineering position for an outdoor chilled water line in Doha is not a thickness. It is: <strong>state the design ambient and RH you have actually sized for, accept that brief surface wetting is possible outside it, and put the defence in the vapour barrier and the jacketing rather than in more insulation.</strong> A submittal quoting 25 mm with no stated design condition has not made that argument &mdash; and 25 mm does not satisfy any of the four rows above except the plant room.</p>
+  </div>
+
+  <h4>The other four requirements a specification must carry</h4>
+  <div class="grid g2" style="margin:1.4em 0;">
+    <div class="card">
+      <h4 style="margin-top:0;">Personnel protection &amp; fire</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);"><strong>ASTM C1055</strong> governs burn protection; standard industry practice is a <strong>maximum 60 &deg;C surface temperature on anything likely to be touched</strong>. Surface burning characteristics come from the <strong>Steiner Tunnel test</strong>: <strong>flame spread index &le; 25 and smoke developed index &le; 50</strong>. Those two integers appear in every serious insulation specification and are the fastest way to disqualify a substitution offer.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">Jacketing &amp; corrosion under insulation</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);"><strong>Corrosion under insulation is not usually caused by the insulation.</strong> It is caused by water reaching the metal because the <strong>vapour retarder was damaged</strong>. The requirement easiest to miss: to avoid galvanic and pitting corrosion, <strong>all metal jacketing must be heat-bonded with a 0.76 mm multi-layer moisture barrier on its internal surface</strong>. Check for that line in a jacketing submittal &mdash; and check for &micro;, the vapour diffusion resistance: &micro; = 1 is no resistance at all, aluminium is diffusion tight.</p>
+    </div>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">Two material-table entries in the course are wrong, and both point the same way</b>
+    <p style="margin-bottom:0;"><strong>E-9:</strong> XPS is described as having &ldquo;low water vapour diffusion resistance, making it suitable for humid conditions&rdquo;. That is backwards &mdash; low resistance means vapour passes <em>more</em> easily, which is the opposite of what a below-ambient line needs. <strong>E-10:</strong> nitrile rubber is listed as vapour <em>permeable</em> in the same table in which the text correctly describes its closed cell and built-in vapour retarder. The text is right; the table is wrong. Both errors would lead a reader toward a material that lets vapour reach a cold pipe, which is precisely the failure mode the section is about. <strong>Take the k values from the table if you must; take nothing else from it.</strong> Useful k values worth remembering: aerogel <strong>0.014</strong>, phenolic foam <strong>0.020</strong>, pre-insulated PIR duct panel <strong>0.021</strong>, nitrile rubber <strong>0.024</strong>, PIR/PUR <strong>0.023&ndash;0.026</strong>, mineral wool <strong>0.032&ndash;0.044</strong>. Straw is listed at 0.008, which is below still air and below aerogel &mdash; <strong>E-12</strong>, read it as 0.08.</p>
+  </div>
+
+  <div class="work">
+    <div class="stp"><b>Duct insulation by R-value &mdash; the course method, and the correction</b>
+      <span class="r">thickness = R &times; k. Course example: R = 1.06 m&sup2;&middot;K/W, nitrile k = 0.036</span>
+      <span class="r">1.06 &times; 0.036 = <strong>38.2 mm &rarr; 40 mm</strong> (the course states 38.6 mm &mdash; a slip, immaterial at the rounding)</span></div>
+    <div class="stp"><b>But the climate zone is not immaterial</b>
+      <span class="r">the example is <strong>ASHRAE climate zone 1A</strong> &mdash; very hot and <em>humid</em> (Chennai)</span>
+      <span class="r">Qatar is a hot-<em>dry</em> zone &mdash; <strong>0B</strong> under ASHRAE 169-2020, which introduced the &ldquo;extremely hot&rdquo; zone 0; <strong>1B</strong> under the earlier edition. <span class="vb verify">Verify</span> against the edition your specification cites</span>
+      <span class="r">&rarr; <strong>the R-value of 1.06 has no standing on a Qatari project</strong>, and QCS may impose its own regardless. Method transfers; number does not. This is <strong>E-8</strong></span></div>
+  </div>
+
+  <h4 id="c2-acoustics">Acoustics &mdash; and the one coordination rule that decides where the silencer goes</h4>
+  <div class="tw">
+    <table>
+      <caption>Acoustic terms that appear in a submittal <span class="vb course">Course</span></caption>
+      <thead><tr><th style="text-align:left;">Term</th><th style="text-align:left;">Definition, and why it is the one quoted</th></tr></thead>
+      <tbody>
+        <tr class="total"><td><strong>Insertion loss</strong></td><td style="text-align:left;">The reduction in sound pressure (or intensity) level <strong>at the receiver</strong> after inserting a silencer between source and receiver, in dB. <strong>This is what a silencer is bought on</strong> &mdash; it is a measured difference, not a material property</td></tr>
+        <tr><td>Sound power level</td><td style="text-align:left;">L<sub>W</sub> = 10&nbsp;log(W / W<sub>ref</sub>), <strong>W<sub>ref</sub> = 10<sup>&minus;12</sup> W</strong>. A property of the <em>source</em> &mdash; it does not depend on the room</td></tr>
+        <tr><td>Sound pressure level</td><td style="text-align:left;">The instantaneous difference between the actual pressure of the wave and barometric pressure, at a point. A property of the <em>location</em></td></tr>
+        <tr class="total"><td><strong>NC rating</strong></td><td style="text-align:left;">From octave-band curves at <strong>centre frequencies 63 to 8,000 Hz</strong>. The rating is <strong>the highest point reached on the NC curve, independent of which frequency reaches it</strong>. A single number &mdash; which is exactly why manufacturers prefer it, and exactly why it hides a tonal problem in one band</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid g3" style="margin:1.4em 0;">
+    <div class="card">
+      <h4 style="margin-top:0;">Absorptive (dissipative)</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">Media behind a <strong>perforated liner</strong> &mdash; acoustically transparent, and it protects the media from erosion. Energy enters the baffles and <strong>friction converts it to heat</strong>. At high gap velocity a fibreglass cloth strip between perforation and media stops erosion with no acoustic penalty. Broadband. The general-purpose choice.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">Film-lined absorptive</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">Adds a <strong>thin polymer film</strong> around the media against pollutants and moisture. <strong>The film reduces absorption</strong>, so a thin acoustic standoff liner is added to offset the loss. Labs, clean rooms, hospitals.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">Packless (reactive)</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">Sheet metal only, <strong>no media</strong>. Attenuates by <strong>resonant chambers</strong> below the perforated liner &mdash; therefore <strong>tuned to a narrow band, and poor broadband</strong>. Chosen where glass fibre is unacceptable or the duct must be sterilised, not because it performs better.</p>
+    </div>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>Silencer form and placement &mdash; the selection logic <span class="vb course">Course</span></caption>
+      <thead><tr><th style="text-align:left;">Form / location</th><th style="text-align:left;">When it is the right answer</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Rectangular</strong></td><td style="text-align:left;">The industry standard &mdash; simple, cheap, <strong>lowest pressure drop</strong>, widest option range. Systems <strong>0 to 2,500 fpm</strong></td></tr>
+        <tr><td><strong>Elbow</strong></td><td style="text-align:left;">Equal or better attenuation than rectangular for a minor pressure penalty, and <strong>the answer where there is no straight duct length</strong>. Customisable, so it avoids transitions</td></tr>
+        <tr><td><strong>Circular</strong></td><td style="text-align:left;">With round ductwork &mdash; <strong>avoids the pressure penalty and system effects of square-to-round transitions</strong></td></tr>
+        <tr><td><strong>Axial fan / custom</strong></td><td style="text-align:left;">Coupled to the fan: reduces noise at source, the centre body cuts hub loss, and <strong>the discharge silencer recovers static pressure</strong>. The rare case where attenuation improves fan performance</td></tr>
+        <tr class="total"><td><strong>At the inlet or discharge of the equipment</strong></td><td style="text-align:left;"><strong>The preferred position.</strong> Attenuates at source, minimises or eliminates downstream attenuation, and stops airborne <em>and</em> structure-borne noise spreading through the building</td></tr>
+        <tr><td>In riser branches</td><td style="text-align:left;">Reduces noise <strong>before it enters each floor&rsquo;s occupied area</strong></td></tr>
+        <tr><td>At duct terminations</td><td style="text-align:left;">Where space is limited, or noise is generated locally by terminal units, fan-powered boxes, control valves or dampers far from the plant room</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">Breakout noise, and the fire damper that decides the silencer position</b>
+    <p><strong>Breakout</strong> is sound escaping between the duct walls and the silencer casing &mdash; a function of silencer form and size, <strong>casing gauge</strong>, and the acoustic media in the walls. The mitigation is positional, not material: <strong>put the silencer as near the source as possible</strong>, so the sound is attenuated before it travels to where breakout matters.</p>
+    <p style="margin-bottom:0;">Which produces a drawing-review rule with real teeth. For airborne noise from plant room equipment, <strong>the best silencer position is in the plant room wall itself</strong> &mdash; it removes the sound as it leaves the room and solves breakout in the occupied space at the same time. <strong>But fire dampers are usually positioned on that same wall.</strong> The two cannot occupy the same penetration. When they clash, the silencer moves <strong>before the wall, inside the plant room</strong>; and only if there is no space there does it go outside. Check this on any plant room wall section: a silencer and a fire damper drawn at the same penetration is a coordination clash that will be resolved on site, badly, by whoever gets there first.</p>
   </div>
 
   <h3 id="c2-duct">Technical bid evaluation — what to demand and what to reject</h3>
@@ -2920,6 +3749,113 @@ colder condenser water and a more efficient chiller. Range is set by the flow yo
         <label class="opt"><input type="radio" name="c2_8" value="d"><span>All three are equivalent at part load</span></label>
       </div>
       <div class="fb" data-fb>Variable primary uses fewest pumps and least energy, but the evaporator must tolerate variable flow — a machine-specific capability to confirm in the submittal, never assume. A minimum-flow bypass protects the evaporator at low load. Reverse flow in a primary–secondary decoupler, incidentally, is the classic low delta-T symptom.</div>
+    </div>
+
+    <div class="q" data-a="c">
+      <div class="qs"><span class="qn">9</span><p class="qt">AHRI 550/590 rates an <em>air-cooled</em> chiller and a <em>water-cooled</em> chiller at different condenser datums. Which pair is correct?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c2_9" value="a"><span>Both at 35 &deg;C entering the condenser</span></label>
+        <label class="opt"><input type="radio" name="c2_9" value="b"><span>Air-cooled 29.4 &deg;C dry bulb; water-cooled 35 &deg;C entering condenser water</span></label>
+        <label class="opt"><input type="radio" name="c2_9" value="c"><span>Air-cooled 35 &deg;C entering dry bulb; water-cooled 29.4 &deg;C entering condenser water (35 &deg;C leaving to the tower)</span></label>
+        <label class="opt"><input type="radio" name="c2_9" value="d"><span>The datum is the same because both are referred to 6.7 &deg;C leaving chilled water</span></label>
+      </div>
+      <div class="fb" data-fb>Both share the chilled water datum &mdash; 12.2 &deg;C entering, 6.7 &deg;C leaving, 2.4 GPM/TR. The condenser side differs: an air-cooled machine is rated at <strong>35 &deg;C entering dry bulb</strong>; a water-cooled machine at <strong>29.4 &deg;C entering condenser water</strong>, returning 35 &deg;C to the tower at 3 GPM/TR. On a Doha design day the air-cooled machine sees ambient well above 35 &deg;C and the water-cooled machine sees condenser water well above 29.4 &deg;C &mdash; which is why neither AHRI figure describes your plant.</div>
+    </div>
+
+    <div class="q" data-a="8.96" data-tol="0.01" data-unit="kW">
+      <div class="qs"><span class="qn">10</span><p class="qt">An AHU fan moves 21,000 cfm against 74 mm w.c. total static pressure at a stated total efficiency of 80.3%. Compute the shaft power. (1 cfm = 0.00047195 m&sup3;/s; 1 mm w.c. = 9.80665 Pa.)</p></div>
+      <div class="numq"><input type="number" step="0.01" data-in aria-label="Shaft power in kilowatts"><span class="un">kW</span></div>
+      <div class="fb" data-fb>Q = 9.911 m&sup3;/s, &Delta;p = 725.7 Pa, air power = 7.192 kW, shaft power = 7.192/0.803 = <strong>8.96 kW</strong>. The vendor's sheet for this selection states <strong>9.67 kW</strong> absorbed. The 7.4% gap is a belt drive &mdash; so the efficiency is at the impeller and the absorbed power is at the motor input. <strong>Two vendors answering that question differently give fan powers differing by 8% on identical machines.</strong> Ask which basis the sheet uses.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">11</span><p class="qt">The course rule is &ldquo;motor rating about 15% above fan absorbed power&rdquo;, yet the worked selection puts a <strong>15 kW</strong> motor on a <strong>9.67 kW</strong> fan &mdash; a 55% margin. Which explanation is right?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c2_11" value="a"><span>The rule was not applied; 15 kW is an arbitrary safety margin</span></label>
+        <label class="opt"><input type="radio" name="c2_11" value="b"><span>1.15 &times; 9.67 = 11.12 kW, which falls just above the 11 kW IEC frame, so the next standard frame is 15 kW</span></label>
+        <label class="opt"><input type="radio" name="c2_11" value="c"><span>The margin covers the 22 kW maximum power absorption limit</span></label>
+        <label class="opt"><input type="radio" name="c2_11" value="d"><span>Motor rating is always sized on air power, not absorbed power</span></label>
+      </div>
+      <div class="fb" data-fb>The 15% rule sets a <em>minimum</em>: 11.12 kW. The IEC frame series runs &hellip; 7.5, 11, 15, 18.5, 22 &hellip; and 11 kW is below the requirement, so the selection steps up to 15 kW. <strong>The apparent 55% margin is a consequence of the catalogue, not of the design</strong> &mdash; and it is worth 45 kg and a starter size, so it is worth understanding rather than challenging.</div>
+    </div>
+
+    <div class="q" data-a="12.5" data-tol="0.02" data-unit="GPM">
+      <div class="qs"><span class="qn">12</span><p class="qt">A tower circulates 1,000 GPM over a 10 &deg;F range. Evaporation is 10 GPM. Raise cycles of concentration from 3 to <strong>5</strong> &mdash; what is the new make-up rate? Make-up = E &times; C/(C&nbsp;&minus;&nbsp;1).</p></div>
+      <div class="numq"><input type="number" step="0.1" data-in aria-label="Make-up water rate in gallons per minute"><span class="un">GPM</span></div>
+      <div class="fb" data-fb>10 &times; 5/4 = <strong>12.5 GPM</strong>, down from 15 GPM at 3 cycles &mdash; a 17% water saving that runs every hour of the cooling season. But cycles concentrate whatever is in the make-up, and tower chloride runs <strong>2 to 10 times</strong> the make-up level. On desalinated or blended Gulf make-up, that saving can push the tower out of G-235 galvanized steel and into type 316 stainless. Make the trade with a water analysis in hand.</div>
+    </div>
+
+    <div class="q" data-a="c">
+      <div class="qs"><span class="qn">13</span><p class="qt">Design wet bulb rises 3 K above the selection value. Heat load and circulation rate are unchanged. What happens to the tower's <em>range</em>?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c2_13" value="a"><span>It falls &mdash; the tower rejects less heat</span></label>
+        <label class="opt"><input type="radio" name="c2_13" value="b"><span>It rises with the wet bulb</span></label>
+        <label class="opt"><input type="radio" name="c2_13" value="c"><span>Unchanged &mdash; both water temperatures rise together and the difference between them is set by load and flow</span></label>
+        <label class="opt"><input type="radio" name="c2_13" value="d"><span>It depends on the fill type</span></label>
+      </div>
+      <div class="fb" data-fb>Range = Q/(&#7745;&middot;c<sub>p</sub>) &mdash; it is fixed by heat load and circulation rate, not by the tower and not by ambient. What the wet bulb moves is the <strong>whole temperature band</strong>: entering and leaving water both rise, the approach is unchanged if the tower is performing, and your condenser temperature &mdash; and therefore your chiller power &mdash; goes up. Confusing range with approach is the most common tower error, and this is the question that separates them.</div>
+    </div>
+
+    <div class="q" data-a="15000" data-tol="0.02" data-unit="BTU/h">
+      <div class="qs"><span class="qn">14</span><p class="qt">How much heat does one nominal <em>cooling tower</em> ton reject, taking the course's 1.25 kW rejected per kW of evaporator cooling?</p></div>
+      <div class="numq"><input type="number" step="100" data-in aria-label="Heat rejection in BTU per hour"><span class="un">BTU/h</span></div>
+      <div class="fb" data-fb>1.25 &times; 12,000 = <strong>15,000 BTU/h</strong> &mdash; 12,000 of cooling plus ~3,000 of compression work, at 3 GPM. <strong>A chiller ton and a tower ton are not the same ton.</strong> The course's other statement of the same fact &mdash; &ldquo;54 mL/s from 95 to 85 &deg;F at 78 &deg;F WB&rdquo; &mdash; is per kW of <em>evaporator</em> duty, not per tower ton: 1,250/(4,187&times;5.6) = 53.3 mL/s per kW, which is 187.5 mL/s or 2.97 GPM per ton. Read 54 mL/s as a tower figure and you undersize the condenser circuit by a factor of 3.5.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">15</span><p class="qt">A VFD takes an AHU fan to 50% speed. Airflow, static pressure and shaft power become &mdash; in that order &mdash;?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c2_15" value="a"><span>50%, 50%, 50%</span></label>
+        <label class="opt"><input type="radio" name="c2_15" value="b"><span>50%, 25%, 12.5%</span></label>
+        <label class="opt"><input type="radio" name="c2_15" value="c"><span>50%, 25%, 25%</span></label>
+        <label class="opt"><input type="radio" name="c2_15" value="d"><span>25%, 12.5%, 6.25%</span></label>
+      </div>
+      <div class="fb" data-fb>Fan laws: Q &prop; N, P &prop; N&sup2;, W &prop; N&sup3;. Half speed is <strong>one eighth the power</strong>. That cube law is the entire argument for a variable speed drive &mdash; which is why a VFD is the default on any variable-flow system rather than an energy-saving extra to be value-engineered out. Note the same cube law makes an oversized fan expensive forever, not just at purchase.</div>
+    </div>
+
+    <div class="q" data-a="d">
+      <div class="qs"><span class="qn">16</span><p class="qt">You are computing fitting losses for a <strong>smoke extraction</strong> duct. Which ASHRAE coefficient tables apply, and where does the calculation start?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c2_16" value="a"><span>Diverging-flow tables, starting at the fan</span></label>
+        <label class="opt"><input type="radio" name="c2_16" value="b"><span>Diverging-flow tables, starting at the terminal</span></label>
+        <label class="opt"><input type="radio" name="c2_16" value="c"><span>Converging-flow tables, starting at the fan</span></label>
+        <label class="opt"><input type="radio" name="c2_16" value="d"><span>Converging-flow tables, starting at the air terminal &mdash; flow and duct size increase along the path</span></label>
+      </div>
+      <div class="fb" data-fb>Extraction is a &ldquo;to fan&rdquo; system: air moves from the space to the fan, so you start at the terminal and flow <em>accumulates</em> toward the fan &mdash; <strong>converging</strong> fittings. Supply and pressurisation are &ldquo;from fan&rdquo; systems: start at the equipment, flow reduces along the path, <strong>diverging</strong> fittings. The tables are direction-specific, and applying a diverging table to an exhaust system is described by the course as <strong>the single most common error in a hand ESP calculation</strong>.</div>
+    </div>
+
+    <div class="q" data-a="7.03" data-tol="0.02" data-unit="Pa">
+      <div class="qs"><span class="qn">17</span><p class="qt">A 400 &times; 400 mm duct carries 1,900 cfm; equivalent diameter 438 mm gives 5.95 m/s. A 90&deg; elbow on that section has C = 0.33. Compute the elbow's dynamic loss. (Standard air: P<sub>v</sub> = 0.602 v&sup2;.)</p></div>
+      <div class="numq"><input type="number" step="0.01" data-in aria-label="Elbow pressure loss in pascals"><span class="un">Pa</span></div>
+      <div class="fb" data-fb>P<sub>v</sub> = 0.602 &times; 5.95&sup2; = 21.31 Pa; loss = 0.33 &times; 21.31 = <strong>7.03 Pa</strong>. Add the duct friction over 0.5 m at 0.9 Pa/m (0.45 Pa) and the section total is 7.48 Pa. Note the velocity used is the one from the <strong>equivalent circular diameter</strong>, not the rectangular area &mdash; D<sub>e</sub> = 1.30(A&middot;B)<sup>0.625</sup>/(A+B)<sup>0.25</sup> gives 437.5 mm here.</div>
+    </div>
+
+    <div class="q" data-a="a">
+      <div class="qs"><span class="qn">18</span><p class="qt">Module&nbsp;4 states the Darcy-Weisbach equation and gives f = 16/Re laminar, f = 0.079/Re<sup>0.25</sup> turbulent. What do you do?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c2_18" value="a"><span>Discard those factors &mdash; they are Fanning, four times too small for the Darcy form. Use f = 64/Re and Colebrook-White, as Module&nbsp;6 does</span></label>
+        <label class="opt"><input type="radio" name="c2_18" value="b"><span>Use them, but multiply the final head loss by 4</span></label>
+        <label class="opt"><input type="radio" name="c2_18" value="c"><span>Use them &mdash; the module's worked example comes out correct</span></label>
+        <label class="opt"><input type="radio" name="c2_18" value="d"><span>Use them for laminar flow only</span></label>
+      </div>
+      <div class="fb" data-fb>They are <strong>Fanning</strong> factors; the Darcy factor is four times larger. Substituting them into the Darcy form <strong>understates head loss fourfold</strong>, which on a pump selection is the difference between reaching the far coil and not. Multiplying the answer by 4 happens to work but hides the error; use the right factor in the right form. Option&nbsp;(c) is the trap: Module&nbsp;4's worked example <em>does</em> come out right, because it reads friction from charts rather than from its own stated equation &mdash; which is exactly why the defect survives inside the course.</div>
+    </div>
+
+    <div class="q" data-a="86.1" data-tol="0.01" data-unit="mm">
+      <div class="qs"><span class="qn">19</span><p class="qt">A 5 &deg;C chilled water line runs outdoors on a humid Gulf night: 33 &deg;C ambient, 80% RH, <strong>dew point 29.09 &deg;C</strong>. Nitrile rubber, k = 0.036 W/m&middot;K, surface film h = 5.7 W/m&sup2;&middot;K. Minimum thickness for a 2 K margin?</p></div>
+      <div class="numq"><input type="number" step="0.1" data-in aria-label="Minimum insulation thickness in millimetres"><span class="un">mm</span></div>
+      <div class="fb" data-fb>t<sub>s</sub> = 29.09 + 2 = 31.09 &deg;C; L = (0.036/5.7) &times; (5 &minus; 31.09)/(31.09 &minus; 33) = <strong>86.1 mm</strong> &mdash; against 32.5 mm for the course's 30 &deg;C / 70% case. <strong>The governing hour is the highest dew point, not the highest dry bulb</strong>: a hot dry afternoon gives the surface film a large &Delta;T to work with and asks for <em>less</em> insulation. Push to ASHRAE's recommended 90% RH outdoor design and the required surface temperature exceeds ambient &mdash; <strong>no thickness works at all</strong>, and the defence has to move to the vapour barrier and the jacketing.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">20</span><p class="qt">A drawing shows a duct silencer and a fire damper at the same plant room wall penetration. What is the correct resolution?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c2_20" value="a"><span>Keep both at the wall; they serve different functions</span></label>
+        <label class="opt"><input type="radio" name="c2_20" value="b"><span>Fire damper stays at the wall; the silencer moves <em>before</em> the wall, inside the plant room &mdash; and only outside the room if there is no space there</span></label>
+        <label class="opt"><input type="radio" name="c2_20" value="c"><span>Silencer stays at the wall; relocate the fire damper to the next compartment boundary</span></label>
+        <label class="opt"><input type="radio" name="c2_20" value="d"><span>Delete the silencer and lag the duct instead</span></label>
+      </div>
+      <div class="fb" data-fb>The fire damper's position is set by the compartment boundary and is not negotiable. The silencer's ideal position is that same wall &mdash; it removes equipment sound as it leaves the room and solves breakout at once &mdash; so when they clash the silencer moves <strong>inside the plant room, as close to the source as possible</strong>, which is also the correct mitigation for breakout noise. Left unresolved on the drawing, this clash gets settled on site by whoever arrives first, and it is usually settled by deleting the attenuation.</div>
     </div>
 
     <div class="quiz-ft">
@@ -4204,6 +5140,12 @@ resistance changes — a closing damper moves you along a different curve entire
 <section id="r-src">
   <h3>Sources &amp; limits of this guide</h3>
   <div class="note good">
+    <b class="nh">How this guide was produced &mdash; Course 2</b>
+    <p><strong>Course 2 is built from the course's own material</strong>: the Part&nbsp;1 review guide of all six modules, covering equipment construction and certification, the AHRI rating conditions, the worked AHU, pipe, duct, ESP and insulation calculations, and the consolidated register of defects in the lecture material. The guide's Course&nbsp;2 panel was previously reconstructed from published course descriptions and was wrong about the course's shape &mdash; it recorded two modules where there are six.</p>
+    <p style="margin-bottom:0;">Every worked figure was recomputed before publication. The AHU fan power does not reconcile with the stated fan efficiency, and the gap is shown and explained rather than repeated; the cooling tower's 54&nbsp;mL/s nominal ton is reconciled to the familiar 3&nbsp;GPM/ton and its unstated basis identified; the condensation-control thickness reproduces the lecture value to 0.1&nbsp;mm, and is then re-run at Gulf humidity where the lecture's method returns no solution at all. <strong>Each of the six modules also carried confidential project analysis. Those sections were excluded from this guide entirely and were not read.</strong></p>
+  </div>
+
+  <div class="note good">
     <b class="nh">How this guide was produced &mdash; Course 3</b>
     <p><strong>Course 3 is built from the course's own material</strong>: the complete 15-item Module&nbsp;1 lecture transcript, two standalone calculation transcripts (ventilation airflow rate; staircase pressurization &mdash; each with governing equations, input registers, step-by-step solutions, constant derivations and a verification section), and the Module&nbsp;2 technical digest. <strong>Module&nbsp;2 has no lecture transcript in existence</strong> &mdash; the digest is the entire surviving record of its teaching, so this guide cannot and does not go deeper on Module&nbsp;2 than that digest allows.</p>
     <p style="margin-bottom:0;">Every numerical figure in the Course&nbsp;3 worked examples was independently recomputed before publication &mdash; the staircase calculation reproduces to the litre, the 945&nbsp;Pa closed-door result and its 11&times; door-force consequence were derived from the course's own inputs, and the lift well, lobby and heat-release examples all reconcile. <strong>The source material also carried confidential project analysis, which was excluded from this guide entirely and not read.</strong></p>
@@ -4216,8 +5158,8 @@ resistance changes — a closing damper moves you along a different curve entire
   </div>
 
   <div class="note trap">
-    <b class="nh">Courses 2 and 4 are still reconstructed</b>
-    <p style="margin-bottom:0;">No transcripts were available for <em>Air Conditioning Equipment Selection</em> or <em>Cutting-edge Technology</em>. Those two panels follow the published course descriptions, the codes they name, and established design method &mdash; they carry <strong>no Course tags</strong>, and nothing in them should be taken as a record of what was actually taught. Every value that would normally be read from a copyrighted handbook table remains tagged <span class="vb verify">Verify</span> and editable throughout the guide. <strong>Replace those before any figure here reaches a deliverable.</strong></p>
+    <b class="nh">Course 4 is still reconstructed</b>
+    <p style="margin-bottom:0;">No material was available for <em>Cutting-edge Technology</em>. That panel follows the published course description, the codes it names, and established design method &mdash; its statements carry <strong>no Course tag</strong>, and nothing in it should be taken as a record of what was actually taught. The same applies to its module count. Every value that would normally be read from a copyrighted handbook table remains tagged <span class="vb verify">Verify</span> and editable throughout the guide. <strong>Replace those before any figure here reaches a deliverable.</strong></p>
   </div>
 
   <h4>Verification performed</h4>
@@ -4227,6 +5169,7 @@ resistance changes — a closing damper moves you along a different curve entire
     <li>Psychrometric routines were checked against ASHRAE reference values: p<sub>ws</sub>(25 °C) = 3.16922 kPa against a published 3.1698 kPa.</li>
     <li>Results were cross-checked against independent rules of thumb — m²/TR, GPM/TR, duct velocity, specific fan power — each stated in the relevant sanity-check block.</li>
     <li>The classical ESHF/ADP graphical construction was checked against the rigorous mass-and-energy solution and agrees within 0.20 K.</li>
+    <li><strong>Course 2 content was checked against the lecture material itself</strong> &mdash; the AHU air power (7.19 kW at 9.911 m&sup3;/s and 725.7 Pa) exposes a 7.4% gap between the stated 80.3% fan efficiency and the stated 9.67 kW absorbed power, which is a drive loss and should be declared as one; the tower's nominal ton reconciles to 2.97 GPM/ton against the classic 3; the tower water balance, the equivalent-diameter formula (437.5 mm against a stated 438), the section A&ndash;B ESP total (7.48 Pa) and the condensation thickness (32.48 mm against a stated 32.4) all reproduce; and twelve defects in the course material are recorded in <a href="#c2-errors">Where the course material is wrong</a>.</li>
     <li><strong>Course 1 content was checked against the lecture material itself</strong> &mdash; the five-part worked calculation reconciles to 0.005%, the bypass-factor correlation is consistent across Modules 2 and 3 (0.1<sup>1.5</sup> = 0.0316 &asymp; 0.032 for a 6-row coil), and roughly sixty defects in the course material were identified and are recorded in <a href="#c1-errors">Where the course material is wrong</a>.</li>
   </ul>
 
