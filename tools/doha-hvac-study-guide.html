@@ -885,6 +885,114 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
     <p style="margin-bottom:0;">A vendor quotes COP or kW/TR at <strong>AHRI 550/590 standard conditions — 29.4 °C entering condenser water</strong>. Worked example D in Course 2 arrives at 40.6 °C entering condenser water for a Doha tower on a design day. That is an 11 K gap, and chiller power rises steeply with condenser temperature. If the submittal does not carry a performance point at <em>your</em> condenser water temperature, the efficiency number in it is not the efficiency you will buy.</p>
   </div>
 
+  <h3 id="c1-carnot">Carnot, and the two losses that separate theory from a real machine <span class="vb course">Course</span></h3>
+  <p class="prose">The Carnot refrigeration cycle is the benchmark: completely reversible, operating between a constant-temperature source and sink, and no irreversible cycle can beat its COP at the same two temperatures. It is also unbuildable, and <strong>the two specific reasons it is unbuildable are exactly what the vapour-compression cycle costs you</strong>.</p>
+
+  <div class="fml">
+    <span class="eq">COP_Carnot = q_e / w_net = T_e / (T_c &minus; T_e)        [absolute temperatures]</span>
+    <span class="wh">4&rarr;1  isothermal heat extraction at T_e      1&rarr;2  isentropic compression
+2&rarr;3  isothermal heat rejection at T_c       3&rarr;4  isentropic expansion in a turbine</span>
+    <span class="src">Module&nbsp;1, Lesson&nbsp;4.2. <span class="vb course">Course</span></span>
+  </div>
+
+  <div class="grid g2" style="margin:1.5em 0;">
+    <div class="card">
+      <h4 style="margin-top:0;">Why you cannot build it &mdash; 1. Wet compression</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">Process 1&rarr;2 requires isentropic compression of a <em>liquid&ndash;vapour mixture</em>. Liquid droplets in a high-speed reciprocating compressor cause slugging and mechanical damage. Real machines therefore use <strong>dry compression</strong> &mdash; vapour only &mdash; which is why the cycle starts at saturated vapour and why suction superheat exists at all.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">Why you cannot build it &mdash; 2. Turbine work</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">Process 3&rarr;4 recovers work by expanding <em>liquid</em> through a turbine. Because liquid specific volume is far smaller than vapour's, the specific work recovered per kilogram is tiny &mdash; not economically viable, especially in small systems. A throttling device is fitted instead, and the recoverable work is simply discarded.</p>
+    </div>
+  </div>
+
+  <h4>The two irreversibilities the real cycle adds</h4>
+  <div class="tw">
+    <table>
+      <caption>Vapour-compression against Carnot <span class="vb course">Course</span></caption>
+      <thead><tr><th>Departure</th><th style="text-align:left;">Carnot</th><th style="text-align:left;">Vapour compression</th><th style="text-align:left;">Named effect and consequence</th></tr></thead>
+      <tbody>
+        <tr><td>Heat rejection 2&rarr;3</td><td style="text-align:left;">isothermal at T_c</td><td style="text-align:left;">isobaric &mdash; desuperheat then condense</td><td style="text-align:left;"><strong>Superheating horn.</strong> Heat rejection rises above the Carnot case</td></tr>
+        <tr><td>Expansion 3&rarr;4</td><td style="text-align:left;">isentropic, work recovered</td><td style="text-align:left;">isenthalpic throttling, h&#8324; = h&#8323;</td><td style="text-align:left;"><strong>Throttling loss.</strong> Refrigeration effect falls; more refrigerant mass flow needed for the same duty</td></tr>
+        <tr class="total"><td>Net</td><td style="text-align:left;">&mdash;</td><td style="text-align:left;">&mdash;</td><td style="text-align:left;">Work input up, cooling effect down &rarr; <strong>COP below Carnot at the same T_e and T_c</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">Throttling loss grows exactly where Doha puts you</b>
+    <p style="margin-bottom:0;">The course states that the loss in refrigeration effect <strong>increases as evaporating temperature falls and/or condensing temperature rises</strong>. A Gulf condenser on a design afternoon does precisely the second. So the penalty a throttling device imposes is not a fixed percentage &mdash; it is worst on the hottest day, at the same moment the compressor is already working hardest. This is the thermodynamic argument behind economisers, flash-tank arrangements and electronic expansion valves in high-ambient plant, and it is worth understanding before evaluating a vendor's claim for any of them.</p>
+  </div>
+
+  <h4>Subcooling and superheat &mdash; one always helps, one usually does not</h4>
+  <div class="grid g2" style="margin:1.4em 0;">
+    <div class="card">
+      <h4 style="margin-top:0;">Subcooling &mdash; always beneficial</h4>
+      <p style="font-size:var(--step--1);margin:0 0 .6em;color:var(--text-secondary);">Adding condenser surface cools the liquid a few degrees below the condensing temperature. On the p&ndash;h diagram this shifts the evaporator inlet <strong>left</strong>, widening h&#8321; &minus; h&#8324; for the <em>same</em> compression work.</p>
+      <p style="font-size:var(--step--1);margin:0;color:var(--ok-300);"><strong>Refrigeration effect up, COP up.</strong> Free capacity for extra heat-exchanger area.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">Superheat &mdash; useful or useless, depending on where</h4>
+      <p style="font-size:var(--step--1);margin:0 0 .6em;color:var(--text-secondary);"><strong>Useful</strong> when it occurs <em>inside</em> the refrigerated space &mdash; the heat absorbed counts toward the duty. <strong>Useless</strong> when it occurs in the suction line from ambient heat transfer: it adds nothing to the refrigeration effect, lowers suction vapour density and <strong>raises discharge temperature</strong>.</p>
+      <p style="font-size:var(--step--1);margin:0;color:var(--bad-300);">Which is why suction lines are insulated &mdash; and why insulation integrity on a suction line is a real inspection item, not cosmetic.</p>
+    </div>
+  </div>
+
+  <div class="note">
+    <b class="nh">The suction-side pressure drop nobody costs until commissioning</b>
+    <p style="margin-bottom:0;">The course is unusually good on this. Pressure drop in the evaporator, suction line and across the suction valve <strong>lowers suction pressure</strong>, which raises specific volume at suction, raises the compression ratio, lowers volumetric efficiency and <strong>raises discharge temperature</strong>. Every one of those reduces capacity, increases power and shortens compressor life. Larger-bore suction tubing reduces the drop &mdash; but only so far, because refrigerant velocity must stay above the minimum needed to carry lubricating oil back to the compressor. <strong>That trade-off is a legitimate question to put to a packaged-equipment vendor on a long pipe run</strong>, and it is the same physics behind the VRF pipe-run and lift derating you should already be demanding.</p>
+  </div>
+
+  <h3 id="c1-equip">Equipment technologies, as the course classifies them <span class="vb course">Course</span></h3>
+  <p class="prose">Module&nbsp;1 spends two lessons on hardware. Most of it is descriptive, but the classifications are the vocabulary a vendor submittal will use, and a few points carry directly into review.</p>
+
+  <div class="tw">
+    <table>
+      <caption>The four component families <span class="vb course">Course</span></caption>
+      <thead><tr><th>Component</th><th style="text-align:left;">Types taught</th><th style="text-align:left;">The point that matters in review</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Compressor</strong></td><td style="text-align:left;">Positive displacement &mdash; reciprocating (open, semi-hermetic, hermetic), rotary vane, screw (dry and oil-flooded), scroll. Rotodynamic &mdash; centrifugal, axial</td><td style="text-align:left;"><strong>30&ndash;40% of total system cost.</strong> Screw compressors tolerate liquid carryover best of all types; centrifugals are surge-limited on turndown</td></tr>
+        <tr><td><strong>Evaporator</strong></td><td style="text-align:left;">Bare tube (prime surface), plate, finned, shell-and-tube flooded</td><td style="text-align:left;">Fins exist because the <strong>air side is the controlling resistance</strong>. In a flooded chiller a float valve holds the shell-side liquid level</td></tr>
+        <tr><td><strong>Condenser</strong></td><td style="text-align:left;">Air-cooled, water-cooled shell-and-tube, evaporative, tube-in-tube</td><td style="text-align:left;">Tube-in-tube: <strong>counterflow holds a near-constant &Delta;T</strong> along the length and transfers more than parallel flow. Confirm which a vendor has offered</td></tr>
+        <tr><td><strong>Expansion device</strong></td><td style="text-align:left;">Capillary tube, thermostatic expansion valve (feeler bulb + power fluid, cross-charged where the fluid differs from the refrigerant), electronic expansion valve (thermistor or stepper-driven)</td><td style="text-align:left;">A TEV holds <strong>constant superheat at the evaporator outlet</strong> &mdash; that is its job, and it is what prevents liquid reaching the compressor. An EEV works in either flow direction, which is why reverse-cycle heat pumps use one</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Refrigerant classification and the safety classes</h4>
+  <div class="tw">
+    <table>
+      <caption>How the course classifies refrigerants <span class="vb course">Course</span> &mdash; with one correction</caption>
+      <thead><tr><th>Basis</th><th style="text-align:left;">Classes</th></tr></thead>
+      <tbody>
+        <tr><td>Chemical</td><td style="text-align:left;">Pure fluid &mdash; synthetic (CFC, HCFC, HFC) or natural (inorganic: ammonia, CO&sub2;, water; organic: hydrocarbons). Mixture &mdash; <strong>azeotropic</strong> (constant boiling point, composition unchanged by distillation) or <strong>zeotropic</strong> (components with different boiling points, so they do not change phase together)</td></tr>
+        <tr><td>Function</td><td style="text-align:left;"><strong>Primary</strong> &mdash; the working fluid, undergoes phase change. <strong>Secondary</strong> &mdash; transports energy only, no phase change (chilled water, brine, glycol)</td></tr>
+        <tr class="r"><td>Toxicity</td><td style="text-align:left;"><strong>The course states this inverted.</strong> Per ASHRAE&nbsp;34: <strong>Class&nbsp;A</strong> = occupational exposure limit <strong>&ge; 400 ppm</strong> (lower toxicity); <strong>Class&nbsp;B</strong> = OEL <strong>&lt; 400 ppm</strong> (higher toxicity &mdash; ammonia). The lecture reverses the inequality</td></tr>
+        <tr><td>Flammability</td><td style="text-align:left;"><strong>Class 1</strong> no flame propagation &middot; <strong>Class 2</strong> LFL &gt; 0.10 kg/m&sup3; and heat of combustion &lt; 19 kJ/kg &middot; <strong>Class 3</strong> LFL &le; 0.10 kg/m&sup3; and heat of combustion &ge; 19 kJ/kg</td></tr>
+        <tr class="total"><td>Environmental</td><td style="text-align:left;"><strong>ODP</strong> &mdash; must be zero under the Montreal Protocol &middot; <strong>GWP</strong> &mdash; minimise &middot; <strong>TEWI</strong> &mdash; total equivalent warming impact, counting both direct release <em>and</em> the emissions from the energy the machine consumes over its life</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note good">
+    <b class="nh">TEWI is the number worth arguing from</b>
+    <p style="margin-bottom:0;">ODP and GWP describe the fluid. <strong>TEWI describes the installation</strong> &mdash; it adds the indirect emissions from lifetime energy consumption to the direct emissions from leakage and disposal. On a Doha plant the indirect term usually dominates, which means <strong>a low-GWP refrigerant in a less efficient machine can be the worse environmental answer</strong>. Where a project has an environmental performance obligation, insist the comparison is made on TEWI rather than on refrigerant GWP alone; the two frequently rank options differently, and only one of them reflects what the building will actually emit.</p>
+  </div>
+
+  <h4>Vapour absorption and thermoelectric &mdash; where each genuinely belongs</h4>
+  <div class="grid g2" style="margin:1.4em 0;">
+    <div class="card">
+      <h4 style="margin-top:0;">Vapour absorption (VARS)</h4>
+      <p style="font-size:var(--step--1);margin:0 0 .6em;color:var(--text-secondary);">Four parts &mdash; evaporator, <strong>absorber</strong>, high-pressure generator, condenser. Heat-driven rather than work-driven; electricity is needed only for pumps. Lithium bromide/water gives <strong>COP 0.65&ndash;0.70</strong>, chilled water at 6.7&ndash;13&nbsp;&deg;C against 30&nbsp;&deg;C cooling water. Ammonia/water reaches lower temperatures at lower COP.</p>
+      <p style="font-size:var(--step--1);margin:0;color:var(--warn-300);"><strong>The test is not efficiency, it is whether the heat is genuinely free.</strong> High capital cost, greater operating complexity, and lithium bromide is corrosive over the plant's life. Economic only against real waste heat &mdash; and &ldquo;waste heat is available&rdquo; is a claim to verify at source temperature and guaranteed availability, not accept.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">Thermoelectric (Peltier)</h4>
+      <p style="font-size:var(--step--1);margin:0 0 .6em;color:var(--text-secondary);">Current through a junction of dissimilar semiconductors moves thermal energy with the charge carriers &mdash; electrons entering a p&rarr;n junction absorb energy, and release it going the other way. One face cools, the other rejects.</p>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">No refrigerant, no moving parts, precise temperature stability, reversible between cooling and heating on the polarity. Capacity and efficiency are both low &mdash; instrument and small-enclosure duty, not building cooling.</p>
+    </div>
+  </div>
+
   <h3 id="c1-psychart">Reading the psychrometric chart</h3>
   <p class="prose">The chart is a two-property map. Fix any two independent properties and every other one is determined — that is the whole idea. Below is the real chart with this guide's Doha state points plotted on it, so the abstractions have somewhere to land.</p>
 
@@ -1189,6 +1297,45 @@ p = barometric pressure, kPa          C₈…C₁₃ are the ASHRAE saturation-p
       <div class="fb" data-fb>RH = p_w / p_ws = 1.03120 / 9.59322 = <strong>10.75%</strong>. Relative humidity is a ratio of <em>pressures</em>, not of moisture masses — which is why it falls as air is heated even though no water leaves.</div>
     </div>
 
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">11</span><p class="qt">The Carnot refrigeration cycle cannot be built. The course gives two specific practical obstacles &mdash; which pair?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m1_11" value="a"><span>Isothermal heat transfer is impossible, and entropy cannot be measured directly</span></label>
+        <label class="opt"><input type="radio" name="c1m1_11" value="b"><span>Process 1&rarr;2 requires isentropic compression of a liquid&ndash;vapour mixture, which damages compressors; and recovering work by expanding liquid through a turbine is not economically viable</span></label>
+        <label class="opt"><input type="radio" name="c1m1_11" value="c"><span>Refrigerants do not behave as ideal gases, and the condenser cannot reject heat at constant pressure</span></label>
+        <label class="opt"><input type="radio" name="c1m1_11" value="d"><span>The evaporator cannot absorb heat isothermally, and the expansion valve is irreversible</span></label>
+      </div>
+      <div class="fb" data-fb>Wet compression and turbine work recovery. Liquid droplets in a high-speed reciprocating compressor cause slugging and mechanical damage, so real machines use <em>dry</em> compression &mdash; vapour only. And because liquid specific volume is far smaller than vapour's, the specific work recovered from a liquid expander is tiny, so a throttling device is fitted and the recoverable work is discarded. Those two substitutions are exactly the two irreversibilities the vapour-compression cycle carries.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">12</span><p class="qt">Vapour compression adds two irreversibilities relative to Carnot. What is the <em>throttling loss</em>, and where is it worst?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m1_12" value="a"><span>The extra heat rejected because condensation is isobaric rather than isothermal &mdash; worst at low ambient</span></label>
+        <label class="opt"><input type="radio" name="c1m1_12" value="b"><span>The reduction in refrigeration effect from replacing isentropic expansion with isenthalpic throttling &mdash; and it grows as evaporating temperature falls and condensing temperature rises</span></label>
+        <label class="opt"><input type="radio" name="c1m1_12" value="c"><span>Pressure drop across the suction valve &mdash; worst on long pipe runs</span></label>
+        <label class="opt"><input type="radio" name="c1m1_12" value="d"><span>Work lost to compressor mechanical inefficiency &mdash; worst at part load</span></label>
+      </div>
+      <div class="fb" data-fb>Throttling loss is the lost refrigeration effect from h&#8324; = h&#8323;. The other irreversibility &mdash; extra heat rejection from isobaric rather than isothermal condensation &mdash; is the <em>superheating horn</em>. The practical consequence of throttling loss is a higher refrigerant mass flow rate for the same duty, and it is worst precisely when a Gulf condenser drives condensing temperature up on a design afternoon. That is the thermodynamic case for economisers and electronic expansion valves in high-ambient plant.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">13</span><p class="qt">Refrigerant vapour picks up superheat in an uninsulated suction line running through a plant room. Is that superheat useful?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m1_13" value="a"><span>Useful &mdash; any superheat adds to the refrigeration effect</span></label>
+        <label class="opt"><input type="radio" name="c1m1_13" value="b"><span>Useless &mdash; it adds nothing to the refrigeration effect, lowers suction vapour density and raises discharge temperature</span></label>
+        <label class="opt"><input type="radio" name="c1m1_13" value="c"><span>Useful, because it guarantees no liquid reaches the compressor</span></label>
+        <label class="opt"><input type="radio" name="c1m1_13" value="d"><span>Neutral &mdash; superheat has no effect on cycle performance</span></label>
+      </div>
+      <div class="fb" data-fb>Superheat is <em>useful</em> only where it occurs inside the refrigerated space, because then the heat absorbed counts toward the duty. Superheat picked up from ambient in the suction line is <strong>useless</strong>: no added refrigeration effect, lower suction density, higher discharge temperature and shorter compressor life. That is why suction lines are insulated &mdash; and why suction-line insulation integrity is a real inspection item rather than a cosmetic one. Liquid protection is the expansion valve's job, not the suction line's.</div>
+    </div>
+
+    <div class="q" data-a="400" data-tol="0.01" data-unit="ppm">
+      <div class="qs"><span class="qn">14</span><p class="qt">Per ASHRAE&nbsp;34, what occupational exposure limit, in ppm, separates refrigerant toxicity Class&nbsp;A from Class&nbsp;B?</p></div>
+      <div class="numq"><input type="number" step="1" data-in aria-label="Concentration in ppm"><span class="un">ppm</span></div>
+      <div class="fb" data-fb><strong>400 ppm.</strong> Class&nbsp;A is OEL <strong>&ge; 400 ppm</strong> (lower toxicity); Class&nbsp;B is OEL <strong>&lt; 400 ppm</strong> (higher toxicity &mdash; ammonia is the familiar Class&nbsp;B). <strong>The course states this inverted</strong>, describing Class&nbsp;A as &ldquo;non-toxic with less than 400 ppm concentration&rdquo;. A safety classification stated backwards is worth knowing about before it reaches a machinery-room ventilation or occupied-space refrigerant-charge assessment.</div>
+    </div>
+
     <div class="quiz-ft">
       <button class="btn pri" type="button" data-check>Check answers</button>
       <button class="btn" type="button" data-reset>Reset</button>
@@ -1206,6 +1353,129 @@ p = barometric pressure, kPa          C₈…C₁₃ are the ASHRAE saturation-p
       <span class="chip">Sensible vs latent</span><span class="chip">RSHF &middot; ESHF &middot; GSHF</span>
       <span class="chip">Bypass factor &amp; ADP</span><span class="chip">Room vs coil load</span>
     </div>
+  </div>
+
+  <h3 id="c1-design">Design conditions, and the principle the whole guide rests on <span class="vb course">Course</span></h3>
+  <p class="prose">Heat load is a <strong>rate</strong> &mdash; kW or Btu/h &mdash; not a quantity. The distinction gets lost in site conversation and matters the moment you are reviewing a vendor calculation. The course gives four objectives for computing it: size the equipment and air distribution correctly, support energy analysis, evaluate the envelope's thermal contribution, and identify where the gains actually originate.</p>
+
+  <div class="note good">
+    <b class="nh">The coincident-condition principle &mdash; the most important idea in the module</b>
+    <p><strong>Design to maximum dry bulb with its <em>Mean Coincident</em> Wet Bulb &mdash; never to maximum DB paired with maximum WB.</strong> Peak dry bulb and peak wet bulb do not occur at the same time. Ambient DB follows roughly a sinusoid over the day, minimum just before sunrise and maximum in mid-to-late afternoon (the course puts the daily maximum between 13:00 and 16:00, lagging solar noon because of the thermal mass of ground and air). Relative humidity runs <em>inversely</em> to dry bulb through the day, so it is at its minimum exactly when DB peaks.</p>
+    <p style="margin-bottom:0;">Pair the two independent maxima and you have invented a condition that has never occurred at the site, and bought a coil to match it.</p>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>Design conditions as annual cumulative frequency <span class="vb course">Course</span> / <span class="vb standard">Standard</span></caption>
+      <thead><tr><th>Application</th><th style="text-align:left;">Stated as</th><th class="num">Percentiles</th><th style="text-align:left;">What it sizes</th></tr></thead>
+      <tbody>
+        <tr><td>Cooling</td><td style="text-align:left;">DB with Mean Coincident WB</td><td class="num">0.4% &middot; 1% &middot; 2%</td><td style="text-align:left;">the <strong>sensible</strong> coil, the airflow, the ductwork and the fan</td></tr>
+        <tr class="total"><td>Cooling / dehumidification</td><td style="text-align:left;">WB (or dew point) with Mean Coincident DB</td><td class="num">0.4% &middot; 1% &middot; 2%</td><td style="text-align:left;">the <strong>latent</strong> duty &mdash; the coil and the chiller</td></tr>
+        <tr><td>Heating</td><td style="text-align:left;">DB with Mean Coincident WB</td><td class="num">99.6% &middot; 99%</td><td style="text-align:left;">heating capacity</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note good">
+    <b class="nh">This is why this guide computes everything twice</b>
+    <p style="margin-bottom:0;">The course states the rule plainly: <strong>the DB-with-MCWB case sizes the sensible coil; the WB-with-MCDB case sizes the dehumidification duty &mdash; and in a humid coastal climate the dehumidification case frequently governs the coil even when it does not govern sensible capacity. Check both.</strong> That is precisely the Case&nbsp;1 / Case&nbsp;2 structure running through the Doha design basis, Worked example&nbsp;B and Worked example&nbsp;C in this guide, and it now has the course's own authority behind it. Worked example&nbsp;B finds an 11.8% coil shortfall from running only the 45&nbsp;&deg;C condition.</p>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">The percentile is a contractual decision, not an engineering default</b>
+    <p style="margin-bottom:0;">0.4% is roughly <strong>35 hours per year</strong> of exceedance; 2% is roughly <strong>175 hours</strong>. The choice changes installed capacity materially, and with it electrical load, plant room size and capital cost. On a QatarEnergy project it is normally fixed by the project technical specification. <strong>Where it is not, it is a scope and cost question &mdash; raise it as a formal technical query rather than assume it.</strong> An assumption made here propagates all the way into a change-order argument, and the contemporaneous record of who chose the percentile is what decides which party carries it.</p>
+  </div>
+
+  <h3 id="c1-comfort">Thermal comfort &mdash; and the framework the course never introduces <span class="vb course">Course</span></h3>
+  <p class="prose">Comfort is defined as <em>the state of mind expressing satisfaction with the thermal environment</em> &mdash; a psychophysiological state, not a temperature. That is why it cannot be reduced to one parameter and why acceptance is expressed statistically, as a percentage of occupants satisfied.</p>
+
+  <div class="tw">
+    <table>
+      <caption>The four primary variables <span class="vb course">Course</span></caption>
+      <thead><tr><th>Variable</th><th style="text-align:left;">Heat-transfer mode</th><th class="num">Range cited</th><th style="text-align:left;">Note</th></tr></thead>
+      <tbody>
+        <tr><td>Air dry-bulb temperature</td><td style="text-align:left;">convection + evaporation</td><td class="num">21&ndash;24 &deg;C</td><td style="text-align:left;">not universal &mdash; read with velocity and humidity</td></tr>
+        <tr><td>Air velocity</td><td style="text-align:left;">convection + evaporation</td><td class="num">0&ndash;0.5 m/s</td><td style="text-align:left;">acceptability unaffected at <strong>&le; 0.25 m/s</strong>; excess local motion is <em>draft</em></td></tr>
+        <tr><td>Relative humidity</td><td style="text-align:left;">evaporation</td><td class="num">30&ndash;70%</td><td style="text-align:left;">below 30% skin dries; above 70% skin becomes sticky. Module 3 gives 40&ndash;60% instead &mdash; unreconciled</td></tr>
+        <tr class="total"><td>Mean radiant temperature</td><td style="text-align:left;">radiation</td><td class="num">&mdash;</td><td style="text-align:left;">area-weighted surrounding surface temperature; the variable that punishes glazed façades</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">MRT asymmetry is a real failure mode, and you cannot fix it with the thermostat</b>
+    <p style="margin-bottom:0;">An occupant beside a large glazed elevation exchanges radiation with a hot surface and is uncomfortable <em>while the air temperature is demonstrably within specification</em>. Lowering the setpoint does not fix it &mdash; it overcools everyone else in the zone. It is fixed at design stage by glazing SHGC, external shading and perimeter treatment, which makes it an <strong>architectural interface item to raise at design review, not a snagging item to discover at handover</strong>. It is a recurring source of post-handover complaints that no amount of balancing will close out.</p>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">The gap: PMV and PPD are never mentioned</b>
+    <p style="margin-bottom:0;">The course teaches a four-variable descriptive model and the hatched comfort chart. <strong>ASHRAE&nbsp;55 and ISO&nbsp;7730 quantify comfort with a six-variable model</strong> &mdash; the four above plus metabolic rate and clothing insulation &mdash; expressed as <strong>Predicted Mean Vote</strong> and <strong>Predicted Percentage Dissatisfied</strong>. If thermal comfort is ever contested on a project, PMV/PPD is the evidentiary framework; a comfort chart is not. Fill this gap from <em>Fundamentals</em> Ch.&nbsp;9 independently of the course. Note also that clothing insulation in <strong>clo</strong> (1 clo = 0.155 m&sup2;&middot;K/W) is given here but never used, because without PMV there is nothing to use it in.</p>
+  </div>
+
+  <h3 id="c1-vent">Ventilation air, pressurisation, and the step the course leaves out <span class="vb course">Course</span></h3>
+  <p class="prose">Five stated functions: supply oxygen, remove heat and humidity, remove carbon dioxide, dilute toxicity, remove odours. Occupants raise CO&sub2; even with no other pollutant source.</p>
+
+  <div class="fml">
+    <span class="eq">As taught     V_bz = (R_p &times; P_z) + (R_a &times; A_z)                      &larr; the course stops here</span>
+    <span class="eq">Zone          V_oz = V_bz / E_z                                  E_z = zone air distribution effectiveness</span>
+    <span class="eq">System        V_ot = V_ou / E_v                                  E_v = system ventilation efficiency</span>
+    <span class="wh">Office        R_p = 5 cfm/person    R_a = 0.06 cfm/ft&sup2;    default density 5 per 1 000 ft&sup2;
+Dining        R_p = 7.5             R_a = 0.18
+Computer lab  R_p = 10              R_a = 0.12
+E_z = 1.0 for ceiling supply of cool air; commonly 0.8 for ceiling supply of WARM air with ceiling return.</span>
+    <span class="src">ASHRAE 62.1 Ventilation Rate Procedure. Rates as cited in the lectures (62.1-2013 / NBC 2016). <span class="vb course">Course</span></span>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">Missing E<sub>z</sub> and E<sub>v</sub> is the fastest single check on a ventilation calculation</b>
+    <p>Both of the course's worked examples stop at the breathing-zone airflow. The Ventilation Rate Procedure does not stop there.</p>
+    <p><strong>E<sub>z</sub></strong> accounts for how effectively supply air actually reaches the breathing zone. It is 1.0 for ceiling supply of cool air &mdash; so for a conventional office nothing changes, which is exactly why the omission goes unnoticed. Drop to <strong>0.8</strong> for ceiling-supplied warm air and the required zone outdoor air rises <strong>25%</strong>. <strong>E<sub>v</sub></strong> corrects for the fact that in a multi-zone recirculating system the <em>critical</em> zone &mdash; the one with the highest outdoor-air fraction &mdash; governs the intake.</p>
+    <p style="margin-bottom:0;">This is precisely the failure mode that produces an IAQ non-conformance after handover: the AHU outdoor-air damper is set to a total that satisfies the arithmetic sum, while one zone on the system never receives its share. <strong>It is invisible at FAT, invisible at TAB unless specifically tested, and surfaces as an occupant complaint or a CO&sub2; trend during the defects liability period.</strong> When reviewing a subcontractor's or package vendor's ventilation calculation, the presence or absence of E<sub>z</sub> and E<sub>v</sub> tells you immediately whether they applied 62.1 or just added two numbers together.</p>
+  </div>
+
+  <div class="note good">
+    <b class="nh">Building pressurisation &mdash; the design rule worth internalising</b>
+    <p><strong>Always supply more outdoor air than is exhausted</strong>, so conditioned spaces sit at a slight net positive pressure. Under positive pressure air <strong>exfiltrates</strong> rather than infiltrates, which <em>essentially eliminates the infiltration sensible and latent gains</em> &mdash; you stop dragging 45&nbsp;&deg;C high-dew-point air through envelope cracks uncontrolled and instead condition a known, metered quantity at the AHU.</p>
+    <p style="margin-bottom:0;">This matters disproportionately in the Gulf. The latent penalty of uncontrolled infiltration in a hot-humid coastal climate is severe, and unlike sensible load it does not simply scale &mdash; it drives <strong>condensation risk in the envelope and on cold surfaces</strong>. Pressurisation converts an unpredictable load into a designed one, and incidentally is what keeps sand and dust out. <strong>Confirm the pressurisation intent survives into the balancing and commissioning documentation</strong>, because it is routinely lost between design and TAB.</p>
+  </div>
+
+  <h3 id="c1-solar">Solar gain and solar geometry <span class="vb course">Course</span></h3>
+  <p class="prose">Solar radiation is the single largest component of cooling load in buildings, and the course frames it correctly &mdash; studied not only to calculate the load but to <em>reduce</em> it, which makes it a façade decision far more than an HVAC one.</p>
+
+  <div class="tw">
+    <table>
+      <caption>What happens to radiation at glass, and the numbers the course gives <span class="vb course">Course</span></caption>
+      <thead><tr><th>Item</th><th style="text-align:left;">Behaviour</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Direct (beam)</strong></td><td style="text-align:left;">Specular &mdash; strikes at an angle set by sun&ndash;earth geometry. Maximum when the surface is perpendicular to the rays, near zero when parallel. <strong>Can be managed by orientation and shading</strong></td></tr>
+        <tr><td><strong>Diffuse (sky)</strong></td><td style="text-align:left;">Scattered and re-radiated, arriving from all directions. <strong>Orientation-independent</strong> &mdash; it heats windows that never see the sun, and no shading device eliminates it</td></tr>
+        <tr><td>At the glass surface</td><td style="text-align:left;">Splits three ways: transmitted &rarr; enters directly; absorbed &rarr; heats the glass, then re-emits roughly <strong>40% inward, 60% back to atmosphere</strong>; reflected &rarr; returned</td></tr>
+        <tr><td>Angle of incidence</td><td style="text-align:left;">As incidence angle rises, <strong>more is reflected and less transmitted</strong>. Ordinary glass admits <strong>0.64&nbsp;R at 30&deg;</strong> but only <strong>0.44&nbsp;R at 80&deg;</strong></td></tr>
+        <tr class="total"><td>Heat-absorbing glass</td><td style="text-align:left;">Transmits less, absorbs more, reflects slightly less &mdash; net load reduced. <strong>0.49&nbsp;R at 30&deg;</strong> against ordinary glass's 0.64</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note">
+    <b class="nh">Translating the course's &ldquo;special glass&rdquo; into a modern vendor datasheet</b>
+    <p style="margin-bottom:0;">The heat-absorbing, body-tinted glass of the Carrier era has been superseded by <strong>spectrally selective low-E coated glazing</strong>, which achieves a low SHGC while keeping high visible light transmittance &mdash; a combination tints could never deliver. The parameters on a modern datasheet are <strong>SHGC, U-value, VLT</strong>, and the <strong>light-to-solar-gain ratio, LSG = VLT / SHGC</strong>. <strong>A high LSG is what you want on a Gulf façade: daylight without the heat.</strong> Note also the failure mode the lecture implies but never states &mdash; heat-absorbing glass runs hot, which raises perimeter MRT and increases thermal stress in the pane. Reducing calculated load while degrading perimeter comfort is a poor trade; a coating on the outboard surface rejects the energy before it is absorbed.</p>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">Why west glazing is punishing, and why overhangs will not save you</b>
+    <p>The course states the rule &mdash; solar heat gain is maximum on the west face, so avoid large west-facing glass. The reason matters more than the rule. <strong>West glazing takes its peak beam radiation in the late afternoon, at the same hour ambient dry bulb is at its daily maximum.</strong> Solar peak and sensible peak <em>coincide</em> on a west elevation. On an east elevation the solar peak lands in the morning while ambient is still low. That coincidence is why west exposure drives the <strong>building block load</strong>, not merely the zone load.</p>
+    <p style="margin-bottom:0;">At Doha's latitude the sun sets closer to due west year-round and at a steeper terminal angle than at 40&deg;&nbsp;N, so the western exposure period is more concentrated. <strong>Horizontal overhangs &mdash; which work well on a southern exposure &mdash; are largely useless against low-altitude western sun. Vertical fins, or SHGC control, are the effective responses.</strong> And note the hierarchy: <strong>external shading is thermodynamically superior to internal</strong>, because everything an exterior device absorbs or reflects is dissipated outdoors, whereas an internal blind intercepts energy that has <em>already passed the glass</em> and is inside the thermal envelope. This is an architectural coordination point that must be raised early; the HVAC design cannot fix it.</p>
+  </div>
+
+  <div class="fml">
+    <span class="eq">Hour angle        h = 15&deg; &times; (hours from solar noon)        360&deg;/24 h = 15&deg; per hour</span>
+    <span class="eq">Declination       &delta; = &plusmn;23.45&deg; at the solstices, 0&deg; at the equinoxes</span>
+    <span class="eq">Zenith / altitude zenith + altitude = 90&deg;</span>
+    <span class="eq">Azimuth           measured from south &mdash; positive in the afternoon, negative in the morning</span>
+    <span class="wh">Solar altitude is the angle between the sun's line and the horizontal plane (0&ndash;90&deg;, negative at night).
+Latitude sets both altitude and azimuth for a given time.
+The course narrates declination as 23&deg; S in winter and 23.5&deg; N in summer &mdash; the asymmetry is not real.</span>
+    <span class="src">Module&nbsp;2, Solar Angles &amp; Shading. Declination corrected. <span class="vb course">Course</span></span>
   </div>
 
   <h3>Three distinctions that must stay straight</h3>
@@ -1507,6 +1777,92 @@ V = airflow, L/s                  Δt in K, ΔW in kg/kg</span>
     <b class="nh">The defensible position in a design review</b>
     <p style="margin-bottom:0;">Use CLTD as a <strong>hand check</strong>, not as the submitted basis. Its enduring value is that one engineer with a calculator can reproduce it and catch an order-of-magnitude error in a software output in twenty minutes. Its weakness is that its tables encode specific wall constructions and a specific base condition, and the correction terms stretch further the more your project departs from them — a Doha project already carries a +8.85 K correction before anything else. If a subcontractor submits CLTD as the primary basis for a large plant, that is a legitimate technical comment: ask for RTS or a validated software output, and keep your CLTD as the independent check.</p>
   </div>
+  <h3 id="c1-internal">Internal heat &mdash; now the dominant term <span class="vb course">Course</span></h3>
+  <p class="prose">The course notes that internal gains have <em>grown</em> as envelopes improved under stricter energy standards: the envelope share falls, the internal share rises. That trend has continued well past the course's vintage. In its own worked calculation the computers alone are <strong>39% of room sensible load</strong> &mdash; more than solar, transmission, partition and lighting combined.</p>
+
+  <div class="note warn">
+    <b class="nh">Internal load is an information dependency, not a calculation</b>
+    <p style="margin-bottom:0;">Occupant density, lighting, schedules, IT and process equipment all come from the client or the architect. <strong>If they are not available when the load calculation is due, you are producing an assumption register, not a calculation.</strong> Record the assumptions on the face of the document and raise the material ones as a formal technical query. Undocumented internal-load assumptions are one of the two most frequent root causes of &ldquo;the AHU is undersized&rdquo; disputes &mdash; and the contemporaneous record of the assumption is what decides which party carries the cost.</p>
+  </div>
+
+  <h4>Occupants &mdash; read the sensible heat ratio, not the total</h4>
+  <p class="prose">Metabolic heat leaves the body as <strong>sensible</strong> (convection and radiation from skin and respiratory tract) and <strong>latent</strong> (evaporation of perspiration and respiration). The split is set by ambient dry bulb: as room DB falls the sensible fraction rises; as room DB rises the body sweats more and the latent fraction rises. You need both the room design DB <em>and</em> the activity level &mdash; either alone is insufficient.</p>
+
+  <div class="tw">
+    <table>
+      <caption>Occupant gain at 75 &deg;F indoor &mdash; the course's two worked cases <span class="vb course">Course</span></caption>
+      <thead><tr><th>Activity</th><th class="num">Sensible, Btu/h</th><th class="num">Latent, Btu/h</th><th class="num">Total</th><th class="num">SHR</th></tr></thead>
+      <tbody>
+        <tr><td>Office work</td><td class="num">245</td><td class="num">205</td><td class="num">450</td><td class="num">0.54</td></tr>
+        <tr class="total"><td>Dancing</td><td class="num">325</td><td class="num">525</td><td class="num">850</td><td class="num">0.38</td></tr>
+        <tr class="sub"><td>Ratio</td><td class="num">1.3&times;</td><td class="num"><strong>2.6&times;</strong></td><td class="num">1.9&times;</td><td class="num">&mdash;</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">The review check this table sets up</b>
+    <p style="margin-bottom:0;">Total load per person is 1.9&times; higher for dancing, but <strong>latent load is 2.6&times; higher</strong>. A high-activity space needs a coil selected for a much lower SHR &mdash; deeper dehumidification &mdash; <em>not simply a bigger one</em>. This is exactly the check to apply when reviewing a package vendor's AHU selection for a <strong>gym, prayer hall, canteen or assembly space</strong>: confirm the selection SHR matches the room SHR, not merely that the total kW is adequate. In a hot climate a larger share of occupant load is latent at any given room DB than the same occupancy would produce in a temperate one &mdash; one of several reasons Gulf latent duty runs proportionally higher. Note also: <strong>latent gain carries no cooling load factor</strong>, because moisture enters the air directly and instantaneously; only the radiant fraction of <em>sensible</em> gain is subject to storage lag.</p>
+  </div>
+
+  <h4>Lighting, equipment and motors</h4>
+  <p class="prose">Effectively <strong>100% of lighting electrical input ends up as sensible heat</strong> in the space &mdash; most released directly, the rest emitted as light and absorbed after reflection. Where luminaires are recessed into a false ceiling used as a return plenum, the course splits the heat <strong>70% to the room, 30% to the plenum</strong>. That fraction still reaches the coil via the return air, but it does <em>not</em> count toward room sensible load and therefore does not drive supply airflow.</p>
+
+  <div class="note trap">
+    <b class="nh">The motor formula is one of three cases &mdash; and the course gives only the one that understates</b>
+    <div class="tw" style="margin:1em 0;">
+      <table>
+        <thead><tr><th>Case</th><th style="text-align:left;">Motor</th><th style="text-align:left;">Driven equipment</th><th class="num">Heat to the space</th></tr></thead>
+        <tbody>
+          <tr class="total"><td>A</td><td style="text-align:left;">in space</td><td style="text-align:left;">in space</td><td class="num"><strong>P / &eta;</strong> &mdash; the whole electrical input</td></tr>
+          <tr><td>B</td><td style="text-align:left;">in space</td><td style="text-align:left;">outside</td><td class="num">P &times; (1&minus;&eta;)/&eta; &mdash; losses only</td></tr>
+          <tr><td>C</td><td style="text-align:left;">outside</td><td style="text-align:left;">in space</td><td class="num">P &mdash; shaft power only</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-bottom:0;">The lecture presents <code>Q = input &times; (1 &minus; &eta;)</code> as general. It corresponds to the <strong>motor-losses-only</strong> case, and applied indiscriminately it <strong>substantially understates Case&nbsp;A</strong> &mdash; a pump or fan with both motor and driven equipment inside the conditioned space, where the <em>entire</em> electrical input becomes heat in that space. In-line pumps in a conditioned plant room, fan motors in a conditioned fan room, packaged equipment with integral motors: all Case&nbsp;A. <strong>This is a silent error &mdash; the calculation looks complete and the number is simply too small.</strong> Note also that ASHRAE applies load and use factors: a motor rarely runs at full nameplate continuously, and ignoring those overstates the load in the opposite direction.</p>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">Duct leakage is a commissioning obligation, not a design allowance</b>
+    <p style="margin-bottom:0;">The course cites duct leakage of <strong>5&ndash;15% depending on workmanship</strong> and treats it as something to allow for. That is the wrong posture. Modern practice &mdash; SMACNA construction standards, ASHRAE 90.1 sealing and leakage-testing requirements, and normally the project technical specification &mdash; specifies a <strong>seal class and a leakage class</strong> and requires <strong>pressure testing of a defined proportion of the installed system</strong>. On a project with a mechanical completion regime, duct leakage testing is an <strong>ITP hold or witness point</strong> and its records form part of the MC dossier. A 15% leakage rate on a delivered system is a non-conformance, not a margin &mdash; and far cheaper to catch at first fix than after ceilings are closed.</p>
+  </div>
+
+  <div class="note">
+    <b class="nh">Equipment heat &mdash; the course's own principle is the right one to quote back</b>
+    <p style="margin-bottom:0;">&ldquo;Obtain heat dissipation data from the <strong>approved manufacturer</strong> before estimating heat load for any space.&rdquo; Handbook tabulations are a fallback, not a substitute. Apply this directly in vendor data review: a heat rejection figure should be traceable to the vendor's own rated data at the specified operating point &mdash; not a generic table value, and not a nameplate rating assuming 100% duty. <strong>Nameplate ratings systematically overstate actual dissipation</strong>; diversity and usage factors are legitimate but must be stated and justified, never applied silently. Note gas appliances add moisture as a combustion product, so they carry latent load that electrical equipment does not.</p>
+  </div>
+
+  <h3 id="c1-infil">Infiltration &mdash; and why Doha runs the stack effect backwards <span class="vb course">Course</span></h3>
+  <p class="prose">Ventilation air is <strong>deliberate, metered and conditioned at the AHU</strong>. Infiltration is <strong>accidental, unmetered and conditioned by the room</strong>. Both deliver outdoor air; only one is under your control. And infiltration is fundamentally an <em>exchange</em> &mdash; for every quantity entering, an equal quantity exfiltrates.</p>
+
+  <div class="tw">
+    <table>
+      <caption>Three causes, and what controls each <span class="vb course">Course</span></caption>
+      <thead><tr><th>Cause</th><th style="text-align:left;">Mechanism</th><th style="text-align:left;">Control</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Wind pressure</strong></td><td style="text-align:left;"><code>P = C_p &middot; &rho; &middot; v&sup2; / 2</code>. Windward face positive &rarr; infiltration; leeward negative &rarr; exfiltration</td><td style="text-align:left;">Above 100 ft, infiltration flows downward &mdash; compute on the <strong>windward</strong> side</td></tr>
+        <tr><td><strong>Stack effect</strong></td><td style="text-align:left;">Density difference drives vertical flow about a neutral pressure level</td><td style="text-align:left;">Seal lift shafts, stairwells and service risers &mdash; a fire, smoke <em>and</em> energy coordination item</td></tr>
+        <tr><td><strong>Door openings</strong></td><td style="text-align:left;">Occupant traffic. Restaurant without vestibule: <strong>2.5 cfm per person per door</strong></td><td style="text-align:left;">Vestibules cut up to <strong>30%</strong> where use is infrequent &mdash; <strong>little or no benefit under heavy use</strong>. Automatic doors stay open longer and pass substantially more air</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">In a Doha summer the lobby doors are not the problem &mdash; the top of the building is</b>
+    <p>The textbook stack diagram is upside down here. Indoor air at 24&nbsp;&deg;C is <strong>denser</strong> than outdoor air at 45&nbsp;&deg;C, so the buoyancy term changes sign:</p>
+    <div class="tw" style="margin:1em 0;">
+      <table>
+        <thead><tr><th>Season</th><th class="num">Bottom of building</th><th class="num">Top of building</th></tr></thead>
+        <tbody>
+          <tr><td>Winter (temperate case)</td><td class="num">infiltration</td><td class="num">exfiltration</td></tr>
+          <tr class="total"><td><strong>Summer (the Gulf case)</strong></td><td class="num"><strong>exfiltration</strong></td><td class="num"><strong>infiltration</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-bottom:0;">Hot, humid outdoor air is drawn in at the <strong>upper</strong> levels and conditioned air is pushed out at grade. Upper-floor infiltration therefore carries a high <strong>latent</strong> penalty. Worse, the two drivers reinforce each other: wind speed is also higher near the top of a tall building, and in summer both wind pressure and stack effect promote infiltration there. <strong>That is why upper-floor perimeter zones in tall Gulf buildings are chronically hard to hold on humidity</strong> &mdash; and why the answer is envelope and riser sealing plus positive pressurisation, not more cooling.</p>
+  </div>
+
   <h3 id="c1-hier">The heat-factor hierarchy <span class="vb course">Course</span></h3>
   <p class="prose">This is the least intuitive content in the module and the most examinable. It is a <strong>hierarchy</strong>, and once the levels are straight the definitions follow from them. The quantity that separates each level from the next is the <strong>bypass factor</strong>.</p>
 
@@ -1680,6 +2036,45 @@ Note (1 &minus; BF) is the contact factor &mdash; this is the ordinary sensible-
         <label class="opt"><input type="radio" name="c1m2_10" value="d"><span>They used RTS instead of CLTD</span></label>
       </div>
       <div class="fb" data-fb>15 m²/TR is roughly double the intensity this envelope should produce — an <em>over</em>-estimate, so look for loads counted twice or credits not taken. Omitting the roof would push the figure the other way, toward 55 m²/TR. Knowing which direction an error moves the answer is what makes the m²/TR check useful in review.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">11</span><p class="qt">Why do design conditions pair maximum dry bulb with its <em>mean coincident</em> wet bulb, rather than with the maximum wet bulb?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m2_11" value="a"><span>Because wet bulb is harder to measure reliably at a weather station</span></label>
+        <label class="opt"><input type="radio" name="c1m2_11" value="b"><span>Because peak DB and peak WB do not occur simultaneously &mdash; pairing the two independent maxima invents a condition that has never occurred at the site, and buys a coil to match it</span></label>
+        <label class="opt"><input type="radio" name="c1m2_11" value="c"><span>Because ASHRAE publishes only the coincident value</span></label>
+        <label class="opt"><input type="radio" name="c1m2_11" value="d"><span>Because wet bulb is always lower than dry bulb, so the maximum is redundant</span></label>
+      </div>
+      <div class="fb" data-fb>Relative humidity runs inversely to dry bulb through the day and is at its minimum exactly when DB peaks. The two maxima are therefore never coincident. This is also why the guide computes everything twice: the <strong>DB-with-MCWB case sizes the sensible coil, airflow and fan; the WB-with-MCDB case sizes the dehumidification duty</strong> &mdash; and in a humid coastal climate the second frequently governs the coil even when it does not govern sensible capacity. Worked example B finds an 11.8% shortfall from running only the 45&nbsp;&deg;C condition.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">12</span><p class="qt">A subcontractor's ventilation calculation computes V<sub>bz</sub> = (R<sub>p</sub>&times;P<sub>z</sub>) + (R<sub>a</sub>&times;A<sub>z</sub>) and stops there. What is missing, and when does it actually bite?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m2_12" value="a"><span>Nothing &mdash; that is the complete Ventilation Rate Procedure</span></label>
+        <label class="opt"><input type="radio" name="c1m2_12" value="b"><span>E<sub>z</sub> and E<sub>v</sub>. E<sub>z</sub> = 1.0 for ceiling supply of cool air so a conventional office looks correct, but ceiling-supplied warm air at E<sub>z</sub> = 0.8 needs 25% more, and E<sub>v</sub> governs the critical zone on a multi-zone recirculating system</span></label>
+        <label class="opt"><input type="radio" name="c1m2_12" value="c"><span>A safety factor on the occupant count</span></label>
+        <label class="opt"><input type="radio" name="c1m2_12" value="d"><span>The infiltration allowance, which must be added to V<sub>bz</sub></span></label>
+      </div>
+      <div class="fb" data-fb>V<sub>oz</sub> = V<sub>bz</sub>/E<sub>z</sub>, and V<sub>ot</sub> = V<sub>ou</sub>/E<sub>v</sub>. The omission hides because E<sub>z</sub> = 1.0 in the most common case. It surfaces as an IAQ non-conformance after handover: the AHU damper satisfies the arithmetic total while one zone never receives its share. <strong>Invisible at FAT, invisible at TAB unless specifically tested.</strong> Their presence or absence is the fastest single check on whether 62.1 was applied or two numbers were added together.</div>
+    </div>
+
+    <div class="q" data-a="c">
+      <div class="qs"><span class="qn">13</span><p class="qt">An in-line pump and its motor both sit inside a conditioned plant room. How much heat enters that room?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m2_13" value="a"><span>P &times; (1 &minus; &eta;) &mdash; the motor losses only, per the formula the course gives</span></label>
+        <label class="opt"><input type="radio" name="c1m2_13" value="b"><span>P &mdash; the shaft power only</span></label>
+        <label class="opt"><input type="radio" name="c1m2_13" value="c"><span>P / &eta; &mdash; the entire electrical input</span></label>
+        <label class="opt"><input type="radio" name="c1m2_13" value="d"><span>Nothing, provided the pump casing is insulated</span></label>
+      </div>
+      <div class="fb" data-fb>This is ASHRAE's Case&nbsp;A: motor <em>and</em> driven equipment both in the space, so the whole electrical input ends up as heat there. <strong>The course presents the motor-losses-only expression as though it were general</strong>, and applied to this very common arrangement it substantially understates the load. It is a silent error &mdash; the calculation looks complete and the number is simply too small. Fan motors in a conditioned fan room and packaged equipment with integral motors are the same case.</div>
+    </div>
+
+    <div class="q" data-a="0.032" data-tol="0.06" data-unit="&mdash;">
+      <div class="qs"><span class="qn">14</span><p class="qt">Estimate the bypass factor of a <strong>6-row</strong> cooling coil from the course correlation BF = (0.1)<sup>n/4</sup>.</p></div>
+      <div class="numq"><input type="number" step="0.001" data-in aria-label="Bypass factor"><span class="un">&mdash;</span></div>
+      <div class="fb" data-fb>BF = 0.1<sup>6/4</sup> = 0.1<sup>1.5</sup> = <strong>0.0316 &asymp; 0.032</strong>, giving a contact factor of 0.968 &mdash; the value used throughout the Module&nbsp;3 worked calculation. Note the correlation depends on <em>row count alone</em>, while the same lecture lists fin spacing and face velocity as factors affecting bypass factor. Both statements cannot be complete. Treat it as a first-pass estimate and take the real figure from <strong>manufacturer rated data at the actual entering condition, face velocity and fluid temperatures</strong>.</div>
     </div>
 
     <div class="quiz-ft">
@@ -1926,6 +2321,83 @@ The ESHF line is drawn from the room state; where it strikes the saturation curv
     <p style="margin-bottom:0;">Fan, duct and VAV box: <strong>601 L/s (1 274 CFM)</strong> from Case 1. Coil and chiller: <strong>3.02 TR (10.62 kW)</strong> from Case 2, at ADP 11.27 °C and coil SHR 0.693. Specify both duties on the equipment schedule. A supplier given only the total tonnage will select a coil with a sensible heat ratio near 0.75–0.80 by default, and it will not hold the room at 50% RH on a September morning in Doha.</p>
   </div>
 
+  <h3 id="c1-props">The psychrometric framework Module 3 develops <span class="vb course">Course</span></h3>
+  <p class="prose">Six properties, and one governing principle: <strong>any two of them fix the state point, and every other property is then determined.</strong> The thermodynamic reason is not given in the lectures but is worth holding &mdash; moist air at a fixed pressure is a two-component system, so by the Gibbs phase rule its intensive state has exactly two degrees of freedom. The chart is a two-dimensional projection of that state space. <strong>Which is also why a chart is valid only at the barometric pressure it was drawn for.</strong></p>
+
+  <div class="tw">
+    <table>
+      <caption>The six properties and how each appears on the chart <span class="vb course">Course</span></caption>
+      <thead><tr><th>Property</th><th style="text-align:left;">Line family</th><th style="text-align:left;">What it indicates</th></tr></thead>
+      <tbody>
+        <tr><td>Dry bulb temperature</td><td style="text-align:left;">vertical, left to right</td><td style="text-align:left;">sensible heat content</td></tr>
+        <tr><td>Wet bulb temperature</td><td style="text-align:left;">diagonal, upper-right to lower-left</td><td style="text-align:left;">always &lt; DB except at saturation, where they are equal</td></tr>
+        <tr><td>Dew point temperature</td><td style="text-align:left;">horizontal; values read on the saturation curve</td><td style="text-align:left;">the temperature at which condensation begins</td></tr>
+        <tr><td>Relative humidity</td><td style="text-align:left;">curved, following the saturation curve</td><td style="text-align:left;">100% line <em>is</em> the saturation curve</td></tr>
+        <tr><td>Humidity ratio</td><td style="text-align:left;">horizontal, right-hand scale</td><td style="text-align:left;">mass of vapour per unit mass of <strong>dry</strong> air</td></tr>
+        <tr><td>Enthalpy</td><td style="text-align:left;">staggered scale left of the saturation curve</td><td style="text-align:left;">sensible + latent heat content</td></tr>
+        <tr class="sub"><td>Specific volume</td><td style="text-align:left;">steeper slope than WB and enthalpy lines</td><td style="text-align:left;">the reciprocal of density; rises with temperature and moisture, falls with pressure</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid g2" style="margin:1.5em 0;">
+    <div class="card">
+      <h4 style="margin-top:0;">Humidity ratio and dew point are the same line</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">Both are horizontal, and they are one-to-one at a fixed barometric pressure &mdash; two names and two scales for one line. That is why &ldquo;constant W&rdquo; and &ldquo;constant dew point&rdquo; are interchangeable statements about a sensible heating or cooling process. <strong>Always per pound of <em>dry</em> air</strong>, never moist air: dry-air mass is conserved through humidification and dehumidification, moist-air mass is not. One lecture slips and says &ldquo;pounds of moist air&rdquo; &mdash; it is wrong, and it is an easy error to make.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">&ldquo;Approximately parallel&rdquo; is doing real work</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">The course says constant-enthalpy lines are approximately parallel to wet-bulb lines. They are close but <strong>not coincident</strong>, and they diverge measurably away from saturation. A precision chart draws the two families separately and carries a deviation correction on the enthalpy scale. Fine for coil selection and mixing; <strong>for accurate work at low relative humidity use the enthalpy scale with its correction, not the wet-bulb line.</strong></p>
+    </div>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">Dew point &mdash; not relative humidity &mdash; governs condensation risk</b>
+    <p style="margin-bottom:0;">The lecture makes the everyday point about a chilled bottle. The design consequence is larger. <strong>Dew point is the correct criterion for condensation on any cold surface</strong>: chilled water pipework, ductwork, structural elements bridging the envelope, glazing. In Doha, summer outdoor dew points routinely exceed the surface temperature of uninsulated chilled water pipe, which means <strong>insulation thickness for condensation control is set by the dew point, not by the heat gain calculation &mdash; and the two give different answers</strong>. Vapour barrier integrity matters more than thickness here: a breached barrier lets moisture condense <em>inside</em> the insulation, and the failure stays invisible until the insulation is saturated and the pipe is corroding. A recurring punch item, and entirely preventable at design and installation review.</p>
+  </div>
+
+  <div class="note">
+    <b class="nh">Climate classification by chart region &mdash; a useful diagnostic</b>
+    <div class="tw" style="margin:1em 0;">
+      <table>
+        <thead><tr><th>Climate</th><th style="text-align:left;">Chart position</th><th style="text-align:left;">Required system</th></tr></thead>
+        <tbody>
+          <tr><td>Hot and dry</td><td style="text-align:left;">high DB, <strong>low</strong> humidity ratio</td><td style="text-align:left;">evaporative cooling is genuinely effective</td></tr>
+          <tr class="total"><td><strong>Hot and humid &mdash; Qatar</strong></td><td style="text-align:left;"><strong>both</strong> DB and humidity ratio high</td><td style="text-align:left;">coil with surface <strong>below the dew point</strong>; cools and dehumidifies</td></tr>
+          <tr><td>Cold and humid</td><td style="text-align:left;">cool but humid</td><td style="text-align:left;">heating coil only; no humidification</td></tr>
+          <tr><td>Cold and dry</td><td style="text-align:left;">arid</td><td style="text-align:left;">heating coil upstream of a humidifier</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-bottom:0;">Qatar sits firmly in hot-and-humid, which is why the answer is always a coil below the dew point and why <strong>ADP, coil SHR and the dehumidification path matter more here than raw tonnage</strong>. The cold-and-humid row carries a genuinely useful insight, too: <strong>high RH at low temperature is still very dry air in absolute terms.</strong> Air at 0&nbsp;&deg;C and 90% RH holds about 3.4 g/kg; air at 24&nbsp;&deg;C and 50% RH holds about 9.3 g/kg. Heat the cold air indoors and RH collapses &mdash; which is why cold climates need winter humidification despite high outdoor RH readings, and a compact demonstration of why <strong>humidity ratio, not RH, is the quantity to reason with</strong>.</p>
+  </div>
+
+  <h4>The method worth extracting from the worked examples</h4>
+  <p class="prose">Module&nbsp;3 closes with four process calculations. The individual answers matter less than the structure two of them share.</p>
+
+  <div class="tw">
+    <table>
+      <caption>Identical method, opposite direction <span class="vb course">Course</span></caption>
+      <thead><tr><th>&nbsp;</th><th style="text-align:left;">Lumber drying</th><th style="text-align:left;">Cooling &amp; dehumidification</th></tr></thead>
+      <tbody>
+        <tr><td>Process</td><td style="text-align:left;">heating + humidification</td><td style="text-align:left;">cooling + dehumidification</td></tr>
+        <tr><td>Air's role</td><td style="text-align:left;">picks moisture up</td><td style="text-align:left;">gives moisture up</td></tr>
+        <tr class="total"><td>Air mass flow set by</td><td style="text-align:left;"><strong>moisture mass balance</strong> &mdash; &#7745;<sub>da</sub> = (moisture rate) / &Delta;W</td><td style="text-align:left;"><strong>moisture mass balance</strong> &mdash; same relation</td></tr>
+        <tr><td>Then find</td><td style="text-align:left;">volume flow, &times; specific volume</td><td style="text-align:left;">energy, &times; &Delta;h</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note good">
+    <b class="nh">Why this generalises far beyond timber</b>
+    <p style="margin-bottom:0;">In both cases <strong>the moisture mass balance sets the air mass flow, and the energy calculation follows</strong>. Get that sequence right and the whole family of problems is one method. Substitute a contaminant concentration difference for &Delta;W and the identical calculation sizes ventilation for contaminant removal &mdash; which is the general form behind dilution ventilation for a battery room, a gas-detection make-up rate, or any process exhaust. <strong>That sequence, not the arithmetic, is the transferable skill in this group.</strong></p>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">A caution on the example lecture itself</b>
+    <p style="margin-bottom:0;">The arithmetic in these four examples reproduces throughout, but the <strong>problem statements and node descriptions are extensively contaminated</strong> &mdash; values from one example appearing in another's solution, a problem stated in &deg;C and solved in &deg;F, an ambient given as &ldquo;seven degrees Celsius&rdquo; that must be 27&nbsp;&deg;C to match the node used, a wet bulb stated as 52&nbsp;&deg;F where the solution uses 85&nbsp;&deg;F, and one question asking for a per-minute answer that is only ever answered per hour. <strong>Where narration and arithmetic disagree in that lecture, trust the arithmetic</strong> &mdash; it is self-consistent; the narration is not. The specific instances are listed in <a href="#c1-errors">Where the course material is wrong</a>.</p>
+  </div>
+
   <div class="quiz" id="c1m3q" data-quiz="c1m3">
     <div class="quiz-hd"><b>Module 3 — practice questions</b><span class="sc" data-score>Not started</span></div>
 
@@ -2000,6 +2472,45 @@ The ESHF line is drawn from the room state; where it strikes the saturation curv
       <div class="qs"><span class="qn">8</span><p class="qt">Room sensible heat is 6 876 W and room latent heat is 1 046 W. Compute RSHF.</p></div>
       <div class="numq"><input type="number" step="0.0001" data-in aria-label="Room sensible heat factor"><span class="un">dimensionless</span></div>
       <div class="fb" data-fb>RSHF = 6 876 / (6 876 + 1 046) = 6 876 / 7 922 = <strong>0.8679</strong>. Note this is materially higher than the coil SHR of 0.693 — the difference is the outdoor-air latent load, which the coil carries but the room never sees.</div>
+    </div>
+
+    <div class="q" data-a="1435" data-tol="0.02" data-unit="cfm">
+      <div class="qs"><span class="qn">9</span><p class="qt">Close the course's worked calculation. ERSH = 29&nbsp;702 Btu/h, room 75&nbsp;&deg;F, ADP 55.2&nbsp;&deg;F, bypass factor 0.032. Find the dehumidified air quantity.</p></div>
+      <div class="numq"><input type="number" step="1" data-in aria-label="Airflow in cfm"><span class="un">cfm</span></div>
+      <div class="fb" data-fb>CFM = ERSH / [1.08 &times; (t<sub>R</sub> &minus; ADP) &times; (1 &minus; BF)] = 29&nbsp;702 / [1.08 &times; 19.8 &times; 0.968] = 29&nbsp;702 / 20.699 = <strong>1&nbsp;435 cfm</strong>. Note (1 &minus; BF) is the contact factor &mdash; this is the ordinary sensible-heat airflow equation with a contact correction, which makes it memorable rather than arbitrary. At 4.26 TR that is 337 cfm/TR, below the familiar 400 and consistent with the low ESHF of 0.842.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">10</span><p class="qt">Air passes across a cooling and dehumidification coil. What happens to its <em>relative</em> humidity?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m3_10" value="a"><span>It falls, because moisture is being removed from the air</span></label>
+        <label class="opt"><input type="radio" name="c1m3_10" value="b"><span>It rises &mdash; the air is cooled faster than it is dried, so it ends up closer to saturation</span></label>
+        <label class="opt"><input type="radio" name="c1m3_10" value="c"><span>It stays constant, because sensible and latent removal balance</span></label>
+        <label class="opt"><input type="radio" name="c1m3_10" value="d"><span>It depends entirely on the bypass factor</span></label>
+      </div>
+      <div class="fb" data-fb>Counter-intuitive and correct: <strong>RH rises even though moisture is being removed</strong>. Leaving-coil air at 90&ndash;95% RH is normal and expected. This is why supply air feels damp at the diffuser, why reheat exists, and above all why <strong>measuring RH at the coil discharge tells you nothing useful</strong> about whether the space will hold humidity. Judge dehumidification by humidity ratio or dew point, never by RH at the coil.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">11</span><p class="qt">The course applies a 12.5% safety factor to room sensible heat and 5% to room latent. What is the strongest technical objection?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m3_11" value="a"><span>The factors are too small for a Gulf application and should be roughly doubled</span></label>
+        <label class="opt"><input type="radio" name="c1m3_11" value="b"><span>It compounds with conservatisms already present, oversizing degrades part-load dehumidification, and the sensible/latent asymmetry is unexplained given an occupant SHR of 0.54</span></label>
+        <label class="opt"><input type="radio" name="c1m3_11" value="c"><span>Safety factors are never appropriate in a load calculation</span></label>
+        <label class="opt"><input type="radio" name="c1m3_11" value="d"><span>The latent factor should be applied at the coil rather than in the room</span></label>
+      </div>
+      <div class="fb" data-fb>All three limbs matter. The ETD tables are already conservative, the design condition is already a 0.4&ndash;2% exceedance case, and coincident peaking is already improbable. <strong>Oversizing is not a safe failure</strong> &mdash; in a humid climate an oversized coil satisfies the sensible thermostat before running long enough to remove moisture, giving a cold clammy space with a satisfied thermostat. And note the irony: the blanket factor nominally covers duct gain, duct leakage and fan heat &mdash; all of which the same worked example simply omits.</div>
+    </div>
+
+    <div class="q" data-a="c">
+      <div class="qs"><span class="qn">12</span><p class="qt">In the course's worked office calculation, which single line item is the largest room sensible component?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c1m3_12" value="a"><span>Solar gain through the north glazing</span></label>
+        <label class="opt"><input type="radio" name="c1m3_12" value="b"><span>Transmission through the exposed roof</span></label>
+        <label class="opt"><input type="radio" name="c1m3_12" value="c"><span>The computers &mdash; 10&nbsp;230 Btu/h, 39% of room sensible, more than solar, transmission, partition and lighting combined</span></label>
+        <label class="opt"><input type="radio" name="c1m3_12" value="d"><span>People sensible</span></label>
+      </div>
+      <div class="fb" data-fb>The computers alone exceed the entire envelope contribution of 6&nbsp;658 Btu/h. The roof, incidentally, does not appear in <em>room</em> sensible at all &mdash; it discharges into the return plenum. This is the &ldquo;internal loads grew as envelopes improved&rdquo; trend made concrete, and it is why <strong>the equipment schedule is the highest-risk input in the whole calculation</strong> &mdash; a 25% error in assumed IT load moves the total more than a wholesale change of glazing specification.</div>
     </div>
 
     <div class="quiz-ft">
