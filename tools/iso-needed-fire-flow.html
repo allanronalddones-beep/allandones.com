@@ -113,6 +113,9 @@
 
   .grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:24px;align-items:start;}
   @media (max-width:980px){ .grid{grid-template-columns:1fr;} }
+  /* A grid item defaults to min-width:auto, so a wide scrolling table inside a
+     column would widen the column instead of scrolling within it. */
+  .grid > *{min-width:0;}
 
   .card{
     background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius);
@@ -203,7 +206,7 @@
   ul.audit li.empty{border-left-color:rgba(111,132,171,0.5);color:var(--text-muted);}
 
   /* ---------- Tables ---------- */
-  .table-scroll{overflow-x:auto;margin:0 -4px;padding:0 4px;}
+  .table-scroll{overflow-x:auto;min-width:0;margin:0 -4px;padding:0 4px;}
   table.ref{width:100%;border-collapse:collapse;font-size:12px;min-width:520px;font-variant-numeric:tabular-nums;}
   table.ref caption{text-align:left;font-size:12.5px;font-weight:700;color:#fff;padding:0 0 9px;}
   table.ref th, table.ref td{border-bottom:1px solid rgba(91,157,250,0.16);padding:7px 9px;text-align:center;}
@@ -248,6 +251,55 @@
   footer a{color:var(--blue-300);text-decoration:none;}
   footer a:hover{text-decoration:underline;}
 
+  /* ---------- Phase 2: guided builders ---------- */
+  .mode-switch{
+    display:inline-flex;background:rgba(5,14,32,0.7);border:1px solid rgba(91,157,250,0.25);
+    border-radius:999px;padding:3px;gap:3px;margin:0 0 16px;flex-wrap:wrap;
+  }
+  .mode-switch button{
+    border:none;background:transparent;color:var(--text-secondary);font:600 12px/1 inherit;
+    padding:8px 14px;border-radius:999px;cursor:pointer;transition:background .15s, color .15s;
+  }
+  .mode-switch button.active{background:linear-gradient(135deg, var(--blue-500), var(--cyan-400));color:#04101f;}
+
+  input[readonly]{background:rgba(10,36,114,0.35);color:var(--cyan-300);cursor:default;}
+
+  table.build{min-width:440px;}
+  table.build th, table.build td{text-align:left;padding:6px 8px;}
+  table.build input[type="number"], table.build input[type="text"]{padding:7px 9px;font-size:13px;border-radius:7px;}
+  table.build input[type="checkbox"]{width:16px;height:16px;accent-color:var(--cyan-400);}
+  table.build td.narrow{width:1%;white-space:nowrap;}
+  table.build tfoot td{border-bottom:none;padding-top:10px;color:var(--text-secondary);font-weight:600;}
+
+  .rowdel{
+    background:transparent;border:1px solid rgba(239,68,68,0.35);color:var(--bad-300);
+    border-radius:7px;padding:6px 10px;cursor:pointer;font:600 11px/1 inherit;
+  }
+  .rowdel:hover{background:rgba(239,68,68,0.12);}
+
+  .builder-row{
+    background:rgba(5,14,32,0.5);border:1px solid rgba(91,157,250,0.18);
+    border-radius:10px;padding:13px 15px;margin-bottom:11px;
+  }
+  .builder-row .brhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:11px;}
+  .builder-row .brtitle{font-weight:700;font-size:13px;color:#fff;}
+  .builder-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+  @media (max-width:620px){ .builder-grid{grid-template-columns:1fr;} }
+  .builder-row label{font-size:11.5px;margin-bottom:4px;}
+  .builder-row input, .builder-row select{padding:8px 10px;font-size:13.5px;}
+  .charge-out{
+    display:flex;align-items:baseline;flex-wrap:wrap;gap:9px;margin-top:11px;padding-top:10px;
+    border-top:1px dashed rgba(91,157,250,0.2);font-size:12px;color:var(--text-muted);
+  }
+  .charge-out .cval{font-size:19px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums;}
+  .charge-out .cval.govern{color:var(--cyan-300);}
+  .charge-out .cwhy{flex:1 1 260px;min-width:0;}
+
+  .empty-note{
+    color:var(--text-muted);font-size:12.5px;background:rgba(5,14,32,0.4);
+    border:1px dashed rgba(91,157,250,0.22);border-radius:9px;padding:13px 15px;margin-bottom:11px;
+  }
+
   /* ---------- Print: flip to a light, ink-friendly calculation sheet ---------- */
   @media print{
     .bg-base,.bg-waves,.back-link,.btn-row,.unit-switch,.no-print{display:none !important;}
@@ -279,6 +331,12 @@
     .callout,.formula-chip{background:#f3f7ff;color:#333;border-color:#ccd6e8;}
     ol.notes,footer{color:#333;}
     .table-scroll{overflow:visible;}
+    .mode-switch,.rowdel{display:none !important;}
+    .builder-row,.empty-note{background:#f6f9ff;border-color:#ccd6e8;color:#333;}
+    .builder-row .brtitle,.charge-out .cval{color:#111;}
+    .charge-out .cval.govern{color:#0a2472;}
+    input[readonly]{background:#eef2fa;color:#0a2472;}
+    table.build{min-width:0;}
   }
 </style>
 </head>
@@ -390,7 +448,7 @@
       <!-- ============ 1 · CONSTRUCTION FACTOR ============ -->
       <div class="card">
         <h2><span class="num">1</span>Construction Factor, C</h2>
-        <p class="hint">C = 18 F √A. Effective area is not the gross floor area — see the effective-area rules in the reference section.</p>
+        <p class="hint">C = 18 F √A. Effective area is not the gross floor area — the builder applies the ISO rule for the construction class you select.</p>
 
         <div class="field-row">
           <div>
@@ -414,10 +472,42 @@
           </div>
         </div>
 
+        <div class="mode-switch" role="group" aria-label="Effective area input mode">
+          <button type="button" id="areaModeDirect" class="active">Enter effective area</button>
+          <button type="button" id="areaModeBuild">Build from a floor schedule</button>
+        </div>
+
+        <div id="floorPanel" hidden>
+          <div class="table-scroll">
+            <table class="ref build" id="floorTable">
+              <thead>
+                <tr>
+                  <th>Level</th>
+                  <th>Floor area (<span class="uAreaAlt">ft²</span>)</th>
+                  <th class="colUnprot">Unprotected vertical openings</th>
+                  <th class="narrow"></th>
+                </tr>
+              </thead>
+              <tbody id="floorBody"></tbody>
+            </table>
+          </div>
+          <div class="btn-row no-print" style="margin-top:12px">
+            <button type="button" class="btn" id="btnAddFloor">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              Add floor
+            </button>
+            <button type="button" class="btn" id="btnFloorSample">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg>
+              ISO Example 3 floors
+            </button>
+          </div>
+          <ul class="audit" id="areaTrace" style="margin-top:14px"></ul>
+        </div>
+
         <div class="field-row">
           <div>
             <label>Effective area, A <span class="unit" id="uArea">ft²</span>
-              <span class="note-inline">Largest floor + the applicable share of the other floors</span>
+              <span class="note-inline" id="areaNote">Largest floor + the applicable share of the other floors</span>
             </label>
             <input type="number" id="cArea" step="any" placeholder="e.g. 2655">
           </div>
@@ -451,6 +541,22 @@
         <h2><span class="num">2</span>Occupancy Factor, O</h2>
         <p class="hint">Assigned from the occupancy combustibility class of the building as a whole, not of the worst single tenant.</p>
 
+        <div class="mode-switch" role="group" aria-label="Occupancy input mode">
+          <button type="button" id="occModeDirect" class="active">Select the class</button>
+          <button type="button" id="occModeBuild">Derive from occupied areas</button>
+        </div>
+
+        <div id="occPanel" hidden>
+          <div class="table-scroll">
+            <table class="ref build" id="occTable" style="min-width:400px">
+              <thead><tr><th>Occupancy combustibility class</th><th>Occupied floor area (<span class="uAreaAlt">ft²</span>)</th><th>Share</th></tr></thead>
+              <tbody id="occBody"></tbody>
+              <tfoot><tr><td>Total floor area</td><td id="occTotal">—</td><td></td></tr></tfoot>
+            </table>
+          </div>
+          <ul class="audit" id="occTrace" style="margin-top:14px"></ul>
+        </div>
+
         <div class="field-row">
           <div>
             <label>Occupancy combustibility class</label>
@@ -473,12 +579,46 @@
       <!-- ============ 3 · EXPOSURE AND COMMUNICATION ============ -->
       <div class="card">
         <h2><span class="num">3</span>Exposure and Communication, X + P</h2>
-        <p class="hint">Read X from Table 330.A and P from Table 330.B in the reference section below. Phase 2 replaces these entries with guided pickers.</p>
+        <p class="hint">Enter the factors directly, or let the builders read Tables 330.A and 330.B for you and stamp the cell each charge came from.</p>
+
+        <div class="mode-switch" role="group" aria-label="Exposure and communication input mode">
+          <button type="button" id="xpModeDirect" class="active">Enter X and P</button>
+          <button type="button" id="xpModeBuild">Build from Tables 330.A / 330.B</button>
+        </div>
+
+        <div id="xpPanel" hidden>
+
+          <h3 style="font-size:13px;color:#fff;margin:4px 0 10px;letter-spacing:.02em;">Exposures — Table 330.A</h3>
+          <div id="expList"></div>
+          <div class="btn-row no-print" style="margin-bottom:6px">
+            <button type="button" class="btn" id="btnAddExp">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              Add an exposure
+            </button>
+            <button type="button" class="btn" id="btnExpSample">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg>
+              ISO Example 3 exposures
+            </button>
+          </div>
+          <ul class="audit" id="expTrace" style="margin:12px 0 22px"></ul>
+
+          <h3 style="font-size:13px;color:#fff;margin:4px 0 10px;letter-spacing:.02em;">Communications — Table 330.B</h3>
+          <div id="commList"></div>
+          <div class="btn-row no-print" style="margin-bottom:6px">
+            <button type="button" class="btn" id="btnAddComm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              Add a communication
+            </button>
+          </div>
+          <ul class="audit" id="commTrace" style="margin:12px 0 6px"></ul>
+
+          <hr class="divider-line">
+        </div>
 
         <div class="field-row">
           <div>
             <label>Exposure factor, X
-              <span class="note-inline">Highest single exposure charge — see note 3</span>
+              <span class="note-inline">Highest single exposure charge — see notes 4 and 8</span>
             </label>
             <input type="number" id="xFac" step="any" value="0" min="0">
           </div>
@@ -562,7 +702,7 @@
   <!-- ============ 7 · REFERENCE TABLES ============ -->
   <div class="card">
     <h2><span class="num">7</span>Reference — ISO Data Tables</h2>
-    <p class="hint">Transcribed from the tables carried in the source worksheet. Phase 2 wires 330.A and 330.B into guided pickers.</p>
+    <p class="hint">Transcribed from the tables carried in the source worksheet. The builders in section 3 read 330.A and 330.B directly and name the cell they used.</p>
 
     <div class="table-scroll">
       <table class="ref">
@@ -671,6 +811,10 @@
       <li><b>Limits the source worksheet omitted.</b> The originating spreadsheet enforced only the 500 gpm floor on C. It did <b>not</b> cap C at 8,000 / 6,000 gpm, did not apply the one-storey 6,000 gpm cap, did not cap (X + P) at 0.60, did not cap NFF at 12,000 gpm and did not carry the wood-shingle adder. All six are enforced here, and every one that bites is named in the Limit Audit so the divergence from the source is visible rather than silent.</li>
       <li><b>Errata in the published ISO effective-area table.</b> The worksheet carries an effective-area table giving C directly from the construction class and the effective area. Checking the analytic turnover point of all 108 bands against the printed values shows the table and the formula agree everywhere except two narrow windows: <b>A = 10,851–10,852 ft²</b> in Construction Class 2, where the table prints 1,750 gpm against the formula's 2,000 gpm, and <b>A = 63,372–63,374 ft²</b> in Classes 3 and 4, where it prints 3,500 gpm against 3,750 gpm. Five effective-area values in total. ISO defines C by the formula and the 250 gpm rounding rule, so the formula governs and the tool says so on screen whenever an entered area falls in one of those windows.</li>
       <li><b>Exposure factor with several exposed sides.</b> The worked example carried in the source (Example 3) computes a charge for each exposure — 0.14 for building A, 0.17 for building B — and takes the <b>highest</b> as X. That is the only primary evidence available, and it is what this tool implements. Whether ISO 05-2006 instead requires the charges on separate sides to be summed has <b>not</b> been confirmed against the full ISO text. Confirm before relying on a multi-sided result.</li>
+      <li><b>The builders are input aids, not a second calculation path.</b> The floor schedule, occupancy assistant and the two table pickers all write into the same four fields — A, O, X and P — that the calculator has always read. The arithmetic underneath is the one verified in Phase 1. Every lookup states the table, the band and the column it used, so a reviewer can re-read the printed table and check it without re-deriving anything.</li>
+      <li><b>Reading the Table 330.A blank-wall note.</b> The two notes at the foot of Table 330.A sit under the heading <i>Blank Masonry Wall</i>, so they qualify that case, not the table as a whole. That reading is forced by the worked example: in ISO Example 3 both exposure buildings are two storeys and so is the subject, yet the charges are 0.14 and 0.17, not zero. Were the &ldquo;same or lower height gives X = 0&rdquo; note general, Example 3 would have to compute X = 0. The builder therefore applies the height test only to a blank wall. Where a blank wall <b>is</b> higher, ISO says to count only the length-height above the subject's facing wall but does not say which construction column to read for that portion; the builder asks and records your choice rather than picking one silently.</li>
+      <li><b>Occupancy in ISO Example 3 does not reconcile with its own figures.</b> The example states cabinet making &ldquo;occupies over 25 % of the total floor of the building&rdquo; and assigns C-4, O = 1.15. Its stated areas give 600 ft² of cabinet making against 2,250 + 810 = 3,060 ft² of total floor area, which is 19.6 %. By the printed C-4 rule that building would be C-3, O = 1.00. The occupancy assistant applies the printed rule and shows the percentages it used; where your judgement differs, switch back to selecting the class directly. The effective-area side of the same example reconciles exactly &mdash; 2,250 + 50 % of 810 = 2,655 ft² &mdash; which is what confirms the 810 ft² second floor read off the diagram.</li>
+      <li><b>Several exposures or communications.</b> Each is charged separately and the <b>highest single charge</b> governs, per ISO Example 3, which charges two exposing buildings at 0.14 and 0.17 and carries 0.17 forward. Charges are not summed across sides. The same treatment is applied to communications by extension, which the source does not demonstrate; see also note 4.</li>
       <li><b>Wood-shingle adder, order of operations.</b> ISO states that 500 gpm is added to the needed fire flow but does not fix whether the addition precedes or follows rounding. This tool adds it to the <b>calculated</b> flow before rounding, so the reported result always lands on the ISO rounding grid. Where the adder applies, the Limit Audit states the assumption.</li>
       <li><b>Units.</b> ISO's coefficient 18 in C = 18 F √A is dimensional — it holds only for A in ft² and C in US gpm — and the rounding rules are defined in 250 and 500 gpm steps. The SI switch converts the area input and the displayed flows; the calculation basis stays US customary. The gpm figure is the governing value; the SI conversion is shown beneath it.</li>
       <li><b>No sprinkler credit.</b> This is the non-sprinklered NFF. The sprinkler-system flow path, outside hose allowance, fire-pump design points and the residential shortcut table are Phase 3.</li>
@@ -754,11 +898,54 @@
     ['Single Class B fire door at each end, or double Class B at one end',     0,0.10,0.05,0,    0,0,0,          0.15,0.10,0]
   ];
 
+  /* Band edges and column keys for the two lookup tables. Held next to the
+     tables so a change to one is visibly a change to the other. */
+  const DIST_BANDS = [
+    {max:10,  label:'0 – 10 ft'},
+    {max:30,  label:'11 – 30 ft'},
+    {max:60,  label:'31 – 60 ft'},
+    {max:100, label:'61 – 100 ft'}
+  ];
+  const LH_BANDS = [
+    {max:100,      label:'1–100 ft'},
+    {max:200,      label:'101–200 ft'},
+    {max:300,      label:'201–300 ft'},
+    {max:400,      label:'301–400 ft'},
+    {max:Infinity, label:'Over 400 ft'}
+  ];
+  /* Column index into an X_TABLE row: [label, class 1/3, unprotected, semiprotected]. */
+  const X_COLS = [
+    {k:'13',     i:1, label:'Class 1 or 3'},
+    {k:'unprot', i:2, label:'Class 2, 4, 5 or 6 — unprotected openings'},
+    {k:'semi',   i:3, label:'Class 2, 4, 5 or 6 — semiprotected openings'},
+    {k:'blank',  i:0, label:'Blank wall'}
+  ];
+  const P_PROT_LABEL = [
+    'Unprotected',
+    'Single Class A fire door at one end',
+    'Single Class B fire door at one end',
+    'Class A at each end, or double Class A at one end',
+    'Class B at each end, or double Class B at one end'
+  ];
+  const P_COL_LABEL = [null,
+    'fire-resistive, open, any length',
+    'fire-resistive, enclosed, ≤ 10 ft',
+    'fire-resistive, enclosed, 11–20 ft',
+    'fire-resistive, enclosed, 21–50 ft',
+    'combustible, open, ≤ 10 ft',
+    'combustible, open, 11–20 ft',
+    'combustible, open, 21–50 ft',
+    'combustible, enclosed, ≤ 10 ft',
+    'combustible, enclosed, 11–20 ft',
+    'combustible, enclosed, 21–50 ft'
+  ];
+
   /* Conversions. The calculation basis is US customary — ISO's coefficient 18
      and the 250/500 gpm rounding steps are only valid there. */
   const FT2_PER_M2  = 10.763910416709722;
   const LPS_PER_GPM = 0.06309019640343866;
   const M3H_PER_GPM = 0.2271247070384;
+  const FT_PER_M    = 3.280839895013123;
 
   /* ============================================================
      ENGINE
@@ -777,6 +964,90 @@
     let i = 0;
     for (let k = 0; k < bounds.length; k++){ if (aFt2 >= bounds[k]) i = k; else break; }
     return 500 + 250 * i;
+  }
+
+  /* ---- Effective area, ISO Chapter 2 para. 5 ----
+     Largest floor plus the share of the other floors set by the construction
+     class. Areas in, area out, in whatever single unit is passed. */
+  function effectiveArea(cls, floorAreas){
+    const valid = floorAreas.filter(function(f){ return f.area > 0; });
+    if (!valid.length) return null;
+    const sorted = valid.slice().sort(function(a,b){ return b.area - a.area; });
+    const largest = sorted[0], others = sorted.slice(1);
+    const sum = function(list){ return list.reduce(function(t,f){ return t + f.area; }, 0); };
+
+    if (cls <= 4){
+      const counted = others;
+      return {A: largest.area + 0.5*sum(counted), largest:largest, counted:counted, pct:50,
+              storeys: valid.length, rule:'Classes 1–4: 50 % of all other floors.'};
+    }
+    const prot = others.slice(0, 2);
+    const protA = largest.area + 0.25*sum(prot);
+    if (!valid.some(function(f){ return f.unprot; })){
+      return {A: protA, largest:largest, counted:prot, pct:25, storeys: valid.length,
+              rule:'Classes 5–6, all vertical openings protected: 25 % of not more than the two other largest floors.'};
+    }
+    const unprot = others.filter(function(f){ return f.unprot; }).slice(0, 8);
+    const unprotA = largest.area + 0.5*sum(unprot);
+    const floored = unprotA < protA;
+    return {A: Math.max(unprotA, protA), largest:largest, counted:unprot, pct:50, storeys: valid.length,
+            protA: protA, floored: floored,
+            rule:'Classes 5–6, one or more vertical openings unprotected: 50 % of not more than 8 other floors with unprotected openings.'};
+  }
+
+  /* ---- Table 330.A ---- Feet in, charge out. */
+  function bandIdx(bands, v){
+    for (let i = 0; i < bands.length; i++) if (v <= bands[i].max) return i;
+    return -1;
+  }
+  function exposureChargeFt(e, subjStoreys){
+    if (!(e.distFt > 0) || !(e.lenFt > 0) || !(e.storeys >= 1)) return {X:null, why:'Incomplete — enter the distance, the facing-wall length and the number of storeys.'};
+    const db = bandIdx(DIST_BANDS, e.distFt);
+    if (db < 0) return {X:0, why:'Distance over 100 ft — Table 330.A carries no charge beyond 100 ft.'};
+
+    let colKey = e.col, storeysCounted = Math.min(e.storeys, 5), exception = null;
+    if (e.col === 'blank'){
+      if (!e.higher) return {X:0, why:'Blank wall no higher than the subject building\u2019s facing wall — X = 0.'};
+      const above = Math.min(e.storeys, 5) - Math.min(subjStoreys, 5);
+      if (above <= 0) return {X:0, why:'Blank wall with no storeys above the subject building\u2019s facing wall — X = 0.'};
+      storeysCounted = above;
+      colKey = e.blankCol || '13';
+      exception = 'Blank-wall exception: only the ' + above + (above === 1 ? ' storey' : ' storeys') +
+                  ' above the subject building\u2019s facing wall is counted. The source note does not say which construction column to read for that portion, so it is the one selected here.';
+    }
+    const lh = e.lenFt * storeysCounted;
+    const lb = bandIdx(LH_BANDS, lh);
+    const col = X_COLS.filter(function(c){ return c.k === colKey; })[0];
+    const row = X_TABLE[db].rows[lb];
+    return {
+      X: row[col.i],
+      lh: lh,
+      storeysCounted: storeysCounted,
+      exception: exception,
+      why: 'Table 330.A · ' + DIST_BANDS[db].label + ' · length-height ' + fmt(lh,0) + ' ft (' + LH_BANDS[lb].label + ') · ' + col.label
+    };
+  }
+
+  /* ---- Table 330.B ---- Feet in, charge out. */
+  function commChargeFt(c){
+    if (c.curtain) return {P:0, why:'Protected by a recognised water curtain — P = 0.'};
+    const fr = c.constr === 'fr', open = c.encl === 'open';
+    let col;
+    if (fr && open){
+      col = 1;
+    } else {
+      if (!(c.lenFt > 0)) return {P:null, why:'Incomplete — enter the passageway length.'};
+      if (c.lenFt > 50) return {P:0, why:'Passageway over 50 ft — Table 330.B footnote: P = 0.'};
+      const b = c.lenFt <= 10 ? 0 : c.lenFt <= 20 ? 1 : 2;
+      col = fr ? 2 + b : (open ? 5 + b : 8 + b);
+    }
+    const v = P_ROWS[c.prot][col];
+    if (v === '++'){
+      return {P:null, fireDivision:true,
+              why:'Table 330.B · ' + P_COL_LABEL[col] + ' · ' + P_PROT_LABEL[c.prot] +
+                  ' — marked ++: an unprotected passageway of this length means the two buildings are considered a single fire division, so there is no communication charge to apply. Combine the buildings and recompute the effective area instead.'};
+    }
+    return {P: v, why: 'Table 330.B · ' + P_COL_LABEL[col] + ' · ' + P_PROT_LABEL[c.prot]};
   }
 
   function num(id){ const v = parseFloat($(id).value); return isFinite(v) ? v : 0; }
@@ -877,7 +1148,7 @@
     xpCap:      f => ({cls:'cap', t:'(X + P) limited to 0.60.',
                        c:'Entered ' + f.was.toFixed(2) + '. ISO maximum combined exposure and communication charge. Not enforced by the source worksheet.'}),
     wood:       f => ({cls:'info', t:'Wood-shingle roof adder applied — +500 gpm.',
-                       c:'Added to the calculated flow before rounding, so the result lands on the ISO rounding grid. ISO does not fix the order; see note 4. Not carried by the source worksheet.'}),
+                       c:'Added to the calculated flow before rounding, so the result lands on the ISO rounding grid. ISO does not fix the order; see note 9. Not carried by the source worksheet.'}),
     nffMax:     f => ({cls:'cap', t:'Needed Fire Flow limited to 12,000 gpm.',
                        c:'Calculated ' + fmt(f.was,0) + ' gpm. ISO maximum needed fire flow. Not enforced by the source worksheet.'}),
     erratum:    f => ({cls:'info', t:'Published ISO table erratum at this area — the formula governs.',
@@ -964,6 +1235,81 @@
       (x.unknown.length ? ' · UNREGISTERED: ' + x.unknown.join('; ') : '') + '</span></span>' +
       '<span class="badge ' + (x.unknown.length ? 'bad' : 'ok') + '">' + (x.unknown.length ? x.unknown.length + ' failed' : 'Pass') + '</span></div>'
     );
+
+    /* Every cell of Table 330.A must be reachable through the picker's band
+       logic and come back unchanged. 4 distance bands x 5 length-height
+       bands x 4 wall-construction columns. */
+    (function(){
+      const distRep = [5, 20, 45, 80], lhRep = [50, 150, 250, 350, 500];
+      let n = 0, bad = [];
+      for (let d = 0; d < distRep.length; d++){
+        for (let l = 0; l < lhRep.length; l++){
+          X_COLS.forEach(function(col){
+            n++;
+            const r = exposureChargeFt({distFt:distRep[d], lenFt:lhRep[l], storeys:1, col:col.k, higher:false}, 2);
+            const want = col.k === 'blank' ? 0 : X_TABLE[d].rows[l][col.i];
+            if (r.X !== want) bad.push(DIST_BANDS[d].label + ' / ' + LH_BANDS[l].label + ' / ' + col.k + ': ' + r.X + ' vs ' + want);
+          });
+        }
+      }
+      rows.push(
+        '<div class="st-row"><span><span class="stname">Exposure picker — every cell of Table 330.A</span>' +
+        '<span class="stdet">' + n + ' cells resolved through the distance and length-height band logic' +
+        (bad.length ? ' · ' + bad.slice(0,2).join('; ') : '') + '</span></span>' +
+        '<span class="badge ' + (bad.length ? 'bad' : 'ok') + '">' + (bad.length ? bad.length + ' failed' : 'Pass') + '</span></div>'
+      );
+    })();
+
+    /* Every cell of Table 330.B, including the ++ cells, which must refuse to
+       return a charge rather than return zero. */
+    (function(){
+      const spec = [
+        {col:1,  constr:'fr',   encl:'open', len:5},
+        {col:2,  constr:'fr',   encl:'encl', len:5},  {col:3, constr:'fr', encl:'encl', len:15}, {col:4, constr:'fr', encl:'encl', len:35},
+        {col:5,  constr:'comb', encl:'open', len:5},  {col:6, constr:'comb', encl:'open', len:15}, {col:7, constr:'comb', encl:'open', len:35},
+        {col:8,  constr:'comb', encl:'encl', len:5},  {col:9, constr:'comb', encl:'encl', len:15}, {col:10, constr:'comb', encl:'encl', len:35}
+      ];
+      let n = 0, bad = [];
+      for (let prot = 0; prot < P_ROWS.length; prot++){
+        spec.forEach(function(sp){
+          n++;
+          const r = commChargeFt({constr:sp.constr, encl:sp.encl, lenFt:sp.len, prot:prot, curtain:false});
+          const want = P_ROWS[prot][sp.col];
+          const got  = r.fireDivision ? '++' : r.P;
+          if (got !== want) bad.push('row ' + prot + ' col ' + sp.col + ': ' + got + ' vs ' + want);
+        });
+      }
+      rows.push(
+        '<div class="st-row"><span><span class="stname">Communication picker — every cell of Table 330.B</span>' +
+        '<span class="stdet">' + n + ' cells resolved, including the ++ cells that must refuse a charge rather than return zero' +
+        (bad.length ? ' · ' + bad.slice(0,2).join('; ') : '') + '</span></span>' +
+        '<span class="badge ' + (bad.length ? 'bad' : 'ok') + '">' + (bad.length ? bad.length + ' failed' : 'Pass') + '</span></div>'
+      );
+    })();
+
+    /* Vector C — the effective-area rule against ISO Example 3's own geometry. */
+    (function(){
+      const ea = effectiveArea(1, [{name:'Ground', area:2250, unprot:false}, {name:'Second', area:810, unprot:false}]);
+      const ok = Math.round(ea.A) === 2655;
+      rows.push(
+        '<div class="st-row"><span><span class="stname">Effective area — ISO Example 3 geometry</span>' +
+        '<span class="stdet">Ground 75 × 30 = 2,250 ft², second 27 × 30 = 810 ft², Class 1 at 50 % — A ' + fmt(ea.A,0) + ' ft² (expect 2,655)</span></span>' +
+        '<span class="badge ' + (ok ? 'ok' : 'bad') + '">' + (ok ? 'Pass' : 'Fail') + '</span></div>'
+      );
+    })();
+
+    /* Vector D — both exposure charges of ISO Example 3, and which governs. */
+    (function(){
+      const a = exposureChargeFt({distFt:11, lenFt:120, storeys:2, col:'semi', higher:false}, 2);
+      const b = exposureChargeFt({distFt:12, lenFt:28,  storeys:2, col:'13',   higher:false}, 2);
+      const ok = a.X === 0.14 && b.X === 0.17 && Math.max(a.X, b.X) === 0.17;
+      rows.push(
+        '<div class="st-row"><span><span class="stname">Exposure charges — ISO Example 3</span>' +
+        '<span class="stdet">Building A (masonry, semiprotected, L-H 240 ft, 11 ft) ' + a.X.toFixed(2) + ' (expect 0.14) · ' +
+        'Building B (frame, L-H 56 ft, 12 ft) ' + b.X.toFixed(2) + ' (expect 0.17) · highest governs ' + Math.max(a.X,b.X).toFixed(2) + '</span></span>' +
+        '<span class="badge ' + (ok ? 'ok' : 'bad') + '">' + (ok ? 'Pass' : 'Fail') + '</span></div>'
+      );
+    })();
 
     VECTORS.forEach(function(v){
       const r = solve(v.inp);
@@ -1086,20 +1432,343 @@
   }
 
   /* ============================================================
+     BUILDERS — input aids only. Each one writes into the Phase 1
+     input fields, so the verified calculation path is untouched.
+     ============================================================ */
+
+  let areaMode = 'direct', occMode = 'direct', xpMode = 'direct';
+  let exposures = [], comms = [], floorIds = [], seq = 0;
+
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const areaUnit = () => units === 'si' ? 'm²' : 'ft²';
+  const lenUnit  = () => units === 'si' ? 'm' : 'ft';
+  const toFt     = v => units === 'si' ? v * FT_PER_M : v;
+
+  function traceHtml(kind, title, clause){
+    return '<li class="' + kind + '"><span><b>' + title + '</b>' +
+           (clause ? '<span class="clause">' + clause + '</span>' : '') + '</span></li>';
+  }
+
+  /* ---------------- Floor schedule ---------------- */
+
+  function floorRow(id){
+    return '<tr id="fl_' + id + '">' +
+      '<td><input type="text" id="fl_' + id + '_name" placeholder="e.g. Ground"></td>' +
+      '<td><input type="number" class="conv-area" id="fl_' + id + '_area" step="any" placeholder="0"></td>' +
+      '<td class="colUnprot"><input type="checkbox" id="fl_' + id + '_unprot"></td>' +
+      '<td class="narrow"><button type="button" class="rowdel no-print" data-del-floor="' + id + '">Remove</button></td>' +
+      '</tr>';
+  }
+  function addFloor(name, area, unprot){
+    const id = ++seq;
+    floorIds.push(id);
+    $('floorBody').insertAdjacentHTML('beforeend', floorRow(id));
+    if (name !== undefined) $('fl_' + id + '_name').value = name;
+    if (area !== undefined) $('fl_' + id + '_area').value = area;
+    if (unprot) $('fl_' + id + '_unprot').checked = true;
+    return id;
+  }
+  function readFloors(){
+    return floorIds.map(function(id){
+      return {
+        name: ($('fl_' + id + '_name').value || 'Floor ' + id),
+        area: parseFloat($('fl_' + id + '_area').value) || 0,
+        unprot: $('fl_' + id + '_unprot').checked
+      };
+    });
+  }
+  function syncFloors(cls){
+    const show56 = cls >= 5;
+    document.querySelectorAll('#floorTable .colUnprot').forEach(function(el){ el.style.display = show56 ? '' : 'none'; });
+    document.querySelectorAll('.uAreaAlt').forEach(function(el){ el.textContent = areaUnit(); });
+
+    const r = effectiveArea(cls, readFloors());
+    const t = $('areaTrace');
+    if (!r){
+      $('cArea').value = '';
+      t.innerHTML = traceHtml('empty', 'Add at least one floor with an area.', 'The largest floor sets the base; the other floors contribute the share set by the construction class.');
+      return;
+    }
+    $('cArea').value = String(Math.round(r.A * 100) / 100);
+    $('cStoreys').value = String(r.storeys);
+
+    const list = r.counted.length
+      ? r.counted.map(function(f){ return esc(f.name) + ' ' + fmt(f.area, 0); }).join(', ')
+      : 'none';
+    const items = [traceHtml('ok',
+      'Effective area ' + fmt(r.A, 0) + ' ' + areaUnit() + ' over ' + r.storeys + (r.storeys === 1 ? ' floor' : ' floors') + '.',
+      r.rule + ' Largest floor: ' + esc(r.largest.name) + ' ' + fmt(r.largest.area, 0) + ' ' + areaUnit() +
+      '. Counted at ' + r.pct + ' %: ' + list + '.')];
+    if (r.floored){
+      items.push(traceHtml('cap', 'Raised to the all-openings-protected figure.',
+        'The unprotected rule gave less than the ' + fmt(r.protA, 0) + ' ' + areaUnit() +
+        ' that the protected rule would give. ISO: the unprotected result shall not be less than the protected one.'));
+    }
+    t.innerHTML = items.join('');
+  }
+
+  /* ---------------- Occupancy from occupied areas ---------------- */
+
+  const OCC_DEFS = [
+    {k:'C-1', o:0.75, label:'C-1 Noncombustible'},
+    {k:'C-2', o:0.85, label:'C-2 Limited-combustible'},
+    {k:'C-3', o:1.00, label:'C-3 Combustible'},
+    {k:'C-4', o:1.15, label:'C-4 Free-burning'},
+    {k:'C-5', o:1.25, label:'C-5 Rapid-burning'}
+  ];
+  function buildOccRows(){
+    $('occBody').innerHTML = OCC_DEFS.map(function(d, i){
+      return '<tr><td>' + d.label + '</td>' +
+        '<td><input type="number" class="conv-area" id="occ_' + i + '" step="any" placeholder="0"></td>' +
+        '<td id="occp_' + i + '">—</td></tr>';
+    }).join('');
+  }
+  function syncOcc(cls){
+    const a = OCC_DEFS.map(function(_, i){ return parseFloat($('occ_' + i).value) || 0; });
+    const total = a.reduce(function(t, v){ return t + v; }, 0);
+    $('occTotal').textContent = total > 0 ? fmt(total, 0) + ' ' + areaUnit() : '—';
+    a.forEach(function(v, i){ $('occp_' + i).textContent = total > 0 ? fmt(v / total * 100, 1) + ' %' : '—'; });
+
+    const t = $('occTrace');
+    if (!(total > 0)){
+      t.innerHTML = traceHtml('empty', 'Enter the floor area occupied by each combustibility class.',
+        'Shares are taken against the total floor area of the building, not the effective area.');
+      return;
+    }
+    const pc = a.map(function(v){ return v / total * 100; });
+    const E = 1e-9;
+    let pick, why;
+    if (pc[4] >= 15 - E){
+      pick = 4; why = 'C-5 occupancies are ' + fmt(pc[4],1) + ' % of the total floor area (15 % or more).';
+    } else if (pc[3] + pc[4] >= 25 - E){
+      pick = 3; why = 'C-4 and C-5 together are ' + fmt(pc[3]+pc[4],1) + ' % (25 % or more), with C-5 at ' + fmt(pc[4],1) + ' % (under 15 %).';
+    } else if (pc[0] >= 95 - E && a[4] === 0){
+      pick = 0; why = 'C-1 occupancies are ' + fmt(pc[0],1) + ' % (95 % or more) and there are no C-5 occupancies.';
+    } else if (pc[0] + pc[1] >= 90 - E){
+      pick = 1; why = 'C-1 and C-2 together are ' + fmt(pc[0]+pc[1],1) + ' % (90 % or more).';
+    } else if (cls >= 5 && pc[0] + pc[1] >= 80 - E && pc[4] <= 5 + E){
+      pick = 1; why = 'Construction Class ' + cls + ' with C-1 and C-2 at ' + fmt(pc[0]+pc[1],1) + ' % (80 % or more) and C-5 at ' + fmt(pc[4],1) + ' % (5 % or less).';
+    } else {
+      pick = 2; why = 'No other combustibility class applies.';
+    }
+    const d = OCC_DEFS[pick];
+    $('oClass').value = d.o.toFixed(2);
+    $('oFactor').value = d.o.toFixed(2);
+    t.innerHTML = traceHtml('ok', d.label + ' — O = ' + d.o.toFixed(2) + '.', why);
+  }
+
+  /* ---------------- Exposures, Table 330.A ---------------- */
+
+  function expRow(id){
+    const opts = X_COLS.map(function(c){ return '<option value="' + c.k + '">' + c.label + '</option>'; }).join('');
+    const bopts = X_COLS.filter(function(c){ return c.k !== 'blank'; })
+      .map(function(c){ return '<option value="' + c.k + '">' + c.label + '</option>'; }).join('');
+    return '<div class="builder-row" id="ex_' + id + '">' +
+      '<div class="brhead"><span class="brtitle">Exposure</span>' +
+      '<button type="button" class="rowdel no-print" data-del-exp="' + id + '">Remove</button></div>' +
+      '<div class="builder-grid">' +
+        '<div><label>Reference</label><input type="text" id="ex_' + id + '_name" placeholder="e.g. Building A"></div>' +
+        '<div><label>Distance to the exposure building <span class="unit uLen">ft</span></label>' +
+          '<input type="number" class="conv-len" id="ex_' + id + '_dist" step="any" placeholder="0"></div>' +
+        '<div><label>Facing wall length of the exposure building <span class="unit uLen">ft</span></label>' +
+          '<input type="number" class="conv-len" id="ex_' + id + '_len" step="any" placeholder="0"></div>' +
+        '<div><label>Storeys of the exposure building<span class="note-inline">Five or more count as five</span></label>' +
+          '<input type="number" id="ex_' + id + '_st" step="1" min="1" value="1"></div>' +
+        '<div style="grid-column:1/-1"><label>Construction of the facing wall of the exposure building</label>' +
+          '<select id="ex_' + id + '_col">' + opts + '</select></div>' +
+      '</div>' +
+      '<div id="ex_' + id + '_blank" hidden>' +
+        '<div class="toggle-row"><input type="checkbox" id="ex_' + id + '_higher">' +
+          '<label for="ex_' + id + '_higher">The blank wall is higher than the subject building’s facing wall</label></div>' +
+        '<div><label>Construction column to read for the portion above<span class="note-inline">The source note does not fix this — your selection is recorded</span></label>' +
+          '<select id="ex_' + id + '_bcol">' + bopts + '</select></div>' +
+      '</div>' +
+      '<div class="charge-out"><span class="cval" id="ex_' + id + '_val">—</span>' +
+      '<span class="cwhy" id="ex_' + id + '_why">Enter the geometry to read Table 330.A.</span></div>' +
+      '</div>';
+  }
+  function addExposure(v){
+    const id = ++seq;
+    exposures.push(id);
+    $('expList').insertAdjacentHTML('beforeend', expRow(id));
+    if (v){
+      $('ex_' + id + '_name').value = v.name || '';
+      $('ex_' + id + '_dist').value = v.dist;
+      $('ex_' + id + '_len').value  = v.len;
+      $('ex_' + id + '_st').value   = v.st;
+      $('ex_' + id + '_col').value  = v.col;
+    }
+    return id;
+  }
+  function syncExposures(subjStoreys){
+    let best = null, bestId = null;
+    const rows = exposures.map(function(id){
+      const col = $('ex_' + id + '_col').value;
+      $('ex_' + id + '_blank').hidden = (col !== 'blank');
+      const r = exposureChargeFt({
+        distFt: toFt(parseFloat($('ex_' + id + '_dist').value) || 0),
+        lenFt:  toFt(parseFloat($('ex_' + id + '_len').value) || 0),
+        storeys: Math.max(1, Math.round(parseFloat($('ex_' + id + '_st').value) || 0)),
+        col: col,
+        higher: $('ex_' + id + '_higher').checked,
+        blankCol: $('ex_' + id + '_bcol').value
+      }, subjStoreys);
+      const name = $('ex_' + id + '_name').value || 'Exposure';
+      if (r.X !== null && (best === null || r.X > best)){ best = r.X; bestId = id; }
+      return {id:id, name:name, r:r};
+    });
+
+    rows.forEach(function(row){
+      const v = $('ex_' + row.id + '_val'), w = $('ex_' + row.id + '_why');
+      v.textContent = row.r.X === null ? '—' : row.r.X.toFixed(2);
+      v.classList.toggle('govern', row.id === bestId && best !== null);
+      w.innerHTML = esc(row.r.why) + (row.r.exception ? '<br><span style="color:var(--warn-300)">' + esc(row.r.exception) + '</span>' : '') +
+        (row.id === bestId && best !== null ? ' <b style="color:var(--cyan-300)">— governs X</b>' : '');
+    });
+
+    $('xFac').value = best === null ? '0' : String(best);
+    const t = $('expTrace');
+    if (!rows.length){
+      t.innerHTML = traceHtml('empty', 'No exposures added — X = 0.', 'Add one exposure for each exposing building or side.');
+    } else {
+      const name = bestId ? ($('ex_' + bestId + '_name').value || 'Exposure') : '';
+      t.innerHTML = traceHtml('ok', 'X = ' + (best === null ? '0.00' : best.toFixed(2)) + ' from ' + rows.length + (rows.length === 1 ? ' exposure.' : ' exposures.'),
+        best === null ? 'No exposure produced a charge.' :
+        'The highest single charge governs — ' + esc(name) + ' at ' + best.toFixed(2) +
+        '. Charges are not summed across sides; see note 8.');
+    }
+  }
+
+  /* ---------------- Communications, Table 330.B ---------------- */
+
+  function commRow(id){
+    const popts = P_PROT_LABEL.map(function(l, i){ return '<option value="' + i + '">' + l + '</option>'; }).join('');
+    return '<div class="builder-row" id="cm_' + id + '">' +
+      '<div class="brhead"><span class="brtitle">Communication</span>' +
+      '<button type="button" class="rowdel no-print" data-del-comm="' + id + '">Remove</button></div>' +
+      '<div class="builder-grid">' +
+        '<div><label>Reference</label><input type="text" id="cm_' + id + '_name" placeholder="e.g. Link corridor"></div>' +
+        '<div><label>Construction of the communication</label><select id="cm_' + id + '_constr">' +
+          '<option value="fr">Fire-resistive, noncombustible or slow-burning</option>' +
+          '<option value="comb">Combustible</option></select></div>' +
+        '<div><label>Passageway</label><select id="cm_' + id + '_encl">' +
+          '<option value="open">Open</option><option value="encl">Enclosed</option></select></div>' +
+        '<div><label>Passageway length <span class="unit uLen">ft</span><span class="note-inline">Over 50 ft gives P = 0</span></label>' +
+          '<input type="number" class="conv-len" id="cm_' + id + '_len" step="any" placeholder="0"></div>' +
+        '<div style="grid-column:1/-1"><label>Protection of the passageway openings</label>' +
+          '<select id="cm_' + id + '_prot">' + popts + '</select></div>' +
+      '</div>' +
+      '<div class="toggle-row"><input type="checkbox" id="cm_' + id + '_curtain">' +
+        '<label for="cm_' + id + '_curtain">Protected by a recognised water curtain — P = 0</label></div>' +
+      '<div class="charge-out"><span class="cval" id="cm_' + id + '_val">—</span>' +
+      '<span class="cwhy" id="cm_' + id + '_why">Describe the communication to read Table 330.B.</span></div>' +
+      '</div>';
+  }
+  function addComm(){
+    const id = ++seq;
+    comms.push(id);
+    $('commList').insertAdjacentHTML('beforeend', commRow(id));
+    return id;
+  }
+  function syncComms(){
+    let best = null, bestId = null, division = [];
+    const rows = comms.map(function(id){
+      const r = commChargeFt({
+        constr: $('cm_' + id + '_constr').value,
+        encl:   $('cm_' + id + '_encl').value,
+        lenFt:  toFt(parseFloat($('cm_' + id + '_len').value) || 0),
+        prot:   parseInt($('cm_' + id + '_prot').value, 10),
+        curtain: $('cm_' + id + '_curtain').checked
+      });
+      const name = $('cm_' + id + '_name').value || 'Communication';
+      if (r.fireDivision) division.push(name);
+      if (r.P !== null && (best === null || r.P > best)){ best = r.P; bestId = id; }
+      return {id:id, name:name, r:r};
+    });
+
+    rows.forEach(function(row){
+      const v = $('cm_' + row.id + '_val'), w = $('cm_' + row.id + '_why');
+      v.textContent = row.r.fireDivision ? '++' : (row.r.P === null ? '—' : row.r.P.toFixed(2));
+      v.classList.toggle('govern', row.id === bestId && best !== null);
+      w.innerHTML = (row.r.fireDivision ? '<span style="color:var(--warn-300)">' + esc(row.r.why) + '</span>' : esc(row.r.why)) +
+        (row.id === bestId && best !== null ? ' <b style="color:var(--cyan-300)">— governs P</b>' : '');
+    });
+
+    $('pFac').value = best === null ? '0' : String(best);
+    const t = $('commTrace');
+    const items = [];
+    if (!rows.length){
+      items.push(traceHtml('empty', 'No communications added — P = 0.', 'Add one for each passageway connecting the subject building to another.'));
+    } else {
+      items.push(traceHtml('ok', 'P = ' + (best === null ? '0.00' : best.toFixed(2)) + ' from ' + rows.length + (rows.length === 1 ? ' communication.' : ' communications.'),
+        best === null ? 'No communication produced a numeric charge.' : 'The highest single charge governs; charges are not summed. See note 8.'));
+    }
+    if (division.length){
+      items.push(traceHtml('bad', 'Single fire division — this calculation is not valid as set up.',
+        esc(division.join(', ')) + ' falls on a ++ cell of Table 330.B. An unprotected passageway of that length means the two buildings are one fire division: combine them and recompute the effective area, rather than applying a communication charge.'));
+    }
+    t.innerHTML = items.join('');
+  }
+
+  /* ---------------- Mode switching and the single sync entry point ---------------- */
+
+  function setMode(which, mode){
+    const cfg = {
+      area: {panel:'floorPanel', direct:'areaModeDirect', build:'areaModeBuild', fields:['cArea','cStoreys']},
+      occ:  {panel:'occPanel',   direct:'occModeDirect',  build:'occModeBuild',  fields:['oClass','oFactor']},
+      xp:   {panel:'xpPanel',    direct:'xpModeDirect',   build:'xpModeBuild',   fields:['xFac','pFac']}
+    }[which];
+    if (which === 'area') areaMode = mode; else if (which === 'occ') occMode = mode; else xpMode = mode;
+    $(cfg.panel).hidden = (mode !== 'build');
+    $(cfg.direct).classList.toggle('active', mode === 'direct');
+    $(cfg.build).classList.toggle('active', mode === 'build');
+    cfg.fields.forEach(function(id){
+      const el = $(id);
+      if (el.tagName === 'SELECT') el.disabled = (mode === 'build');
+      else el.readOnly = (mode === 'build');
+    });
+    if (which === 'area') $('areaNote').textContent = mode === 'build'
+      ? 'Computed from the floor schedule above'
+      : 'Largest floor + the applicable share of the other floors';
+    syncBuilders();
+  }
+
+  function syncBuilders(){
+    const cls = parseInt($('cClass').value, 10);
+    if (areaMode === 'build') syncFloors(cls);
+    if (occMode === 'build') syncOcc(cls);
+    if (xpMode === 'build'){
+      const subjStoreys = Math.max(1, Math.round(parseFloat($('cStoreys').value) || 1));
+      syncExposures(subjStoreys);
+      syncComms();
+    }
+    recalc();
+  }
+
+  /* ============================================================
      UNITS, SAMPLES, EXPORT, RESET
      ============================================================ */
 
   function setUnits(next){
     if (next === units) return;
-    const a = numOrNull('cArea');
-    if (a !== null){
-      $('cArea').value = (next === 'si' ? a / FT2_PER_M2 : a * FT2_PER_M2).toFixed(2);
-    }
+    const conv = function(sel, factor){
+      document.querySelectorAll(sel).forEach(function(el){
+        const v = parseFloat(el.value);
+        if (isFinite(v)) el.value = String(Math.round(v * factor * 100) / 100);
+      });
+    };
+    const areaF = next === 'si' ? 1 / FT2_PER_M2 : FT2_PER_M2;
+    const lenF  = next === 'si' ? 1 / FT_PER_M  : FT_PER_M;
+    conv('#cArea, .conv-area', areaF);
+    conv('.conv-len', lenF);
+
     units = next;
-    $('uArea').textContent = units === 'si' ? 'm²' : 'ft²';
+    $('uArea').textContent = areaUnit();
+    document.querySelectorAll('.uAreaAlt').forEach(function(el){ el.textContent = areaUnit(); });
+    document.querySelectorAll('.uLen').forEach(function(el){ el.textContent = lenUnit(); });
     $('btnENG').classList.toggle('active', units === 'eng');
     $('btnSI').classList.toggle('active', units === 'si');
-    recalc();
+    syncBuilders();
   }
 
   function loadSample(P){
@@ -1148,6 +1817,30 @@
       ['NFF governing', res.NFF === undefined ? '' : (res.NFF * M3H_PER_GPM).toFixed(1), 'm3/h', ''],
       []
     ];
+    const trace = function(id){
+      const el = $(id);
+      return el && el.offsetParent !== null ? (el.innerText || '').replace(/\s+/g,' ').trim() : '';
+    };
+    const builderRows = [];
+    if (areaMode === 'build') builderRows.push(['', 'Effective area basis', '', trace('areaTrace')]);
+    if (occMode  === 'build') builderRows.push(['', 'Occupancy basis', '', trace('occTrace')]);
+    if (xpMode   === 'build'){
+      exposures.forEach(function(id){
+        builderRows.push(['', 'Exposure: ' + ($('ex_' + id + '_name').value || 'Exposure'),
+                          $('ex_' + id + '_val').textContent, ($('ex_' + id + '_why').innerText || '').replace(/\s+/g,' ').trim()]);
+      });
+      comms.forEach(function(id){
+        builderRows.push(['', 'Communication: ' + ($('cm_' + id + '_name').value || 'Communication'),
+                          $('cm_' + id + '_val').textContent, ($('cm_' + id + '_why').innerText || '').replace(/\s+/g,' ').trim()]);
+      });
+      builderRows.push(['', 'Exposure and communication basis', '', trace('expTrace') + ' ' + trace('commTrace')]);
+    }
+    if (builderRows.length){
+      rows.push(['Lookup trace']);
+      builderRows.forEach(function(r){ rows.push(r); });
+      rows.push([]);
+    }
+
     rows.push(['Limit audit']);
     if (res.flags.length === 0) rows.push(['','No ISO limit governed this calculation']);
     res.flags.forEach(function(f){ const t = AUDIT_TEXT[f.k](f); rows.push(['', t.t, '', t.c.replace(/<[^>]+>/g,'')]); });
@@ -1168,6 +1861,10 @@
   }
 
   function reset(){
+    setMode('area','direct'); setMode('occ','direct'); setMode('xp','direct');
+    floorIds = []; exposures = []; comms = [];
+    $('floorBody').innerHTML = ''; $('expList').innerHTML = ''; $('commList').innerHTML = '';
+    buildOccRows();
     ['idProject','idBuilding','idBy','cArea'].forEach(function(id){ $(id).value = ''; });
     $('cClass').value = '1';
     $('cF').value = '1.5';
@@ -1186,7 +1883,7 @@
 
   $('cClass').addEventListener('change', function(){
     $('cF').value = F_BY_CLASS[parseInt(this.value,10)];
-    recalc();
+    syncBuilders();
   });
   $('oClass').addEventListener('change', function(){
     $('oFactor').value = parseFloat(this.value).toFixed(2);
@@ -1206,7 +1903,49 @@
   $('btnPrint').addEventListener('click', function(){ window.print(); });
   $('btnReset').addEventListener('click', reset);
 
+  // Builder controls
+  $('areaModeDirect').addEventListener('click', function(){ setMode('area','direct'); });
+  $('areaModeBuild') .addEventListener('click', function(){ if (!floorIds.length){ addFloor('Ground'); addFloor('Second'); } setMode('area','build'); });
+  $('occModeDirect') .addEventListener('click', function(){ setMode('occ','direct'); });
+  $('occModeBuild')  .addEventListener('click', function(){ setMode('occ','build'); });
+  $('xpModeDirect')  .addEventListener('click', function(){ setMode('xp','direct'); });
+  $('xpModeBuild')   .addEventListener('click', function(){ setMode('xp','build'); });
+
+  $('btnAddFloor').addEventListener('click', function(){ addFloor(); syncBuilders(); });
+  $('btnAddExp')  .addEventListener('click', function(){ addExposure(); syncBuilders(); });
+  $('btnAddComm') .addEventListener('click', function(){ addComm(); syncBuilders(); });
+
+  $('btnFloorSample').addEventListener('click', function(){
+    if (units !== 'eng') setUnits('eng');
+    $('cClass').value = '1'; $('cF').value = '1.5';
+    floorIds = []; $('floorBody').innerHTML = '';
+    addFloor('Ground floor — 75 × 30 ft', 2250, false);
+    addFloor('Second floor — 27 × 30 ft', 810, false);
+    setMode('area','build');
+  });
+  $('btnExpSample').addEventListener('click', function(){
+    if (units !== 'eng') setUnits('eng');
+    exposures = []; $('expList').innerHTML = '';
+    addExposure({name:'Building A — masonry, semiprotected openings', dist:11, len:120, st:2, col:'semi'});
+    addExposure({name:'Building B — frame walls', dist:12, len:28, st:2, col:'13'});
+    setMode('xp','build');
+  });
+
+  // Delegated: builder row inputs and their remove buttons
+  const BUILDER_ID = /^(fl|occ|ex|cm)_/;
+  document.addEventListener('input',  function(e){ if (BUILDER_ID.test(e.target.id || '')) syncBuilders(); });
+  document.addEventListener('change', function(e){ if (BUILDER_ID.test(e.target.id || '')) syncBuilders(); });
+  document.addEventListener('click', function(e){
+    const b = e.target.closest('button[data-del-floor], button[data-del-exp], button[data-del-comm]');
+    if (!b) return;
+    if (b.dataset.delFloor){ const id = +b.dataset.delFloor; floorIds  = floorIds.filter(function(x){ return x !== id; }); $('fl_' + id).remove(); }
+    if (b.dataset.delExp)  { const id = +b.dataset.delExp;   exposures = exposures.filter(function(x){ return x !== id; }); $('ex_' + id).remove(); }
+    if (b.dataset.delComm) { const id = +b.dataset.delComm;  comms     = comms.filter(function(x){ return x !== id; });     $('cm_' + id).remove(); }
+    syncBuilders();
+  });
+
   buildTables();
+  buildOccRows();
   recalc();
 })();
 </script>
