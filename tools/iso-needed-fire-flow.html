@@ -1,0 +1,1215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ISO Needed Fire Flow Calculator | Allan Ronald Dones</title>
+<meta name="description" content="ISO Needed Fire Flow (NFF) calculator — construction factor C = 18F√A, occupancy factor O, exposure and communication factors X and P, with every ISO limit enforced and a dual-path check against the ISO effective-area table.">
+<meta name="author" content="Allan Ronald Dones">
+<link rel="canonical" href="https://allanronalddones.com/tools/iso-needed-fire-flow">
+
+<!-- Social preview (shown when the link is shared from the main site) -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://allanronalddones.com/tools/iso-needed-fire-flow">
+<meta property="og:title" content="ISO Needed Fire Flow Calculator">
+<meta property="og:site_name" content="Allan Ronald Dones — Rotating Equipment Engineering">
+<meta property="og:description" content="Needed Fire Flow to the ISO method — NFF = (C)(O)(1 + (X + P)) — with the construction, exposure, communication and envelope limits enforced and flagged, and a built-in verification against the ISO effective-area table.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ISO Needed Fire Flow Calculator">
+<meta name="twitter:description" content="Needed Fire Flow to the ISO method, with every published limit enforced and a built-in dual-path verification.">
+
+<!-- Inline SVG favicon — keeps the page self-contained (no separate .ico request) -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a2472'/%3E%3Cpath d='M32 8c2 9-6 12-6 19a6 6 0 0 0 12 0c0-3-1-5-1-7 4 3 7 8 7 13a12 12 0 0 1-24 0c0-11 9-16 12-25z' fill='%2322d3ee'/%3E%3Cpath d='M20 54h24' stroke='%235b9dfa' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --navy-950:#050b1a;
+    --navy-900:#08132b;
+    --navy-800:#0c1c3f;
+    --navy-700:#0f2551;
+    --blue-600:#1450c9;
+    --blue-500:#1565d8;
+    --blue-400:#2f7ef0;
+    --blue-300:#5b9dfa;
+    --cyan-400:#22d3ee;
+    --cyan-300:#67e8f9;
+    --text-primary:#eaf1ff;
+    --text-secondary:#a9bde0;
+    --text-muted:#6f84ab;
+    --card-bg:rgba(6,16,40,0.82);
+    --card-border:rgba(91,157,250,0.22);
+    --card-border-strong:rgba(103,232,249,0.4);
+    --ok-500:#22c55e;
+    --ok-300:#86efac;
+    --bad-500:#ef4444;
+    --bad-300:#fca5a5;
+    --warn-500:#f59e0b;
+    --warn-300:#fcd34d;
+    --radius:14px;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Segoe UI', 'Inter', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    color:var(--text-primary);
+    background:var(--navy-950);
+    min-height:100vh;
+    line-height:1.5;
+  }
+
+  /* ---------- Layered background: base wash → animated waves ---------- */
+  .bg-base{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    background:
+      radial-gradient(1200px 800px at 12% -8%, rgba(47,126,240,0.55), transparent 62%),
+      radial-gradient(1000px 700px at 108% 8%, rgba(34,211,238,0.34), transparent 58%),
+      radial-gradient(900px 900px at 50% 115%, rgba(21,101,216,0.42), transparent 60%),
+      linear-gradient(180deg, #06122e 0%, #0d2a63 40%, #071431 100%);
+    background-color:#06122e;
+  }
+  .bg-waves{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+  .bg-waves svg{width:100%;height:100%;display:block;}
+  .wv path{ will-change:transform; }
+  .wv1{ animation:driftL 52s linear infinite; }
+  .wv2{ animation:driftR 43s linear infinite; }
+  .wv3{ animation:driftL 36s linear infinite; }
+  .wv4{ animation:driftR 29s linear infinite; }
+  .wv5{ animation:driftL 23s linear infinite; }
+  @keyframes driftL{ from{transform:translateX(0);} to{transform:translateX(-1440px);} }
+  @keyframes driftR{ from{transform:translateX(-1440px);} to{transform:translateX(0);} }
+  @media (prefers-reduced-motion: reduce){ .wv1,.wv2,.wv3,.wv4,.wv5{animation:none;} }
+
+  /* ---------- Back-link to main site ---------- */
+  .back-link{
+    display:inline-flex;align-items:center;gap:7px;margin-bottom:26px;
+    font-size:13px;font-weight:600;color:var(--text-secondary);text-decoration:none;
+    border:1px solid var(--card-border);background:rgba(6,16,40,0.62);
+    padding:7px 15px 7px 12px;border-radius:999px;
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    transition:color .15s, border-color .15s, background .15s;
+  }
+  .back-link:hover, .back-link:focus-visible{ color:#fff;border-color:var(--cyan-400);background:rgba(6,16,40,0.9); }
+  .back-link svg{ width:15px;height:15px;flex:0 0 15px; }
+
+  .wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:40px 24px 80px;}
+
+  header.hero{text-align:center;margin-bottom:34px;padding-bottom:28px;border-bottom:1px solid rgba(91,157,250,0.16);}
+  .kicker{
+    display:inline-flex;align-items:center;gap:8px;font-size:12.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--cyan-300);background:rgba(34,211,238,0.08);
+    border:1px solid rgba(34,211,238,0.25);padding:6px 14px;border-radius:999px;margin-bottom:18px;
+  }
+  .kicker svg{width:14px;height:14px;}
+  h1{
+    font-size:clamp(28px,4vw,42px);margin:0 0 10px;font-weight:700;letter-spacing:-0.01em;
+    background:linear-gradient(90deg, #fff 0%, var(--blue-300) 55%, var(--cyan-300) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .subtitle{color:var(--text-secondary);font-size:16px;max-width:680px;margin:0 auto 4px;}
+  .byline{color:var(--text-muted);font-size:13px;margin-top:14px;}
+
+  .grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:24px;align-items:start;}
+  @media (max-width:980px){ .grid{grid-template-columns:1fr;} }
+
+  .card{
+    background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius);
+    padding:24px 26px;margin-bottom:22px;
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    box-shadow:0 8px 32px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+  .card h2{margin:0 0 4px;font-size:16px;font-weight:700;letter-spacing:.02em;color:#fff;display:flex;align-items:center;gap:10px;}
+  .card h2 .num{
+    display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:7px;
+    background:linear-gradient(135deg, var(--blue-500), var(--cyan-400));color:#04101f;font-size:12.5px;font-weight:800;
+    flex:0 0 24px;
+  }
+  .card .hint{color:var(--text-muted);font-size:12.5px;margin:0 0 18px;padding-left:34px;}
+
+  .toolbar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin-bottom:18px;}
+  .unit-switch{display:inline-flex;background:rgba(5,14,32,0.7);border:1px solid rgba(91,157,250,0.25);border-radius:999px;padding:4px;gap:4px;}
+  .unit-switch button{border:none;background:transparent;color:var(--text-secondary);font:600 13px/1 inherit;padding:9px 20px;border-radius:999px;cursor:pointer;transition:background .15s, color .15s;}
+  .unit-switch button.active{background:linear-gradient(135deg, var(--blue-500), var(--cyan-400));color:#04101f;}
+  .btn-row{display:flex;flex-wrap:wrap;gap:9px;}
+  .btn{
+    display:inline-flex;align-items:center;gap:7px;border:1px solid var(--card-border);
+    background:rgba(6,16,40,0.62);color:var(--text-secondary);font:600 12.5px/1 inherit;
+    padding:9px 15px;border-radius:9px;cursor:pointer;transition:color .15s, border-color .15s, background .15s;
+  }
+  .btn:hover{ color:#fff;border-color:var(--cyan-400);background:rgba(6,16,40,0.92); }
+  .btn svg{width:14px;height:14px;flex:0 0 14px;}
+
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+  .field-row.single{grid-template-columns:1fr;}
+  .field-row.three{grid-template-columns:1fr 1fr 1fr;}
+  @media (max-width:620px){ .field-row,.field-row.three{grid-template-columns:1fr;} }
+
+  label{display:block;font-size:12.5px;color:var(--text-secondary);margin-bottom:6px;font-weight:600;}
+  label .unit{color:var(--cyan-300);font-weight:500;font-size:11.5px;}
+  .note-inline{color:var(--text-muted);font-size:11px;display:block;margin-top:3px;font-weight:400;}
+
+  input[type="number"], input[type="text"], select{
+    width:100%;background:rgba(5,14,32,0.65);border:1px solid rgba(91,157,250,0.25);
+    color:var(--text-primary);padding:10px 12px;border-radius:9px;font-size:14.5px;font-family:inherit;
+    transition:border-color .15s, box-shadow .15s;
+  }
+  input:focus, select:focus{outline:none;border-color:var(--cyan-400);box-shadow:0 0 0 3px rgba(34,211,238,0.15);}
+  input::placeholder{color:#4e6288;}
+  select{cursor:pointer;}
+  select option{background:#0c1c3f;color:var(--text-primary);}
+
+  .toggle-row{display:flex;align-items:flex-start;gap:10px;margin:4px 0 14px;padding-left:2px;}
+  .toggle-row input{width:16px;height:16px;accent-color:var(--cyan-400);margin-top:2px;flex:0 0 16px;}
+  .toggle-row label{margin:0;font-size:13px;color:var(--text-secondary);font-weight:500;cursor:pointer;}
+
+  /* ---------- Results ---------- */
+  .result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media (max-width:560px){ .result-grid{grid-template-columns:1fr;} }
+  .result-tile{background:rgba(5,14,32,0.55);border:1px solid rgba(91,157,250,0.18);border-radius:10px;padding:14px 16px;}
+  .result-tile .rlabel{font-size:11.5px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;}
+  .result-tile .rvalue{font-size:22px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums;}
+  .result-tile .rvalue .runit{font-size:13px;color:var(--blue-300);font-weight:600;margin-left:4px;}
+  .result-tile .rsub{font-size:11.5px;color:var(--text-muted);margin-top:5px;font-variant-numeric:tabular-nums;}
+  .result-tile.headline{grid-column:1 / -1;background:linear-gradient(135deg, rgba(21,101,216,0.28), rgba(34,211,238,0.12));border:1px solid rgba(103,232,249,0.35);}
+  .result-tile.headline .rvalue{font-size:34px;}
+  .result-tile.headline .rsub{font-size:12.5px;color:var(--text-secondary);}
+
+  .divider-line{border:none;border-top:1px dashed rgba(91,157,250,0.2);margin:18px 0;}
+
+  /* ---------- Badges, audit list, verdicts ---------- */
+  .badge{
+    display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;
+    padding:3px 9px;border-radius:999px;border:1px solid;letter-spacing:.03em;text-transform:uppercase;
+  }
+  .badge.ok{background:rgba(34,197,94,0.12);color:var(--ok-300);border-color:rgba(34,197,94,0.4);}
+  .badge.bad{background:rgba(239,68,68,0.12);color:var(--bad-300);border-color:rgba(239,68,68,0.4);}
+  .badge.warn{background:rgba(245,158,11,0.12);color:var(--warn-300);border-color:rgba(245,158,11,0.4);}
+  .badge.neutral{background:rgba(111,132,171,0.12);color:var(--text-secondary);border-color:rgba(111,132,171,0.3);}
+
+  ul.audit{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px;}
+  ul.audit li{
+    display:flex;gap:10px;align-items:flex-start;font-size:12.5px;color:var(--text-secondary);
+    background:rgba(5,14,32,0.5);border:1px solid rgba(91,157,250,0.16);border-left-width:3px;
+    border-radius:8px;padding:10px 13px;
+  }
+  ul.audit li.cap{border-left-color:var(--warn-500);}
+  ul.audit li.ok{border-left-color:var(--ok-500);}
+  ul.audit li.info{border-left-color:var(--blue-400);}
+  ul.audit li.bad{border-left-color:var(--bad-500);}
+  ul.audit li b{color:#fff;font-weight:700;}
+  ul.audit li .clause{color:var(--text-muted);font-size:11px;display:block;margin-top:2px;}
+  ul.audit li.empty{border-left-color:rgba(111,132,171,0.5);color:var(--text-muted);}
+
+  /* ---------- Tables ---------- */
+  .table-scroll{overflow-x:auto;margin:0 -4px;padding:0 4px;}
+  table.ref{width:100%;border-collapse:collapse;font-size:12px;min-width:520px;font-variant-numeric:tabular-nums;}
+  table.ref caption{text-align:left;font-size:12.5px;font-weight:700;color:#fff;padding:0 0 9px;}
+  table.ref th, table.ref td{border-bottom:1px solid rgba(91,157,250,0.16);padding:7px 9px;text-align:center;}
+  table.ref thead th{background:rgba(10,36,114,0.5);color:var(--cyan-300);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.04em;}
+  table.ref td:first-child, table.ref th:first-child{text-align:left;}
+  table.ref tbody tr:hover{background:rgba(47,126,240,0.07);}
+  table.ref td.grp{background:rgba(10,36,114,0.28);color:var(--text-secondary);font-weight:600;}
+  table.ref td.zero{color:var(--text-muted);}
+  table.ref .fn{color:var(--warn-300);font-weight:700;}
+
+  .formula-strip{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;}
+  .formula-chip{
+    font-size:11.5px;color:var(--text-secondary);background:rgba(5,14,32,0.5);
+    border:1px solid rgba(91,157,250,0.18);padding:5px 10px;border-radius:7px;
+    font-family:'Cascadia Code','Consolas',monospace;font-variant-numeric:tabular-nums;
+  }
+
+  .callout{
+    background:rgba(21,101,216,0.1);border:1px solid rgba(91,157,250,0.28);
+    border-radius:10px;padding:13px 16px;font-size:12.5px;color:var(--text-secondary);margin-top:14px;
+  }
+  .callout b{color:#fff;}
+  .callout.warn{background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.3);}
+
+  ol.notes{margin:6px 0 0;padding-left:20px;font-size:12.5px;color:var(--text-secondary);}
+  ol.notes li{margin-bottom:7px;}
+  ol.notes b{color:#fff;}
+
+  .selftest{display:flex;flex-direction:column;gap:9px;}
+  .st-row{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    background:rgba(5,14,32,0.5);border:1px solid rgba(91,157,250,0.16);border-radius:8px;padding:10px 13px;
+    font-size:12.5px;color:var(--text-secondary);
+  }
+  .st-row .stname{font-weight:600;color:#fff;}
+  .st-row .stdet{color:var(--text-muted);font-size:11.5px;display:block;margin-top:2px;font-variant-numeric:tabular-nums;}
+
+  footer{
+    text-align:center;margin-top:36px;padding-top:22px;border-top:1px solid rgba(91,157,250,0.14);
+    color:var(--text-muted);font-size:12.5px;
+  }
+  footer a{color:var(--blue-300);text-decoration:none;}
+  footer a:hover{text-decoration:underline;}
+
+  /* ---------- Print: flip to a light, ink-friendly calculation sheet ---------- */
+  @media print{
+    .bg-base,.bg-waves,.back-link,.btn-row,.unit-switch,.no-print{display:none !important;}
+    body{background:#fff;color:#111;}
+    .wrap{max-width:none;padding:0;}
+    .grid{grid-template-columns:1fr;}
+    h1{color:#0a2472 !important;-webkit-text-fill-color:#0a2472;background:none;}
+    .subtitle,.byline,.card .hint{color:#444;}
+    .kicker{color:#0a2472;border-color:#b9c6de;background:#eef2fa;}
+    .card{background:#fff;border:1px solid #b9c6de;box-shadow:none;break-inside:avoid;page-break-inside:avoid;margin-bottom:14px;padding:14px 16px;}
+    .card h2{color:#0a2472;}
+    .card h2 .num{background:#0a2472;color:#fff;}
+    .result-tile{background:#f6f9ff;border-color:#ccd6e8;}
+    .result-tile .rvalue{color:#0a2472;}
+    .result-tile .rlabel,.result-tile .rsub{color:#444;}
+    .result-tile.headline{background:#eef2fa;border-color:#0a2472;}
+    input,select{background:#fff;border:1px solid #ccd6e8;color:#111;}
+    table.ref{min-width:0;font-size:9.5px;}
+    table.ref thead th{background:#eef2fa !important;color:#0a2472 !important;}
+    table.ref td.grp{background:#f3f7ff !important;color:#333 !important;}
+    table.ref th, table.ref td{border-bottom:1px solid #ccd6e8;}
+    table.ref caption{color:#0a2472;}
+    ul.audit li,.st-row{background:#f6f9ff;color:#333;border-color:#ccd6e8;}
+    ul.audit li b,.st-row .stname{color:#111;}
+    .badge.ok{background:#dcfce7;color:#166534;border-color:#86efac;}
+    .badge.bad{background:#fee2e2;color:#991b1b;border-color:#fca5a5;}
+    .badge.warn{background:#fef3c7;color:#92400e;border-color:#fcd34d;}
+    .badge.neutral{background:#eef2fa;color:#334;border-color:#ccd6e8;}
+    .callout,.formula-chip{background:#f3f7ff;color:#333;border-color:#ccd6e8;}
+    ol.notes,footer{color:#333;}
+    .table-scroll{overflow:visible;}
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-base"></div>
+
+<div class="bg-waves" aria-hidden="true">
+  <svg viewBox="0 0 2880 1200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="wg1" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#0a2472"/><stop offset="0.5" stop-color="#153a9e"/><stop offset="1" stop-color="#0a2472"/>
+      </linearGradient>
+      <linearGradient id="wg2" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#123f8f"/><stop offset="0.5" stop-color="#1450c9"/><stop offset="1" stop-color="#123f8f"/>
+      </linearGradient>
+      <linearGradient id="wg3" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#1450c9"/><stop offset="0.5" stop-color="#1c6ee0"/><stop offset="1" stop-color="#1450c9"/>
+      </linearGradient>
+      <linearGradient id="wg4" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#1565d8"/><stop offset="0.5" stop-color="#2f7ef0"/><stop offset="1" stop-color="#1565d8"/>
+      </linearGradient>
+      <linearGradient id="wg5" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#2f7ef0"/><stop offset="0.5" stop-color="#22d3ee"/><stop offset="1" stop-color="#2f7ef0"/>
+      </linearGradient>
+    </defs>
+    <g class="wv wv1" opacity="0.55">
+      <path fill="url(#wg1)" d="M0,200 C180,120 540,120 720,200 C900,280 1260,280 1440,200 C1620,120 1980,120 2160,200 C2340,280 2700,280 2880,200 C3060,120 3420,120 3600,200 C3780,280 4140,280 4320,200 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv2" opacity="0.48">
+      <path fill="url(#wg2)" d="M0,410 C180,315 540,315 720,410 C900,505 1260,505 1440,410 C1620,315 1980,315 2160,410 C2340,505 2700,505 2880,410 C3060,315 3420,315 3600,410 C3780,505 4140,505 4320,410 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv3" opacity="0.42">
+      <path fill="url(#wg3)" d="M0,620 C180,535 540,535 720,620 C900,705 1260,705 1440,620 C1620,535 1980,535 2160,620 C2340,705 2700,705 2880,620 C3060,535 3420,535 3600,620 C3780,705 4140,705 4320,620 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv4" opacity="0.34">
+      <path fill="url(#wg4)" d="M0,830 C180,725 540,725 720,830 C900,935 1260,935 1440,830 C1620,725 1980,725 2160,830 C2340,935 2700,935 2880,830 C3060,725 3420,725 3600,830 C3780,935 4140,935 4320,830 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv5" opacity="0.26">
+      <path fill="url(#wg5)" d="M0,1015 C180,940 540,940 720,1015 C900,1090 1260,1090 1440,1015 C1620,940 1980,940 2160,1015 C2340,1090 2700,1090 2880,1015 C3060,940 3420,940 3600,1015 C3780,1090 4140,1090 4320,1015 L4320,1200 L0,1200 Z"/>
+    </g>
+  </svg>
+</div>
+
+<div class="wrap">
+
+  <a class="back-link" href="/" title="Back to allanronalddones.com">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Allan Ronald Dones
+  </a>
+
+  <header class="hero">
+    <span class="kicker">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c1.4 6.4-4.2 8.6-4.2 13.3a4.2 4.2 0 0 0 8.4 0c0-2.1-.7-3.5-.7-4.9 2.8 2.1 4.9 5.6 4.9 9.1"/><path d="M4 21h16"/></svg>
+      Fire Protection Engineering
+    </span>
+    <h1>ISO Needed Fire Flow Calculator</h1>
+    <p class="subtitle">Needed Fire Flow by the ISO method — <b>NFF = (C)(O)(1 + (X + P))</b> — with every published limit enforced and flagged, and the construction factor verified two ways against the ISO effective-area table.</p>
+    <p class="byline">Developed by Allan Ronald Dones — Senior Mechanical Engineer</p>
+  </header>
+
+  <!-- ============ 0 · UNITS, IDENTIFICATION, ACTIONS ============ -->
+  <div class="card">
+    <div class="toolbar">
+      <div class="unit-switch" role="group" aria-label="Measurement system">
+        <button type="button" id="btnENG" class="active">English Units</button>
+        <button type="button" id="btnSI">SI Units</button>
+      </div>
+      <div class="btn-row no-print">
+        <button type="button" class="btn" id="btnEx3">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg>
+          ISO Example 3
+        </button>
+        <button type="button" class="btn" id="btnExWs">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg>
+          Worksheet example
+        </button>
+        <button type="button" class="btn" id="btnCsv">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Export CSV
+        </button>
+        <button type="button" class="btn" id="btnPrint">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>
+          Print / Save PDF
+        </button>
+        <button type="button" class="btn" id="btnReset">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 2v6h6M3.5 15a9 9 0 1 0 2.1-9.4L3 8"/></svg>
+          Reset
+        </button>
+      </div>
+    </div>
+
+    <div class="field-row three">
+      <div><label>Project</label><input type="text" id="idProject" placeholder="Project name / number"></div>
+      <div><label>Building / structure</label><input type="text" id="idBuilding" placeholder="Building reference"></div>
+      <div><label>Prepared by</label><input type="text" id="idBy" placeholder="Name"></div>
+    </div>
+
+    <div class="callout">
+      <b>Scope.</b> This tool reproduces the ISO <i>Guide for Determination of Needed Fire Flow</i> (Ed. 05-2006) method for buildings <b>without</b> automatic sprinkler credit. ISO Needed Fire Flow is an <b>insurance-rating</b> construct used to grade a municipal water supply — it is <b>not</b> a code-compliance check against NFPA 1, the IFC, QCDD or any project fire-water specification. Use it for screening and cross-checking; confirm the governing demand against the applicable code and the authority having jurisdiction.
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <!-- ================= LEFT: INPUTS ================= -->
+    <div>
+
+      <!-- ============ 1 · CONSTRUCTION FACTOR ============ -->
+      <div class="card">
+        <h2><span class="num">1</span>Construction Factor, C</h2>
+        <p class="hint">C = 18 F √A. Effective area is not the gross floor area — see the effective-area rules in the reference section.</p>
+
+        <div class="field-row">
+          <div>
+            <label>Construction class
+              <span class="note-inline" id="noteClass">Class 1 — wood frame · F = 1.5</span>
+            </label>
+            <select id="cClass">
+              <option value="1">Class 1 — Wood frame</option>
+              <option value="2">Class 2 — Joisted masonry</option>
+              <option value="3">Class 3 — Noncombustible</option>
+              <option value="4">Class 4 — Masonry noncombustible</option>
+              <option value="5">Class 5 — Modified fire-resistive</option>
+              <option value="6">Class 6 — Fire-resistive</option>
+            </select>
+          </div>
+          <div>
+            <label>Construction coefficient, F
+              <span class="note-inline">Set by the class — override only with written ISO justification</span>
+            </label>
+            <input type="number" id="cF" step="any" value="1.5">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div>
+            <label>Effective area, A <span class="unit" id="uArea">ft²</span>
+              <span class="note-inline">Largest floor + the applicable share of the other floors</span>
+            </label>
+            <input type="number" id="cArea" step="any" placeholder="e.g. 2655">
+          </div>
+          <div>
+            <label>Number of storeys
+              <span class="note-inline">A single-storey building caps C at 6,000 gpm whatever its class</span>
+            </label>
+            <input type="number" id="cStoreys" step="1" min="1" value="2">
+          </div>
+        </div>
+
+        <hr class="divider-line">
+
+        <div class="result-grid">
+          <div class="result-tile">
+            <div class="rlabel">C calculated — 18 F √A</div>
+            <div class="rvalue" id="outCraw">—</div>
+            <div class="rsub" id="outCrawSub">Before rounding and limits</div>
+          </div>
+          <div class="result-tile">
+            <div class="rlabel">C governing</div>
+            <div class="rvalue" id="outC">—</div>
+            <div class="rsub" id="outCsub">Rounded to the nearest 250 gpm</div>
+          </div>
+        </div>
+        <div class="formula-strip" id="cStrip"></div>
+      </div>
+
+      <!-- ============ 2 · OCCUPANCY FACTOR ============ -->
+      <div class="card">
+        <h2><span class="num">2</span>Occupancy Factor, O</h2>
+        <p class="hint">Assigned from the occupancy combustibility class of the building as a whole, not of the worst single tenant.</p>
+
+        <div class="field-row">
+          <div>
+            <label>Occupancy combustibility class</label>
+            <select id="oClass">
+              <option value="0.75">C-1 — Noncombustible</option>
+              <option value="0.85">C-2 — Limited-combustible</option>
+              <option value="1.00" selected>C-3 — Combustible</option>
+              <option value="1.15">C-4 — Free-burning</option>
+              <option value="1.25">C-5 — Rapid-burning</option>
+            </select>
+          </div>
+          <div>
+            <label>Occupancy factor, O</label>
+            <input type="number" id="oFactor" step="any" value="1.00">
+          </div>
+        </div>
+        <div class="callout" id="oRule"></div>
+      </div>
+
+      <!-- ============ 3 · EXPOSURE AND COMMUNICATION ============ -->
+      <div class="card">
+        <h2><span class="num">3</span>Exposure and Communication, X + P</h2>
+        <p class="hint">Read X from Table 330.A and P from Table 330.B in the reference section below. Phase 2 replaces these entries with guided pickers.</p>
+
+        <div class="field-row">
+          <div>
+            <label>Exposure factor, X
+              <span class="note-inline">Highest single exposure charge — see note 3</span>
+            </label>
+            <input type="number" id="xFac" step="any" value="0" min="0">
+          </div>
+          <div>
+            <label>Communication factor, P
+              <span class="note-inline">0 where communications are protected by a recognised water curtain</span>
+            </label>
+            <input type="number" id="pFac" step="any" value="0" min="0">
+          </div>
+        </div>
+
+        <div class="toggle-row">
+          <input type="checkbox" id="woodShingle">
+          <label for="woodShingle">Wood-shingle roof covering on the subject or an exposure building that can contribute to spreading fire — ISO adds 500&nbsp;gpm</label>
+        </div>
+
+        <hr class="divider-line">
+
+        <div class="result-grid">
+          <div class="result-tile">
+            <div class="rlabel">X + P as entered</div>
+            <div class="rvalue" id="outXPraw">0.00</div>
+            <div class="rsub">Before the 0.60 limit</div>
+          </div>
+          <div class="result-tile">
+            <div class="rlabel">X + P governing</div>
+            <div class="rvalue" id="outXP">0.00</div>
+            <div class="rsub" id="outXPsub">ISO maximum 0.60</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ================= RIGHT: RESULTS ================= -->
+    <div>
+
+      <!-- ============ 4 · NEEDED FIRE FLOW ============ -->
+      <div class="card">
+        <h2><span class="num">4</span>Needed Fire Flow</h2>
+        <p class="hint">NFF = (C)(O)(1 + (X + P)), rounded to the nearest 250 gpm below 2,500 gpm and to the nearest 500 gpm above it.</p>
+
+        <div class="result-grid">
+          <div class="result-tile headline">
+            <div class="rlabel">Needed Fire Flow — no sprinkler credit</div>
+            <div class="rvalue" id="outNff">—</div>
+            <div class="rsub" id="outNffSub">Enter the effective area to begin</div>
+          </div>
+          <div class="result-tile">
+            <div class="rlabel">Calculated, before rounding</div>
+            <div class="rvalue" id="outNffRaw">—</div>
+            <div class="rsub" id="outNffRawSub">&nbsp;</div>
+          </div>
+          <div class="result-tile">
+            <div class="rlabel">Rounding step applied</div>
+            <div class="rvalue" id="outStep">—</div>
+            <div class="rsub" id="outStepSub">&nbsp;</div>
+          </div>
+        </div>
+
+        <div class="formula-strip" id="nffStrip"></div>
+      </div>
+
+      <!-- ============ 5 · LIMIT AUDIT ============ -->
+      <div class="card">
+        <h2><span class="num">5</span>Limit Audit</h2>
+        <p class="hint">Every ISO limit that bit on this calculation, named, so the result is traceable against the source worksheet.</p>
+        <ul class="audit" id="auditList"></ul>
+      </div>
+
+      <!-- ============ 6 · VERIFICATION ============ -->
+      <div class="card">
+        <h2><span class="num">6</span>Built-in Verification</h2>
+        <p class="hint">Runs on every keystroke. A red row means the tool disagrees with its own source data and the result must not be used.</p>
+        <div class="selftest" id="selfTest"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============ 7 · REFERENCE TABLES ============ -->
+  <div class="card">
+    <h2><span class="num">7</span>Reference — ISO Data Tables</h2>
+    <p class="hint">Transcribed from the tables carried in the source worksheet. Phase 2 wires 330.A and 330.B into guided pickers.</p>
+
+    <div class="table-scroll">
+      <table class="ref">
+        <caption>Construction class, coefficient F, and the limits on C</caption>
+        <thead><tr><th>Class</th><th>Description</th><th>F</th><th>Maximum C</th></tr></thead>
+        <tbody>
+          <tr><td>Class 1</td><td style="text-align:left">Wood frame</td><td>1.5</td><td>8,000 gpm</td></tr>
+          <tr><td>Class 2</td><td style="text-align:left">Joisted masonry</td><td>1.0</td><td>8,000 gpm</td></tr>
+          <tr><td>Class 3</td><td style="text-align:left">Noncombustible</td><td>0.8</td><td>6,000 gpm</td></tr>
+          <tr><td>Class 4</td><td style="text-align:left">Masonry noncombustible</td><td>0.8</td><td>6,000 gpm</td></tr>
+          <tr><td>Class 5</td><td style="text-align:left">Modified fire-resistive</td><td>0.6</td><td>6,000 gpm</td></tr>
+          <tr><td>Class 6</td><td style="text-align:left">Fire-resistive</td><td>0.6</td><td>6,000 gpm</td></tr>
+          <tr><td class="grp">Any class</td><td class="grp" style="text-align:left">One-storey building</td><td class="grp">—</td><td class="grp">6,000 gpm</td></tr>
+          <tr><td class="grp">Any class</td><td class="grp" style="text-align:left">Lower limit on C</td><td class="grp">—</td><td class="grp">500 gpm minimum</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="divider-line">
+
+    <div class="table-scroll">
+      <table class="ref">
+        <caption>Occupancy factor, O</caption>
+        <thead><tr><th>Combustibility class</th><th>O</th><th>Assignment rule</th></tr></thead>
+        <tbody>
+          <tr><td>C-1 Noncombustible</td><td>0.75</td><td style="text-align:left">Only where ≥ 95 % of the total floor area is C-1 occupancy and there are no C-5 occupancies</td></tr>
+          <tr><td>C-2 Limited-combustible</td><td>0.85</td><td style="text-align:left">≥ 90 % of floor area is C-1 + C-2; or Construction Class 5 / 6 with ≥ 80 % C-1 + C-2 and ≤ 5 % C-5</td></tr>
+          <tr><td>C-3 Combustible</td><td>1.00</td><td style="text-align:left">Any building not provided for by the other classes</td></tr>
+          <tr><td>C-4 Free-burning</td><td>1.15</td><td style="text-align:left">C-4 + C-5 combined ≥ 25 % of total floor area, with C-5 occupying &lt; 15 %</td></tr>
+          <tr><td>C-5 Rapid-burning</td><td>1.25</td><td style="text-align:left">C-5 occupancies ≥ 15 % of the total floor area</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="divider-line">
+
+    <div class="table-scroll">
+      <table class="ref" style="min-width:640px">
+        <caption>Table 330.A — Factor for Exposure (X) · subject-building facing wall: frame, metal, or masonry with openings</caption>
+        <thead>
+          <tr>
+            <th rowspan="2">Distance to exposure building</th>
+            <th rowspan="2">Length-height of facing wall of exposure building</th>
+            <th colspan="4">Construction of facing wall of exposure building</th>
+          </tr>
+          <tr>
+            <th>Class 1, 3</th>
+            <th>Class 2, 4, 5, 6 — unprotected openings</th>
+            <th>Class 2, 4, 5, 6 — semiprotected openings</th>
+            <th>Blank wall</th>
+          </tr>
+        </thead>
+        <tbody id="tblXBody"></tbody>
+      </table>
+    </div>
+    <div class="callout warn">
+      <b>Table 330.A notes.</b> Where the facing wall of the exposure building is <b>higher</b> than the subject building, use the table but take only the length-height of the facing wall <b>above</b> the height of the subject building's facing wall; buildings five storeys or over are considered as five storeys. Where the exposure building's facing wall is the <b>same height or lower</b>, <b>X = 0</b>. The table stops at 100 ft — beyond 100 ft there is no exposure charge.
+    </div>
+
+    <hr class="divider-line">
+
+    <div class="table-scroll">
+      <table class="ref" style="min-width:860px">
+        <caption>Table 330.B — Factor for Communications (P)</caption>
+        <thead>
+          <tr>
+            <th rowspan="3">Protection of passageway openings</th>
+            <th colspan="4">Fire-resistive, noncombustible or slow-burning communications</th>
+            <th colspan="6">Communications with combustible construction</th>
+          </tr>
+          <tr>
+            <th rowspan="2">Open<br>any length</th><th colspan="3">Enclosed</th>
+            <th colspan="3">Open</th><th colspan="3">Enclosed</th>
+          </tr>
+          <tr>
+            <th>≤ 10 ft</th><th>11–20 ft</th><th>21–50 ft</th>
+            <th>≤ 10 ft</th><th>11–20 ft</th><th>21–50 ft</th>
+            <th>≤ 10 ft</th><th>11–20 ft</th><th>21–50 ft</th>
+          </tr>
+        </thead>
+        <tbody id="tblPBody"></tbody>
+      </table>
+    </div>
+    <div class="callout warn">
+      <b>Table 330.B notes.</b> <span class="fn">++</span> — for an unprotected passageway of that length, consider the two buildings a <b>single fire division</b>. For passageways over <b>50 ft, P = 0</b>. A party wall with communicating openings protected by a single automatic or self-closing Class B fire door qualifies as a <b>division wall</b> for reduction of area. Where communications are protected by a recognised <b>water curtain, P = 0</b>. The combined <b>(X + P) maximum is 0.60</b>.
+    </div>
+
+    <hr class="divider-line">
+
+    <div class="callout">
+      <b>Effective area, A.</b> The total square-foot area of the <b>largest floor</b>, plus the following share of the total area of the other floors:
+      <ol class="notes" style="margin-top:9px">
+        <li><b>Construction Classes 1–4</b> — 50 % of all other floors.</li>
+        <li><b>Classes 5 or 6, all vertical openings protected</b> — 25 % of the area of not more than the <b>two</b> other largest floors.</li>
+        <li><b>Classes 5 or 6, one or more vertical openings unprotected</b> — 50 % of the area of not more than <b>8</b> other floors with unprotected openings. The result shall <b>not be less than</b> the figure that rule 2 would give if all openings were protected.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ============ 8 · BASIS AND LIMITATIONS ============ -->
+  <div class="card">
+    <h2><span class="num">8</span>Basis, Departures and Limitations</h2>
+    <p class="hint">Where this tool differs from the spreadsheet it was derived from, and why.</p>
+    <ol class="notes">
+      <li><b>Method source.</b> ISO, <i>Guide for Determination of Needed Fire Flow</i>, Edition 05-2006, as reproduced in a 2011 utility screening worksheet. The tables in section 7 and the worked example are transcribed from that document. No utility branding, disclaimer or sign-off form is reproduced.</li>
+      <li><b>Limits the source worksheet omitted.</b> The originating spreadsheet enforced only the 500 gpm floor on C. It did <b>not</b> cap C at 8,000 / 6,000 gpm, did not apply the one-storey 6,000 gpm cap, did not cap (X + P) at 0.60, did not cap NFF at 12,000 gpm and did not carry the wood-shingle adder. All six are enforced here, and every one that bites is named in the Limit Audit so the divergence from the source is visible rather than silent.</li>
+      <li><b>Errata in the published ISO effective-area table.</b> The worksheet carries an effective-area table giving C directly from the construction class and the effective area. Checking the analytic turnover point of all 108 bands against the printed values shows the table and the formula agree everywhere except two narrow windows: <b>A = 10,851–10,852 ft²</b> in Construction Class 2, where the table prints 1,750 gpm against the formula's 2,000 gpm, and <b>A = 63,372–63,374 ft²</b> in Classes 3 and 4, where it prints 3,500 gpm against 3,750 gpm. Five effective-area values in total. ISO defines C by the formula and the 250 gpm rounding rule, so the formula governs and the tool says so on screen whenever an entered area falls in one of those windows.</li>
+      <li><b>Exposure factor with several exposed sides.</b> The worked example carried in the source (Example 3) computes a charge for each exposure — 0.14 for building A, 0.17 for building B — and takes the <b>highest</b> as X. That is the only primary evidence available, and it is what this tool implements. Whether ISO 05-2006 instead requires the charges on separate sides to be summed has <b>not</b> been confirmed against the full ISO text. Confirm before relying on a multi-sided result.</li>
+      <li><b>Wood-shingle adder, order of operations.</b> ISO states that 500 gpm is added to the needed fire flow but does not fix whether the addition precedes or follows rounding. This tool adds it to the <b>calculated</b> flow before rounding, so the reported result always lands on the ISO rounding grid. Where the adder applies, the Limit Audit states the assumption.</li>
+      <li><b>Units.</b> ISO's coefficient 18 in C = 18 F √A is dimensional — it holds only for A in ft² and C in US gpm — and the rounding rules are defined in 250 and 500 gpm steps. The SI switch converts the area input and the displayed flows; the calculation basis stays US customary. The gpm figure is the governing value; the SI conversion is shown beneath it.</li>
+      <li><b>No sprinkler credit.</b> This is the non-sprinklered NFF. The sprinkler-system flow path, outside hose allowance, fire-pump design points and the residential shortcut table are Phase 3.</li>
+      <li><b>Duration and storage.</b> NFF is a flow, not a volume. It does not by itself size a tank, a pump or a supply main.</li>
+    </ol>
+  </div>
+
+  <footer>
+    ISO Needed Fire Flow Calculator — for engineering screening and cross-checking. ISO Needed Fire Flow is an insurance-rating quantity, not a code-compliance demand. Verify the governing fire-water demand against the applicable code, the project specification and the authority having jurisdiction before use in design.<br>
+    © <span id="yr"></span> Allan Ronald Dones
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  'use strict';
+  const $ = id => document.getElementById(id);
+  $('yr').textContent = new Date().getFullYear();
+
+  /* ============================================================
+     SOURCE DATA — ISO Guide for Determination of Needed Fire Flow,
+     Edition 05-2006, as transcribed from the source worksheet.
+     ============================================================ */
+
+  const F_BY_CLASS = {1:1.5, 2:1.0, 3:0.8, 4:0.8, 5:0.6, 6:0.6};
+  const CLASS_NAME = {
+    1:'Class 1 — wood frame',
+    2:'Class 2 — joisted masonry',
+    3:'Class 3 — noncombustible',
+    4:'Class 4 — masonry noncombustible',
+    5:'Class 5 — modified fire-resistive',
+    6:'Class 6 — fire-resistive'
+  };
+  const classCapOf = cls => (cls <= 2 ? 8000 : 6000);
+  const groupOf    = cls => (cls === 1 ? '1' : cls === 2 ? '2' : cls <= 4 ? '34' : '56');
+
+  /* Needed Fire Flow / Effective Area table — "At Least" bound of each
+     250 gpm step, first step C = 500 gpm. Held as an independent check
+     on the formula, not as the calculation path. */
+  const C_TABLE = {
+    '1':  [0,536,1051,1737,2594,3623,4823,6195,7738,9453,11339,13396,15625,18026,20598,23342,26257,29343,32601,36030,39631,43403,47347,51462,55749,60207,64837,69638,74610,79754,85070],
+    '2':  [0,1206,2364,3907,5836,8151,10853,13938,17410,21268,25512,30141,35157,40558,46345,52518,59077,66021,73351,81067,89169,97657,106530,115789,125435,135465,145882,156685,167873,179447,191407],
+    '34': [0,1884,3693,6104,9118,12735,16955,21777,27203,33231,39862,47096,54932,63375,72414,82059,92307,103157,114611,126667,139326,152588,166453],
+    '56': [0,3349,6565,10851,16210,22640,30141,38715,48360,59077,70865,83725,97657,112660,128735,145882,164101,183391,203752,225186,247691,271268,295916]
+  };
+
+  /* Two bands of the printed effective-area table contradict C = 18 F sqrt(A)
+     rounded to the nearest 250 gpm. Established by checking the analytic
+     turnover point of every band against the printed "At Least" value, which
+     covers every effective area rather than a sample. ISO defines C by the
+     formula and the rounding rule, so the formula governs and these are
+     recorded as published-table errata rather than tool faults. */
+  const C_TABLE_ERRATA = [
+    {group:'2',  from:10851, to:10852, formula:2000, table:1750},
+    {group:'34', from:63372, to:63374, formula:3750, table:3500}
+  ];
+
+  const O_RULE = {
+    '0.75':'<b>C-1 Noncombustible.</b> Applies only where 95 % or more of the total floor area is occupied by C-1 occupancies, and there are no C-5 occupancies.',
+    '0.85':'<b>C-2 Limited-combustible.</b> Applies where 90 % or more of the total floor area is C-1 + C-2; or, for Construction Class 5 or 6 buildings, where 80 % or more is C-1 + C-2 and not more than 5 % is C-5.',
+    '1.00':'<b>C-3 Combustible.</b> Applies to any building not provided for by the other combustibility classes.',
+    '1.15':'<b>C-4 Free-burning.</b> Applies where C-4 and C-5 occupancies combined occupy 25 % or more of the total floor area, provided C-5 occupancies occupy less than 15 %.',
+    '1.25':'<b>C-5 Rapid-burning.</b> Applies where C-5 occupancies occupy 15 % or more of the total floor area.'
+  };
+
+  /* Table 330.A — factor for exposure (X). */
+  const X_TABLE = [
+    {dist:'0 – 10 ft',  rows:[['1–100',0.22,0.21,0.16],['101–200',0.23,0.22,0.17],['201–300',0.24,0.23,0.18],['301–400',0.25,0.24,0.19],['Over 400',0.25,0.25,0.20]]},
+    {dist:'11 – 30 ft', rows:[['1–100',0.17,0.15,0.11],['101–200',0.18,0.16,0.12],['201–300',0.19,0.18,0.14],['301–400',0.20,0.19,0.15],['Over 400',0.20,0.19,0.15]]},
+    {dist:'31 – 60 ft', rows:[['1–100',0.12,0.10,0.07],['101–200',0.13,0.11,0.08],['201–300',0.14,0.13,0.10],['301–400',0.15,0.14,0.11],['Over 400',0.15,0.15,0.12]]},
+    {dist:'61 – 100 ft',rows:[['1–100',0.08,0.06,0.04],['101–200',0.08,0.07,0.05],['201–300',0.09,0.08,0.06],['301–400',0.10,0.09,0.07],['Over 400',0.10,0.10,0.08]]}
+  ];
+
+  /* Table 330.B — factor for communications (P). */
+  const P_ROWS = [
+    ['Unprotected',                                                            0,'++',0.30,0.20, 0.30,0.20,0.10, '++','++',0.30],
+    ['Single Class A fire door at one end of passageway',                      0,0.20,0.10,0,    0.20,0.15,0,    0.30,0.20,0.10],
+    ['Single Class B fire door at one end of passageway',                      0,0.30,0.20,0.10, 0.25,0.20,0.10, 0.35,0.25,0.15],
+    ['Single Class A fire door at each end, or double Class A at one end',     0,0,0,0,          0,0,0,          0,0,0],
+    ['Single Class B fire door at each end, or double Class B at one end',     0,0.10,0.05,0,    0,0,0,          0.15,0.10,0]
+  ];
+
+  /* Conversions. The calculation basis is US customary — ISO's coefficient 18
+     and the 250/500 gpm rounding steps are only valid there. */
+  const FT2_PER_M2  = 10.763910416709722;
+  const LPS_PER_GPM = 0.06309019640343866;
+  const M3H_PER_GPM = 0.2271247070384;
+
+  /* ============================================================
+     ENGINE
+     ============================================================ */
+
+  /* C from the formula, with the 500 gpm floor and 250 gpm rounding.
+     Mirrors the source: IF(Craw>500, ROUND(Craw/250,0)*250, 500). */
+  function cFromFormula(F, aFt2){
+    const raw = 18 * F * Math.sqrt(aFt2);
+    return {raw: raw, rounded: raw > 500 ? Math.round(raw/250)*250 : 500};
+  }
+
+  /* C from the ISO effective-area table — the independent path. */
+  function cFromTable(cls, aFt2){
+    const bounds = C_TABLE[groupOf(cls)];
+    let i = 0;
+    for (let k = 0; k < bounds.length; k++){ if (aFt2 >= bounds[k]) i = k; else break; }
+    return 500 + 250 * i;
+  }
+
+  function num(id){ const v = parseFloat($(id).value); return isFinite(v) ? v : 0; }
+  function numOrNull(id){
+    const s = $(id).value.trim();
+    if (s === '') return null;
+    const v = parseFloat(s);
+    return isFinite(v) ? v : null;
+  }
+  function fmt(v, d){
+    if (v === null || v === undefined || !isFinite(v)) return '—';
+    return v.toLocaleString('en-US', {minimumFractionDigits:d, maximumFractionDigits:d});
+  }
+
+  let units = 'eng';   // 'eng' = ft², 'si' = m²
+
+  /* Full calculation from an explicit input set — used by the live page
+     and by the built-in verification vectors alike. */
+  function solve(inp){
+    const out = {flags:[]};
+    const F = inp.F, cls = inp.cls, aFt2 = inp.aFt2, storeys = inp.storeys;
+
+    if (aFt2 === null || !(aFt2 > 0) || !(F > 0)) return out;
+
+    const f = cFromFormula(F, aFt2);
+    out.cRaw = f.raw;
+    out.cRounded = f.rounded;
+    if (f.raw < 500){ out.flags.push({k:'cFloor', v:500}); }
+
+    const classCap = classCapOf(cls);
+    out.cAfterClassCap = Math.min(f.rounded, classCap);
+    if (f.rounded > classCap) out.flags.push({k:'cClassCap', v:classCap, was:f.rounded});
+
+    out.cTable = cFromTable(cls, aFt2);
+    out.cTableAgrees = (out.cTable === out.cAfterClassCap);
+    if (!out.cTableAgrees){
+      out.erratum = C_TABLE_ERRATA.filter(function(e){
+        return e.group === groupOf(cls) && out.cAfterClassCap === e.formula && out.cTable === e.table;
+      })[0] || null;
+      if (out.erratum) out.flags.push({k:'erratum', v:out.erratum});
+    }
+
+    const storeyCap = (storeys === 1) ? 6000 : Infinity;
+    out.C = Math.min(out.cAfterClassCap, storeyCap);
+    if (out.cAfterClassCap > storeyCap) out.flags.push({k:'cStoreyCap', v:6000, was:out.cAfterClassCap});
+
+    const O = inp.O;
+    if (!(O > 0)) return out;
+    out.O = O;
+
+    out.xpRaw = inp.X + inp.P;
+    out.XP = Math.min(out.xpRaw, 0.60);
+    if (out.xpRaw > 0.60 + 1e-12) out.flags.push({k:'xpCap', v:0.60, was:out.xpRaw});
+
+    let raw = out.C * O * (1 + out.XP);
+    if (inp.wood){ raw += 500; out.flags.push({k:'wood', v:500}); }
+    out.nffRaw = raw;
+
+    out.step = raw < 2500 ? 250 : 500;
+    let nff = Math.round(raw / out.step) * out.step;
+
+    if (nff > 12000){ out.flags.push({k:'nffMax', v:12000, was:nff}); nff = 12000; }
+    if (nff < 500){ out.flags.push({k:'nffMin', v:500, was:nff}); nff = 500; }
+    out.NFF = nff;
+    return out;
+  }
+
+  function readInputs(){
+    const cls = parseInt($('cClass').value, 10);
+    const areaIn = numOrNull('cArea');
+    const aFt2 = areaIn === null ? null : (units === 'si' ? areaIn * FT2_PER_M2 : areaIn);
+    let storeys = Math.round(num('cStoreys'));
+    if (!(storeys >= 1)) storeys = 1;
+    return {
+      cls: cls,
+      F: num('cF'),
+      aFt2: aFt2,
+      areaIn: areaIn,
+      storeys: storeys,
+      O: num('oFactor'),
+      X: Math.max(num('xFac'), 0),
+      P: Math.max(num('pFac'), 0),
+      wood: $('woodShingle').checked
+    };
+  }
+
+  /* ============================================================
+     LIMIT AUDIT
+     ============================================================ */
+
+  const AUDIT_TEXT = {
+    cFloor:     f => ({cls:'cap', t:'Construction factor raised to the 500 gpm floor.',
+                       c:'C calculated below 500 gpm. ISO: "The value of C shall not be less than 500 gpm."'}),
+    cClassCap:  f => ({cls:'cap', t:'Construction factor limited to ' + fmt(f.v,0) + ' gpm.',
+                       c:'Calculated ' + fmt(f.was,0) + ' gpm. ISO maximum for this construction class. Not enforced by the source worksheet.'}),
+    cStoreyCap: f => ({cls:'cap', t:'Construction factor limited to 6,000 gpm — one-storey building.',
+                       c:'Carried ' + fmt(f.was,0) + ' gpm before the cap. ISO: 6,000 gpm for a 1-storey building of any class. Not enforced by the source worksheet.'}),
+    xpCap:      f => ({cls:'cap', t:'(X + P) limited to 0.60.',
+                       c:'Entered ' + f.was.toFixed(2) + '. ISO maximum combined exposure and communication charge. Not enforced by the source worksheet.'}),
+    wood:       f => ({cls:'info', t:'Wood-shingle roof adder applied — +500 gpm.',
+                       c:'Added to the calculated flow before rounding, so the result lands on the ISO rounding grid. ISO does not fix the order; see note 4. Not carried by the source worksheet.'}),
+    nffMax:     f => ({cls:'cap', t:'Needed Fire Flow limited to 12,000 gpm.',
+                       c:'Calculated ' + fmt(f.was,0) + ' gpm. ISO maximum needed fire flow. Not enforced by the source worksheet.'}),
+    erratum:    f => ({cls:'info', t:'Published ISO table erratum at this area — the formula governs.',
+                       c:'For A = ' + fmt(f.v.from,0) + '–' + fmt(f.v.to,0) + ' ft² the printed effective-area table gives ' + fmt(f.v.table,0) +
+                         ' gpm, where C = 18 F √A rounded to the nearest 250 gpm gives ' + fmt(f.v.formula,0) +
+                         ' gpm. ISO defines C by the formula and the rounding rule, so ' + fmt(f.v.formula,0) + ' gpm is used. Five effective-area values in the whole table are affected.'}),
+    nffMin:     f => ({cls:'cap', t:'Needed Fire Flow raised to the 500 gpm minimum.',
+                       c:'Calculated ' + fmt(f.was,0) + ' gpm. ISO minimum needed fire flow.'})
+  };
+
+  function renderAudit(res, inp){
+    const ul = $('auditList');
+    const items = [];
+
+    if (inp.aFt2 === null || !(inp.aFt2 > 0)){
+      items.push('<li class="empty"><span><b>Awaiting the effective area.</b><span class="clause">Enter A in section 1 to run the calculation.</span></span></li>');
+    } else if (!(inp.F > 0)){
+      items.push('<li class="bad"><span><b>Construction coefficient F must be greater than zero.</b><span class="clause">Select a construction class, or enter a positive F.</span></span></li>');
+    } else if (!(inp.O > 0)){
+      items.push('<li class="bad"><span><b>Occupancy factor O must be greater than zero.</b><span class="clause">Select an occupancy combustibility class in section 2.</span></span></li>');
+    }
+
+    res.flags.forEach(function(f){
+      const t = AUDIT_TEXT[f.k](f);
+      items.push('<li class="' + t.cls + '"><span><b>' + t.t + '</b><span class="clause">' + t.c + '</span></span></li>');
+    });
+
+    if (res.NFF !== undefined && res.flags.length === 0){
+      items.push('<li class="ok"><span><b>No ISO limit governed this calculation.</b><span class="clause">C, (X + P) and the Needed Fire Flow all fall inside the published envelope. Result is identical to the source worksheet.</span></span></li>');
+    }
+
+    if (res.C !== undefined && res.cTableAgrees === false && !res.erratum){
+      items.push('<li class="bad"><span><b>Formula and ISO table disagree on C — do not use this result.</b><span class="clause">Formula path ' + fmt(res.cAfterClassCap,0) + ' gpm, effective-area table ' + fmt(res.cTable,0) + ' gpm. This disagreement is not a registered table erratum.</span></span></li>');
+    }
+
+    ul.innerHTML = items.join('');
+  }
+
+  /* ============================================================
+     BUILT-IN VERIFICATION
+     ============================================================ */
+
+  /* Vector A — ISO Example 3, carried in the source workbook.
+     Vector B — the example column of the source worksheet itself. */
+  const VECTORS = [
+    {name:'ISO Example 3', inp:{cls:1,F:1.5,aFt2:2655,storeys:2,O:1.15,X:0.17,P:0,wood:false},
+     expC:1500, expNff:2000, note:'Wood frame, A = 2,655 ft², C-4 free-burning, X = 0.17, P = 0'},
+    {name:'Source worksheet example', inp:{cls:1,F:1.5,aFt2:2655,storeys:2,O:1.15,X:0.17,P:0.10,wood:false},
+     expC:1500, expNff:2250, note:'As above but with P = 0.10, as the worksheet example column carries it'}
+  ];
+
+  /* Complete cross-check of the formula against the printed table.
+     For each 250 gpm step the formula turns over at A = ((k - 0.5) x 250 / 18F)^2,
+     so comparing ceil(that) with the printed "At Least" value proves or
+     disproves the whole band in one operation — every effective area is
+     covered, not a sample. */
+  function runTableCrossCheck(){
+    let checks = 0, known = 0;
+    const unknown = [];
+    for (const g in C_TABLE){
+      const cls = g === '1' ? 1 : g === '2' ? 2 : g === '34' ? 3 : 5;
+      const F = F_BY_CLASS[cls], bounds = C_TABLE[g];
+      for (let i = 1; i < bounds.length; i++){
+        const k = (500 + 250*i) / 250;
+        const turnover = Math.ceil(Math.pow((k - 0.5) * 250 / (18 * F), 2));
+        checks++;
+        if (turnover === bounds[i]) continue;
+        const lo = Math.min(turnover, bounds[i]), hi = Math.max(turnover, bounds[i]) - 1;
+        const hit = C_TABLE_ERRATA.filter(function(e){ return e.group === g && e.from === lo && e.to === hi; })[0];
+        if (hit) known++;
+        else unknown.push('group ' + g + ', A = ' + lo + '–' + hi);
+      }
+    }
+    return {checks:checks, known:known, unknown:unknown};
+  }
+
+  function renderSelfTest(){
+    const rows = [];
+    const x = runTableCrossCheck();
+    rows.push(
+      '<div class="st-row"><span><span class="stname">Construction factor — formula against the ISO effective-area table</span>' +
+      '<span class="stdet">' + x.checks + ' band turnover points checked analytically, covering every effective area rather than a sample · ' +
+      x.known + ' published-table errata, registered' +
+      (x.unknown.length ? ' · UNREGISTERED: ' + x.unknown.join('; ') : '') + '</span></span>' +
+      '<span class="badge ' + (x.unknown.length ? 'bad' : 'ok') + '">' + (x.unknown.length ? x.unknown.length + ' failed' : 'Pass') + '</span></div>'
+    );
+
+    VECTORS.forEach(function(v){
+      const r = solve(v.inp);
+      const okC = r.C === v.expC, okN = r.NFF === v.expNff;
+      rows.push(
+        '<div class="st-row"><span><span class="stname">' + v.name + '</span>' +
+        '<span class="stdet">' + v.note + ' — C ' + fmt(r.C,0) + ' gpm (expect ' + fmt(v.expC,0) + ') · ' +
+        'NFF ' + fmt(r.NFF,0) + ' gpm (expect ' + fmt(v.expNff,0) + ')</span></span>' +
+        '<span class="badge ' + (okC && okN ? 'ok' : 'bad') + '">' + (okC && okN ? 'Pass' : 'Fail') + '</span></div>'
+      );
+    });
+
+    $('selfTest').innerHTML = rows.join('');
+  }
+
+  /* ============================================================
+     RENDER
+     ============================================================ */
+
+  function flowSub(gpm){
+    if (gpm === null || gpm === undefined || !isFinite(gpm)) return '&nbsp;';
+    return fmt(gpm * LPS_PER_GPM, 1) + ' L/s &nbsp;·&nbsp; ' + fmt(gpm * M3H_PER_GPM, 1) + ' m³/h';
+  }
+
+  function recalc(){
+    const inp = readInputs();
+    const res = solve(inp);
+
+    // ---- Section 1
+    $('noteClass').textContent = CLASS_NAME[inp.cls] + ' · F = ' + F_BY_CLASS[inp.cls];
+
+    if (res.cRaw !== undefined){
+      $('outCraw').innerHTML = fmt(res.cRaw, 2) + '<span class="runit">gpm</span>';
+      $('outCrawSub').textContent = '18 × ' + inp.F + ' × √' + fmt(inp.aFt2, 0) + ' ft²';
+      $('outC').innerHTML = fmt(res.C, 0) + '<span class="runit">gpm</span>';
+      const capNote = res.C !== res.cRounded ? ' · limited from ' + fmt(res.cRounded,0) + ' gpm' : '';
+      $('outCsub').innerHTML = 'Rounded to the nearest 250 gpm' + capNote + ' &nbsp;·&nbsp; ' + flowSub(res.C);
+      $('cStrip').innerHTML =
+        '<span class="formula-chip">C = 18 F √A</span>' +
+        '<span class="formula-chip">F = ' + inp.F + '</span>' +
+        '<span class="formula-chip">A = ' + fmt(inp.aFt2,0) + ' ft²</span>' +
+        '<span class="formula-chip">table check: ' + fmt(res.cTable,0) + ' gpm ' +
+          (res.cTableAgrees ? '✓' : (res.erratum ? '⚠ table erratum' : '✗')) + '</span>';
+    } else {
+      $('outCraw').innerHTML = '—';
+      $('outCrawSub').textContent = 'Before rounding and limits';
+      $('outC').innerHTML = '—';
+      $('outCsub').textContent = 'Rounded to the nearest 250 gpm';
+      $('cStrip').innerHTML = '<span class="formula-chip">C = 18 F √A</span>';
+    }
+
+    // ---- Section 2
+    $('oRule').innerHTML = O_RULE[parseFloat($('oClass').value).toFixed(2)] || '';
+
+    // ---- Section 3
+    const xpRaw = inp.X + inp.P;
+    const xp = Math.min(xpRaw, 0.60);
+    $('outXPraw').textContent = xpRaw.toFixed(2);
+    $('outXP').textContent = xp.toFixed(2);
+    $('outXPsub').textContent = xpRaw > 0.60 ? 'Limited from ' + xpRaw.toFixed(2) + ' — ISO maximum 0.60' : 'ISO maximum 0.60';
+
+    // ---- Section 4
+    if (res.NFF !== undefined){
+      $('outNff').innerHTML = fmt(res.NFF, 0) + '<span class="runit">gpm</span>';
+      $('outNffSub').innerHTML = flowSub(res.NFF) + ' &nbsp;·&nbsp; no automatic sprinkler credit applied';
+      $('outNffRaw').innerHTML = fmt(res.nffRaw, 2) + '<span class="runit">gpm</span>';
+      $('outNffRawSub').innerHTML = fmt(res.C,0) + ' × ' + res.O.toFixed(2) + ' × (1 + ' + res.XP.toFixed(2) + ')' +
+        (inp.wood ? ' + 500' : '');
+      $('outStep').innerHTML = fmt(res.step, 0) + '<span class="runit">gpm</span>';
+      $('outStepSub').textContent = res.step === 250 ? 'Calculated flow below 2,500 gpm' : 'Calculated flow at or above 2,500 gpm';
+      $('nffStrip').innerHTML =
+        '<span class="formula-chip">NFF = (C)(O)(1 + (X + P))</span>' +
+        '<span class="formula-chip">C = ' + fmt(res.C,0) + '</span>' +
+        '<span class="formula-chip">O = ' + res.O.toFixed(2) + '</span>' +
+        '<span class="formula-chip">X + P = ' + res.XP.toFixed(2) + '</span>';
+    } else {
+      $('outNff').innerHTML = '—';
+      $('outNffSub').textContent = 'Enter the effective area to begin';
+      $('outNffRaw').innerHTML = '—';
+      $('outNffRawSub').innerHTML = '&nbsp;';
+      $('outStep').innerHTML = '—';
+      $('outStepSub').innerHTML = '&nbsp;';
+      $('nffStrip').innerHTML = '<span class="formula-chip">NFF = (C)(O)(1 + (X + P))</span>';
+    }
+
+    renderAudit(res, inp);
+    renderSelfTest();
+    return {inp:inp, res:res};
+  }
+
+  /* ============================================================
+     REFERENCE TABLE RENDERING
+     ============================================================ */
+
+  function buildTables(){
+    let h = '';
+    X_TABLE.forEach(function(band){
+      band.rows.forEach(function(r, i){
+        h += '<tr>';
+        if (i === 0) h += '<td class="grp" rowspan="' + band.rows.length + '">' + band.dist + '</td>';
+        h += '<td>' + r[0] + ' ft</td>';
+        h += '<td>' + r[1].toFixed(2) + '</td><td>' + r[2].toFixed(2) + '</td><td>' + r[3].toFixed(2) + '</td>';
+        h += '<td class="zero">0</td></tr>';
+      });
+    });
+    $('tblXBody').innerHTML = h;
+
+    h = '';
+    P_ROWS.forEach(function(r){
+      h += '<tr><td class="grp" style="text-align:left">' + r[0] + '</td>';
+      for (let i = 1; i < r.length; i++){
+        const v = r[i];
+        if (v === '++') h += '<td class="fn">++</td>';
+        else if (v === 0) h += '<td class="zero">0</td>';
+        else h += '<td>' + v.toFixed(2) + '</td>';
+      }
+      h += '</tr>';
+    });
+    $('tblPBody').innerHTML = h;
+  }
+
+  /* ============================================================
+     UNITS, SAMPLES, EXPORT, RESET
+     ============================================================ */
+
+  function setUnits(next){
+    if (next === units) return;
+    const a = numOrNull('cArea');
+    if (a !== null){
+      $('cArea').value = (next === 'si' ? a / FT2_PER_M2 : a * FT2_PER_M2).toFixed(2);
+    }
+    units = next;
+    $('uArea').textContent = units === 'si' ? 'm²' : 'ft²';
+    $('btnENG').classList.toggle('active', units === 'eng');
+    $('btnSI').classList.toggle('active', units === 'si');
+    recalc();
+  }
+
+  function loadSample(P){
+    if (units !== 'eng'){ units = 'si'; setUnits('eng'); }   // force the ISO basis
+    $('cClass').value = '1';
+    $('cF').value = '1.5';
+    $('cArea').value = '2655';
+    $('cStoreys').value = '2';
+    $('oClass').value = '1.15';
+    $('oFactor').value = '1.15';
+    $('xFac').value = '0.17';
+    $('pFac').value = String(P);
+    $('woodShingle').checked = false;
+    recalc();
+  }
+
+  function exportCsv(){
+    const s = recalc(), inp = s.inp, res = s.res;
+    const rows = [
+      ['ISO Needed Fire Flow Calculation'],
+      ['Method','ISO Guide for Determination of Needed Fire Flow, Edition 05-2006'],
+      ['Basis','Non-sprinklered. No automatic sprinkler credit applied.'],
+      ['Project', $('idProject').value],
+      ['Building', $('idBuilding').value],
+      ['Prepared by', $('idBy').value],
+      ['Generated', new Date().toISOString().slice(0,10)],
+      [],
+      ['Item','Value','Unit','Note'],
+      ['Construction class', inp.cls, '', CLASS_NAME[inp.cls]],
+      ['Construction coefficient F', inp.F, '', ''],
+      ['Effective area A', inp.aFt2 === null ? '' : inp.aFt2.toFixed(0), 'ft2', units === 'si' ? 'entered as ' + inp.areaIn + ' m2' : ''],
+      ['Number of storeys', inp.storeys, '', ''],
+      ['C calculated', res.cRaw === undefined ? '' : res.cRaw.toFixed(2), 'gpm', '18 F sqrt(A)'],
+      ['C rounded', res.cRounded === undefined ? '' : res.cRounded, 'gpm', 'nearest 250 gpm, 500 gpm floor'],
+      ['C from ISO effective-area table', res.cTable === undefined ? '' : res.cTable, 'gpm', res.cTableAgrees ? 'agrees with formula' : 'DISAGREES with formula'],
+      ['C governing', res.C === undefined ? '' : res.C, 'gpm', ''],
+      ['Occupancy factor O', inp.O, '', ''],
+      ['Exposure factor X', inp.X, '', 'highest single exposure charge'],
+      ['Communication factor P', inp.P, '', ''],
+      ['X + P governing', res.XP === undefined ? '' : res.XP.toFixed(2), '', 'ISO maximum 0.60'],
+      ['Wood-shingle adder', inp.wood ? 500 : 0, 'gpm', ''],
+      ['NFF calculated', res.nffRaw === undefined ? '' : res.nffRaw.toFixed(2), 'gpm', '(C)(O)(1+(X+P))'],
+      ['Rounding step', res.step === undefined ? '' : res.step, 'gpm', ''],
+      ['NFF governing', res.NFF === undefined ? '' : res.NFF, 'gpm', ''],
+      ['NFF governing', res.NFF === undefined ? '' : (res.NFF * LPS_PER_GPM).toFixed(1), 'L/s', ''],
+      ['NFF governing', res.NFF === undefined ? '' : (res.NFF * M3H_PER_GPM).toFixed(1), 'm3/h', ''],
+      []
+    ];
+    rows.push(['Limit audit']);
+    if (res.flags.length === 0) rows.push(['','No ISO limit governed this calculation']);
+    res.flags.forEach(function(f){ const t = AUDIT_TEXT[f.k](f); rows.push(['', t.t, '', t.c.replace(/<[^>]+>/g,'')]); });
+
+    const csv = rows.map(function(r){
+      return r.map(function(c){
+        c = (c === undefined || c === null) ? '' : String(c);
+        return /[",\n]/.test(c) ? '"' + c.replace(/"/g,'""') + '"' : c;
+      }).join(',');
+    }).join('\n');
+
+    const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'needed-fire-flow' + ($('idProject').value ? '-' + $('idProject').value.replace(/[^\w-]+/g,'_') : '') + '.csv';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(a.href);
+  }
+
+  function reset(){
+    ['idProject','idBuilding','idBy','cArea'].forEach(function(id){ $(id).value = ''; });
+    $('cClass').value = '1';
+    $('cF').value = '1.5';
+    $('cStoreys').value = '2';
+    $('oClass').value = '1.00';
+    $('oFactor').value = '1.00';
+    $('xFac').value = '0';
+    $('pFac').value = '0';
+    $('woodShingle').checked = false;
+    recalc();
+  }
+
+  /* ============================================================
+     WIRING
+     ============================================================ */
+
+  $('cClass').addEventListener('change', function(){
+    $('cF').value = F_BY_CLASS[parseInt(this.value,10)];
+    recalc();
+  });
+  $('oClass').addEventListener('change', function(){
+    $('oFactor').value = parseFloat(this.value).toFixed(2);
+    recalc();
+  });
+
+  ['cF','cArea','cStoreys','oFactor','xFac','pFac'].forEach(function(id){
+    $(id).addEventListener('input', recalc);
+  });
+  $('woodShingle').addEventListener('change', recalc);
+
+  $('btnENG').addEventListener('click', function(){ setUnits('eng'); });
+  $('btnSI').addEventListener('click', function(){ setUnits('si'); });
+  $('btnEx3').addEventListener('click', function(){ loadSample(0); });
+  $('btnExWs').addEventListener('click', function(){ loadSample(0.10); });
+  $('btnCsv').addEventListener('click', exportCsv);
+  $('btnPrint').addEventListener('click', function(){ window.print(); });
+  $('btnReset').addEventListener('click', reset);
+
+  buildTables();
+  recalc();
+})();
+</script>
+
+</body>
+</html>
