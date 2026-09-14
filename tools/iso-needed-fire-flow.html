@@ -800,23 +800,89 @@
         <div class="formula-strip" id="nffStrip"></div>
       </div>
 
-      <!-- ============ 6 · LIMIT AUDIT ============ -->
+      <!-- ============ 6 · GOVERNING DEMAND, DURATION AND STORAGE ============ -->
       <div class="card">
-        <h2><span class="num">6</span>Limit Audit</h2>
+        <h2><span class="num">6</span>Governing Demand, Duration &amp; Storage</h2>
+        <p class="hint">ISO Needed Fire Flow is one demand among several, and it is a flow rather than a volume. Set the others against it here, then apply the duration your code requires.</p>
+
+        <div class="table-scroll">
+          <table class="ref build" id="demandTable" style="min-width:430px">
+            <thead><tr><th>Demand</th><th>Flow (gpm)</th><th>Source / reference</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>ISO Needed Fire Flow</td>
+                <td><input type="number" id="demIso" readonly></td>
+                <td><span class="note-inline" style="margin:0">This calculation — insurance-rating basis</span></td>
+              </tr>
+              <tr>
+                <td>Code / authority requirement</td>
+                <td><input type="number" id="demCode" step="any" placeholder="0"></td>
+                <td><input type="text" id="demCodeRef" placeholder="e.g. QCDD Fire Safety Handbook, table"></td>
+              </tr>
+              <tr>
+                <td>Project specification</td>
+                <td><input type="number" id="demSpec" step="any" placeholder="0"></td>
+                <td><input type="text" id="demSpecRef" placeholder="e.g. client fire-water spec, clause"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="field-row" style="margin-top:16px">
+          <div>
+            <label>Required duration <span class="unit">hours</span>
+              <span class="note-inline">Set by the governing code or the authority — not by ISO</span>
+            </label>
+            <input type="number" id="durHours" step="any" placeholder="e.g. 2">
+          </div>
+          <div>
+            <label>Storage efficiency / usable fraction <span class="unit">%</span>
+              <span class="note-inline">100 % = the whole tank volume is drawable</span>
+            </label>
+            <input type="number" id="durUsable" step="any" value="100">
+          </div>
+        </div>
+
+        <hr class="divider-line">
+
+        <div class="result-grid">
+          <div class="result-tile headline">
+            <div class="rlabel">Governing fire-water demand</div>
+            <div class="rvalue" id="outGovDemand">—</div>
+            <div class="rsub" id="outGovDemandSub">Enter the demands to compare</div>
+          </div>
+          <div class="result-tile">
+            <div class="rlabel">Required fire-water volume</div>
+            <div class="rvalue" id="outVolume">—</div>
+            <div class="rsub" id="outVolumeSub">&nbsp;</div>
+          </div>
+          <div class="result-tile">
+            <div class="rlabel">Tank capacity at the stated usable fraction</div>
+            <div class="rvalue" id="outTank">—</div>
+            <div class="rsub" id="outTankSub">&nbsp;</div>
+          </div>
+        </div>
+
+        <ul class="audit" id="demandTrace" style="margin-top:16px"></ul>
+      </div>
+
+      <!-- ============ 7 · LIMIT AUDIT ============ -->
+      <div class="card">
+        <h2><span class="num">7</span>Limit Audit</h2>
         <p class="hint">Every ISO limit that bit on this calculation, named, so the result is traceable against the source worksheet.</p>
         <ul class="audit" id="auditList"></ul>
       </div>
 
-      <!-- ============ 7 · VERIFICATION ============ -->
+      <!-- ============ 8 · VERIFICATION ============ -->
       <div class="card">
-        <h2><span class="num">7</span>Built-in Verification</h2>
+        <h2><span class="num">8</span>Built-in Verification</h2>
         <p class="hint">Runs on every keystroke. A red row means the tool disagrees with its own source data and the result must not be used.</p>
         <div class="selftest" id="selfTest"></div>
       </div>
 
-      <!-- ============ 8 · CALCULATION SHEET ============ -->
+      <!-- ============ 9 · CALCULATION SHEET ============ -->
       <div class="card">
-        <h2><span class="num">8</span>Calculation Sheet</h2>
+        <h2><span class="num">9</span>Calculation Sheet</h2>
         <p class="hint">The record to attach to a submission — the governing figure, how it was reached, and the limits and lookups behind it.</p>
         <div class="remark-out" id="remarkOut">—</div>
         <div class="btn-row no-print" style="margin-top:12px">
@@ -830,9 +896,9 @@
     </div>
   </div>
 
-  <!-- ============ 9 · REFERENCE TABLES ============ -->
+  <!-- ============ 10 · REFERENCE TABLES ============ -->
   <div class="card">
-    <h2><span class="num">9</span>Reference — ISO Data Tables</h2>
+    <h2><span class="num">10</span>Reference — ISO Data Tables</h2>
     <p class="hint">Transcribed from the tables carried in the source worksheet. The builders in section 3 read 330.A and 330.B directly and name the cell they used.</p>
 
     <div class="table-scroll">
@@ -933,9 +999,9 @@
     </div>
   </div>
 
-  <!-- ============ 10 · BASIS AND LIMITATIONS ============ -->
+  <!-- ============ 11 · BASIS AND LIMITATIONS ============ -->
   <div class="card">
-    <h2><span class="num">10</span>Basis, Departures and Limitations</h2>
+    <h2><span class="num">11</span>Basis, Departures and Limitations</h2>
     <p class="hint">Where this tool differs from the spreadsheet it was derived from, and why.</p>
     <ol class="notes">
       <li><b>Method source.</b> ISO, <i>Guide for Determination of Needed Fire Flow</i>, Edition 05-2006, as reproduced in a 2011 utility screening worksheet. The tables in section 7 and the worked example are transcribed from that document. No utility branding, disclaimer or sign-off form is reproduced.</li>
@@ -951,7 +1017,9 @@
       <li><b>Sprinkler path: shown alongside, not blanked.</b> Where a sprinkler system is proposed the source worksheet stops using the ISO calculation and takes the sprinkler demand plus the outside hose allowance, with a 500 gpm floor. Its calculated-NFF cell then reports <code>N/A</code>. This tool applies the same governing rule but keeps the ISO figure on screen as a reference point instead of blanking it, marked as not governing. Erasing a number that was correctly computed removes the reader's ability to see how far apart the two bases are, which is exactly what a reviewer wants to know.</li>
       <li><b>Residential shortcut.</b> Table A applies only to 1 and 2 family dwellings not exceeding 2 storeys in height, and assigns the flow from the separation distance alone — no construction, occupancy or exposure factors, so none of their limits can bite. A higher flow requested by the fire official governs over the table where it is higher. Selecting this building type hides the full method rather than leaving both paths live, because only one of them can be the answer.</li>
       <li><b>The 500 gpm floor on the sprinkler total.</b> The source applies it unconditionally, so its sign-off sheet shows 500 gpm even with no sprinkler data entered at all. Here the total is withheld until an ASSF is entered, and the floor is flagged when it actually bites.</li>
-      <li><b>Duration and storage.</b> NFF is a flow, not a volume. It does not by itself size a tank, a pump or a supply main.</li>
+      <li><b>Duration and storage.</b> ISO Needed Fire Flow is a <b>flow</b>. ISO attaches no duration to it, so no duration is assumed here — section 6 takes the figure your governing code or the authority sets and returns the volume behind it. The only duration datum in the source is the cover note that flows above 3,500 gpm may be identified for three hours; that is one data point about one utility's practice, not a rule, and it is not applied automatically.</li>
+      <li><b>No code fire-flow table is embedded.</b> The plan for this phase was to carry an IFC Appendix B or NFPA 1 fire-flow table as a comparison column. Neither is reproduced, for two reasons. They are not in the source document this tool was built from, so transcribing them would mean taking design data from an unverified secondary source; and both are separately copyrighted by their publishers. Section 6 instead takes the figure from your governing code with its reference and resolves which demand governs. Where a licensed copy of the applicable table is available, wiring it in is a contained change.</li>
+      <li><b>Which demand governs.</b> ISO Needed Fire Flow grades a municipal water supply for insurance rating. It is not a code requirement, and it is not a project specification. Section 6 sets the three side by side and takes the highest as governing, which is the conservative reading and the usual contractual one; where a specific code or contract says otherwise, that wording governs, not this tool.</li>
     </ol>
   </div>
 
@@ -1088,6 +1156,7 @@
   const LPS_PER_GPM = 0.06309019640343866;
   const M3H_PER_GPM = 0.2271247070384;
   const FT_PER_M    = 3.280839895013123;
+  const L_PER_USGAL = 3.785411784;
 
   /* ============================================================
      ENGINE
@@ -1204,6 +1273,27 @@
     if (!(assf > 0)) return null;
     const sum = assf + (hose > 0 ? hose : 0);
     return {sum: sum, total: Math.max(sum, 500), floored: sum < 500};
+  }
+
+  /* ---- Governing demand and stored volume ----
+     ISO Needed Fire Flow is one demand among several and carries no duration
+     of its own, so the duration is an input the code or the authority sets.
+     Volume is simply flow x time; the usable fraction grosses it up to a
+     tank capacity. */
+  function governingDemand(list){
+    const given = list.filter(function(d){ return d.gpm > 0; });
+    if (!given.length) return null;
+    let best = given[0];
+    given.forEach(function(d){ if (d.gpm > best.gpm) best = d; });
+    return {demand: best, all: given};
+  }
+  function storedVolume(gpm, hours, usablePct){
+    if (!(gpm > 0) || !(hours > 0)) return null;
+    const gallons = gpm * 60 * hours;
+    const litres = gallons * L_PER_USGAL;
+    const frac = (usablePct > 0 ? Math.min(usablePct, 100) : 100) / 100;
+    return {gallons: gallons, litres: litres, m3: litres / 1000,
+            tankM3: litres / 1000 / frac, tankGallons: gallons / frac, frac: frac};
   }
 
   function num(id){ const v = parseFloat($(id).value); return isFinite(v) ? v : 0; }
@@ -1504,6 +1594,48 @@
       );
     })();
 
+    /* Governing demand: the highest stated figure wins, and nothing stated wins nothing. */
+    (function(){
+      const D = function(k,g){ return {key:k, name:k, gpm:g, ref:''}; };
+      const cases = [
+        [[D('iso',2000), D('code',3000), D('spec',0)],    'code'],
+        [[D('iso',2000), D('code',1500), D('spec',0)],    'iso'],
+        [[D('iso',0),    D('code',0),    D('spec',2500)], 'spec'],
+        [[D('iso',2000), D('code',2000), D('spec',2000)], 'iso'],
+        [[D('iso',0),    D('code',0),    D('spec',0)],    null]
+      ];
+      let bad = [];
+      cases.forEach(function(c, i){
+        const r = governingDemand(c[0]);
+        const got = r ? r.demand.key : null;
+        if (got !== c[1]) bad.push('case ' + (i+1) + ': ' + got + ' vs ' + c[1]);
+      });
+      rows.push(
+        '<div class="st-row"><span><span class="stname">Governing demand — highest stated figure</span>' +
+        '<span class="stdet">' + cases.length + ' cases including ties and the nothing-entered case' +
+        (bad.length ? ' · ' + bad.join('; ') : '') + '</span></span>' +
+        '<span class="badge ' + (bad.length ? 'bad' : 'ok') + '">' + (bad.length ? bad.length + ' failed' : 'Pass') + '</span></div>'
+      );
+    })();
+
+    /* Stored volume: flow x time, converted once, grossed up by the usable fraction. */
+    (function(){
+      let bad = [];
+      const a = storedVolume(2000, 2, 100);
+      if (!a || Math.round(a.gallons) !== 240000) bad.push('2,000 gpm x 2 h should be 240,000 US gal, got ' + (a ? Math.round(a.gallons) : 'null'));
+      if (!a || Math.abs(a.m3 - 908.4988) > 0.01) bad.push('240,000 US gal should be 908.50 m³, got ' + (a ? a.m3.toFixed(2) : 'null'));
+      const b = storedVolume(1000, 3, 80);
+      if (!b || Math.abs(b.tankM3 - b.m3 / 0.8) > 1e-9) bad.push('80 % usable should gross the tank up by 1/0.8');
+      if (storedVolume(2000, 0, 100) !== null) bad.push('no duration should give no volume');
+      if (storedVolume(0, 2, 100) !== null) bad.push('no flow should give no volume');
+      rows.push(
+        '<div class="st-row"><span><span class="stname">Stored volume — flow × duration, usable fraction applied</span>' +
+        '<span class="stdet">5 cases: the US gal and m³ conversions, the usable-fraction gross-up, and both incomplete cases' +
+        (bad.length ? ' · ' + bad.join('; ') : '') + '</span></span>' +
+        '<span class="badge ' + (bad.length ? 'bad' : 'ok') + '">' + (bad.length ? bad.length + ' failed' : 'Pass') + '</span></div>'
+      );
+    })();
+
     /* Vector C — the effective-area rule against ISO Example 3's own geometry. */
     (function(){
       const ea = effectiveArea(1, [{name:'Ground', area:2250, unprot:false}, {name:'Second', area:810, unprot:false}]);
@@ -1680,8 +1812,75 @@
     return {path:'iso', nff: res.NFF === undefined ? null : res.NFF};
   }
 
+  /* Section 6 — what actually governs the fire-water supply, and the volume
+     behind it. The ISO figure feeds in; the others are the user's to state. */
+  function renderDemand(gov){
+    const iso = (gov && gov.nff !== null && gov.nff !== undefined) ? gov.nff : 0;
+    $('demIso').value = iso > 0 ? String(iso) : '';
+
+    const isoLabel = gov && gov.path === 'res' ? 'ISO Table A shortcut'
+                   : gov && gov.path === 'spr' ? 'Sprinkler demand + outside hose'
+                   : 'ISO Needed Fire Flow';
+    const list = [
+      {key:'iso',  name: isoLabel,               gpm: iso,           ref: 'this calculation'},
+      {key:'code', name:'Code / authority',      gpm: num('demCode'), ref: $('demCodeRef').value.trim()},
+      {key:'spec', name:'Project specification', gpm: num('demSpec'), ref: $('demSpecRef').value.trim()}
+    ];
+    const g = governingDemand(list);
+    const hours = num('durHours');
+    const vol = g ? storedVolume(g.demand.gpm, hours, num('durUsable')) : null;
+
+    if (!g){
+      $('outGovDemand').innerHTML = '—';
+      $('outGovDemandSub').textContent = 'Enter the demands to compare';
+    } else {
+      $('outGovDemand').innerHTML = fmt(g.demand.gpm, 0) + '<span class="runit">gpm</span>';
+      $('outGovDemandSub').innerHTML = flowSub(g.demand.gpm) + ' &nbsp;·&nbsp; ' + esc(g.demand.name) + ' governs';
+    }
+    if (!vol){
+      $('outVolume').innerHTML = '—';
+      $('outVolumeSub').innerHTML = g ? 'Enter the required duration' : '&nbsp;';
+      $('outTank').innerHTML = '—';
+      $('outTankSub').innerHTML = '&nbsp;';
+    } else {
+      $('outVolume').innerHTML = fmt(vol.m3, 0) + '<span class="runit">m³</span>';
+      $('outVolumeSub').innerHTML = fmt(vol.gallons, 0) + ' US gal &nbsp;·&nbsp; ' + fmt(g.demand.gpm, 0) + ' gpm × ' + fmt(hours, 2) + ' h';
+      $('outTank').innerHTML = fmt(vol.tankM3, 0) + '<span class="runit">m³</span>';
+      $('outTankSub').innerHTML = vol.frac === 1
+        ? 'Whole volume drawable'
+        : fmt(vol.tankGallons, 0) + ' US gal at ' + fmt(vol.frac * 100, 0) + ' % usable';
+    }
+
+    const items = [];
+    if (!g){
+      items.push(traceHtml('empty', 'No demand entered yet.',
+        'The ISO figure fills in from section 5. Add the code requirement and any project specification to see which governs.'));
+    } else {
+      items.push(traceHtml('ok', esc(g.demand.name) + ' governs at ' + fmt(g.demand.gpm, 0) + ' gpm.',
+        g.all.map(function(d){ return esc(d.name) + ' ' + fmt(d.gpm,0) + ' gpm' + (d.ref ? ' (' + esc(d.ref) + ')' : ''); }).join(' · ') +
+        '. The highest stated demand governs the supply.'));
+      if (g.demand.key !== 'iso' && iso > 0){
+        items.push(traceHtml('info', 'The ISO figure is not the governing demand here.',
+          'ISO Needed Fire Flow is an insurance-rating quantity. Where a code or a project specification asks for more, that requirement governs the design.'));
+      }
+      if (g.demand.key === 'iso' && (num('demCode') > 0 || num('demSpec') > 0)){
+        items.push(traceHtml('cap', 'The ISO figure exceeds the stated code and specification demands.',
+          'Check whether the ISO basis is the right one to design to before carrying it forward — it grades a municipal water supply, it does not set a code requirement.'));
+      }
+      if (!(hours > 0)){
+        items.push(traceHtml('empty', 'Enter the required duration to size the storage.',
+          'ISO does not set a duration. The source worksheet refers to flows above 3,500 gpm being identified for a duration of three hours; the governing code or the authority fixes the figure for your project.'));
+      }
+    }
+    items.push(traceHtml('info', 'No code fire-flow table is embedded in this tool.',
+      'The IFC and NFPA fire-flow tables are not reproduced here — they are not in the source document this tool was built from, and they are separately copyrighted. Enter the figure your governing code gives, with its reference, and the comparison above does the rest.'));
+    $('demandTrace').innerHTML = items.join('');
+
+    return {governing: g ? g.demand : null, all: g ? g.all : [], hours: hours, vol: vol};
+  }
+
   /* The calculation sheet: one plain-text record of what governed and why. */
-  function renderRemark(inp, res, gov){
+  function renderRemark(inp, res, gov, dem){
     const L = [];
     const id = [];
     if ($('idProject').value)  id.push('Project: ' + $('idProject').value);
@@ -1724,6 +1923,21 @@
       }
       L.push('');
       L.push('GOVERNING NEEDED FIRE FLOW: ' + (gov.nff === null ? 'incomplete' : fmt(gov.nff,0) + ' gpm  (' + fmt(gov.nff*LPS_PER_GPM,1) + ' L/s, ' + fmt(gov.nff*M3H_PER_GPM,1) + ' m³/h)'));
+    }
+
+    if (dem && dem.governing){
+      L.push('');
+      L.push('SUPPLY REQUIREMENT');
+      dem.all.forEach(function(d){
+        L.push('  ' + d.name + ': ' + fmt(d.gpm,0) + ' gpm' + (d.ref ? '  [' + d.ref + ']' : '') +
+               (d === dem.governing ? '   <-- governs' : ''));
+      });
+      if (dem.vol){
+        L.push('  Duration ' + fmt(dem.hours,2) + ' h → ' + fmt(dem.vol.m3,0) + ' m³ (' + fmt(dem.vol.gallons,0) + ' US gal)' +
+               (dem.vol.frac < 1 ? '; tank capacity ' + fmt(dem.vol.tankM3,0) + ' m³ at ' + fmt(dem.vol.frac*100,0) + ' % usable' : ''));
+      } else {
+        L.push('  Duration not stated — ISO sets no duration; the governing code or the authority fixes it.');
+      }
     }
 
     const auditText = ($('auditList').innerText || '').replace(/\s*\n\s*/g, ' — ').trim();
@@ -1789,10 +2003,12 @@
     // ---- Sections 4 and 5 — the governing result across the three paths
     const gov = renderResult(inp, res);
 
+    const dem = renderDemand(gov);
+
     renderAudit(res, inp, gov);
     renderSelfTest();
-    renderRemark(inp, res, gov);
-    return {inp:inp, res:res, gov:gov};
+    renderRemark(inp, res, gov, dem);
+    return {inp:inp, res:res, gov:gov, dem:dem};
   }
 
   /* ============================================================
@@ -2236,6 +2452,20 @@
     }
     rows.push(['GOVERNING NEEDED FIRE FLOW', gov.nff === null || gov.nff === undefined ? '' : gov.nff, 'gpm', '']);
     rows.push([]);
+
+    const dem = s.dem || {};
+    rows.push(['Supply requirement']);
+    (dem.all || []).forEach(function(d){
+      rows.push([d.name, d.gpm, 'gpm', (d.ref || '') + (dem.governing && d === dem.governing ? ' [governs]' : '')]);
+    });
+    if (dem.governing) rows.push(['GOVERNING FIRE-WATER DEMAND', dem.governing.gpm, 'gpm', dem.governing.name]);
+    if (dem.vol){
+      rows.push(['Required duration', dem.hours, 'h', 'set by the governing code or the authority; ISO sets none']);
+      rows.push(['Required volume', Math.round(dem.vol.gallons), 'US gal', '']);
+      rows.push(['Required volume', dem.vol.m3.toFixed(1), 'm3', '']);
+      if (dem.vol.frac < 1) rows.push(['Tank capacity', dem.vol.tankM3.toFixed(1), 'm3', (dem.vol.frac*100).toFixed(0) + ' % usable']);
+    }
+    rows.push([]);
     const trace = function(id){
       const el = $(id);
       return el && el.offsetParent !== null ? (el.innerText || '').replace(/\s+/g,' ').trim() : '';
@@ -2284,8 +2514,10 @@
     floorIds = []; exposures = []; comms = [];
     $('floorBody').innerHTML = ''; $('expList').innerHTML = ''; $('commList').innerHTML = '';
     buildOccRows();
-    ['idProject','idBuilding','idBy','cArea','resDist','resRequested','sprAssf','sprHose','pumpFlow','pumpTdh']
+    ['idProject','idBuilding','idBy','cArea','resDist','resRequested','sprAssf','sprHose','pumpFlow','pumpTdh',
+     'demCode','demCodeRef','demSpec','demSpecRef','durHours']
       .forEach(function(id){ $(id).value = ''; });
+    $('durUsable').value = '100';
     $('buildingType').value = 'full';
     $('sprProposed').checked = false;
     $('cClass').value = '1';
@@ -2335,7 +2567,8 @@
 
   $('buildingType').addEventListener('change', syncBuilders);
   $('sprProposed').addEventListener('change', syncBuilders);
-  ['resDist','resRequested','sprAssf','sprHose','pumpFlow','pumpTdh'].forEach(function(id){
+  ['resDist','resRequested','sprAssf','sprHose','pumpFlow','pumpTdh',
+   'demCode','demCodeRef','demSpec','demSpecRef','durHours','durUsable'].forEach(function(id){
     $(id).addEventListener('input', recalc);
   });
   $('btnCopyRemark').addEventListener('click', function(){
