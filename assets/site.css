@@ -76,6 +76,7 @@ body{
 @media (prefers-reduced-motion: reduce){
   .wv1,.wv2,.wv3,.wv4,.wv5{ animation:none; }
   .why-arrow{ animation:none; }
+  .rung::after{ animation:none; }
   html{scroll-behavior:auto;}
 }
 
@@ -83,6 +84,15 @@ body{
 .wrap{ position:relative; z-index:1; max-width:var(--maxw); margin:0 auto; padding:0 24px; }
 section{ padding:64px 0; scroll-margin-top:76px; }
 section + section{ border-top:1px solid rgba(91,157,250,0.13); }
+/* Section connector: a chevron hanging from each divider, steering the eye
+   down the page. Home page only — accreditations.html shares this sheet. */
+body.home section + section{ position:relative; }
+body.home section + section::before{
+  content:''; position:absolute; left:50%; top:10px;
+  width:11px; height:11px;
+  border-right:2px solid rgba(34,211,238,0.5); border-bottom:2px solid rgba(34,211,238,0.5);
+  transform:translateX(-50%) rotate(45deg);
+}
 
 /* ---------- Nav ---------- */
 .nav{
@@ -382,21 +392,83 @@ a:focus-visible, button:focus-visible{
    MAJOR UPDATE — journey, purpose, projects, awards, testimonials, contact
    ========================================================================== */
 
-/* ---------- 1. My Journey ---------- */
-.journey{ position:relative; padding-left:34px; }
-.journey::before{
-  content:''; position:absolute; left:9px; top:8px; bottom:8px; width:2px;
+/* ---------- 1. My Journey — the Engineered Ladder ---------- */
+/* An ordered list of rungs. Wide screens: panels alternate either side of a
+   central spine, each tied to it by a short horizontal rung and a node; a
+   chevron on the spine points to the next rung. Below 760px the ladder folds
+   to the single left-spine column so the copy keeps its full width. Node,
+   rung and chevron are pseudo-elements — no images, no external requests. */
+.ladder{ list-style:none; margin:0; padding:0; position:relative; }
+.ladder::before{
+  content:''; position:absolute; left:50%; top:10px; bottom:10px; width:2px;
+  transform:translateX(-50%);
   background:linear-gradient(180deg,var(--cyan-400),var(--blue-500) 45%,var(--blue-700) 85%,transparent);
 }
-.jstep{ position:relative; padding-bottom:30px; }
-.jstep:last-child{ padding-bottom:0; }
-.jstep::before{
-  content:''; position:absolute; left:-30px; top:5px;
+.rung{
+  position:relative; display:grid; grid-template-columns:1fr 64px 1fr;
+  align-items:center; margin-bottom:38px;
+}
+.rung:last-child{ margin-bottom:0; }
+.rung-panel{ position:relative; grid-row:1; padding:18px 20px; transition:border-color .2s ease; }
+.rung-glyph{
+  grid-row:1; display:flex; align-items:center;
+  color:var(--blue-300); opacity:.36; transition:opacity .2s ease;
+}
+.rung-glyph svg{ width:58px; height:58px; }
+.rung:nth-child(odd)  .rung-panel{ grid-column:1; }
+.rung:nth-child(odd)  .rung-glyph{ grid-column:3; justify-content:flex-start; padding-left:26px; }
+.rung:nth-child(even) .rung-panel{ grid-column:3; }
+.rung:nth-child(even) .rung-glyph{ grid-column:1; justify-content:flex-end; padding-right:26px; }
+
+/* Node on the spine. .major = a step change; .now = the current role. */
+.rung::before{
+  content:''; position:absolute; left:50%; top:50%; z-index:1;
   width:12px; height:12px; border-radius:50%;
+  transform:translate(-50%,-50%);
   background:var(--navy-950); border:2.5px solid var(--cyan-400);
   box-shadow:0 0 0 4px rgba(34,211,238,0.12);
+  transition:box-shadow .2s ease;
 }
-.jstep.major::before{ background:var(--cyan-400); box-shadow:0 0 0 5px rgba(34,211,238,0.22); }
+.rung.major::before{ background:var(--cyan-400); box-shadow:0 0 0 5px rgba(34,211,238,0.22); }
+.rung.now::before{
+  width:16px; height:16px; background:var(--cyan-400); border-color:#fff;
+  box-shadow:0 0 0 5px rgba(34,211,238,0.24), 0 0 22px rgba(34,211,238,0.55);
+}
+
+/* The rung: panel edge to spine. */
+.rung-panel::before{
+  content:''; position:absolute; top:50%; width:32px; height:2px; margin-top:-1px;
+  background:linear-gradient(90deg,rgba(34,211,238,0.15),var(--cyan-400));
+}
+.rung:nth-child(odd)  .rung-panel::before{ right:-32px; }
+.rung:nth-child(even) .rung-panel::before{ left:-32px; transform:scaleX(-1); }
+
+/* Chevron on the spine, pointing at the next rung. Staggered so the pulse
+   travels down the spine rather than blinking in unison. */
+.rung::after{
+  content:''; position:absolute; left:50%; bottom:-24px;
+  width:9px; height:9px;
+  border-right:2px solid var(--cyan-400); border-bottom:2px solid var(--cyan-400);
+  transform:translateX(-50%) rotate(45deg); opacity:.5;
+  animation:rungFlow 2.6s ease-in-out infinite;
+}
+.rung:last-child::after{ display:none; }
+.rung:nth-child(2)::after{ animation-delay:.3s; }
+.rung:nth-child(3)::after{ animation-delay:.6s; }
+.rung:nth-child(4)::after{ animation-delay:.9s; }
+.rung:nth-child(5)::after{ animation-delay:1.2s; }
+.rung:nth-child(6)::after{ animation-delay:1.5s; }
+.rung:nth-child(7)::after{ animation-delay:1.8s; }
+.rung:nth-child(8)::after{ animation-delay:2.1s; }
+@keyframes rungFlow{
+  0%,100%{ transform:translate(-50%,0) rotate(45deg); opacity:.4; }
+  50%{ transform:translate(-50%,4px) rotate(45deg); opacity:.9; }
+}
+
+.rung:hover .rung-panel, .rung:focus-within .rung-panel{ border-color:var(--card-border-strong); }
+.rung:hover .rung-glyph{ opacity:.7; }
+.rung:not(.now):hover::before{ box-shadow:0 0 0 6px rgba(34,211,238,0.30); }
+
 .jyear{
   font-size:12px; font-weight:800; letter-spacing:.1em;
   color:var(--cyan-300); margin-bottom:3px;
@@ -404,6 +476,28 @@ a:focus-visible, button:focus-visible{
 .jtitle{ font-size:16px; font-weight:700; color:#fff; margin-bottom:5px; }
 .jbody{ font-size:14.5px; color:var(--text-secondary); max-width:680px; }
 .jbody strong{ color:var(--text-primary); font-weight:600; }
+
+/* Glyph gives way first (900px); the ladder folds to one column at 760px,
+   where two panels would each drop below ~330px of copy width. */
+@media (max-width:900px){
+  .rung{ grid-template-columns:1fr 48px 1fr; }
+  .rung-glyph{ display:none; }
+  .rung-panel::before{ width:24px; }
+  .rung:nth-child(odd)  .rung-panel::before{ right:-24px; }
+  .rung:nth-child(even) .rung-panel::before{ left:-24px; }
+}
+@media (max-width:760px){
+  .ladder{ padding-left:34px; }
+  .ladder::before{ left:9px; top:8px; bottom:8px; transform:none; }
+  .rung{ display:block; margin-bottom:28px; }
+  .rung-panel{ padding:16px 18px; }
+  .rung::before{ left:-30px; top:18px; transform:none; }
+  .rung.now::before{ left:-32px; top:16px; }
+  .rung:nth-child(odd) .rung-panel::before, .rung:nth-child(even) .rung-panel::before{
+    left:-18px; right:auto; width:18px; top:23px; margin-top:0; transform:none;
+  }
+  .rung::after{ left:-29px; bottom:-19px; transform:rotate(45deg); animation:none; opacity:.5; }
+}
 
 /* ---------- 2. Why this site ---------- */
 .why-lead{

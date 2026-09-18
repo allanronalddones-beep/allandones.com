@@ -23,9 +23,9 @@
 <meta name="twitter:description" content="Rotating equipment and mechanical packages for oil, gas, petrochemical and energy projects — FEED through procurement to commissioning.">
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a2472'/%3E%3Crect x='22' y='8' width='20' height='16' rx='3' fill='%2322d3ee'/%3E%3Crect x='28' y='24' width='8' height='14' fill='%232f7ef0'/%3E%3Cellipse cx='32' cy='40' rx='13' ry='4' fill='%235b9dfa'/%3E%3Cellipse cx='32' cy='47' rx='12' ry='4' fill='%235b9dfa'/%3E%3Cpolygon points='24,52 40,52 36,60 28,60' fill='%237ea8dd'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="assets/site.css?v=4">
+<link rel="stylesheet" href="assets/site.css?v=5">
 </head>
-<body>
+<body class="home">
 
 <div class="bg-base"></div>
 <div class="bg-waves" aria-hidden="true">
@@ -106,65 +106,113 @@
       <h2>My Journey to the Profession</h2>
       <p>Twenty years, nine roles, five countries — and how the specialisation happened.</p>
     </div>
-    <div class="card">
-      <div class="journey">
 
-        <div class="jstep major">
+    <!-- Engineered Ladder: one rung per role. Wide screens alternate the rungs
+         either side of a central spine; below 760px it folds to a single
+         left-spine column. Node, rung and chevron are CSS pseudo-elements
+         (site.css, "1. My Journey"). The copy is the verified record. -->
+    <ol class="ladder" role="list" aria-label="Career timeline, 2000 to present">
+
+      <li class="rung major">
+        <div class="card rung-panel">
           <div class="jyear">2000 — 2005</div>
           <div class="jtitle">Adamson University, Manila</div>
           <div class="jbody">BSc Mechanical Engineering. Registered with the Philippine Professional Regulation Commission in October 2005.</div>
         </div>
+        <div class="rung-glyph" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 9.5L12 4.5 2 9.5l10 5 10-5z"/><path d="M6 12v5.2c0 1.6 2.7 3.3 6 3.3s6-1.7 6-3.3V12"/><path d="M22 9.5V15"/></svg>
+        </div>
+      </li>
 
-        <div class="jstep major">
+      <li class="rung major">
+        <div class="card rung-panel">
           <div class="jyear">2006</div>
           <div class="jtitle">Fluor — New Graduate Program</div>
           <div class="jbody">Entry was restricted to licensed engineers finishing in the <strong>top 10% of their class</strong>. The programme rotated graduates through disciplines to find where they fit. Rotating equipment is where I landed, and I never left.</div>
         </div>
+        <div class="rung-glyph" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><circle cx="12" cy="12" r="7.2"/><path d="M12 2.5v2.3M12 19.2v2.3M2.5 12h2.3M19.2 12h2.3M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+        </div>
+      </li>
 
-        <div class="jstep">
+      <li class="rung">
+        <div class="card rung-panel">
           <div class="jyear">2007 — 2011</div>
           <div class="jtitle">Learning the trade — USA and Australia</div>
           <div class="jbody">Refinery expansion in Louisiana, power generation in Texas, then the Gladstone LNG upstream development in Queensland. Datasheets, requisitions, bid evaluations, vendor drawings. The unglamorous groundwork that makes everything afterwards possible.</div>
         </div>
+        <div class="rung-glyph" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19"/><path d="M12 2.5c2.8 2.8 4.2 6 4.2 9.5s-1.4 6.7-4.2 9.5"/><path d="M12 2.5C9.2 5.3 7.8 8.5 7.8 12s1.4 6.7 4.2 9.5"/></svg>
+        </div>
+      </li>
 
-        <div class="jstep major">
+      <li class="rung major">
+        <div class="card rung-panel">
           <div class="jyear">2011</div>
           <div class="jtitle">The Middle East — Samsung Engineering, Saudi Arabia</div>
           <div class="jbody">CO₂ capture and injection for Saudi Aramco. Sealless VFD-driven centrifugal compressors, gas dehydration, instrument air. First time carrying a package on my own, and first time on a site survey verifying whether a FEED actually held up.</div>
         </div>
+        <div class="rung-glyph" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M6.5 8.5l11 2.4v2.2l-11 2.4z"/></svg>
+        </div>
+      </li>
 
-        <div class="jstep">
+      <li class="rung">
+        <div class="card rung-panel">
           <div class="jyear">2013 — 2015</div>
           <div class="jtitle">Offshore — McDermott Arabia</div>
           <div class="jbody">The Manifa platform. Chemical injection packages, API 674 re-injection pumps, offshore fire fighting systems. Witnessed Factory Acceptance Testing, signed acceptances, and spent time in the fabrication yard through pre-commissioning. <strong>Engineering stops being theoretical when you sign for the equipment.</strong></div>
         </div>
+        <div class="rung-glyph" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 11.5h15"/><path d="M6.5 11.5L5 19.5M17.5 11.5L19 19.5M10 11.5l-.7 8M14 11.5l.7 8"/><path d="M7.5 11.5V8h9v3.5M10.5 8V4.5h3V8"/><path d="M2 21.5h20" stroke-dasharray="2.4 2.4"/></svg>
+        </div>
+      </li>
 
-        <div class="jstep">
+      <li class="rung">
+        <div class="card rung-panel">
           <div class="jyear">2015 — 2019</div>
           <div class="jtitle">Consultancy and FEED — Atkins, then Fluor</div>
           <div class="jbody">Master Gas System Expansion for Saudi Aramco, then Shell's Penguins redevelopment in the UK North Sea. Accredited <strong>ASEAN Engineer</strong> in 2018.</div>
         </div>
+        <div class="rung-glyph" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5.2" r="1.8"/><path d="M12 3.4V2M11.2 7l-5 13.5M12.8 7l5 13.5M7.9 14.5h8.2"/></svg>
+        </div>
+      </li>
 
-        <div class="jstep">
+      <li class="rung">
+        <div class="card rung-panel">
           <div class="jyear">2019 — 2023</div>
           <div class="jtitle">Front-end and refinery work — TechnipFMC, JGC</div>
           <div class="jbody">FEED for the Borouge 4 steam cracker in Abu Dhabi, then refinery upgrading in Basrah and petrochemicals in Thailand. Working the front end teaches you which decisions are expensive to reverse later.</div>
         </div>
+        <div class="rung-glyph" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5.5 21V8.5a2 2 0 014 0V21M11 21V4.5a2 2 0 014 0V21M17.5 21v-8.5h3V21"/><path d="M5.5 12h4M11 9h4M11 14h4"/></svg>
+        </div>
+      </li>
 
-        <div class="jstep major">
+      <li class="rung major">
+        <div class="card rung-panel">
           <div class="jyear">2023 — 2026</div>
           <div class="jtitle">Leading a discipline — Fluor</div>
           <div class="jbody">Lead Mechanical Engineer across copper-gold mining in Pakistan, rare earths in Australia, and gas compression modernisation with hydrogen blending in California. The shift from owning packages to owning <strong>a discipline's schedule, resources and deliverable quality</strong>.</div>
         </div>
+        <div class="rung-glyph" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="8.5" y="2.5" width="7" height="4.5" rx="1"/><rect x="2" y="16" width="6.5" height="4.5" rx="1"/><rect x="8.75" y="16" width="6.5" height="4.5" rx="1"/><rect x="15.5" y="16" width="6.5" height="4.5" rx="1"/><path d="M12 7v4.5M5.25 16v-4.5h13.5V16M12 11.5V16"/></svg>
+        </div>
+      </li>
 
-        <div class="jstep major">
+      <li class="rung major now">
+        <div class="card rung-panel">
           <div class="jyear">2026 — present</div>
           <div class="jtitle">Project management — Medgulf Construction, Qatar</div>
           <div class="jbody">Senior Mechanical Engineer with general project management responsibility on high-value construction projects. Twenty years on from the graduate programme, still the same discipline — now with the commercial and schedule accountability around it.</div>
         </div>
+        <div class="rung-glyph" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17.5" rx="2"/><path d="M9 4V2.5h6V4"/><path d="M8.5 13l2.5 2.5 4.5-5"/></svg>
+        </div>
+      </li>
 
-      </div>
-    </div>
+    </ol>
   </section>
 
   <!-- ================= WHY THIS SITE ================= -->
