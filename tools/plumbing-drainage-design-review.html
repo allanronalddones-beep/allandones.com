@@ -1,0 +1,1170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plumbing &amp; Drainage Design Review Guide | Allan Ronald Dones</title>
+<meta name="description" content="Plumbing and Drainage Design Review Guide — a learning guide and referenced review checklist for building public health systems on industrial projects, with acceptance criteria, failure modes and a comment-sheet export.">
+<meta name="author" content="Allan Ronald Dones">
+<link rel="canonical" href="https://allanronalddones.com/tools/plumbing-drainage-design-review">
+
+<!-- Social preview (shown when the link is shared from the main site) -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://allanronalddones.com/tools/plumbing-drainage-design-review">
+<meta property="og:title" content="Plumbing &amp; Drainage Design Review Guide">
+<meta property="og:site_name" content="Allan Ronald Dones — Rotating Equipment Engineering">
+<meta property="og:description" content="Learn the governing concepts of building plumbing and drainage design, then review a consultant's deliverable against a referenced checklist that exports as a comment sheet.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Plumbing &amp; Drainage Design Review Guide">
+<meta name="twitter:description" content="A learning guide and referenced review checklist for building plumbing and drainage deliverables on industrial projects.">
+
+<!-- Inline SVG favicon — keeps the page self-contained (no separate .ico request) -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a2472'/%3E%3Cpath d='M20 10v18a12 12 0 0 0 12 12v14' stroke='%2322d3ee' stroke-width='6' fill='none' stroke-linecap='round'/%3E%3Crect x='14' y='6' width='12' height='8' rx='2' fill='%235b9dfa'/%3E%3Cpath d='M44 14v20a12 12 0 0 1-12 12' stroke='%232f7ef0' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='44' cy='11' r='4' fill='%2367e8f9'/%3E%3Crect x='24' y='52' width='16' height='6' rx='2' fill='%237ea8dd'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --navy-950:#050b1a;
+    --navy-900:#08132b;
+    --navy-800:#0c1c3f;
+    --navy-700:#0f2551;
+    --blue-600:#1450c9;
+    --blue-500:#1565d8;
+    --blue-400:#2f7ef0;
+    --blue-300:#5b9dfa;
+    --cyan-400:#22d3ee;
+    --cyan-300:#67e8f9;
+    --text-primary:#eaf1ff;
+    --text-secondary:#a9bde0;
+    --text-muted:#6f84ab;
+    --card-bg:rgba(6,16,40,0.82);
+    --card-border:rgba(91,157,250,0.22);
+    --card-border-strong:rgba(103,232,249,0.4);
+    --ok-500:#22c55e;
+    --ok-300:#86efac;
+    --bad-500:#ef4444;
+    --bad-300:#fca5a5;
+    --warn-300:#fcd34d;
+    --radius:14px;
+    /* Input / output cell tinting mirrors the source workbook's colour key:
+       yellow = user input, green = calculated output. */
+    --in-bg:rgba(252,211,77,0.09);
+    --in-border:rgba(252,211,77,0.32);
+    --out-bg:rgba(34,197,94,0.07);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Segoe UI', 'Inter', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    color:var(--text-primary);
+    background:var(--navy-950);
+    min-height:100vh;
+    line-height:1.5;
+  }
+  .bg-base{
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:
+      radial-gradient(1200px 800px at 12% -8%, rgba(47,126,240,0.55), transparent 62%),
+      radial-gradient(1000px 700px at 108% 8%, rgba(34,211,238,0.34), transparent 58%),
+      radial-gradient(900px 900px at 50% 115%, rgba(21,101,216,0.42), transparent 60%),
+      linear-gradient(180deg, #06122e 0%, #0d2a63 40%, #071431 100%);
+    background-color:#06122e;
+  }
+  .bg-waves{ position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+  .bg-waves svg{ width:100%; height:100%; display:block; }
+  .wv path{ will-change:transform; }
+  .wv1{ animation:driftL 52s linear infinite; }
+  .wv2{ animation:driftR 43s linear infinite; }
+  .wv3{ animation:driftL 36s linear infinite; }
+  .wv4{ animation:driftR 29s linear infinite; }
+  .wv5{ animation:driftL 23s linear infinite; }
+  @keyframes driftL{ from{ transform:translateX(0); } to{ transform:translateX(-1440px); } }
+  @keyframes driftR{ from{ transform:translateX(-1440px); } to{ transform:translateX(0); } }
+  @media (prefers-reduced-motion: reduce){ .wv1,.wv2,.wv3,.wv4,.wv5{ animation:none; } }
+
+  /* ---------- Back-link to main site ---------- */
+  /* href="/" is site-root relative — resolves correctly on any domain. */
+  .back-link{
+    display:inline-flex; align-items:center; gap:7px; margin-bottom:26px;
+    font-size:13px; font-weight:600; color:var(--text-secondary); text-decoration:none;
+    border:1px solid var(--card-border); background:rgba(6,16,40,0.62);
+    padding:7px 15px 7px 12px; border-radius:999px;
+    backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    transition:color .15s, border-color .15s, background .15s;
+  }
+  .back-link:hover, .back-link:focus-visible{ color:#fff; border-color:var(--cyan-400); background:rgba(6,16,40,0.9); }
+  .back-link svg{ width:15px; height:15px; flex:0 0 15px; }
+
+  .wrap{ position:relative; z-index:1; max-width:1240px; margin:0 auto; padding:40px 24px 80px; }
+  header.hero{ text-align:center; margin-bottom:34px; padding-bottom:26px; border-bottom:1px solid rgba(91,157,250,0.16); }
+  .kicker{
+    display:inline-flex; align-items:center; gap:7px; font-size:11.5px; font-weight:700;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--cyan-300); margin-bottom:12px;
+  }
+  .kicker svg{ width:14px; height:14px; }
+  h1{
+    margin:0 0 12px; font-size:clamp(26px,3.6vw,40px); line-height:1.14; letter-spacing:-.02em;
+    background:linear-gradient(90deg,#fff 0%,var(--blue-300) 55%,var(--cyan-300) 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .subtitle{ margin:0 auto 10px; max-width:74ch; color:var(--text-secondary); font-size:15.5px; }
+  .byline{ margin:0; font-size:12.5px; color:var(--text-muted); }
+
+  .card{
+    background:var(--card-bg); border:1px solid var(--card-border); border-radius:var(--radius);
+    padding:22px 24px; margin-bottom:22px;
+    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    box-shadow:0 8px 32px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+  .card h2{ margin:0 0 4px; font-size:16px; font-weight:700; letter-spacing:.02em; color:#fff; display:flex; align-items:center; gap:10px; }
+  .card h2 .num{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:24px;height:24px; flex:0 0 24px; border-radius:7px;
+    background:linear-gradient(135deg, var(--blue-500), var(--cyan-400));
+    color:#04101f; font-size:12.5px; font-weight:800;
+  }
+  .card .hint{ color:var(--text-muted); font-size:12.5px; margin:0 0 18px; padding-left:34px; }
+  footer{ margin-top:34px; padding-top:18px; border-top:1px solid rgba(91,157,250,0.16); color:var(--text-muted); font-size:12.5px; line-height:1.65; }
+
+  /* ---------- Tabs ---------- */
+  .tabs{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:22px; }
+  .tabs button{
+    appearance:none; cursor:pointer; font:inherit; font-size:12.5px; font-weight:700;
+    letter-spacing:.09em; text-transform:uppercase; color:var(--text-secondary);
+    background:rgba(6,16,40,0.62); border:1px solid var(--card-border);
+    border-radius:999px; padding:8px 16px; display:inline-flex; align-items:center; gap:8px;
+    transition:color .15s, border-color .15s, background .15s;
+  }
+  .tabs button:hover{ color:#fff; border-color:var(--cyan-400); }
+  .tabs button[aria-selected="true"]{
+    color:#04101f; border-color:transparent;
+    background:linear-gradient(135deg, var(--blue-500), var(--cyan-400));
+  }
+  .tabs .n{ font-size:11px; font-weight:800; font-variant-numeric:tabular-nums; opacity:.85; }
+
+  /* ---------- Toolbar ---------- */
+  .btn-row{ display:flex; flex-wrap:wrap; gap:9px; align-items:center; margin-bottom:16px; }
+  .btn{
+    appearance:none; cursor:pointer; font:inherit; font-size:13px; font-weight:600;
+    color:var(--text-primary); background:rgba(6,16,40,0.7); border:1px solid var(--card-border);
+    border-radius:9px; padding:8px 13px; display:inline-flex; align-items:center; gap:7px;
+    transition:color .15s, border-color .15s, background .15s;
+  }
+  .btn:hover{ color:#fff; border-color:var(--cyan-400); background:rgba(6,16,40,0.95); }
+  .btn svg{ width:15px; height:15px; flex:0 0 15px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+  .btn.primary{ background:linear-gradient(135deg, var(--blue-500), var(--cyan-400)); border-color:transparent; color:#04101f; }
+  .btn.primary:hover{ color:#04101f; filter:brightness(1.08); }
+  .switch{ display:inline-flex; border:1px solid var(--card-border); border-radius:9px; overflow:hidden; background:rgba(6,16,40,0.7); }
+  .switch button{
+    appearance:none; cursor:pointer; font:inherit; font-size:11.5px; font-weight:700;
+    letter-spacing:.07em; text-transform:uppercase; color:var(--text-muted);
+    background:none; border:0; border-right:1px solid var(--card-border); padding:8px 12px;
+  }
+  .switch button:last-child{ border-right:0; }
+  .switch button[aria-pressed="true"]{ background:rgba(34,211,238,0.16); color:var(--cyan-300); }
+
+  /* ---------- Fields ---------- */
+  .fgrid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-bottom:18px; }
+  .fgrid label{ display:grid; gap:5px; font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--text-muted); }
+  .fgrid input, .fgrid select{
+    font:inherit; font-size:13.5px; color:var(--text-primary);
+    background:var(--in-bg); border:1px solid var(--in-border); border-radius:8px; padding:8px 10px; width:100%;
+  }
+  .fgrid input::placeholder{ color:var(--text-muted); opacity:.8; }
+  .fgrid input:focus, .fgrid select:focus{ outline:2px solid var(--cyan-400); outline-offset:1px; }
+  .fgrid option{ background:var(--navy-800); color:var(--text-primary); }
+
+  /* ---------- Verdict ---------- */
+  .verdict-card{
+    display:flex; align-items:center; gap:16px; border-radius:12px; padding:16px 18px;
+    border:1px solid var(--card-border); background:rgba(6,16,40,0.6); margin-bottom:8px;
+  }
+  .verdict-card.ok{ border-color:rgba(34,197,94,0.5); background:rgba(34,197,94,0.09); }
+  .verdict-card.bad{ border-color:rgba(239,68,68,0.5); background:rgba(239,68,68,0.09); }
+  .verdict-card.warn{ border-color:rgba(252,211,77,0.5); background:rgba(252,211,77,0.08); }
+  .vbig{ font-size:26px; font-weight:800; letter-spacing:-.02em; line-height:1; flex:0 0 auto; }
+  .verdict-card.ok .vbig{ color:var(--ok-300); }
+  .verdict-card.bad .vbig{ color:var(--bad-300); }
+  .verdict-card.warn .vbig{ color:var(--warn-300); }
+  .vtxt{ display:grid; gap:3px; }
+  .vtitle{ font-size:14px; font-weight:700; color:#fff; }
+  .vsub{ font-size:12.5px; color:var(--text-secondary); }
+  .stiles{ display:grid; grid-template-columns:repeat(auto-fit,minmax(92px,1fr)); gap:9px; margin-bottom:16px; }
+  .stile{ border:1px solid var(--card-border); border-radius:10px; padding:10px 12px; background:rgba(6,16,40,0.5); }
+  .stile .v{ font-size:21px; font-weight:700; font-variant-numeric:tabular-nums; line-height:1.1; }
+  .stile .k{ font-size:10.5px; font-weight:700; letter-spacing:.11em; text-transform:uppercase; color:var(--text-muted); }
+  .stile .v.bad{ color:var(--bad-300); } .stile .v.ok{ color:var(--ok-300); } .stile .v.warn{ color:var(--warn-300); }
+
+  /* ---------- Badges ---------- */
+  .badge{
+    display:inline-flex; align-items:center; font-size:10px; font-weight:800; letter-spacing:.1em;
+    text-transform:uppercase; padding:2px 7px; border-radius:5px; white-space:nowrap; border:1px solid;
+  }
+  .b-hold{ color:var(--bad-300); border-color:rgba(239,68,68,0.55); background:rgba(239,68,68,0.12); }
+  .b-major{ color:var(--warn-300); border-color:rgba(252,211,77,0.5); background:rgba(252,211,77,0.1); }
+  .b-minor{ color:var(--blue-300); border-color:rgba(91,157,250,0.45); background:rgba(91,157,250,0.1); }
+  .b-info{ color:var(--text-muted); border-color:var(--card-border); background:transparent; }
+  .b-code{ color:var(--cyan-300); border-color:rgba(103,232,249,0.45); background:rgba(34,211,238,0.1); }
+  .b-prac{ color:var(--text-muted); border-color:var(--card-border); background:transparent; border-style:dashed; }
+  .chip{
+    font-family:'Cascadia Code','Consolas',monospace; font-size:11px; color:var(--text-secondary);
+    border:1px solid var(--card-border); border-radius:5px; padding:1px 6px; background:rgba(6,16,40,0.55); white-space:nowrap;
+  }
+
+  /* ---------- Check rows ---------- */
+  .grp{ margin-bottom:24px; }
+  .grph{ display:flex; align-items:center; gap:11px; margin-bottom:10px; }
+  .grpl{
+    width:26px; height:26px; flex:0 0 26px; border-radius:7px; display:grid; place-items:center;
+    background:linear-gradient(135deg, var(--blue-500), var(--cyan-400)); color:#04101f;
+    font-size:12.5px; font-weight:800;
+  }
+  .grph h3{ margin:0; font-size:14.5px; font-weight:700; color:#fff; }
+  .grph .cnt{ margin-left:auto; font-size:11.5px; color:var(--text-muted); font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .rows{ display:grid; gap:8px; }
+  .row{
+    border:1px solid var(--card-border); border-left:3px solid var(--text-muted);
+    border-radius:10px; background:rgba(6,16,40,0.55); overflow:hidden;
+  }
+  .row.sev-hold{ border-left-color:var(--bad-500); }
+  .row.sev-major{ border-left-color:var(--warn-300); }
+  .row.sev-minor{ border-left-color:var(--blue-400); }
+  .row.st-accept{ background:var(--out-bg); border-color:rgba(34,197,94,0.32); }
+  .row.st-comment{ background:rgba(91,157,250,0.08); }
+  .row.st-reject{ background:rgba(239,68,68,0.09); border-color:rgba(239,68,68,0.35); }
+  .row.st-na{ opacity:.6; }
+  .rhead{ display:grid; grid-template-columns:auto 1fr auto; gap:12px; padding:11px 13px; align-items:start; }
+  @media (max-width:760px){ .rhead{ grid-template-columns:1fr; } }
+  .rid{ font-family:'Cascadia Code','Consolas',monospace; font-size:11.5px; font-weight:600; color:var(--text-muted); padding-top:2px; }
+  .rmain{ display:grid; gap:7px; min-width:0; }
+  .rtext{ font-size:14.5px; line-height:1.45; color:var(--text-primary); }
+  .rmeta{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+  .rcrit{ font-size:12.5px; color:var(--text-secondary); }
+  .rcrit b{ color:var(--cyan-300); font-size:10px; font-weight:800; letter-spacing:.11em; text-transform:uppercase; margin-right:6px; }
+  .rstate{ display:grid; gap:6px; justify-items:end; }
+  .states{ display:inline-flex; border:1px solid var(--card-border); border-radius:8px; overflow:hidden; background:rgba(6,16,40,0.7); }
+  .states button{
+    appearance:none; cursor:pointer; font:inherit; font-size:11px; font-weight:700; letter-spacing:.05em;
+    text-transform:uppercase; color:var(--text-muted); background:none; border:0;
+    border-right:1px solid var(--card-border); padding:6px 9px; white-space:nowrap;
+  }
+  .states button:last-child{ border-right:0; }
+  .states button[data-s="accept"][aria-pressed="true"]{ background:rgba(34,197,94,0.22); color:var(--ok-300); }
+  .states button[data-s="comment"][aria-pressed="true"]{ background:rgba(91,157,250,0.22); color:var(--blue-300); }
+  .states button[data-s="reject"][aria-pressed="true"]{ background:rgba(239,68,68,0.22); color:var(--bad-300); }
+  .states button[data-s="na"][aria-pressed="true"]{ background:rgba(111,132,171,0.25); color:var(--text-secondary); }
+  .rmore{ appearance:none; cursor:pointer; background:none; border:0; padding:0; font:inherit;
+    font-size:10.5px; font-weight:800; letter-spacing:.09em; text-transform:uppercase; color:var(--cyan-300); }
+  .rdet{ padding:0 13px 12px; display:grid; gap:10px; }
+  .rdet .lb{ font-size:10px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:var(--text-muted); margin-bottom:3px; }
+  .rdet .why{ font-size:13.5px; color:var(--text-secondary); max-width:78ch; }
+  .rdet .fail{ font-size:13.5px; color:var(--text-secondary); max-width:78ch; border-left:2px solid var(--warn-300); padding-left:11px; }
+  .rdet textarea{
+    font:inherit; font-size:13.5px; width:100%; min-height:62px; resize:vertical; padding:9px 11px;
+    color:var(--text-primary); background:var(--in-bg); border:1px solid var(--in-border); border-radius:8px;
+  }
+  .rdet textarea:focus{ outline:2px solid var(--cyan-400); outline-offset:1px; }
+  .empty{ padding:26px; text-align:center; color:var(--text-muted); font-size:14px; border:1px dashed var(--card-border); border-radius:12px; }
+
+  /* ---------- Learn ---------- */
+  .mods{ display:grid; gap:10px; }
+  details.mod{ border:1px solid var(--card-border); border-radius:12px; background:rgba(6,16,40,0.55); overflow:hidden; }
+  summary.modh{ list-style:none; cursor:pointer; padding:13px 16px; display:grid; grid-template-columns:28px 1fr auto; gap:12px; align-items:center; }
+  summary.modh::-webkit-details-marker{ display:none; }
+  .modn{ width:28px; height:28px; border-radius:8px; display:grid; place-items:center; font-size:12.5px; font-weight:800;
+    background:rgba(6,16,40,0.8); border:1px solid var(--card-border); color:var(--text-secondary); }
+  details.mod[open] .modn{ background:linear-gradient(135deg, var(--blue-500), var(--cyan-400)); border-color:transparent; color:#04101f; }
+  .modt{ display:grid; gap:2px; min-width:0; }
+  .modt b{ font-size:15px; font-weight:700; color:#fff; }
+  .modt span{ font-size:12.5px; color:var(--text-muted); }
+  .chev{ width:15px; height:15px; color:var(--text-muted); transition:transform .18s; }
+  details.mod[open] .chev{ transform:rotate(90deg); }
+  .modbody{ padding:4px 16px 18px 56px; display:grid; gap:12px; font-size:14px; color:var(--text-secondary); }
+  @media (max-width:620px){ .modbody{ padding-left:16px; } }
+  .modbody p{ margin:0; max-width:76ch; }
+  .modbody h4{ margin:4px 0 0; font-size:11px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:var(--cyan-300); }
+  .modbody ul{ margin:0; padding-left:19px; display:grid; gap:5px; max-width:76ch; }
+  .modbody b{ color:var(--text-primary); }
+  .formula-strip{
+    font-family:'Cascadia Code','Consolas',monospace; font-size:13.5px; color:var(--text-primary);
+    background:rgba(6,16,40,0.75); border:1px solid var(--card-border); border-left:3px solid var(--cyan-400);
+    border-radius:9px; padding:11px 14px; overflow-x:auto;
+  }
+  .formula-strip .w{ display:block; font-family:inherit; font-size:12px; color:var(--text-muted); margin-top:6px;
+    font-family:'Segoe UI','Inter',system-ui,sans-serif; }
+  .callout{ border:1px solid rgba(239,68,68,0.45); background:rgba(239,68,68,0.08); border-left:3px solid var(--bad-500);
+    border-radius:9px; padding:11px 14px; display:grid; gap:5px; }
+  .callout b{ font-size:10.5px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:var(--bad-300); }
+  .callout p{ font-size:13.5px; color:var(--text-secondary); }
+  .table-scroll{ overflow-x:auto; border:1px solid var(--card-border); border-radius:10px; }
+  table.ref{ border-collapse:collapse; width:100%; font-size:13px; min-width:440px; }
+  table.ref th, table.ref td{ text-align:left; padding:8px 11px; border-bottom:1px solid var(--card-border); vertical-align:top; }
+  table.ref th{ background:rgba(6,16,40,0.8); font-size:10.5px; font-weight:800; letter-spacing:.11em; text-transform:uppercase; color:var(--text-muted); }
+  table.ref tr:last-child td{ border-bottom:0; }
+  table.ref td.num{ font-family:'Cascadia Code','Consolas',monospace; font-variant-numeric:tabular-nums; white-space:nowrap; color:var(--text-primary); }
+
+  .toast{ position:fixed; left:50%; bottom:22px; transform:translateX(-50%); z-index:20;
+    background:var(--navy-800); border:1px solid var(--cyan-400); color:var(--text-primary);
+    padding:10px 18px; border-radius:10px; font-size:13.5px; box-shadow:0 8px 32px rgba(0,0,0,.4); }
+  .toast[hidden]{ display:none !important; }
+
+  /* ---------- Print: flip to a light, ink-friendly review report ---------- */
+  @media print{
+    .bg-base,.bg-waves,.back-link,.btn-row,.tabs,.no-print,.states,.rmore{ display:none !important; }
+    body{ background:#fff; color:#111; }
+    .wrap{ max-width:none; padding:0; }
+    h1{ color:#0a2472 !important; -webkit-text-fill-color:#0a2472; background:none; }
+    .kicker,.grph h3,.card h2{ color:#0a2472 !important; }
+    .card,.row,details.mod{ background:#fff; border:1px solid #b9c6de; box-shadow:none;
+      break-inside:avoid; page-break-inside:avoid; margin-bottom:10px; }
+    .rtext,.vtitle{ color:#111 !important; }
+    .rcrit,.rdet .why,.rdet .fail,.subtitle,.modbody{ color:#333 !important; }
+    .rid,.chip{ color:#444 !important; background:#eef2fa; }
+    .rdet{ display:grid !important; }
+    .row.st-accept{ background:#dcfce7; } .row.st-reject{ background:#fee2e2; } .row.st-comment{ background:#eef2fa; }
+    table.ref th{ background:#eef2fa; color:#333 !important; }
+  }
+</style>
+</head>
+<body>
+<div class="bg-base"></div>
+<div class="bg-base"></div>
+
+<div class="bg-waves" aria-hidden="true">
+  <svg viewBox="0 0 2880 1200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="wg1" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#0a2472"/><stop offset="0.5" stop-color="#153a9e"/><stop offset="1" stop-color="#0a2472"/>
+      </linearGradient>
+      <linearGradient id="wg2" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#123f8f"/><stop offset="0.5" stop-color="#1450c9"/><stop offset="1" stop-color="#123f8f"/>
+      </linearGradient>
+      <linearGradient id="wg3" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#1450c9"/><stop offset="0.5" stop-color="#1c6ee0"/><stop offset="1" stop-color="#1450c9"/>
+      </linearGradient>
+      <linearGradient id="wg4" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#1565d8"/><stop offset="0.5" stop-color="#2f7ef0"/><stop offset="1" stop-color="#1565d8"/>
+      </linearGradient>
+      <linearGradient id="wg5" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#2f7ef0"/><stop offset="0.5" stop-color="#22d3ee"/><stop offset="1" stop-color="#2f7ef0"/>
+      </linearGradient>
+    </defs>
+
+    <g class="wv wv1" opacity="0.55">
+      <path fill="url(#wg1)" d="M0,200 C180,120 540,120 720,200 C900,280 1260,280 1440,200 C1620,120 1980,120 2160,200 C2340,280 2700,280 2880,200 C3060,120 3420,120 3600,200 C3780,280 4140,280 4320,200 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv2" opacity="0.48">
+      <path fill="url(#wg2)" d="M0,410 C180,315 540,315 720,410 C900,505 1260,505 1440,410 C1620,315 1980,315 2160,410 C2340,505 2700,505 2880,410 C3060,315 3420,315 3600,410 C3780,505 4140,505 4320,410 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv3" opacity="0.42">
+      <path fill="url(#wg3)" d="M0,620 C180,535 540,535 720,620 C900,705 1260,705 1440,620 C1620,535 1980,535 2160,620 C2340,705 2700,705 2880,620 C3060,535 3420,535 3600,620 C3780,705 4140,705 4320,620 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv4" opacity="0.34">
+      <path fill="url(#wg4)" d="M0,830 C180,725 540,725 720,830 C900,935 1260,935 1440,830 C1620,725 1980,725 2160,830 C2340,935 2700,935 2880,830 C3060,725 3420,725 3600,830 C3780,935 4140,935 4320,830 L4320,1200 L0,1200 Z"/>
+    </g>
+    <g class="wv wv5" opacity="0.26">
+      <path fill="url(#wg5)" d="M0,1015 C180,940 540,940 720,1015 C900,1090 1260,1090 1440,1015 C1620,940 1980,940 2160,1015 C2340,1090 2700,1090 2880,1015 C3060,940 3420,940 3600,1015 C3780,1090 4140,1090 4320,1015 L4320,1200 L0,1200 Z"/>
+    </g>
+  </svg>
+</div>
+
+<div class="wrap">
+
+  <!-- Back to main site -->
+  <a class="back-link" href="/" title="Back to allanronalddones.com">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Allan Ronald Dones
+  </a>
+
+  <header class="hero">
+    <span class="kicker">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v12a6 6 0 006 6M8 3H5m3 0h3M18 8v7a5 5 0 01-5 5"/><circle cx="18" cy="5" r="2.5"/></svg>
+      Building Services &amp; Public Health
+    </span>
+    <h1>Plumbing &amp; Drainage Design Review Guide</h1>
+    <p class="subtitle">A learning guide and a referenced review checklist for building plumbing and
+    drainage deliverables on industrial projects. Learn the governing concepts, then work a submission
+    against 95 checks that each carry an acceptance criterion, the standard behind it and the failure
+    mode to hunt for &mdash; and export the result as a comment sheet.</p>
+    <p class="byline">Developed by Allan Ronald Dones &mdash; Senior Mechanical Engineer, Rotating Equipment Specialist</p>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button id="tab-review" role="tab" aria-selected="true" aria-controls="p-review">Review checklist <span class="n" id="tabCount">0</span></button>
+    <button id="tab-learn" role="tab" aria-selected="false" aria-controls="p-learn">Learning guide <span class="n">10</span></button>
+  </div>
+
+  <section id="p-review" role="tabpanel" aria-labelledby="tab-review">
+    <div class="card">
+      <h2><span class="num">1</span>Submission under review</h2>
+      <p class="hint">Identify the deliverable. These fields head the exported comment sheet.</p>
+      <div class="fgrid">
+        <label>Document number<input id="fDoc" placeholder="e.g. ME-CALC-0021"></label>
+        <label>Title<input id="fTitle" placeholder="Deliverable title"></label>
+        <label>Revision<input id="fRev" placeholder="Rev. 0"></label>
+        <label>Discipline<select id="fDisc">
+          <option value="">&mdash;</option>
+          <option>Plumbing</option><option>Drainage</option><option>Plumbing &amp; Drainage</option>
+        </select></label>
+        <label>Review date<input id="fDate" type="date"></label>
+        <label>Reviewer<input id="fBy" placeholder="Name"></label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><span class="num">2</span>Review status</h2>
+      <p class="hint">One unresolved Hold blocks the recommendation. Rejections drive the outcome regardless of how much else passed.</p>
+      <div class="verdict-card" id="vCard">
+        <span class="vbig" id="vBig">&mdash;</span>
+        <span class="vtxt"><span class="vtitle" id="vTitle">Not started</span><span class="vsub" id="vSub">Set a state on each applicable check.</span></span>
+      </div>
+      <div class="stiles">
+        <div class="stile"><div class="v" id="sOpen">0</div><div class="k">Open</div></div>
+        <div class="stile"><div class="v ok" id="sAcc">0</div><div class="k">Accepted</div></div>
+        <div class="stile"><div class="v" id="sCom">0</div><div class="k">Comment</div></div>
+        <div class="stile"><div class="v bad" id="sRej">0</div><div class="k">Rejected</div></div>
+        <div class="stile"><div class="v bad" id="sHold">0</div><div class="k">Holds live</div></div>
+      </div>
+      <div class="btn-row">
+        <div class="switch" id="segState" role="group" aria-label="Filter by state">
+          <button data-f="all" aria-pressed="true">All</button>
+          <button data-f="open" aria-pressed="false">Open only</button>
+          <button data-f="flag" aria-pressed="false">Findings</button>
+        </div>
+        <div class="switch" id="segSev" role="group" aria-label="Filter by severity">
+          <button data-v="all" aria-pressed="true">Any severity</button>
+          <button data-v="Hold" aria-pressed="false">Hold</button>
+          <button data-v="Major" aria-pressed="false">Major</button>
+        </div>
+        <button type="button" class="btn primary" id="btnCsv"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Export comment sheet</button>
+        <button type="button" class="btn" id="btnSample"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>Load worked example</button>
+        <button type="button" class="btn" id="btnPrint"><svg viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>Print / Save PDF</button>
+        <button type="button" class="btn" id="btnReset"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 109-9 9 9 0 00-6.36 2.64L3 8M3 3v5h5"/></svg>New review</button>
+      </div>
+      <div id="groups"></div>
+    </div>
+  </section>
+
+  <section id="p-learn" role="tabpanel" aria-labelledby="tab-learn" hidden>
+    <div class="card">
+      <h2><span class="num">i</span>Ten concepts that decide a plumbing and drainage review</h2>
+      <p class="hint">The governing idea, the number that settles it, and the failure mode to hunt for.</p>
+      <div class="mods" id="mods"></div>
+    </div>
+  </section>
+
+  <footer>
+    Plumbing &amp; Drainage Design Review Guide &mdash; for engineering evaluation purposes. The checks
+    reference published international and regional standards; <b>your own project specification, design
+    basis and contract always govern</b>, and where they differ from a value shown here, they win.
+    Verify every criterion against the governing project document before it grounds a finding.<br>
+    Nothing is uploaded &mdash; the review is held in this browser only.<br>
+    &copy; <span id="yr"></span> Allan Ronald Dones
+  </footer>
+
+</div>
+<div class="toast" id="toast" hidden></div>
+<script>
+/* ============================================================
+   LEARNING MODULES — published standards only.
+   Every numeric value here is general practice or a published
+   standard. A project's own design basis always overrides it.
+   ============================================================ */
+const MODULES = [
+{n:"0", t:"Where the boundary actually is", s:"Building services, site networks and temporary works are three different scopes",
+ h:`<p>Before reading a single number, establish which scope the deliverable sits in. On an industrial
+ project the same words describe three different regimes with different acceptance criteria:</p>
+ <ul>
+ <li><b>Building plumbing and drainage</b> &mdash; potable hot and cold water to fixtures, building foul
+ and waste, building rainwater, condensate. Governed by the building services specification.</li>
+ <li><b>Site wet utilities</b> &mdash; the potable, fire, irrigation, foul and storm networks between
+ structures, with their own testing and CCTV survey regime.</li>
+ <li><b>Temporary facilities</b> &mdash; site offices and accommodation, usually under a separate clause
+ with its own design basis.</li>
+ </ul>
+ <p>A comment written against the wrong scope gets rebutted on scope alone, and the rebuttal is correct.
+ That costs credibility you will want later for a real finding.</p>
+ <div class="callout"><b>Hunt for</b><p>A network criterion applied to a building riser, or a building
+ criterion applied to a temporary structure. Establish the governing clause before you establish the number.</p></div>`},
+
+{n:"1", t:"Validation, not acceptance", s:"What it means to review a design you will inherit the liability for",
+ h:`<p>On most EPC and design-build forms the contractor is required to <b>validate</b> the front-end
+ design, not merely receive it &mdash; and the same forms place full design responsibility on the
+ contractor regardless of who did the earlier engineering. Where a design has been formally endorsed,
+ an error in it stops being the originator's problem and becomes a change, not a claim.</p>
+ <p>That changes what a review has to produce. Validation is not a signature on someone else's work.
+ It is an independent check whose evidence exists:</p>
+ <ul>
+ <li>Recalculated where the earlier design gives a result.</li>
+ <li>Re-dimensioned where it gives a size.</li>
+ <li>A written position where it gives neither.</li>
+ </ul>
+ <p>The same logic applies downward. A design subcontractor's exclusion does not reduce the main
+ contractor's obligation to the client &mdash; it creates an unfunded gap inside a funded scope. So one
+ of the checks on any deliverable is whether the item is actually inside somebody's scope at all.</p>
+ <div class="callout"><b>Hunt for</b><p>A submission that restates the earlier design rather than
+ validating it: the same numbers reformatted into a new title block, with no calculation behind them.
+ It is the most common thing to miss and the most expensive, because accepting it transfers the earlier
+ design's errors onto you silently.</p></div>`},
+
+{n:"2", t:"Precedence and provenance", s:"How to cite a finding so it survives challenge",
+ h:`<h4>Precedence</h4>
+ <p>Most industrial contracts set an explicit order &mdash; typically statutory regulations, then client
+ corporate standards, then project specifications, then the national construction specification, then
+ international codes. Two rules usually sit under it and both matter:</p>
+ <ul>
+ <li><b>The gap rule</b> &mdash; silent in the project specification but present in the national
+ specification, and the national specification governs.</li>
+ <li><b>The discrepancy rule</b> &mdash; the project specification governs, with health and safety
+ matters commonly carved out and sent back to the national specification.</li>
+ </ul>
+ <p>Watch for a specification that carries its own precedence clause. &ldquo;Where standards conflict,
+ the more stringent shall apply&rdquo; is a different rule from &ldquo;the project specification
+ prevails&rdquo;, and on the same conflict they give different answers.</p>
+ <h4>Provenance</h4>
+ <p>A criterion with no traceable source cannot ground a finding. Before writing a comment, name the
+ document, the clause and the revision it stands on. Criteria drift very easily between projects with
+ similar names or adjacent scopes, and an imported criterion is worse than no criterion &mdash; it looks
+ authoritative and it is rebuttable.</p>
+ <h4>Two tiers, and only one of them can reject</h4>
+ <div class="table-scroll"><table class="ref"><thead><tr><th>Basis</th><th>Sources</th><th>What a finding can do</th></tr></thead><tbody>
+ <tr><td><span class="badge b-code">Code</span></td><td>Contract clause, project specification, design basis,
+ national construction specification, statutory authority regulation</td><td>Ground a <b>rejection</b></td></tr>
+ <tr><td><span class="badge b-prac">Practice</span></td><td>BS EN, CIBSE, ASPE, ASHRAE, IPC/UPC, general hydraulics</td>
+ <td>Ground a <b>query</b> &mdash; never a rejection on its own</td></tr>
+ </tbody></table></div>
+ <p>Keeping these apart is what makes a review objective rather than an opinion, and it is what stops a
+ reviewer inventing obligations the contract never imposed.</p>`},
+
+{n:"3", t:"Potable water", s:"Demand, storage, pressure, velocity, temperature",
+ h:`<h4>Demand</h4>
+ <p>Two families of method, and mixing them is the classic error. <b>Loading units</b> (BS 8558 /
+ BS EN 806) and <b>water supply fixture units</b> (IPC / UPC, via Hunter's curve) each convert appliance
+ counts into a probable simultaneous demand, but their unit values and their diversity curves are not
+ interchangeable. Applying Hunter's curve to modern low-flow fittings without correction oversizes the
+ pipework, and oversized pipework means long residence time, which means stagnation.</p>
+ <h4>Storage</h4>
+ <p>Storage is normally set by a stated emergency reserve &mdash; a number of hours at the design
+ per-capita rate against a defensible population. Check all three: the rate, the population and the
+ hours. In hot climates add the checks that are easy to omit: tank <b>insulation and sunshade</b>,
+ <b>compartmentalisation</b> so the tank can be cleaned without loss of supply, and an explicit
+ <b>stored water temperature limit</b> with the plant to hold it.</p>
+ <h4>Pressure and velocity</h4>
+ <div class="table-scroll"><table class="ref"><thead><tr><th>Parameter</th><th>Typical range</th><th>Why it binds</th></tr></thead><tbody>
+ <tr><td>Residual pressure at index fixture</td><td class="num">1.0 &ndash; 1.5 bar</td><td>The index fixture is the most remote and highest, not the riser base</td></tr>
+ <tr><td>Maximum static pressure</td><td class="num">4 &ndash; 5 bar</td><td>Above this, pressure-reducing zoning is required</td></tr>
+ <tr><td>Velocity, risers and pump discharge</td><td class="num">up to ~2.0 m/s</td><td>Erosion-corrosion and noise</td></tr>
+ <tr><td>Velocity, within the building</td><td class="num">~1.5 m/s</td><td>The tighter limit, and the one most often missed</td></tr>
+ <tr><td>Velocity, copper branches</td><td class="num">below ~1.5 m/s</td><td>Copper is the material most sensitive to erosion-corrosion</td></tr>
+ </tbody></table></div>
+ <h4>Hot water and Legionella</h4>
+ <ul>
+ <li>Size on <b>peak hour</b> demand, not daily average &mdash; ASHRAE Handbook gives the peak profiles.</li>
+ <li>Conventional thermal control is <b>storage at 60&nbsp;&deg;C, return at 55&nbsp;&deg;C, cold below
+ 20&nbsp;&deg;C</b>.</li>
+ <li>Where a lower store temperature is used with thermostatic mixing valves for scald prevention, that
+ is a legitimate design &mdash; but it should be accompanied by a risk assessment, and a
+ <b>time-to-temperature test at the mixing valve inlet</b> is the practical proof that circulation works
+ and dead legs are absent.</li>
+ <li>In hot climates, <b>cold water in exposed or poorly separated runs can sit well above
+ 20&nbsp;&deg;C</b> for months of the year. This is a real and routinely missed hazard; check routing
+ and separation, not just insulation thickness.</li>
+ </ul>
+ <div class="callout"><b>Hunt for</b><p>Velocity demonstrated in risers only. The internal limit is
+ tighter than the riser limit and it is the branches that breach it. And check that the residual
+ pressure is proven at the index fixture, not at the booster outlet.</p></div>`},
+
+{n:"4", t:"Building foul and waste drainage", s:"Gradient, velocity, discharge units, venting, trap seals",
+ h:`<h4>The two numbers that must both be satisfied</h4>
+ <p>Gradient and velocity are not the same check, and a run can pass one while failing the other.
+ A minimum gradient is a construction tolerance; a minimum velocity is a hydraulic outcome that depends
+ on gradient, diameter, roughness and actual flow.</p>
+ <div class="table-scroll"><table class="ref"><thead><tr><th>Criterion</th><th>Typical value</th><th>Consequence of breach</th></tr></thead><tbody>
+ <tr><td>Self-cleansing velocity</td><td class="num">&ge; 0.75 m/s</td><td>Sedimentation, then blockage</td></tr>
+ <tr><td>Maximum velocity</td><td class="num">&le; 2.5 &ndash; 3.0 m/s</td><td>Invert erosion</td></tr>
+ <tr><td>Minimum gradient</td><td class="num">commonly 1:100</td><td>Solids left behind</td></tr>
+ <tr><td>Small-bore branches</td><td class="num">steeper, ~1:50</td><td>Too steep also fails &mdash; liquid outruns solids</td></tr>
+ <tr><td>Proportional depth</td><td class="num">50 &ndash; 75% max</td><td>No ventilation path, surcharge risk</td></tr>
+ <tr><td>Minimum internal diameter</td><td class="num">100 &ndash; 110 mm</td><td>Blockage frequency rises regardless of gradient</td></tr>
+ </tbody></table></div>
+ <p>Check the roughness coefficient against the specified material. Using a smooth-bore value on a
+ concrete or cast-iron specification is an optimistic-design error that quietly undersizes the pipe.</p>
+ <h4>Discharge units and stack sizing</h4>
+ <div class="formula-strip">Q<sub>ww</sub> = K &radic;( &Sigma;DU )
+ <span class="w">BS EN 12056-2. K = 0.5 intermittent (dwelling, office) &middot; 0.7 frequent (hospital,
+ school, hotel) &middot; 1.0 congested (public toilets) &middot; 1.2 special (laboratory). The design
+ flow is the larger of Q<sub>ww</sub> and the single largest appliance's own discharge.</span></div>
+ <p>BS EN 12056-2 defines four system types (I to IV). Confirm which one the project has adopted before
+ checking any branch size &mdash; the permitted branch lengths and fill ratios differ between them.</p>
+ <h4>Trap seals &mdash; six ways they fail</h4>
+ <p>Self-siphonage, induced siphonage, back-pressure, capillary action, wind effect, and
+ <b>evaporation</b>. The last is the one that dominates in dry climates and in rooms that are rarely
+ used &mdash; a plant room floor gully can lose its seal in weeks. Ask for the seal depth and the
+ replenishment strategy (trap primer, or a waterless valve where the code permits one), not just the
+ fitting schedule.</p>
+ <div class="callout"><b>Hunt for</b><p>A longitudinal section that meets the gradient on the drawn
+ invert but not on the buildable one, because cover depth was fixed first and the gradient fell out of
+ it. And check the vent terminations against the ventilation intake layout, not just the roof plan.</p></div>`},
+
+{n:"5", t:"Rainwater and condensate", s:"Where the intensity comes from, and the blocked-outlet case",
+ h:`<h4>Rainfall intensity is a sourced number, not a remembered one</h4>
+ <p>Roof drainage design needs an <b>intensity</b> in mm/hr, derived from a return period and a storm
+ duration together. Annual rainfall totals are not a design intensity, and a total quoted where an
+ intensity is required is a finding in itself.</p>
+ <p>In arid regions this matters more than it looks. Annual totals are small, but design events are
+ short and intense &mdash; a 10-minute storm at a 1-in-10-year return period can produce an intensity
+ that would not embarrass a temperate climate. Take the value from the region's own
+ intensity-frequency-duration curves, and check that the return period and duration are both stated.</p>
+ <div class="formula-strip">Q = 2.78 &middot; C &middot; I &middot; A
+ <span class="w">Rational method in the l/s form: Q in l/s, I in mm/hr, A in hectares.
+ The same relationship is written Q = CiA/360 for Q in m&sup3;/s. Confirm which constant the calculation
+ uses &mdash; mixing them is a factor-of-360 error that is easy to miss because the result still looks
+ like a number.</span></div>
+ <h4>Roof drainage</h4>
+ <ul>
+ <li>Size to <b>BS EN 12056-3</b> or the project's nominated method, consistently.</li>
+ <li>Catchment areas must reconcile with the architectural roof plan. An unassigned zone drains
+ somewhere &mdash; usually over a parapet onto a facade.</li>
+ <li><b>Secondary or emergency overflow provision</b> is the check that matters. The design case is the
+ primary outlet blocked; the secondary path must be able to discharge the design storm before the roof
+ reaches its structural water load. A token scupper with no capacity check does not satisfy this.</li>
+ <li>Protect the exposed base of the downpipe. A metallic section at the transition to below ground is
+ common practice and is worth confirming.</li>
+ </ul>
+ <h4>Condensate</h4>
+ <p>Route to the storm or a dedicated system &mdash; not into foul, where it is a cross-connection and
+ loads the sewage system with clean water. Trap or air-break at the plant, insulate to prevent surface
+ condensation, and never discharge into an electrical or ELV room.</p>
+ <div class="callout"><b>Hunt for</b><p>An overflow provision that exists in the specification and not
+ on the drawing. The blocked-primary case is what floods a roof, and it is the case nobody draws.</p></div>`},
+
+{n:"6", t:"Segregation and contaminated streams", s:"Double-block-and-bleed logic, applied to drainage",
+ h:`<p>The governing question on any drainage drawing is the one you would ask of a process tie-in:
+ <b>is there a route by which one stream can reach another?</b> You do not rely on a single barrier
+ between incompatible services, and you do not rely on an operator remembering which is which.</p>
+ <div class="table-scroll"><table class="ref"><thead><tr><th>Stream</th><th>Required treatment before it joins anything</th></tr></thead><tbody>
+ <tr><td><b>Sanitary / foul</b></td><td>To the foul network. Never receives clean storm or condensate</td></tr>
+ <tr><td><b>Clean storm</b></td><td>Roofs and non-process paving. Must not receive process or oily drainage</td></tr>
+ <tr><td><b>Oily / hydrocarbon-contaminated</b></td><td><b>Oil interceptor or fuel trap</b>, upstream of the connection. Fuel and generator rooms typically also need channel grating <i>and</i> a bunded tank &mdash; the two requirements are separate and neither substitutes for the other</td></tr>
+ <tr><td><b>Battery room / acidic</b></td><td>Chemical-resistant pipework to a <b>neutralisation pit</b>, and only then to the main drainage</td></tr>
+ <tr><td><b>Kitchen</b></td><td><b>Grease separator to BS EN 1825-1</b>, external to the building, kitchen appliances only, on a steeper minimum gradient than general drainage</td></tr>
+ <tr><td><b>Laundry</b></td><td><b>Lint interceptor</b> for solids, buttons and fibre</td></tr>
+ <tr><td><b>Recycled / treated effluent for irrigation</b></td><td>Absolute separation from potable, distinctive pipe identification, and backflow protection to the highest fluid category</td></tr>
+ </tbody></table></div>
+ <p>Two failure patterns account for most segregation findings. The first is a device correctly specified
+ and then discharged into the wrong network &mdash; the interceptor is right and its downstream connection
+ is not. The second is a device that exists on the schematic and not on the layout, or on both with no
+ invert level that lets it work by gravity.</p>
+ <div class="callout"><b>Hunt for</b><p>Trace every branch to its destination on the schematic
+ <i>and</i> on the layout. A stream correctly segregated on one and merged on the other is the single
+ most common serious finding in this discipline.</p></div>`},
+
+{n:"7", t:"Materials, temperature and corrosion", s:"A pressure rating without a temperature is not a rating",
+ h:`<h4>The derating trap</h4>
+ <p>Thermoplastics lose a large fraction of their pressure capability with temperature, and manufacturers
+ quote the headline PN at 20&nbsp;&deg;C. On a hot-climate roof the service condition is nowhere near
+ 20&nbsp;&deg;C:</p>
+ <div class="table-scroll"><table class="ref"><thead><tr><th>Condition</th><th>Why it is the design case</th></tr></thead><tbody>
+ <tr><td>Shade air temperature</td><td>The number usually quoted in environmental data</td></tr>
+ <tr><td><b>Solar radiation (black bulb) temperature</b></td><td>What an unshaded pipe on a roof actually approaches &mdash; commonly 30&nbsp;&deg;C or more above shade temperature</td></tr>
+ <tr><td>Soil temperature</td><td>The buried case, higher than temperate assumptions</td></tr>
+ </tbody></table></div>
+ <p>So a PPR or uPVC line specified with an installation ceiling and a 50-year service rating at
+ 30&nbsp;&deg;C needs the designer to state the <b>derated pressure rating at the actual service
+ temperature</b>. If a datasheet quotes PN with no reference temperature, that is a finding, not a nit.</p>
+ <p>Ultraviolet exposure is the companion check: plastics and GRP in direct sunlight need a stated UV
+ barrier, and insulation on an exposed run needs metallic cladding or it fails within a season.</p>
+ <h4>Corrosion in a coastal or saline environment</h4>
+ <ul>
+ <li><b>Select stainless on PREN, not on grade name.</b> 316L for wetted sanitary and hot water duty;
+ duplex and super duplex (PREN &ge; 40) where chloride content is high. &ldquo;Stainless&rdquo; is not a
+ specification.</li>
+ <li><b>Buried ferrous</b> in aggressive ground needs external protection &mdash; polyethylene sleeving
+ on ductile iron, coating and cathodic protection on steel &mdash; and sulphate-resisting cement where
+ concrete is in contact with sulphate-bearing ground.</li>
+ <li><b>Isolate dissimilar metals.</b> A transition fitting chosen for pressure rating with no dielectric
+ break will fail quickly in a chloride environment.</li>
+ <li><b>GRP</b> stiffness class must match burial depth and traffic loading, with an installed deflection
+ limit stated.</li>
+ </ul>
+ <h4>Support, insulation and identification</h4>
+ <p>Support spacing and hanger rod diameter should come from a schedule by pipe size &mdash; MSS SP-69
+ is the usual fallback where a project schedule is silent. Insulation carries a <b>thickness and a
+ thermal conductivity</b>, and meeting one without the other does not comply. Never permit insulation
+ before pressure testing. Identification means the label, the service, <b>and the flow direction</b>;
+ the arrow is the part that gets dropped.</p>
+ <div class="callout"><b>Hunt for</b><p>A specification that contradicts itself on the same property in
+ two clauses &mdash; two insulation densities, two design lives, two pressure classes. A material
+ submittal will comply with one and be rejected against the other, and the cycle is lost to something
+ that was visible beforehand.</p></div>`},
+
+{n:"8", t:"Sump pumps and hazardous-area evidence", s:"Where rotating-equipment judgement transfers directly",
+ h:`<p>Foul sump pumps are where a mechanical engineer's pump knowledge applies with no translation.
+ Four things have to be right, and they fail independently.</p>
+ <h4>1. The hazardous-area case</h4>
+ <p>A clause that requires a pump to be &ldquo;explosion proof to suit the medium&rdquo; names no
+ certification scheme, so the evidence set is what makes it verifiable. Demand three things:</p>
+ <ul>
+ <li>The <b>certificate</b> &mdash; ATEX or IECEx.</li>
+ <li>The <b>full Ex marking string</b>, not the words &ldquo;Ex proof&rdquo; on a datasheet
+ (group, category, protection concept, gas group, temperature class).</li>
+ <li>The <b>area classification drawing</b> that justifies the zone the marking is rated for. Without it
+ the marking cannot be checked against anything.</li>
+ </ul>
+ <p>The level sensors carry the same requirement and are the more commonly missed half. An Ex-rated pump
+ with ordinary float switches does not comply.</p>
+ <h4>2. Hydraulics at the worst case, not the normal case</h4>
+ <p>Submergence and NPSH available must be demonstrated <b>at the low-level cut-out</b>, not at normal
+ running level. The stop level is the worst case and the control logic drives to it on every cycle.
+ In a hot climate, check the vapour pressure at design liquid temperature rather than at 20&nbsp;&deg;C.</p>
+ <h4>3. Cycling</h4>
+ <p>Three parameters must close against each other, and any two can be made to look right alone:
+ the <b>sump working volume</b> between start and stop levels, the <b>control draw-down</b>, and the
+ <b>motor's permitted starts per hour</b>. The classic minimum-cycle relationship for a single duty pump
+ is:</p>
+ <div class="formula-strip">V = Q &middot; t<sub>cycle</sub> / 4
+ <span class="w">V = working volume between start and stop &middot; Q = pump capacity &middot;
+ t<sub>cycle</sub> = minimum cycle time from the permitted starts per hour. Bigger wet wells reduce
+ starts but increase retention time, and retention time drives septicity &mdash; the two pull against
+ each other and the design has to state which governs.</span></div>
+ <h4>4. Solids, materials and redundancy</h4>
+ <ul>
+ <li><b>Solids passage</b> matched to raw sewage and to whatever screening exists upstream. A clean-water
+ impeller selected on efficiency is a maintenance liability.</li>
+ <li><b>Materials</b> for the coastal or saline case, and for the actual liquid.</li>
+ <li><b>Duty and standby</b> stated with changeover logic &mdash; a spare in stores is not standby.</li>
+ <li><b>Septicity and odour</b> &mdash; long retention in a warm rising main generates hydrogen sulphide,
+ which attacks cementitious materials at the crown and is a personnel hazard at manholes. Confirm the
+ mitigation: retention time, ventilation, odour control, or material selection.</li>
+ </ul>
+ <div class="callout"><b>Hunt for</b><p>A vendor datasheet validated against nothing. The datasheet has
+ to reconcile three ways &mdash; against the approved specification, against the calculations, and
+ against the equipment schedule. One that arrives without that reconciliation is incomplete regardless
+ of how good the pump is.</p></div>`},
+
+{n:"9", t:"Testing and deliverable completeness", s:"Where a technically sound submission still fails",
+ h:`<h4>Read the test regime from both documents</h4>
+ <p>Test durations and pressures frequently differ between the contract scope document and the technical
+ specification &mdash; a 24-hour hold in one and a 15-minute or 4-hour hold in the other is a common
+ pattern. Both bind. Surface the conflict, propose the more stringent, and let the technical query route
+ settle it rather than assuming the specification was intended to relax the scope.</p>
+ <div class="table-scroll"><table class="ref"><thead><tr><th>Test</th><th>What to confirm</th></tr></thead><tbody>
+ <tr><td>Pressure test, water services</td><td>Pressure <b>and</b> duration, both stated; commonly 1.5 &times; working pressure</td></tr>
+ <tr><td>Gravity drainage, roughing-in</td><td>Water test to a stated head, level must not fall over the stated period</td></tr>
+ <tr><td>Gravity drainage, finished</td><td>Air test with traps filled and stack openings plugged &mdash; a separate test, and both are required</td></tr>
+ <tr><td>Buried drains and sewers</td><td>Air or water test to BS EN 1610, plus CCTV survey and deflection testing for flexible pipes</td></tr>
+ <tr><td>Potable water</td><td>Disinfection, flushing, then sampling &mdash; confirm which parameters must be reported</td></tr>
+ </tbody></table></div>
+ <p>Two sequencing rules are worth holding to because they cannot be recovered afterwards:
+ <b>no insulation before pressure testing</b>, and <b>no concealment before roughing-in inspection</b>.
+ Both get compressed to protect the finishes programme.</p>
+ <h4>Completeness is a separate check from correctness</h4>
+ <p>A submission can be hydraulically perfect and still be returned. Confirm against the contractual
+ deliverables list &mdash; which is often <i>not</i> the drawing register issued to the contractor, a
+ distinction worth establishing explicitly. Then check the procedural set:</p>
+ <ul>
+ <li>Correct submission status, and any prerequisite status actually achieved on the previous revision.</li>
+ <li><b>Comments resolution sheet</b> carried forward, stating for each prior comment whether it was
+ incorporated and, if not, why.</li>
+ <li>Revision clouding on drawings so a reviewer can see what changed.</li>
+ <li>In-house quality check signatures &mdash; designer, discipline engineer, quality signatory.</li>
+ <li>Long-lead and third-party items identified with their notice periods. Certified testing and
+ balancing specialists, statutory authority notifications and witness requirements all carry lead times
+ measured in weeks or months, and they belong on the programme, not in a covering letter.</li>
+ </ul>
+ <div class="callout"><b>Hunt for</b><p>A submission that is technically sound and procedurally
+ incomplete. It earns the same rejection as a hydraulic error and costs the same cycle &mdash; and where
+ review durations are not fixed in the contract, that cycle comes out of float you control only at the
+ point of issue.</p></div>`}
+];
+</script>
+<script>
+/* i=id g=group x=check c=acceptance criterion r=references t=basis(K code | P practice)
+   s=severity w=why f=failure mode m=module */
+const GROUPS = {
+ A:"Design basis &amp; validation evidence", B:"Potable water calculations",
+ C:"Foul &amp; waste drainage calculations", D:"Rainwater &amp; condensate",
+ E:"Pumps &amp; equipment datasheets", F:"Drawings &amp; routing",
+ G:"Materials, insulation &amp; supports", H:"Testing &amp; deliverable completeness"
+};
+const CHECKS = [
+/* A — design basis & validation */
+{i:"A-01",g:"A",x:"The design basis is stated in the submission, with its document number and revision.",c:"Governing design basis named, not assumed.",r:["Project design basis"],t:"K",s:"Hold",w:"Every downstream criterion inherits from it. Without it there is nothing to check against.",f:"Criteria quoted with no stated origin, so each one has to be argued individually.",m:2},
+{i:"A-02",g:"A",x:"Front-end design has been validated with independent evidence, not restated.",c:"Recalculation, re-dimensioning or a written position behind each inherited figure.",r:["Contract — design responsibility"],t:"K",s:"Hold",w:"Where the contractor carries full design responsibility regardless of earlier engineering, an unvalidated inherited error becomes the contractor's.",f:"The same numbers reformatted into a new title block.",m:1},
+{i:"A-03",g:"A",x:"Any prerequisite approval gate has been passed before this stage of engineering.",c:"Approval of the design basis precedes detailed design where the contract requires it.",r:["Contract — engineering sequence"],t:"K",s:"Major",w:"Detailed design run ahead of its gate is exposed in full if the basis then changes.",f:"Parallel working adopted to protect programme, with no record of the risk taken.",m:9},
+{i:"A-04",g:"A",x:"Every design criterion is traceable to a document, clause and revision.",c:"No unsourced numbers anywhere in the calculation set.",r:["Project specification"],t:"K",s:"Major",w:"A criterion with no traceable source cannot ground a finding and cannot survive challenge.",f:"A plausible industry figure imported from another project.",m:2},
+{i:"A-05",g:"A",x:"The edition of every cited standard matches the edition the contract mandates.",c:"Edition stated for each standard; any mismatch raised as a deviation.",r:["Contract — applicable standards"],t:"K",s:"Hold",w:"A superseded edition inherited from the front-end design puts every delta between editions at risk.",f:"The edition carried over silently because the earlier design used it.",m:2},
+{i:"A-06",g:"A",x:"Environmental design data comes from the project's own environmental data sheet.",c:"Ambient extremes, solar radiation temperature, humidity, soil temperature all sourced.",r:["Project environmental data"],t:"K",s:"Major",w:"These fix the temperatures every material rating must be checked against.",f:"A regional or temperate default used, understating the roof and buried conditions.",m:7},
+{i:"A-07",g:"A",x:"Units, datum and coordinate system match the project convention.",c:"Consistent throughout; levels and coordinates on the project datum.",r:["Project design basis"],t:"K",s:"Major",w:"A mixed datum will not close against the external network at the tie-in.",f:"Levels carried from a local benchmark without conversion.",m:0},
+{i:"A-08",g:"A",x:"Every departure from the approved basis is raised as a formal deviation.",c:"A written deviation request exists for each departure.",r:["Contract — deviation procedure"],t:"K",s:"Hold",w:"A silent deviation is unapproved design, whatever its technical merit.",f:"A vendor's standard offering adopted as an equivalent with no justification.",m:1},
+{i:"A-09",g:"A",x:"The deliverable sits inside a defined and funded scope.",c:"Not an item excluded by a subconsultant and never reallocated.",r:["Scope split / subcontract"],t:"K",s:"Hold",w:"An exclusion inside a funded scope creates an unfunded gap, not a transfer of risk.",f:"The gap is discovered at the deliverable due date instead of at review.",m:1},
+
+/* B — potable water */
+{i:"B-01",g:"B",x:"Demand basis is stated: per-capita rate, population and the source of both.",c:"All three stated and defensible.",r:["Project design basis"],t:"K",s:"Hold",w:"The whole system is sized on these. A rate without a population is not a demand.",f:"A per-capita rate carried from a different building type.",m:3},
+{i:"B-02",g:"B",x:"One demand method is used consistently — loading units or fixture units, not both.",c:"Single method throughout, with its diversity treatment stated.",r:["BS EN 806 / BS 8558","IPC / UPC"],t:"P",s:"Major",w:"The two systems' unit values and diversity curves are not interchangeable.",f:"Two methods in one calculation set, giving results that cannot be reconciled.",m:3},
+{i:"B-03",g:"B",x:"Hunter's curve, where used, is corrected for modern low-flow fittings.",c:"Correction stated, or an alternative method used.",r:["IPC / UPC"],t:"P",s:"Minor",w:"Uncorrected, it oversizes pipework — and oversized pipework means residence time and stagnation.",f:"Raw 1940s-era fixture unit values applied to low-flow sanitaryware.",m:3},
+{i:"B-04",g:"B",x:"Storage volume equals the stated reserve period at the design rate and population.",c:"Reserve hours × rate × population reconciles with the tank schedule.",r:["Project design basis"],t:"K",s:"Hold",w:"Check all three inputs, not just the result.",f:"A tank size inherited from the architectural layout and justified backwards.",m:3},
+{i:"B-05",g:"B",x:"Tanks are compartmentalised, insulated and protected from solar gain.",c:"All three, with the stored water temperature limit stated.",r:["Project specification"],t:"K",s:"Major",w:"Compartmentalisation permits cleaning without loss of supply; the rest holds the temperature limit.",f:"A single-compartment tank that cannot be taken out of service.",m:3},
+{i:"B-06",g:"B",x:"Residual pressure is demonstrated at the index fixture.",c:"Most remote and highest fixture, at design simultaneous flow.",r:["Project design basis"],t:"K",s:"Hold",w:"Adequate pressure is required at the fixture, not at the riser base.",f:"Residual demonstrated at the booster outlet.",m:3},
+{i:"B-07",g:"B",x:"Maximum static pressure is stated, with pressure-reducing zoning where it is exceeded.",c:"Stated ceiling; PRV stations sized and located.",r:["Project design basis"],t:"K",s:"Major",w:"Without a stated ceiling there is no criterion to check a PRV setting against.",f:"A remembered figure substituted for a missing one — ask for it instead.",m:3},
+{i:"B-08",g:"B",x:"Velocity limits are met in branches, not only in risers.",c:"Riser and internal limits applied separately, per the design basis.",r:["ASPE","Project design basis"],t:"K",s:"Major",w:"The internal limit is the tighter one and it is the branches that breach it.",f:"The riser figure applied throughout because it is the number people remember.",m:3},
+{i:"B-09",g:"B",x:"Booster set configuration matches the specification: duty/standby, variable speed, vessel and controls.",c:"All specified elements present on the datasheet and the schematic.",r:["Project specification"],t:"K",s:"Hold",w:"These are usually specified together and offered separately.",f:"A fixed-speed set with a pressure vessel doing the modulation.",m:3},
+{i:"B-10",g:"B",x:"Pump total head is built up as static plus friction plus residual.",c:"Auditable build-up, with a system curve.",r:["Project design basis"],t:"P",s:"Major",w:"An auditable head build-up is what makes the duty point defensible.",f:"A duty point quoted from a vendor selection with no system curve behind it.",m:3},
+{i:"B-11",g:"B",x:"Hot water is sized on peak-hour demand, not daily average.",c:"Peak hour profile stated and sourced.",r:["ASHRAE Handbook"],t:"P",s:"Major",w:"Average sizing under-sizes the heater for the morning peak in residential-pattern use.",f:"Daily average used because the peak profile was not to hand.",m:3},
+{i:"B-12",g:"B",x:"Hot water thermal control is stated, with a risk assessment where storage is below 60 °C.",c:"Storage, return and cold temperatures stated. Where TMVs limit delivery, a time-to-temperature test at the valve inlet is specified.",r:["Project design basis"],t:"P",s:"Major",w:"A lower store with TMVs is a legitimate scald-prevention design — but it needs the assessment that justifies it. Raise as a query, not a rejection.",f:"Raised as a non-compliance when the project basis sets the lower figure.",m:3},
+{i:"B-13",g:"B",x:"Cold water is protected from thermal gain in exposed and adjacent runs.",c:"Routing, separation and insulation together — not insulation alone.",r:["Project design basis"],t:"P",s:"Major",w:"In hot climates cold water in poorly separated runs sits well above 20 °C for months.",f:"Insulation thickness checked while the route past a hot service is not.",m:3},
+{i:"B-14",g:"B",x:"Emergency shower and eyewash duties are stated and the supply can deliver them.",c:"Flow and duration stated to the referenced standard, and reflected in storage and pipe size.",r:["ANSI/ISEA Z358.1"],t:"K",s:"Hold",w:"A shower running for the required duration is a large volume that has to exist in the storage and the pipe.",f:"A safety shower shown on the drawing with no supply capacity behind it.",m:3},
+
+/* C — foul & waste */
+{i:"C-01",g:"C",x:"Gradient meets the project minimum on every run.",c:"Every run at or above the stated minimum gradient.",r:["Project design basis"],t:"K",s:"Hold",w:"Where the contract and the design basis give different minima, the conflict is a finding in itself.",f:"Cover depth fixed first, gradient falling out of it, and a relaxation invoked to justify the result.",m:4},
+{i:"C-02",g:"C",x:"Gradients vary correctly by pipe size — small bores steeper.",c:"Size-banded gradient schedule applied.",r:["Project design basis","BS EN 12056-2"],t:"P",s:"Major",w:"Too steep is a failure mode as well as too shallow — liquid outruns solids.",f:"A single gradient applied to every size.",m:4},
+{i:"C-03",g:"C",x:"Self-cleansing velocity is calculated and met, not merely assumed from gradient.",c:"Velocity computed at design flow for each run.",r:["Project design basis"],t:"K",s:"Hold",w:"Gradient is a construction tolerance; velocity is the hydraulic outcome. Meeting one does not prove the other.",f:"Gradient shown on the schedule, velocity never calculated.",m:4},
+{i:"C-04",g:"C",x:"Maximum velocity is not exceeded.",c:"Upper limit per the design basis, commonly 2.5 to 3.0 m/s.",r:["Project design basis"],t:"K",s:"Major",w:"Invert erosion is the long-term failure this prevents.",f:"Short steep runs unchecked because the average gradient looked reasonable.",m:4},
+{i:"C-05",g:"C",x:"Roughness coefficient matches the specified pipe material.",c:"Manning's n or Colebrook-White k_s consistent with the material schedule.",r:["BS EN 752"],t:"P",s:"Major",w:"A smooth-bore value on a concrete or cast-iron specification quietly undersizes the pipe.",f:"A single optimistic roughness applied across mixed materials.",m:4},
+{i:"C-06",g:"C",x:"Proportional depth of flow is within the stated limit.",c:"d/D at or below the design basis value.",r:["Project design basis","CIBSE Guide G"],t:"K",s:"Major",w:"Fill above the limit removes the ventilation path and invites surcharge.",f:"A generic limit used instead of the project's own, which may be tighter.",m:4},
+{i:"C-07",g:"C",x:"Minimum internal diameter is met.",c:"Per the design basis; note nominal and internal diameter are not the same.",r:["Project design basis"],t:"K",s:"Major",w:"Below the minimum, blockage frequency rises regardless of gradient.",f:"A nominal size offered as equivalent to an internal-diameter requirement.",m:4},
+{i:"C-08",g:"C",x:"Discharge units and the frequency factor are correct for the building use.",c:"Qww = K√ΣDU with K matched to the occupancy.",r:["BS EN 12056-2"],t:"P",s:"Major",w:"K ranges from 0.5 to 1.2 across occupancy types — a factor of well over two on the design flow.",f:"The dwelling factor applied to a public or congested-use building.",m:4},
+{i:"C-09",g:"C",x:"The BS EN 12056-2 system type is stated before any branch size is checked.",c:"System I, II, III or IV declared.",r:["BS EN 12056-2"],t:"P",s:"Major",w:"Permitted branch lengths and fill ratios differ between the four system types.",f:"Branch sizes checked against the wrong system's tables.",m:4},
+{i:"C-10",g:"C",x:"Foul and waste are separated as the design basis requires.",c:"Two-pipe or single-stack architecture applied consistently.",r:["Project design basis"],t:"K",s:"Major",w:"The architecture drives every branch connection.",f:"A single-stack arrangement adopted from another project's standard details.",m:4},
+{i:"C-11",g:"C",x:"Venting is provided and terminations are clear of ventilation air intakes.",c:"Vent system per the adopted standard; terminations coordinated with the intake layout.",r:["BS EN 12056-2"],t:"K",s:"Major",w:"The intake coordination is the half that fails, and it is the half occupants notice.",f:"Vents coordinated with the roof plan but not with the HVAC intakes.",m:4},
+{i:"C-12",g:"C",x:"Trap seal depth is stated, with a replenishment strategy for infrequently used gullies.",c:"Depth stated; trap primer or permitted waterless valve where evaporation is credible.",r:["BS EN 12056-2"],t:"P",s:"Major",w:"In dry climates a rarely used plant room gully can lose its seal in weeks.",f:"A depth assumed rather than requested, and no primer where one is needed.",m:4},
+{i:"C-13",g:"C",x:"Continuous fall to the first external chamber is demonstrated.",c:"Longitudinal section shows no flat or reverse-fall segment.",r:["Project design basis"],t:"K",s:"Hold",w:"A single local dip defeats the whole run.",f:"A dip absorbed to clear a structural element and not shown on the section.",m:4},
+{i:"C-14",g:"C",x:"Access and rodding points are provided at every change of direction and at stack bases.",c:"Access at all direction changes, junctions and stack bases.",r:["BS EN 12056-2"],t:"P",s:"Major",w:"An inaccessible blockage becomes a demolition job.",f:"Access provided on the stacks only.",m:4},
+{i:"C-16",g:"C",x:"Cleanouts are provided at direction changes, stack bases and a stated maximum interval.",c:"A schedule exists giving cleanout size against pipe size, a maximum spacing, and provision at every significant change of direction and at the base of every vertical stack.",r:["Project specification","BS EN 12056-2"],t:"K",s:"Major",w:"Specifications commonly give a real spacing rule here — every direction change beyond 45 degrees, and intervals in the order of 15 m for small bore and 30 m for large. It is one of the few drainage requirements that is checkable line by line off a layout.",f:"Cleanouts placed where they were convenient to draw, with no interval check and none at the stack bases.",m:4},
+{i:"C-17",g:"C",x:"Channel and trench drainage: the moulded invert slope is reconciled against the required minimum gradient.",c:"Where a channel product carries a built-in invert slope, that figure meets the project minimum on its own, or the run is laid to fall so the combined gradient does.",r:["Project specification","Manufacturer data"],t:"K",s:"Major",w:"Polymer-concrete channel systems are commonly moulded at around 0.6 percent, which is below a 1:100 requirement. A moulded invert cannot be designed out the way a laid gradient can — it is a property of the product.",f:"The channel laid level because the product 'has its own fall', leaving the whole run below the required minimum.",m:4},
+{i:"C-15",g:"C",x:"Calculations are auditable: inputs, method, result, checker and approver.",c:"Method visible; checking and approval signatures present.",r:["Project quality procedure"],t:"K",s:"Major",w:"A result with no visible method cannot be verified and should not be accepted.",f:"A spreadsheet output with no formulae and no signatures.",m:9},
+
+/* D — rainwater & condensate */
+{i:"D-01",g:"D",x:"Rainfall intensity is stated in mm/hr with its return period and storm duration.",c:"All three stated, from the region's own IDF curves.",r:["Regional IDF curves"],t:"K",s:"Hold",w:"An intensity without a return period and duration is not a design basis.",f:"An annual rainfall total quoted where an intensity is required.",m:5},
+{i:"D-02",g:"D",x:"The rational method constant matches the unit set used.",c:"Q = 2.78·C·I·A for l/s with hectares and mm/hr; Q = C·i·A/360 for m³/s.",r:["Rational method"],t:"P",s:"Major",w:"Mixing the two forms is a factor-of-360 error that still produces a plausible-looking number.",f:"The constant copied from one reference and the units from another.",m:5},
+{i:"D-03",g:"D",x:"Runoff coefficients are sourced and appropriate to each surface.",c:"Composite C built from the actual surface breakdown.",r:["Regional design manual"],t:"K",s:"Major",w:"A single blanket coefficient hides both over- and under-estimation.",f:"A generic coefficient substituted because the source table was inconvenient.",m:5},
+{i:"D-04",g:"D",x:"Roof catchment areas reconcile with the architectural roof plan.",c:"Sum of catchments equals the roof area, with no unassigned zone.",r:["Architectural roof plan"],t:"P",s:"Major",w:"An unassigned zone drains somewhere — usually over a parapet onto a facade.",f:"Catchments drawn to suit outlet positions rather than to cover the roof.",m:5},
+{i:"D-05",g:"D",x:"Roof drainage is sized to a single stated method.",c:"BS EN 12056-3 or the project's nominated method, applied consistently.",r:["BS EN 12056-3"],t:"P",s:"Major",w:"Mixed methods produce outlet counts that cannot be compared.",f:"Gutters sized by one method and outlets by another.",m:5},
+{i:"D-06",g:"D",x:"Secondary or emergency overflow provision is sized for the blocked-primary case.",c:"Overflow capacity demonstrated against the design storm.",r:["BS EN 12056-3"],t:"K",s:"Hold",w:"The blocked-primary case is what floods and then overloads a roof structure.",f:"A token scupper shown with no capacity check.",m:5},
+{i:"D-07",g:"D",x:"The exposed base of the downpipe is protected at the transition to below ground.",c:"Metallic or otherwise impact-resistant section at grade.",r:["Project specification"],t:"P",s:"Minor",w:"The most vulnerable point of the whole stack, and easy to miss on a riser diagram.",f:"One continuous plastic material carried to grade.",m:5},
+{i:"D-08",g:"D",x:"Condensate discharges to storm or a dedicated system, never to foul.",c:"Destination network identified for every condensate branch.",r:["Project design basis"],t:"K",s:"Hold",w:"A condensate connection into foul is a cross-connection and loads the sewage system with clean water.",f:"Condensate tied into the nearest available waste stack.",m:5},
+{i:"D-09",g:"D",x:"Condensate pipework is trapped or air-broken at the plant and insulated against surface condensation.",c:"Trap or air break at each unit; insulation on runs where condensation is credible.",r:["Project specification"],t:"P",s:"Major",w:"Uninsulated condensate pipe sweats onto whatever is below it.",f:"Insulation specified for external runs only.",m:5},
+{i:"D-10",g:"D",x:"Floor drains are provided in all wet areas and all plant rooms.",c:"Plant rooms included, with a drain sized for the credible spill.",r:["Project design basis"],t:"K",s:"Major",w:"The plant room case is the one most often omitted and the one that matters for containment.",f:"Drains provided in toilets and showers only.",m:5},
+
+/* E — pumps & equipment */
+{i:"E-01",g:"E",x:"Ingress protection rating meets the specification for the installed location.",c:"IP rating stated and adequate for submerged or wet-well service.",r:["Project specification","IEC 60529"],t:"K",s:"Hold",w:"Stated explicitly in most specifications and easy to check.",f:"A lower rating offered as equivalent.",m:8},
+{i:"E-02",g:"E",x:"Hazardous-area compliance is evidenced by certificate, full Ex marking and area classification drawing.",c:"All three present. The marking alone is not evidence.",r:["ATEX / IECEx","IEC 60079"],t:"K",s:"Hold",w:"Without the area classification drawing the marking cannot be checked against anything.",f:"'Explosion proof' asserted on a datasheet with no certificate and no zone drawing.",m:8},
+{i:"E-03",g:"E",x:"Level sensors and instrumentation carry the same hazardous-area certification as the pump.",c:"Sensor certification supplied.",r:["ATEX / IECEx"],t:"K",s:"Hold",w:"The more commonly missed half — a certified pump with ordinary float switches does not comply.",f:"Sensor certification omitted because the pump certificate was supplied.",m:8},
+{i:"E-04",g:"E",x:"A written sequence of operation exists, including dry-run protection.",c:"Start, stop, alarm and dry-run prevention described, not just a level schedule.",r:["Project specification"],t:"K",s:"Hold",w:"The sequence is what makes the level schedule meaningful.",f:"A level-switch table with no narrative behind it.",m:8},
+{i:"E-05",g:"E",x:"NPSH available and submergence are demonstrated at the low-level cut-out.",c:"NPSHa > NPSHr at the stop level, at design liquid temperature.",r:["Pump datasheet"],t:"P",s:"Major",w:"The stop level is the worst case and the control drives to it on every cycle.",f:"Submergence quoted at normal running level, and vapour pressure taken at 20 °C.",m:8},
+{i:"E-06",g:"E",x:"Sump working volume, draw-down and permitted motor starts reconcile.",c:"V = Q·t/4 or the specified minimum-cycle basis, checked against the pit geometry.",r:["Motor start rating"],t:"P",s:"Major",w:"Three parameters that must close; any two can be made to look right alone.",f:"Motor starts never checked against the pit volume the architect drew.",m:8},
+{i:"E-07",g:"E",x:"Solids passage suits the liquid and any upstream screening.",c:"Impeller type and free passage stated and appropriate.",r:["Project specification"],t:"P",s:"Major",w:"A clean-water impeller selected on efficiency becomes a maintenance liability.",f:"Efficiency optimised at the expense of passage.",m:8},
+{i:"E-08",g:"E",x:"Septicity and odour control are addressed where retention time is significant.",c:"Retention time stated; mitigation identified where sulphide generation is credible.",r:["BS EN 752"],t:"P",s:"Major",w:"Warm long-retention rising mains generate hydrogen sulphide, which attacks cementitious crowns and is a personnel hazard at manholes.",f:"Wet well oversized for cycling, with no septicity check against the longer retention.",m:8},
+{i:"E-09",g:"E",x:"Duty and standby arrangement is stated with changeover logic.",c:"Configuration and changeover described.",r:["Project specification"],t:"K",s:"Major",w:"A spare in stores is not standby.",f:"Redundancy claimed on a datasheet with no changeover arrangement.",m:8},
+{i:"E-10",g:"E",x:"Each datasheet is reconciled against the approved specification, the calculations and the equipment schedule.",c:"Three-way reconciliation evidenced.",r:["Project specification"],t:"K",s:"Hold",w:"This reconciliation is normally an explicit contractor obligation, not the vendor's.",f:"A vendor datasheet forwarded unchanged with a review stamp on it.",m:8},
+{i:"E-11",g:"E",x:"Any proposed equivalent carries a justification and a formal deviation.",c:"Deviation submitted and approved before procurement.",r:["Contract — deviation procedure"],t:"K",s:"Hold",w:"'Or equal approved' is not pre-authorisation.",f:"An alternative adopted at order stage and disclosed at delivery.",m:8},
+{i:"E-12",g:"E",x:"Factory acceptance testing and witness requirements are identified with their lead times.",c:"FAT scope, witness notification period and programme dates.",r:["Project specification"],t:"K",s:"Major",w:"Witnessing has to be programmed — it is a lead-time item, not a certificate.",f:"FAT listed in the inspection plan with no date and no notification route.",m:9},
+
+/* F — drawings & routing */
+{i:"F-01",g:"F",x:"No plumbing or drainage passes through electrical, ELV, IT or instrumentation rooms.",c:"Absolute where the specification states it — no sleeving or ceiling-void concession.",r:["Project specification"],t:"K",s:"Hold",w:"Where stated as an absolute there is no mitigation. The fix is a re-route.",f:"A run above a ceiling in an electrical room, argued as not being 'through' it.",m:6},
+{i:"F-02",g:"F",x:"Every run carries an annotated size, gradient and invert.",c:"No unannotated runs on any layout or section.",r:["Project drawing standard"],t:"K",s:"Hold",w:"An unannotated run cannot be checked and will be set on site.",f:"Gradients on the schedule but not on the drawing.",m:4},
+{i:"F-03",g:"F",x:"Schematic and layout agree — every branch reaches the same destination on both.",c:"Trace each branch on both documents.",r:["Project drawing standard"],t:"K",s:"Hold",w:"The most common serious finding in this discipline is a stream segregated on one and merged on the other.",f:"The schematic updated and the layout left behind, or the reverse.",m:6},
+{i:"F-04",g:"F",x:"Contaminated streams pass through their treatment device before joining any shared network.",c:"Interceptor, fuel trap or neutralisation pit upstream of the connection, not at it.",r:["Project specification"],t:"K",s:"Hold",w:"A correctly specified device discharging into the wrong network is still a cross-connection.",f:"Device shown, downstream connection never traced.",m:6},
+{i:"F-05",g:"F",x:"Treatment devices appear on both schematic and layout, with workable invert levels.",c:"Present on both, and gravity-feasible.",r:["Project specification"],t:"K",s:"Major",w:"A pit on the schematic and absent from the layout is the classic version of this failure.",f:"Device shown with no invert reconciled to the incoming drain.",m:6},
+{i:"F-06",g:"F",x:"Backflow prevention is provided at every connection between potable and any non-potable service.",c:"Device appropriate to the fluid category at each connection.",r:["BS EN 1717","Local water authority regulations"],t:"K",s:"Hold",w:"Potable cross-connection is the highest-consequence failure available in this discipline.",f:"A hose bib or wash-down point connected with no backflow device.",m:6},
+{i:"F-07",g:"F",x:"Buried pipework crossing trafficked areas is protected.",c:"Encasement or increased cover per the specification, at roads and parking alike.",r:["Project specification"],t:"K",s:"Major",w:"Specifications commonly name both roads and car parks; the car park case gets omitted.",f:"Protection provided under roads only.",m:7},
+{i:"F-08",g:"F",x:"Thrust restraint is provided where the specification requires it on buried bends.",c:"Thrust blocks or restrained joints at all buried bends and elbows.",r:["Project specification"],t:"K",s:"Major",w:"Often omitted from gravity drainage on the assumption that thrust is a pressure-pipe issue.",f:"Restraint shown on the rising main only.",m:7},
+{i:"F-09",g:"F",x:"Fire-rated penetrations carry a sealing system, with a penetration schedule behind it.",c:"Collars or sleeves scheduled per penetration, not generically.",r:["Project fire strategy"],t:"K",s:"Major",w:"A plastic drain through a fire wall without a collar defeats the compartment.",f:"Collars noted generically with no schedule.",m:7},
+{i:"F-10",g:"F",x:"Coordination against structure, electrical and HVAC is evidenced.",c:"Coordinated model or coordination drawings, interrogated not just federated.",r:["Project BIM / coordination procedure"],t:"K",s:"Major",w:"A route that clears in 2D routinely clashes in the coordinated model.",f:"Models federated and never interrogated.",m:6},
+
+/* G — materials, insulation & supports */
+{i:"G-01",g:"G",x:"Every pressure rating is stated with its reference temperature.",c:"Derated rating at actual service temperature, for exposed and buried cases.",r:["Manufacturer derating data"],t:"K",s:"Hold",w:"Thermoplastics lose much of their capability with temperature, and the headline PN is quoted at 20 °C.",f:"PN quoted flat, with no derating curve for a roof or buried condition.",m:7},
+{i:"G-02",g:"G",x:"Plastics and GRP exposed to direct sunlight carry a stated UV barrier.",c:"UV stabilisation stated for every exposed plastic component.",r:["Project environmental data"],t:"K",s:"Major",w:"Commonly a contractual environmental requirement, not a manufacturer's recommendation.",f:"UV performance assumed because the product is sold for outdoor use elsewhere.",m:7},
+{i:"G-03",g:"G",x:"Material selection suits the site's corrosion environment.",c:"Coastal, saline or sulphate-bearing conditions addressed explicitly.",r:["Project environmental data","Geotechnical report"],t:"K",s:"Major",w:"Chloride attack dominates in coastal environments and drives both external and wetted selection.",f:"An inland specification adopted unchanged.",m:7},
+{i:"G-04",g:"G",x:"Stainless selection is justified on PREN, not on grade name.",c:"316L minimum for wetted sanitary and hot water; PREN ≥ 40 for high-chloride duty.",r:["ASTM A240","Material datasheet"],t:"P",s:"Major",w:"PREN is the selection metric that survives challenge; a grade name is not a specification.",f:"304 offered for a coastal wetted duty because it is 'stainless'.",m:7},
+{i:"G-05",g:"G",x:"Dissimilar metal joints are isolated.",c:"Dielectric break at every transition.",r:["Material datasheet"],t:"P",s:"Major",w:"A transition fitting chosen for pressure rating will fail quickly in a chloride environment.",f:"Transition selected on rating with no isolation.",m:7},
+{i:"G-06",g:"G",x:"Insulation meets both the thickness and the thermal conductivity requirement.",c:"Both stated and both met.",r:["Project specification"],t:"K",s:"Major",w:"Meeting the thickness while missing the k-value does not comply.",f:"Thickness checked, conductivity never verified.",m:7},
+{i:"G-07",g:"G",x:"Support spacing and hanger sizing follow a schedule by pipe size.",c:"Project schedule, or MSS SP-69 where the specification is silent.",r:["MSS SP-69","Project specification"],t:"P",s:"Major",w:"A checkable schedule beats a general requirement.",f:"'Supports by contractor' noted on the drawing with no spacing.",m:7},
+{i:"G-08",g:"G",x:"Identification includes the service, the label and the flow direction.",c:"All three; direction arrows on every labelled run.",r:["BS 1710","Project specification"],t:"K",s:"Minor",w:"The arrow is the part that gets dropped, and it is the part an operator needs.",f:"Labelling provided without flow direction.",m:7},
+{i:"G-09",g:"G",x:"The specification is internally consistent on every material property it states twice.",c:"No property given two different values in two clauses.",r:["Project specification"],t:"K",s:"Minor",w:"A submittal will comply with one clause and be rejected against the other.",f:"The submittal is raised, rejected, and a cycle is lost to something visible beforehand.",m:7},
+
+/* H — testing & completeness */
+{i:"H-01",g:"H",x:"Test pressures and durations match the governing document, and any conflict is surfaced.",c:"Where the contract and the specification differ, both are cited and the more stringent proposed.",r:["Contract","Project specification"],t:"K",s:"Hold",w:"A test pack written to the lesser figure looks correct and cites a real project document while being materially short.",f:"The shorter duration adopted because it appeared in the technical specification.",m:9},
+{i:"H-13",g:"H",x:"Every test states a medium, a pressure or head, AND a duration.",c:"All three present for each test. A test missing any one of them has no pass criterion.",r:["Project specification"],t:"K",s:"Major",w:"Specialties and equipment sections often say only 'charge the system and test for leaks, repair and retest until no leaks exist'. That is an intention, not a test — it cannot be passed or failed, and it cannot be witnessed.",f:"A test sheet signed off against a clause that never set a threshold.",m:9},
+{i:"H-14",g:"H",x:"Terms that appear in more than one document mean the same thing in each.",c:"Check overloaded words against their definitions in every document that uses them — 'encasement', 'protection', 'lining', 'sleeve', 'insulation'.",r:["Contract","Project specification"],t:"K",s:"Major",w:"'Encasement' is the classic: in a scope document it often means structural concrete for traffic loading, while the technical specification defines it as a thin polyethylene film for corrosion protection. Both are real requirements and neither satisfies the other, but a keyword search finds only one.",f:"The specification's definition found first, the box ticked, and the other requirement never provided because nothing prompts for it.",m:7},
+{i:"H-02",g:"H",x:"Both the roughing-in and the finished drainage tests are included.",c:"Water test at roughing-in and air test after fixtures are set.",r:["Project specification"],t:"K",s:"Major",w:"They are separate tests and both are normally required.",f:"Only the roughing-in test carried out.",m:9},
+{i:"H-03",g:"H",x:"Buried drainage testing includes CCTV survey and, for flexible pipe, deflection testing.",c:"BS EN 1610 air or water test, CCTV, and mandrel or deflection test.",r:["BS EN 1610"],t:"P",s:"Major",w:"Installed deflection is the failure mode flexible pipe testing exists to catch.",f:"Pressure testing only, with no CCTV and no deflection check.",m:9},
+{i:"H-04",g:"H",x:"Potable disinfection, flushing and sampling are specified, with the reportable parameters named.",c:"Procedure and the specific parameters to be reported.",r:["Local water authority regulations"],t:"K",s:"Hold",w:"A generic bacteriological result may not satisfy a clause that names particular parameters.",f:"Sampling specified without naming what must be reported.",m:9},
+{i:"H-05",g:"H",x:"No insulation is applied before pressure testing, and no concealment before roughing-in inspection.",c:"Both sequencing rules in the method statement and the inspection plan.",r:["Project specification"],t:"K",s:"Major",w:"Neither can be recovered afterwards without opening the works.",f:"Both compressed to protect the finishes programme.",m:9},
+{i:"H-06",g:"H",x:"Third-party and statutory notice periods are on the programme.",c:"Certified specialists, authority notifications and witness requirements with their lead times.",r:["Contract","Local authority regulations"],t:"K",s:"Major",w:"These are measured in weeks or months and belong on the programme, not in a covering letter.",f:"A notice period discovered at mobilisation, costing time that was never allowed.",m:9},
+{i:"H-07",g:"H",x:"The deliverable set is complete against the contractual deliverables list.",c:"Checked against the list the contract names — which may not be the drawing register issued to the contractor.",r:["Contract — deliverables list"],t:"K",s:"Hold",w:"These are frequently two different documents, and completeness judged against the wrong one is not completeness.",f:"Completeness measured against the register issued to the contractor.",m:9},
+{i:"H-08",g:"H",x:"Submission status is correct and any prerequisite status was achieved on the previous revision.",c:"Status matches the review code history.",r:["Contract — document control"],t:"K",s:"Major",w:"A wrong status costs a full cycle even where the engineering is sound.",f:"Submitted at the higher status to save a cycle, without the prerequisite behind it.",m:9},
+{i:"H-09",g:"H",x:"A comments resolution sheet is included, stating incorporation or the reason for non-incorporation.",c:"Every prior comment addressed in writing.",r:["Contract — document control"],t:"K",s:"Hold",w:"Without it the reviewer cannot see what was done with the previous round.",f:"Comments addressed in the drawings with no resolution sheet.",m:9},
+{i:"H-10",g:"H",x:"Revision clouding and in-house quality signatures are present.",c:"Clouding on all drawing revisions; designer, discipline engineer and quality signatures.",r:["Project quality procedure"],t:"K",s:"Minor",w:"Procedural incompleteness earns the same rejection as a technical error.",f:"Clouding omitted, so reviewers cannot see what changed.",m:9},
+{i:"H-11",g:"H",x:"Spares, as-built drawings, O&M manuals and training are identified as deliverables.",c:"All four named with their submission points.",r:["Contract — deliverables list"],t:"K",s:"Major",w:"Commissioning spares and operating spares are usually separate obligations.",f:"A single combined list that satisfies neither.",m:9},
+{i:"H-12",g:"H",x:"Material and inspection submittal routes are identified before procurement starts.",c:"Approval route and timing for each material submittal.",r:["Contract — document control"],t:"K",s:"Minor",w:"Materials ordered ahead of approval carry the full risk of rejection.",f:"Procurement started against an unapproved submittal to protect programme.",m:9}
+];
+</script>
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const esc = s => String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const SEV = {Hold:"b-hold",Major:"b-major",Minor:"b-minor"};
+const LS_KEY = "ard.plumbing-drainage-review.v1";
+const FIELDS = ["fDoc","fTitle","fRev","fDisc","fDate","fBy"];
+
+let ST = {v:1, hdr:{}, items:{}, filt:{state:"all", sev:"all"}};
+let saveT = null, toastT = null;
+
+/* ---------- persistence ---------- */
+function save(){
+  clearTimeout(saveT);
+  saveT = setTimeout(function(){
+    try { localStorage.setItem(LS_KEY, JSON.stringify({v:1, hdr:ST.hdr, items:ST.items})); }
+    catch(e){ /* storage unavailable */ }
+  }, 250);
+}
+function load(){
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return;
+    const s = JSON.parse(raw);
+    if (!s || s.v !== 1) return;
+    ST.hdr = s.hdr || {}; ST.items = s.items || {};
+    FIELDS.forEach(function(f){ if (ST.hdr[f] != null) $(f).value = ST.hdr[f]; });
+  } catch(e){ /* corrupt or unavailable — start clean */ }
+}
+function toast(msg){
+  const t = $("toast"); t.textContent = msg; t.hidden = false;
+  clearTimeout(toastT); toastT = setTimeout(function(){ t.hidden = true; }, 3400);
+}
+
+/* ---------- learning modules ---------- */
+$("mods").innerHTML = MODULES.map(function(m){
+  return '<details class="mod"><summary class="modh">'+
+    '<span class="modn">'+esc(m.n)+'</span>'+
+    '<span class="modt"><b>'+m.t+'</b><span>'+m.s+'</span></span>'+
+    '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>'+
+    '</summary><div class="modbody">'+m.h+'</div></details>';
+}).join("");
+$("tabCount").textContent = CHECKS.length;
+
+/* ---------- checks ---------- */
+function rowHTML(c){
+  const st = ST.items[c.i] || {s:"", n:""};
+  const basis = c.t === "K"
+    ? '<span class="badge b-code" title="Code basis — a contract, specification or statutory requirement. Can ground a rejection.">Code</span>'
+    : '<span class="badge b-prac" title="Practice basis — a published standard or general practice. Grounds a query, not a rejection.">Practice</span>';
+  const refs = (c.r||[]).map(function(r){ return '<span class="chip">'+esc(r)+'</span>'; }).join("");
+  const sbtn = function(k,l){ return '<button type="button" data-s="'+k+'" aria-pressed="'+(st.s===k)+'">'+l+'</button>'; };
+  return '<div class="row sev-'+c.s.toLowerCase()+(st.s?' st-'+st.s:'')+'" data-id="'+c.i+'">'+
+    '<div class="rhead">'+
+      '<span class="rid">'+esc(c.i)+'</span>'+
+      '<div class="rmain">'+
+        '<div class="rtext">'+esc(c.x)+'</div>'+
+        '<div class="rmeta"><span class="badge '+SEV[c.s]+'">'+c.s+'</span>'+basis+refs+'</div>'+
+        '<div class="rcrit"><b>Accept if</b>'+esc(c.c)+'</div>'+
+      '</div>'+
+      '<div class="rstate">'+
+        '<div class="states">'+sbtn("accept","Accept")+sbtn("comment","Comment")+sbtn("reject","Reject")+sbtn("na","N/A")+'</div>'+
+        '<button type="button" class="rmore">Why this matters</button>'+
+      '</div>'+
+    '</div>'+
+    '<div class="rdet" hidden>'+
+      '<div><div class="lb">Why it matters</div><div class="why">'+esc(c.w)+'</div></div>'+
+      '<div><div class="lb">Common failure mode</div><div class="fail">'+esc(c.f)+'</div></div>'+
+      '<div><div class="lb">Reviewer comment</div><textarea data-note="'+c.i+'" placeholder="Your finding, and the document it stands on. This text becomes the comment sheet row.">'+esc(st.n)+'</textarea></div>'+
+    '</div></div>';
+}
+function passFilter(c){
+  const st = ST.items[c.i] || {}, f = ST.filt;
+  if (f.state === "open" && st.s) return false;
+  if (f.state === "flag" && st.s !== "comment" && st.s !== "reject") return false;
+  if (f.sev !== "all" && c.s !== f.sev) return false;
+  return true;
+}
+function render(){
+  let html = "", shown = 0;
+  Object.keys(GROUPS).forEach(function(g){
+    const all = CHECKS.filter(function(c){ return c.g === g; });
+    const vis = all.filter(passFilter);
+    if (!vis.length) return;
+    shown += vis.length;
+    const done = all.filter(function(c){ return (ST.items[c.i]||{}).s; }).length;
+    html += '<div class="grp"><div class="grph"><span class="grpl">'+g+'</span>'+
+      '<h3>'+GROUPS[g]+'</h3><span class="cnt">'+done+' of '+all.length+' set</span></div>'+
+      '<div class="rows">'+vis.map(rowHTML).join("")+'</div></div>';
+  });
+  $("groups").innerHTML = shown ? html : '<div class="empty">No checks match these filters.</div>';
+  rollup();
+}
+function rollup(){
+  let acc=0, com=0, rej=0, na=0, open=0, holdLive=0;
+  CHECKS.forEach(function(c){
+    const s = (ST.items[c.i]||{}).s;
+    if (s === "accept") acc++;
+    else if (s === "comment") com++;
+    else if (s === "reject") rej++;
+    else if (s === "na") na++;
+    else open++;
+    if (c.s === "Hold" && (!s || s === "reject")) holdLive++;
+  });
+  $("sOpen").textContent = open; $("sAcc").textContent = acc;
+  $("sCom").textContent = com; $("sRej").textContent = rej; $("sHold").textContent = holdLive;
+
+  const card = $("vCard"), big = $("vBig"), title = $("vTitle"), sub = $("vSub");
+  card.className = "verdict-card";
+  if (acc+com+rej+na === 0){
+    big.textContent = "—"; title.textContent = "Not started";
+    sub.textContent = "Set a state on each applicable check.";
+  } else if (open > 0){
+    card.classList.add("warn"); big.textContent = "…"; title.textContent = "Review in progress";
+    sub.textContent = open+" check"+(open===1?"":"s")+" still open.";
+  } else if (rej > 0){
+    card.classList.add("bad"); big.textContent = "✕"; title.textContent = "Not approved";
+    sub.textContent = rej+" rejection"+(rej===1?"":"s")+" raised. Work should not proceed on the rejected items.";
+  } else if (com > 0){
+    card.classList.add("warn"); big.textContent = "!"; title.textContent = "Approved with comments";
+    sub.textContent = com+" comment"+(com===1?"":"s")+" to carry on the resolution sheet.";
+  } else {
+    card.classList.add("ok"); big.textContent = "✓"; title.textContent = "Approved";
+    sub.textContent = "No comments raised. All applicable checks accepted.";
+  }
+}
+
+/* ---------- events ---------- */
+$("groups").addEventListener("click", function(ev){
+  const sb = ev.target.closest(".states button");
+  if (sb){
+    const row = sb.closest(".row"), id = row.dataset.id;
+    const cur = (ST.items[id]||{}).s;
+    const next = cur === sb.dataset.s ? "" : sb.dataset.s;
+    ST.items[id] = Object.assign({s:"", n:""}, ST.items[id], {s:next});
+    save();
+    row.className = row.className.replace(/\s*st-\w+/, "") + (next ? " st-"+next : "");
+    row.querySelectorAll(".states button").forEach(function(b){
+      b.setAttribute("aria-pressed", String(b.dataset.s === next));
+    });
+    const grp = row.closest(".grp"), g = grp.querySelector(".grpl").textContent;
+    const all = CHECKS.filter(function(c){ return c.g === g; });
+    const done = all.filter(function(c){ return (ST.items[c.i]||{}).s; }).length;
+    grp.querySelector(".cnt").textContent = done+" of "+all.length+" set";
+    rollup();
+    if (ST.filt.state !== "all") render();
+    return;
+  }
+  const mb = ev.target.closest(".rmore");
+  if (mb){
+    const det = mb.closest(".row").querySelector(".rdet");
+    det.hidden = !det.hidden;
+    mb.textContent = det.hidden ? "Why this matters" : "Hide";
+  }
+});
+$("groups").addEventListener("input", function(ev){
+  const ta = ev.target.closest("textarea[data-note]");
+  if (!ta) return;
+  ST.items[ta.dataset.note] = Object.assign({s:"", n:""}, ST.items[ta.dataset.note], {n:ta.value});
+  save();
+});
+FIELDS.forEach(function(f){
+  const h = function(){ ST.hdr[f] = $(f).value; save(); };
+  $(f).addEventListener("input", h);
+  $(f).addEventListener("change", h);
+});
+function wireSwitch(id, key){
+  $(id).addEventListener("click", function(ev){
+    const b = ev.target.closest("button"); if (!b) return;
+    ST.filt[key] = b.dataset.f || b.dataset.v;
+    $(id).querySelectorAll("button").forEach(function(x){ x.setAttribute("aria-pressed", String(x === b)); });
+    render();
+  });
+}
+wireSwitch("segState","state"); wireSwitch("segSev","sev");
+
+const TABS = [["tab-review","p-review"],["tab-learn","p-learn"]];
+TABS.forEach(function(pair){
+  $(pair[0]).addEventListener("click", function(){
+    TABS.forEach(function(p){
+      const on = p[0] === pair[0];
+      $(p[0]).setAttribute("aria-selected", String(on));
+      $(p[1]).hidden = !on;
+    });
+  });
+});
+
+/* ---------- comment sheet export ---------- */
+function csv(){
+  const q = s => '"' + String(s==null?"":s).replace(/"/g,'""') + '"';
+  const h = ST.hdr || {}, L = [];
+  L.push([q("Plumbing & Drainage Design Review — comment sheet")].join(","));
+  L.push(["Document", h.fDoc||"", "Title", h.fTitle||""].map(q).join(","));
+  L.push(["Revision", h.fRev||"", "Discipline", h.fDisc||""].map(q).join(","));
+  L.push(["Reviewer", h.fBy||"", "Review date", h.fDate||""].map(q).join(","));
+  L.push(["Outcome", $("vTitle").textContent, "", $("vSub").textContent].map(q).join(","));
+  L.push("");
+  L.push(["Item","Group","Severity","Basis","Reference","Check","Acceptance criterion",
+    "Status","Reviewer comment","Incorporated?","Designer response"].map(q).join(","));
+  CHECKS.forEach(function(c){
+    const st = ST.items[c.i] || {};
+    if (!st.s && !st.n) return;
+    const status = st.s === "accept" ? "Accepted" : st.s === "comment" ? "Accepted with comment"
+      : st.s === "reject" ? "Rejected" : st.s === "na" ? "Not applicable" : "Open";
+    L.push([c.i, GROUPS[c.g].replace(/&amp;/g,"&"), c.s, c.t === "K" ? "Code" : "Practice",
+      (c.r||[]).join("; "), c.x, c.c, status, st.n||"", "", ""].map(q).join(","));
+  });
+  return "﻿" + L.join("\r\n");
+}
+$("btnCsv").addEventListener("click", function(){
+  const written = CHECKS.filter(function(c){ const s = ST.items[c.i]||{}; return s.s || s.n; }).length;
+  if (!written){ toast("Nothing to export yet — set a state on at least one check."); return; }
+  const blob = new Blob([csv()], {type:"text/csv;charset=utf-8;"});
+  const tag = (ST.hdr.fDoc || "review").replace(/[^A-Za-z0-9_-]+/g, "-").slice(0, 44);
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "comment-sheet-" + tag + ".csv";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+  toast("Comment sheet exported — " + written + " rows.");
+});
+$("btnPrint").addEventListener("click", function(){ window.print(); });
+
+/* ---------- worked example ----------
+   Illustrative only. The document number, title and findings below are invented
+   to show how a part-completed review reads; they are not from a real project. */
+$("btnSample").addEventListener("click", function(){
+  ST.hdr = {fDoc:"ME-CALC-0021", fTitle:"Example — substation building plumbing & drainage calculations",
+    fRev:"Rev. 0", fDisc:"Plumbing & Drainage", fDate:"", fBy:""};
+  FIELDS.forEach(function(f){ $(f).value = ST.hdr[f] || ""; });
+  ST.items = {
+    "A-01":{s:"accept", n:""},
+    "A-02":{s:"reject", n:"Calculation set reproduces the front-end figures without independent recalculation. No check prints, no re-dimensioning. Validation not evidenced."},
+    "A-05":{s:"comment", n:"Two standards cited at editions superseded by the contract schedule. Confirm and reissue."},
+    "B-01":{s:"accept", n:""},
+    "B-06":{s:"comment", n:"Residual pressure demonstrated at the booster outlet only. Provide the index-fixture case."},
+    "B-08":{s:"reject", n:"Branch velocities not calculated. Riser velocities alone do not demonstrate compliance with the internal limit."},
+    "C-01":{s:"accept", n:""},
+    "C-03":{s:"reject", n:"Gradient shown on the schedule but velocity never calculated. Self-cleansing velocity is a separate criterion and is not demonstrated."},
+    "C-12":{s:"comment", n:"Trap seal depth not stated. Confirm depth and the replenishment strategy for the plant room gullies."},
+    "D-01":{s:"comment", n:"Intensity quoted without its return period and storm duration. State all three."},
+    "D-06":{s:"reject", n:"No secondary outlet provision shown. Demonstrate the blocked-primary case against the design storm."},
+    "E-02":{s:"na", n:"No hazardous-area equipment in this submission."},
+    "G-01":{s:"reject", n:"Pressure class quoted with no reference temperature. Provide the derated rating at roof service temperature."},
+    "H-09":{s:"comment", n:"No comments resolution sheet included with this revision."}
+  };
+  ST.filt = {state:"all", sev:"all"};
+  $("segState").querySelectorAll("button").forEach(function(b){ b.setAttribute("aria-pressed", String(b.dataset.f === "all")); });
+  $("segSev").querySelectorAll("button").forEach(function(b){ b.setAttribute("aria-pressed", String(b.dataset.v === "all")); });
+  save(); render();
+  toast("Worked example loaded — illustrative findings, not a real project.");
+});
+
+$("btnReset").addEventListener("click", function(){
+  if (!confirm("Start a new review? The current states and comments will be cleared.")) return;
+  ST.hdr = {}; ST.items = {};
+  FIELDS.forEach(function(f){ $(f).value = ""; });
+  try { localStorage.removeItem(LS_KEY); } catch(e){ /* storage unavailable */ }
+  render(); toast("New review started.");
+});
+
+/* ---------- boot ---------- */
+document.getElementById("yr").textContent = new Date().getFullYear();
+load();
+render();
+})();
+</script>
+</body>
+</html>
