@@ -268,7 +268,7 @@ td.g{color:var(--ok-300);} td.a{color:var(--warn-300);} td.r{color:var(--bad-300
   display:grid; place-items:center;}
 .work .stp b{display:block; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase;
   color:var(--text-muted); margin-bottom:.3em; font-weight:750;}
-.work .stp .r{font-family:var(--f-mono); color:var(--cyan-300); font-variant-numeric:tabular-nums;}
+.work .stp .r{display:block; margin-top:.18em; font-family:var(--f-mono); color:var(--cyan-300); font-variant-numeric:tabular-nums;}
 
 /* result strip */
 .res{display:grid; gap:10px; margin:1.3em 0;
@@ -504,9 +504,24 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
   <div class="rail-group" data-rail="c4" hidden>
     <h4>C4 · Technology</h4>
     <a href="#c4-dcv"><span class="rm">M1</span>Demand control ventilation</a>
-    <a href="#c4-vrf"><span class="rm">·</span>Variable refrigerant flow</a>
-    <a href="#c4-fans"><span class="rm">M2</span>Fans &amp; fan laws</a>
-    <a href="#c4-exF"><span class="rm">F</span>Worked: DCV &amp; fans</a>
+    <a href="#c4-errors"><span class="rm">!</span>Where the course is wrong</a>
+    <a href="#c4-setpoint"><span class="rm">·</span>Deriving the setpoint</a>
+    <a href="#c4-codes"><span class="rm">·</span>When DCV is mandatory</a>
+    <a href="#c4-co2"><span class="rm">·</span>CO₂ as the signal</a>
+    <a href="#c4-dohadcv"><span class="rm">·</span>What DCV is worth in Doha</a>
+    <a href="#c4-oafrac"><span class="rm">·</span>Outdoor-air fraction</a>
+    <a href="#c4-damper"><span class="rm">·</span>Damper strategies</a>
+    <a href="#c4-exI"><span class="rm">I</span>Worked: the critical zone</a>
+    <a href="#c4-sensors"><span class="rm">·</span>CO₂ sensors</a>
+    <a href="#c4-fans"><span class="rm">·</span>Fans &amp; blade types</a>
+    <a href="#c4-axial"><span class="rm">·</span>The axial families</a>
+    <a href="#c4-fanctrl"><span class="rm">·</span>Fan control &amp; curves</a>
+    <a href="#c4-smokefan"><span class="rm">·</span>Smoke exhaust fans</a>
+    <a href="#c4-exF"><span class="rm">F</span>Worked: DCV &amp; fan turndown</a>
+    <a href="#c4-vrf"><span class="rm">M2</span>Variable refrigerant flow</a>
+    <a href="#c4-cr"><span class="rm">·</span>Combination ratio</a>
+    <a href="#c4-wcvrf"><span class="rm">·</span>Water-cooled VRF</a>
+    <a href="#c4-exJ"><span class="rm">J</span>Worked: derating &amp; charge</a>
     <a href="#c4q"><span class="rm">?</span>Quiz C4</a>
   </div>
   <div class="rail-group" data-rail="ref" hidden>
@@ -541,7 +556,7 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
 
   <div class="note good">
     <b class="nh">Course 1 is now built from the course material itself</b>
-    <p><strong>Courses 1, 2 and 3 have been rewritten against the course's own lecture material.</strong> Course&nbsp;1 draws on all 20 video items of Module&nbsp;1 and the technical study notes for Modules&nbsp;2&ndash;3; Course&nbsp;2 on the review guides of all six of its modules; Course&nbsp;3 on the full 15-item Module&nbsp;1 transcript, two standalone calculation transcripts, and the Module&nbsp;2 technical digest. Any statement traceable to those lectures carries a <span class="vb course">Course</span> tag. <strong>Course 4 alone remains reconstructed</strong> from the published course description and established design method &mdash; it carries no Course tags, and should be read as revision rather than as a record of what was taught.</p>
+    <p><strong>All four courses have now been rewritten against the specialization's own lecture material.</strong> Course&nbsp;1 draws on all 20 video items of Module&nbsp;1 and the technical study notes for Modules&nbsp;2&ndash;3; Course&nbsp;2 on the review guides of all six of its modules; Course&nbsp;3 on the full 15-item Module&nbsp;1 transcript, two standalone calculation transcripts and the Module&nbsp;2 digest; Course&nbsp;4 on the study notes for all 16 lectures of Module&nbsp;1 and all 8 of Module&nbsp;2. Any statement traceable to those lectures carries a <span class="vb course">Course</span> tag. <strong>Nothing in this guide is now reconstructed from a course description.</strong> What remains tagged <span class="vb verify">Verify</span> is what it has always been: values that belong to a copyrighted handbook table or a code edition, which you must read from the document your contract names.</p>
     <p style="margin-bottom:0;">Nothing here reproduces lecture text or graded questions. The transcripts were used the way you would use a vendor design manual to check a calculation &mdash; to correct method, terminology, sequence and emphasis. The practice questions remain authored from first principles.</p>
   </div>
 
@@ -670,7 +685,7 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
 </section>
 <section id="s-map">
   <h2>Specialization map</h2>
-  <p class="prose">Four courses, thirteen modules &mdash; <strong>not the nine an earlier draft of this guide claimed</strong>, because Course&nbsp;2 turned out to carry six modules rather than two. The order is not arbitrary: each course consumes the output of the one before it. A heat load error in C1 does not stay in C1; it propagates into the chiller you select in C2 and the fan you specify in C4. <strong>Courses 1, 2 and 3 below are drawn from the lecture material; Course&nbsp;4 is still reconstructed</strong>, and the Source column says which is which.</p>
+  <p class="prose">Four courses, thirteen modules &mdash; <strong>not the nine an earlier draft of this guide claimed</strong>, because Course&nbsp;2 turned out to carry six modules rather than two. The order is not arbitrary: each course consumes the output of the one before it. A heat load error in C1 does not stay in C1; it propagates into the chiller you select in C2 and the fan you specify in C4. <strong>All four courses below are now drawn from the lecture material</strong>, and the Source column records that.</p>
 
   <div class="tw">
     <table>
@@ -680,7 +695,7 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
         <tr><td><strong>C1</strong> Basics of Air Conditioning &amp; Heat Load</td><td style="text-align:left;">3</td><td style="text-align:left;"><strong>Carrier ETD &amp; Shading Coefficient</strong>; psychrometry</td><td style="text-align:left;">Zone loads, dehumidified airflow, ESHF, ADP</td><td style="text-align:left;"><span class="vb course">Course</span></td></tr>
         <tr><td><strong>C2</strong> Equipment Selection, Design &amp; Sizing</td><td style="text-align:left;">6</td><td style="text-align:left;">AHRI 550/590 rating datum; hydraulics; Colebrook-White; equal friction</td><td style="text-align:left;">Chiller, tower, AHU, pump, pipe, duct, ESP, insulation</td><td style="text-align:left;"><span class="vb course">Course</span></td></tr>
         <tr><td><strong>C3</strong> Ventilation, Life Safety &amp; Smoke Extraction</td><td style="text-align:left;">2</td><td style="text-align:left;"><strong>NBC India 2016</strong>; ASHRAE Applications Ch. 52; NFPA 92</td><td style="text-align:left;">Pressurization and extract rates</td><td style="text-align:left;"><span class="vb course">Course</span></td></tr>
-        <tr><td><strong>C4</strong> Cutting-edge Technology</td><td style="text-align:left;">2 <span class="vb verify">Verify</span></td><td style="text-align:left;">DCV; VRF; fan laws</td><td style="text-align:left;">Part-load and energy strategy</td><td style="text-align:left;"><span class="vb verify">Reconstructed</span></td></tr>
+        <tr><td><strong>C4</strong> Cutting-edge Technology</td><td style="text-align:left;">2</td><td style="text-align:left;">ASHRAE 62.1 VRP &amp; 90.1 §6.4.3.8; affinity laws; combination ratio</td><td style="text-align:left;">Outdoor-air reset, fan selection and control, VRF selection</td><td style="text-align:left;"><span class="vb course">Course</span></td></tr>
       </tbody>
     </table>
   </div>
@@ -726,6 +741,25 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
   <div class="note warn">
     <b class="nh">Two structural corrections this guide now carries</b>
     <p style="margin-bottom:0;">First, the count: <strong>six modules, not two</strong>, which moves the specialization from nine modules to thirteen. Second, and more consequential for anyone using the course as a design reference: <strong>Modules&nbsp;4 and&nbsp;6 teach the same friction calculation and contradict each other.</strong> Module&nbsp;4 states Darcy-Weisbach and then supplies Fanning friction factors &mdash; four times too small. Module&nbsp;6 does it correctly with Colebrook-White. Where they disagree, Module&nbsp;6 is right, and the reconciliation is in <a href="#c2-errors">Where the course material is wrong</a>.</p>
+  </div>
+
+  <h3>Course 4 as actually delivered <span class="vb course">Course</span></h3>
+  <p class="prose">Two modules, <strong>24 lectures</strong>. The title suggests emerging technology; the content is two established strategies and one equipment family. Module&nbsp;1 is a full treatment of demand control ventilation followed by a full treatment of fans &mdash; two subjects bundled under one heading, which is why the fan material is easy to miss.</p>
+
+  <div class="tw">
+    <table>
+      <caption>Module structure and what each one actually covers</caption>
+      <thead><tr><th>Module</th><th class="num">Lectures</th><th style="text-align:left;">Covers</th></tr></thead>
+      <tbody>
+        <tr class="total"><td><strong>M1</strong> Demand Control Ventilation, VAV System and Fans</td><td class="num">16<br>(2 welcome)</td><td style="text-align:left;"><strong>Part A &mdash; DCV:</strong> IAQ and IEQ framing &middot; <strong>ASHRAE 62.1 dynamic reset and the two prohibitions</strong> &middot; <strong>90.1 §6.4.3.8 trigger and five exceptions</strong> &middot; CO<sub>2</sub> thresholds, MET and the generation rate &middot; the steady-state mass balance &middot; <strong>the ventilation rate procedure and the two damper limits</strong> &middot; outdoor-air fraction by temperature and by CO<sub>2</sub> &middot; economizers &middot; setpoint, proportional and PID strategies &middot; DCV on CAV and on VAV &middot; <strong>the critical-zone method</strong> &middot; NDIR and photoacoustic sensors and their placement. <strong>Part B &mdash; fans:</strong> the three families &middot; centrifugal blade types and the <strong>overloading power curve</strong> &middot; plug fans &middot; tubeaxial, vaneaxial and propeller &middot; SP, VP, TP and the Pitot-static tube &middot; <strong>affinity laws</strong> &middot; six control methods &middot; performance curves, operating point and stability</td></tr>
+        <tr class="total"><td><strong>M2</strong> Variable Refrigerant Flow System</td><td class="num">8</td><td style="text-align:left;">What VRF is and how it evolved &middot; DX split and multi-split, and the limits that ended them &middot; the central controller and BACnet &middot; <strong>combination ratio against operating diversity</strong>, with two worked selections &middot; the HP size index &middot; CR ranges and the 50% floor &middot; indoor and outdoor unit ranges &middot; <strong>three-pipe heat recovery</strong> &middot; heat pump against heat recovery &middot; compressor arrangements and redundancy &middot; <strong>water-cooled VRF</strong> &middot; refrigerant piping limits</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">What this course does not cover, and you must supply</b>
+    <p style="margin-bottom:0;">Two omissions matter on a real project. <strong>The refrigerant concentration check</strong> &mdash; ASHRAE 15/34, EN 378 or ISO 5149 &mdash; is absent from the VRF module entirely, although the piping limits it teaches are exactly what make the charge large enough to breach it; it is worked at <a href="#c4-exJ">Example&nbsp;J</a>. And <strong>high-ambient derating is represented by a single factor of 1.15</strong>, which covers a 13% capacity loss against roughly 20% at a Doha design ambient. Neither is an error in what the course says; both are gaps in what it says nothing about, and both are load-bearing here.</p>
   </div>
 </section>
 
@@ -826,16 +860,16 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
           <text class="svg-lbl-sm" x="440" y="828">Lift well and lobby pressurization &middot; four smoke control families &middot; car park, office, atrium &middot; ACPH vs heat-release sizing</text>
 
           <rect x="424" y="880" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(47,126,240,0.34)" stroke-width="1"/>
-          <text class="svg-lbl" x="440" y="902" fill="#eaf1ff" font-weight="700">M1 &middot; Demand control ventilation &amp; VRF</text>
-          <text class="svg-lbl-sm" x="440" y="918">CO&#8322;-based outdoor air reset &middot; the area component you may not turn down &middot; VRF heat pump vs heat recovery</text>
+          <text class="svg-lbl" x="440" y="902" fill="#eaf1ff" font-weight="700">M1 &middot; Demand control ventilation, VAV &amp; fans</text>
+          <text class="svg-lbl-sm" x="440" y="918">ASHRAE 62.1 VRP &amp; 90.1 &sect;6.4.3.8 &middot; CO&#8322; setpoint derivation &middot; outdoor-air fraction &middot; the critical zone &middot; fan types, affinity laws and control</text>
 
           <rect x="424" y="954" width="692" height="52" rx="8" fill="rgba(6,16,40,0.72)" stroke="rgba(47,126,240,0.34)" stroke-width="1"/>
-          <text class="svg-lbl" x="440" y="976" fill="#eaf1ff" font-weight="700">M2 &middot; Fans</text>
-          <text class="svg-lbl-sm" x="440" y="992">Centrifugal and axial types &middot; the fan laws &middot; specific fan power &middot; system curve and operating point</text>
+          <text class="svg-lbl" x="440" y="976" fill="#eaf1ff" font-weight="700">M2 &middot; Variable refrigerant flow</text>
+          <text class="svg-lbl-sm" x="440" y="992">Combination ratio vs operating diversity &middot; indoor and outdoor unit ranges &middot; three-pipe heat recovery &middot; water-cooled VRF &middot; piping limits</text>
         </g>
       </svg>
     </div>
-    <figcaption><b>Reading it:</b> the branch order is the dependency order. C1 M2 defines and sizes every load component; C1 M3 assembles them into a grand total and a dehumidified air quantity, which C2 M3 turns into a chiller and a tower, C2 M2 into an AHU, and C2 M5 and M6 into a duct, a fan and the static pressure that fan must produce. C3 is the one branch that does not descend from the load &mdash; it is sized by code, from occupancy and geometry, and is often the branch reviewed last and found wanting. <b>Note the C1, C2 and C3 branches are drawn from the lecture material; C4 is still reconstructed.</b></figcaption>
+    <figcaption><b>Reading it:</b> the branch order is the dependency order. C1 M2 defines and sizes every load component; C1 M3 assembles them into a grand total and a dehumidified air quantity, which C2 M3 turns into a chiller and a tower, C2 M2 into an AHU, and C2 M5 and M6 into a duct, a fan and the static pressure that fan must produce. C3 is the one branch that does not descend from the load &mdash; it is sized by code, from occupancy and geometry, and is often the branch reviewed last and found wanting. C4 feeds back into all three: its outdoor-air reset changes the C1 load, its fan material completes the C2 selection, and its smoke-fan temperature classes belong to C3. <b>Every branch is now drawn from the lecture material.</b></figcaption>
   </figure>
 </section>
 
@@ -4624,16 +4658,60 @@ z = height from fire to smoke-layer interface, m      ṁ_p = plume mass flow, k
 
 <section id="c4-dcv">
   <div class="mod-head">
-    <p class="eyebrow">Course 4 · Modules 1–2</p>
+    <p class="eyebrow">Course 4 · Module 1 (16 lectures) · Module 2 (8 lectures)</p>
     <h2>Cutting-edge technology</h2>
-    <p class="lede">Design load happens on a handful of afternoons a year. Everything else is part load — which is where the energy actually goes, and where the technologies in this course either earn their premium or quietly fail to.</p>
+    <p class="lede">Design load happens on a handful of afternoons a year. Everything else is part load — which is where the energy actually goes, and where the technologies in this course either earn their premium or quietly fail to. Module&nbsp;1 is demand control ventilation and fans; Module&nbsp;2 is variable refrigerant flow.</p>
     <div class="tag-row">
       <span class="chip acc">Demand control ventilation</span><span class="chip acc">VRF</span>
-      <span class="chip">Fan laws</span><span class="chip">Specific fan power</span>
+      <span class="chip">Fans &amp; fan laws</span><span class="chip">ASHRAE 90.1 §6.4.3.8</span><span class="chip">Combination ratio</span>
     </div>
   </div>
 
-  <h3>Demand control ventilation — derive the setpoint, never copy it</h3>
+  <h3 id="c4-errors">Where the course material is wrong <span class="vb course">Course</span></h3>
+  <p class="prose">Fifteen defects across the two modules. One is a factor of ten and it recurs in two separate worked examples; a second makes the flagship VAV example unreproducible. The rest are unit slips, internal contradictions and unsourced claims &mdash; none of which should reach a project document.</p>
+
+  <div class="note trap">
+    <b class="nh">F-1 &mdash; The area ventilation rate is narrated as 0.6 cfm/ft&sup2;. It is 0.06.</b>
+    <p>Both ventilation worked examples state the area component as <code>0.6 cfm/ft&sup2;</code> and then compute with <code>0.06</code>. The totals only reconcile at 0.06.</p>
+    <div class="fml" style="margin:1em 0;">
+      <span class="eq">Classroom, 40 students, 800 ft&sup2;, R_p = 7.5 cfm/person:</span>
+      <span class="eq">  at 0.06 cfm/ft&sup2;   V_bz = 40(7.5) + 800(0.06) = 300 + 48  = <strong>348 cfm</strong>   &larr; the course's own total</span>
+      <span class="eq">  at 0.6  cfm/ft&sup2;   V_bz = 40(7.5) + 800(0.6)  = 300 + 480 = <strong>780 cfm</strong>   &larr; 2.2&times; larger</span>
+      <span class="wh">Take the narrated figure and the area component alone becomes 480 cfm against a design
+total of 348 &mdash; the DCV floor would exceed the design ventilation rate, which is
+nonsense. The arithmetic in the lectures is right; the spoken number is not.</span>
+    </div>
+    <p style="margin-bottom:0;">This matters more than a transcription slip normally would, because <strong>the area component is exactly the part of the requirement DCV cannot turn down</strong>. Get it wrong by ten and every saving estimate in the module is wrong with it. <span class="vb standard">Standard</span> practice: take R<sub>a</sub> from the 62.1 table in the edition your specification names &mdash; current editions give classrooms <strong>10 cfm/person + 0.12 cfm/ft&sup2;</strong>, not the 7.5 + 0.06 used here.</p>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">F-2 &mdash; &ldquo;ASHRAE 19.1&rdquo; again. That is the third module to say it.</b>
+    <p style="margin-bottom:0;">The DCV exceptions are attributed to <strong>&ldquo;ASHRAE 19.1&rdquo;</strong>. There is no such standard; it is <strong>90.1</strong>. The same mis-citation appears in Course&nbsp;1's lighting lecture and in Course&nbsp;2 Module&nbsp;3 for minimum chiller efficiency &mdash; <strong>three courses, three modules, the same wrong number</strong>. Treat it as a systemic defect in the material rather than a one-off slip: wherever this specialization cites a standard number, verify it before it reaches a document. 90.1 is the energy standard; 62.1 is the ventilation standard; 19.1 is nothing.</p>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>The remaining thirteen <span class="vb course">Course</span></caption>
+      <thead><tr><th class="num">ID</th><th class="num">Module</th><th style="text-align:left;">Error</th><th style="text-align:left;">Correction</th></tr></thead>
+      <tbody>
+        <tr class="total"><td class="num">F-3</td><td class="num">1</td><td style="text-align:left;">The VAV critical-zone example is not reproducible. Zone&nbsp;B's area is narrated as both <strong>1,851</strong> and <strong>2,594 ft&sup2;</strong>, and the 503 / 409 / 168 / 217 cfm results come from an on-screen table that was never narrated</td><td style="text-align:left;">Only 2,594 ft&sup2; reproduces the stated 605 cfm (1,851 gives 561). And <strong>at design supply airflow Zone&nbsp;B is the critical zone, not Zone&nbsp;A</strong> &mdash; 8.13% against 3.84%. The method is sound; the numbers are not. Worked in full at <a href="#c4-exI">Example&nbsp;I</a></td></tr>
+        <tr><td class="num">F-4</td><td class="num">1</td><td style="text-align:left;">Forward-curved fans called the best choice for <strong>&ldquo;high pressure, low flow&rdquo;</strong>, then described as low-speed, low-pressure fans for packaged HVAC</td><td style="text-align:left;">Self-contradictory. <strong>FC is a low-pressure fan.</strong> The reliable takeaway from that lecture is the <em>overloading power curve</em>, which is a real and consequential characteristic</td></tr>
+        <tr><td class="num">F-5</td><td class="num">1</td><td style="text-align:left;">Backward-inclined fans said to handle <strong>&ldquo;up to 40 psi&rdquo;</strong></td><td style="text-align:left;">Wrong unit domain entirely. Fan pressures are in in.&nbsp;w.g. or Pa; 40 psi is 276 kPa, which is compressor territory. Discard the figure</td></tr>
+        <tr><td class="num">F-6</td><td class="num">1</td><td style="text-align:left;">BI best-efficiency point given as <strong>40&ndash;50%</strong> of wide-open volume in one lecture and <strong>50&ndash;60%</strong> in the next</td><td style="text-align:left;">Read it as indicative. The point that survives: BEP sits mid-curve and is also the quietest point &mdash; select there, not at the ends</td></tr>
+        <tr><td class="num">F-7</td><td class="num">1</td><td style="text-align:left;">Tubeaxial fans given stationary straightening vanes in the classification list</td><td style="text-align:left;">Those are <strong>vaneaxial</strong>. Tubeaxial fans have none, and the detailed lecture later states this correctly. The guide vanes are the entire difference between the two types</td></tr>
+        <tr><td class="num">F-8</td><td class="num">1</td><td style="text-align:left;">Propeller fans quoted at up to <strong>75&ndash;80%</strong> efficiency while also being called the least efficient axial type</td><td style="text-align:left;">Both cannot hold. Ranking that is safe: <strong>vaneaxial &gt; tubeaxial &gt; propeller</strong>, and airfoil and backward-curved centrifugals above radial and forward-curved</td></tr>
+        <tr><td class="num">F-9</td><td class="num">1</td><td style="text-align:left;">Tubeaxial fans said to tolerate <strong>&ldquo;250 &deg;C or more&rdquo;</strong></td><td style="text-align:left;">Depends entirely on motor position and construction. For smoke duty the temperature/time class is <strong>specified and certified</strong>, never inferred &mdash; see <a href="#c4-smokefan">smoke exhaust fans</a> and <a href="#c3-smoke">Course&nbsp;3</a></td></tr>
+        <tr><td class="num">F-10</td><td class="num">2</td><td style="text-align:left;">The DX split refrigeration cycle is garbled &mdash; liquid &ldquo;still being compressed&rdquo; in the condenser, refrigerant &ldquo;releasing heat&rdquo; across the expansion device</td><td style="text-align:left;">Compression raises pressure and temperature of <em>vapour</em>; the condenser rejects heat at near-constant pressure; expansion is a <em>throttling</em> process at constant enthalpy, not a heat-rejection one. <a href="#c1-phchart">Course&nbsp;1's p&ndash;h treatment</a> is correct and should be used instead</td></tr>
+        <tr><td class="num">F-11</td><td class="num">2</td><td style="text-align:left;">Maximum indoor units per outdoor unit given as <strong>60</strong> in one lecture and <strong>48</strong> in another, with the central controller handling <strong>64 groups</strong></td><td style="text-align:left;">Three different quantities, all OEM-dependent: connectable IDUs, recommended IDUs, and controller <em>groups</em> (a group may hold several IDUs). Use the OEM figure for the model offered and nothing else</td></tr>
+        <tr><td class="num">F-12</td><td class="num">2</td><td style="text-align:left;">Combination ratio range shown on screen as <strong>50&ndash;125%</strong> while the recommended range is stated as <strong>90&ndash;130%</strong></td><td style="text-align:left;">The upper limits conflict. Allowable CR is an <strong>OEM limit that varies by model and IDU type</strong> &mdash; it is a warranty condition, not a design preference</td></tr>
+        <tr><td class="num">F-13</td><td class="num">2</td><td style="text-align:left;">Heat-<em>pump</em> VRF said to suit sites needing heating or cooling <strong>&ldquo;at the same time&rdquo;</strong></td><td style="text-align:left;">That is the defining capability of the <strong>heat-recovery</strong> type. A two-pipe heat pump puts <em>every</em> IDU in the same mode at once. The distinction is the whole basis of the price difference</td></tr>
+        <tr><td class="num">F-14</td><td class="num">2</td><td style="text-align:left;"><strong>&ldquo;30% lower installation cost than splits&rdquo;</strong>, <strong>&ldquo;10&ndash;20% duct losses&rdquo;</strong> and <strong>&ldquo;a heat pump costs 10% more&rdquo;</strong></td><td style="text-align:left;">Unsourced vendor-style claims. Plausible as orders of magnitude, <strong>unusable in a deliverable</strong> without a cited basis. Do not carry them into a comparison study</td></tr>
+        <tr><td class="num">F-15</td><td class="num">1</td><td style="text-align:left;">The 1882 electric ceiling fan attributed to <strong>&ldquo;Philip Dale&rdquo;</strong></td><td style="text-align:left;"><strong>Philip Diehl.</strong> Harmless, and listed only because it shows the transcription standard of the narration</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 id="c4-setpoint">Demand control ventilation — derive the setpoint, never copy it <span class="vb course">Course</span></h3>
   <p class="prose">CO₂ is not a pollutant to be controlled at some universal threshold. It is a <strong>proxy for occupancy</strong>. At steady state the difference between indoor and outdoor concentration tells you how much outdoor air each person is receiving — and the setpoint that corresponds to your design ventilation rate is specific to your design.</p>
 
   <div class="fml">
@@ -4664,41 +4742,325 @@ Check: 7.5 L/s per person → 0.0052/7.5 = 693 ppm rise, matching the widely pub
     <p style="margin-bottom:0;"><strong>Second:</strong> halving occupancy from 10 to 5 does <strong>not</strong> halve the outdoor air. It falls from 53.8 to 41.3 L/s — a 23% reduction, not 50% — because the area component R<sub>a</sub> × A<sub>z</sub> = 28.8 L/s does not depend on people and must keep flowing. In this zone the area term is the <em>larger</em> half of the requirement. DCV vendors who quote savings proportional to occupancy have not read the ventilation rate procedure.</p>
   </div>
 
-  <h3 id="c4-vrf">Variable refrigerant flow — and where it does not belong</h3>
-  <div class="grid g2" style="margin:1.4em 0;">
-    <div class="card">
-      <h4 style="margin-top:0;">What VRF genuinely offers</h4>
-      <ul style="margin-bottom:0;font-size:var(--step--1);color:var(--text-secondary);">
-        <li>Excellent part-load efficiency through inverter compressors</li>
-        <li>Individual zone control without terminal reheat</li>
-        <li>Heat recovery between simultaneously heating and cooling zones</li>
-        <li>No plant room, no chilled water distribution, small risers</li>
-      </ul>
+  <div class="note trap">
+    <b class="nh">The 700 ppm rule and the ventilation rate procedure are two different standards, and the course teaches both</b>
+    <p>Module&nbsp;1 states that ASHRAE 62.1 treats an indoor&ndash;outdoor difference of about <strong>700 ppm</strong> as acceptable for bioeffluent odour, corresponding to about 15 cfm/person. It then works three ventilation examples using the VRP. <strong>The two do not agree, and the gap is not small.</strong></p>
+    <div class="work" style="margin:1em 0;">
+      <div class="stp"><b>What a 700 ppm differential actually delivers</b>
+        <span class="r">V&#8320; = N / &Delta;C = 0.0106 / 700&times;10&#8315;&#8310; = <strong>15.14 cfm/person</strong></span></div>
+      <div class="stp"><b>What the course's own VRP examples require, per person</b>
+        <span class="r">classroom&nbsp;&nbsp;7.5 + 0.06(20.0 ft&sup2;/person) = <strong>8.70</strong> cfm/person &rarr; equilibrium &Delta; = <strong>1,218 ppm</strong></span>
+        <span class="r">office A&nbsp;&nbsp;&nbsp;5.0 + 0.06(94.4 ft&sup2;/person) = <strong>10.66</strong> cfm/person &rarr; &Delta; = <strong>994 ppm</strong></span>
+        <span class="r">office B&nbsp;&nbsp;&nbsp;5.0 + 0.06(28.8 ft&sup2;/person) = <strong>6.73</strong> cfm/person &rarr; &Delta; = <strong>1,575 ppm</strong></span></div>
+      <div class="stp"><b>The over-delivery from controlling at 700 ppm</b>
+        <span class="r">classroom <strong>+74%</strong>&nbsp;&nbsp;&nbsp;office A <strong>+42%</strong>&nbsp;&nbsp;&nbsp;office B <strong>+125%</strong> more outdoor air than the VRP rate</span></div>
     </div>
-    <div class="card">
-      <h4 style="margin-top:0;">What it does not solve, and must be checked</h4>
-      <ul style="margin-bottom:0;font-size:var(--step--1);color:var(--text-secondary);">
-        <li><strong>Ventilation.</strong> VRF conditions recirculated room air. Outdoor air still needs a dedicated unit — and in Doha that unit carries the entire 2 226 W latent load computed in Course 1.</li>
-        <li><strong>Dehumidification at part load.</strong> A VRF unit modulating on sensible demand can leave a Gulf space cool and humid.</li>
-        <li><strong>Refrigerant volume limits</strong> for occupied spaces (ISO 5149 / EN 378 concentration limits).</li>
-        <li><strong>Condenser ambient rating.</strong> Confirm capacity at 45 °C+, not at a 35 °C nominal rating.</li>
-      </ul>
-    </div>
+    <p style="margin-bottom:0;"><strong>Why they differ, which is the part worth understanding.</strong> The 700 ppm figure comes from the <em>odour-dilution</em> basis &mdash; the people component alone, at roughly 15 cfm/person, under an older formulation of 62.1. The current VRP splits the requirement into a people component and an area component and sets R<sub>p</sub> well below 15 cfm/person, because the area component now carries the building-generated load that the old single rate absorbed. <strong>Controlling a modern VRP design on a 700 ppm differential applies a superseded basis to a current design and over-ventilates every hour of occupancy.</strong> The rule that survives is the one in the table above: <strong>derive the differential from your own V<sub>bz</sub>/P<sub>z</sub></strong>, and recompute it if the occupancy category or the edition changes.</p>
+  </div>
+
+  <h3 id="c4-codes">When DCV is mandatory &mdash; ASHRAE 90.1 §6.4.3.8 <span class="vb course">Course</span></h3>
+  <p class="prose">62.1 says how much outdoor air a zone needs and permits DCV as one form of dynamic reset. <strong>90.1 says when you must fit it.</strong> Two different standards doing two different jobs, and the second is the one that turns up in a compliance review.</p>
+
+  <div class="tw">
+    <table>
+      <caption>The trigger, and the five exceptions <span class="vb course">Course</span> &middot; SI conversions <span class="vb derived">Derived</span></caption>
+      <thead><tr><th style="text-align:left;">Test</th><th style="text-align:left;">Threshold</th></tr></thead>
+      <tbody>
+        <tr class="total"><td><strong>Space area</strong></td><td style="text-align:left;">greater than <strong>500 ft&sup2; (46.5 m&sup2;)</strong></td></tr>
+        <tr class="total"><td><strong>and design occupancy</strong></td><td style="text-align:left;">greater than <strong>25 people per 1,000 ft&sup2; (26.9 per 100 m&sup2;)</strong></td></tr>
+        <tr class="total"><td><strong>and served by a system with at least one of</strong></td><td style="text-align:left;">an air-side economizer &middot; an automatically modulating outdoor-air damper &middot; design outdoor air greater than <strong>3,000 cfm (1,416 L/s)</strong></td></tr>
+        <tr><td>Exception 1</td><td style="text-align:left;">Systems with exhaust-air energy recovery complying with §6.5.6.1</td></tr>
+        <tr><td>Exception 2</td><td style="text-align:left;">Multiple-zone systems <strong>without DDC of individual zones</strong> reporting to a central control panel</td></tr>
+        <tr><td>Exception 3</td><td style="text-align:left;">Systems with design outdoor air below <strong>750 cfm (354 L/s)</strong></td></tr>
+        <tr><td>Exception 4</td><td style="text-align:left;">Spaces where more than <strong>75%</strong> of the design outdoor air is make-up for air exhausted from that space</td></tr>
+        <tr><td>Exception 5</td><td style="text-align:left;">Named 62.1 occupancy categories: correctional cells, science labs, barber shops, beauty and nail salons, day-care sickrooms</td></tr>
+      </tbody>
+    </table>
   </div>
 
   <div class="note warn">
-    <b class="nh">The VRF question to put in every technical query</b>
-    <p style="margin-bottom:0;">"State the net cooling capacity and input power at 46 °C ambient with the specified refrigerant pipe run and lift, and state the latent capacity at the space design condition." Nominal VRF capacities are typically published at 35 °C ambient with a short, level pipe run. Doha's design ambient, a long riser and a real lift can each take a bite out of capacity, and they compound. A system selected on nominal figures can be materially short on the day it is needed.</p>
+    <b class="nh">Two prohibitions that outrank the trigger, and one warning about editions</b>
+    <p><strong>62.1 does not permit CO<sub>2</sub>-based DCV</strong> in a zone with a <strong>non-occupant indoor CO<sub>2</sub> source</strong> &mdash; a gas appliance, a combustion process, a laboratory &mdash; or in a zone with <strong>CO<sub>2</sub> removal</strong>, such as a gaseous air cleaner. In either case CO<sub>2</sub> stops tracking occupancy and the control signal is meaningless. A kitchen or a DG room does not get CO<sub>2</sub> DCV, however well it satisfies the 90.1 trigger.</p>
+    <p style="margin-bottom:0;"><strong>Thresholds and section numbers move between 90.1 editions.</strong> Quote the edition your project specification names, not these. Exception&nbsp;4 is the one worth reading twice in a Gulf project: a kitchen, a laboratory or a heavily exhausted plant room is usually make-up dominated and falls out of the requirement entirely. And note the narration attributes these exceptions to <em>&ldquo;ASHRAE 19.1&rdquo;</em> &mdash; that is <strong>error F-2</strong>.</p>
   </div>
 
-  <h3 id="c4-fans">Fans and the fan laws</h3>
-  <p class="prose">The fan laws are the strongest argument in building services, because the third one is cubic. Everything about variable-speed control follows from it.</p>
+  <h3 id="c4-co2">CO<sub>2</sub> as the control signal &mdash; what it measures and what it does not <span class="vb course">Course</span></h3>
+  <div class="grid g3" style="margin:1.4em 0;">
+    <div class="card">
+      <h4 style="margin-top:0;">The three levels quoted</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);"><strong>&gt; 1,000 ppm</strong> &mdash; inadequate ventilation; occupants begin to notice. <strong>&lt; 600 ppm</strong> &mdash; over-ventilated, outdoor air can be reduced. <strong>These are comfort and IAQ indicators, not toxicity limits</strong>: the OSHA permissible exposure limit for CO<sub>2</sub> is <strong>5,000 ppm</strong> as an 8-hour TWA, roughly five times the &ldquo;bad air&rdquo; figure. Anyone arguing that 1,200 ppm is a health hazard has confused the two scales.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">Generation rate</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);"><strong>MET</strong> = metabolic rate divided by the seated-quiet rate; 1 MET &asymp; 3.5 mL O<sub>2</sub> per kg per minute. Light office work &asymp; <strong>1.2 MET</strong>, giving <strong>N = 0.0106 cfm/person (0.0050 L/s)</strong> of CO<sub>2</sub>. A gym or a workshop runs at several MET, so N rises and CO<sub>2</sub> climbs further for the same outdoor air &mdash; which is the argument for dynamic control rather than a fixed schedule.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">What the equilibrium depends on</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">The steady-state <em>differential</em> depends only on <strong>N and the outdoor air per person</strong>. It does <strong>not</strong> depend on room volume or occupant density. Volume and density set only <strong>how fast</strong> equilibrium is reached &mdash; which is a real limitation, not a footnote: a large room hosting short meetings may never reach equilibrium, so <strong>CO<sub>2</sub> under-reads the true requirement early in every occupancy period</strong>.</p>
+    </div>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>The steady-state mass balance, V&#8320; = N / (C<sub>s</sub> &minus; C<sub>o</sub>) &mdash; the course's four cases, reproduced <span class="vb course">Course</span> &middot; checked <span class="vb derived">Derived</span></caption>
+      <thead><tr><th style="text-align:left;">Case</th><th style="text-align:left;">Inputs</th><th class="num">Result</th><th style="text-align:left;">Check</th></tr></thead>
+      <tbody>
+        <tr><td>Minimum OA to cap the space at 1,000 ppm, outdoor 200 ppm</td><td style="text-align:left;">N = 0.0106, &Delta; = 800 ppm</td><td class="num">13.25 cfm/person</td><td style="text-align:left;">&#10003;</td></tr>
+        <tr><td>Differential that delivers 15 cfm/person</td><td style="text-align:left;">N = 0.0106</td><td class="num">707 ppm</td><td style="text-align:left;">&#10003; &mdash; the origin of the &ldquo;about 700&rdquo; rule</td></tr>
+        <tr class="total"><td>Space level at only 10 cfm/person, outdoor 400 ppm</td><td style="text-align:left;">&Delta; = 0.0106/10 = 1,060 ppm</td><td class="num">1,460 ppm</td><td style="text-align:left;">&#10003; &mdash; <strong>the course states the method but never states this number</strong></td></tr>
+        <tr><td>Differential at 25 cfm/person</td><td style="text-align:left;">N = 0.0106</td><td class="num">424 ppm</td><td style="text-align:left;">&#10003; (the course rounds to 400)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note">
+    <b class="nh">Setting the outdoor baseline &mdash; and when to stop assuming one</b>
+    <p style="margin-bottom:0;">Log outdoor CO<sub>2</sub> for <strong>at least a week</strong> and take the average over operating hours, or use the local air-quality authority's data. <strong>Switch to live measurement at the intake when outdoor CO<sub>2</sub> swings more than 200&ndash;300 ppm in a day</strong> &mdash; which is routine for an intake near a road, a driveway, a service yard or a car park exhaust, and therefore routine on a dense urban site. The consequence of getting this wrong is asymmetric: an assumed baseline that is <em>too low</em> makes the controller read a smaller differential than exists and under-ventilate. That is the failure direction you cannot see from the BMS trend, because the trend is showing you the wrong differential with complete confidence.</p>
+  </div>
+
+  <h3 id="c4-dohadcv">What DCV is actually worth in Doha <span class="vb derived">Derived</span></h3>
+  <p class="prose">The course argues DCV on principle. The number that decides it on a project is the enthalpy of the outdoor air you avoid conditioning &mdash; and in Doha that number is unusually large, which is the strongest argument for DCV anywhere in the specialization. Run it on the course's own classroom, at this guide's Case&nbsp;2 design condition.</p>
+
+  <div class="work">
+    <div class="stp"><b>Cost of one litre per second of Doha outdoor air, at the Case 2 datum</b>
+      <span class="r">h_oa = 92.78 kJ/kg, h_room = 47.81 kJ/kg, v = 0.8964 m&sup3;/kg</span>
+      <span class="r">q = (1/1000/0.8964) &times; (92.78 &minus; 47.81) = <strong>0.0502 kW per L/s</strong></span></div>
+    <div class="stp"><b>Apply it to the classroom, 348 cfm design outdoor air</b>
+      <span class="r">348 cfm = 164.2 L/s &rarr; <strong>8.239 kW = 2.343 TR of coil duty, outdoor air alone</strong></span></div>
+    <div class="stp"><b>Split it into the part DCV can reach and the part it cannot</b>
+      <span class="r">area component floor, 48 cfm = 22.7 L/s &rarr; <strong>1.136 kW &mdash; 13.8%, and permanently unavailable</strong></span>
+      <span class="r">people component, 300 cfm &rarr; <strong>7.103 kW &mdash; 86.2%, the theoretical ceiling on the saving</strong></span></div>
+    <div class="stp"><b>What part occupancy actually returns</b>
+      <span class="r">at 50% occupancy: 198 cfm &rarr; 4.688 kW, saving <strong>3.551 kW (43.1%)</strong></span>
+      <span class="r">at 25% occupancy: 123 cfm &rarr; 2.912 kW, saving <strong>5.327 kW (64.7%)</strong></span></div>
+  </div>
+
+  <div class="res">
+    <div><span class="k">Doha outdoor air</span><span class="v">0.050</span><span class="u">kW per L/s at Case 2</span></div>
+    <div class="hero"><span class="k">Classroom OA load</span><span class="v">2.34</span><span class="u">TR · 8.24 kW</span></div>
+    <div><span class="k">Untouchable floor</span><span class="v">13.8</span><span class="u">% · 1.14 kW</span></div>
+    <div><span class="k">Saving at 50% occupancy</span><span class="v">43.1</span><span class="u">% · 3.55 kW</span></div>
+    <div><span class="k">Saving at 25% occupancy</span><span class="v">64.7</span><span class="u">% · 5.33 kW</span></div>
+    <div><span class="k">Ceiling on any saving</span><span class="v">86.2</span><span class="u">% · people component only</span></div>
+  </div>
+
+  <div class="note good">
+    <b class="nh">Read this against the cellular-office result further down, because they disagree &mdash; and both are right</b>
+    <p style="margin-bottom:0;">In <a href="#c4-exF">Worked example&nbsp;F</a> DCV returns 5.9% of a cellular office zone's total load and loses the argument to a variable speed drive. Here, in a classroom at 20 ft&sup2; per person, it returns <strong>43% of the outdoor-air load at half occupancy</strong> and wins easily. The difference is entirely the <strong>people-to-area ratio</strong>: the classroom's people component is 300 of 348 cfm, the office's is a minority of its requirement. <strong>That ratio, not the technology, is the selection criterion.</strong> Compute R<sub>p</sub>P<sub>z</sub> &divide; V<sub>bz</sub> for the zone in front of you before you specify DCV; above roughly two thirds it pays, below one third it is a specification habit. It is also why the 90.1 trigger is written as a <em>density</em> test.</p>
+  </div>
+
+  <h3 id="c4-oafrac">Measuring the outdoor-air fraction &mdash; two methods, and which one to trust here <span class="vb course">Course</span></h3>
+  <p class="prose">%OA = outdoor air &divide; total supply air; typical commercial buildings run <strong>15&ndash;30%</strong>. It can be established by an energy balance on temperature or a mass balance on CO<sub>2</sub>. The two are not equally reliable, and in Qatar they fail in opposite seasons.</p>
+
+  <div class="fml">
+    <span class="eq">Temperature (energy balance)   %OA = (T_m &minus; T_r) / (T_o &minus; T_r) &times; 100</span>
+    <span class="eq">CO&#8322; (mass balance)            %OA = (C_R &minus; C_S) / (C_R &minus; C_O) &times; 100</span>
+    <span class="wh">T_r is measured at the unit, not at the return grilles &mdash; duct gain between them is real.
+T_m must be taken where the air is genuinely mixed: the blower section or return plenum.
+C_S is the supply (mixed) air concentration.</span>
+    <span class="src">Both methods as taught in Module 1. <span class="vb course">Course</span></span>
+  </div>
+
+  <div class="work">
+    <div class="stp"><b>Temperature method &mdash; the course's 4 TR packaged unit</b>
+      <span class="r">T_r = 25 &deg;C, T_m = 28 &deg;C, T_o = 40 &deg;C, supply 1,600 cfm</span>
+      <span class="r">%OA = 3/15 = <strong>20%</strong> &rarr; outdoor air = <strong>320 cfm</strong> &#10003;</span></div>
+    <div class="stp"><b>CO<sub>2</sub> method &mdash; the course's second case</b>
+      <span class="r">C_R = 800 ppm, C_S = 650 ppm, C_O = 350 ppm</span>
+      <span class="r">%OA = 150/450 = <strong>33.3%</strong> &#10003;</span></div>
+    <div class="stp"><b>Where each one breaks</b>
+      <span class="r">temperature method: the denominator is (T_o &minus; T_r). A Doha summer gives a comfortable 15 K spread,</span>
+      <span class="r">but in the shoulder months T_o &rarr; T_r and the method becomes <strong>arbitrarily sensitive to sensor error</strong></span>
+      <span class="r">CO<sub>2</sub> method: needs occupancy to generate a differential &mdash; it fails in an empty building, not in mild weather</span></div>
+  </div>
+
+  <div class="note good">
+    <b class="nh">Why a single multipoint sensor beats three good ones</b>
+    <p style="margin-bottom:0;">One CO<sub>2</sub> sensor sampling outdoor, return and supply in turn through solenoid valves is <strong>more accurate than three separate sensors</strong>, and the reason is worth carrying into any differential measurement. %OA depends on <em>differences</em> between concentrations, so a single instrument's <strong>calibration offset cancels exactly</strong> and only its repeatability matters. Three instruments contribute three independent offsets to a small numerator, and a few ppm of disagreement becomes several percent of outdoor-air fraction. The same logic is the reason a pressure-differential measurement uses one transducer across two taps rather than two gauges subtracted.</p>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">Economizers, and why this part of the course does not transfer</b>
+    <p style="margin-bottom:0;">An air-side economizer opens the outdoor damper fully when outdoor air is cooler than return air, giving free cooling and 100% outdoor air. The course presents it alongside DCV as the other outdoor-air strategy. <strong>In Qatar the economizer hours are close to nil</strong> &mdash; and on an enthalpy basis, not merely a dry-bulb one, they are effectively zero for the cooling season. That removes one of the two levers and leaves DCV carrying the entire outdoor-air argument. It also reverses the usual priority: <strong>DCV sets outdoor air by occupancy, an economizer by outdoor condition</strong>, and where the outdoor condition is never favourable, occupancy is the only variable left to exploit.</p>
+  </div>
+
+  <h3 id="c4-damper">Damper control strategy &mdash; chosen by occupant density, not by preference <span class="vb course">Course</span></h3>
+  <div class="tw">
+    <table>
+      <caption>The three strategies and where each belongs <span class="vb course">Course</span> &middot; density conversions <span class="vb derived">Derived</span></caption>
+      <thead><tr><th style="text-align:left;">Strategy</th><th style="text-align:left;">How it acts</th><th style="text-align:left;">Design density</th><th style="text-align:left;">Typical spaces</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Setpoint (on/off)</strong></td><td style="text-align:left;">Damper opens at the CO<sub>2</sub> setpoint, closes once CO<sub>2</sub> falls <strong>50&ndash;100 ppm</strong> below it &mdash; that gap is the deadband that stops it hunting</td><td style="text-align:left;"><strong>20&ndash;50 per 1,000 ft&sup2;</strong> (21.5&ndash;53.8 per 100 m&sup2;), swinging quickly between empty and full</td><td style="text-align:left;">Theatres, conference rooms, some classrooms. <strong>Not</strong> retail, not very large volumes</td></tr>
+        <tr class="total"><td><strong>Proportional</strong></td><td style="text-align:left;">4&ndash;20 mA signal; control begins when indoor exceeds outdoor by <strong>100 ppm</strong> and ramps outdoor air to 100% of design. Faster than setpoint control</td><td style="text-align:left;"><strong>7&ndash;30 per 1,000 ft&sup2;</strong> (7.5&ndash;32.3 per 100 m&sup2;)</td><td style="text-align:left;">Restaurants, conference rooms, schools, retail &mdash; the broadest fit</td></tr>
+        <tr><td><strong>PID</strong></td><td style="text-align:left;">Acts on the error <em>and its rate of change</em>, so it anticipates the morning ramp instead of chasing it</td><td style="text-align:left;">Low density, unpredictable occupancy</td><td style="text-align:left;">High-rise, multi-zone buildings</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note">
+    <b class="nh">The five design steps, in the order they have to be done</b>
+    <p style="margin-bottom:0;">1. Set the <strong>upper setpoint</strong> from the zone's equilibrium CO<sub>2</sub> at <em>design</em> density and <em>design</em> outdoor-air rate &mdash; derived, never copied. 2. Measure outdoor CO<sub>2</sub>, or adopt a justified value. 3. Fix the <strong>base rate</strong> at the area component, and never let the damper go below it during occupied hours. 4. Choose the strategy from the density and how widely it varies. 5. For proportional or PID control, enable DCV once indoor exceeds outdoor by <strong>100 ppm</strong>. Steps 1 and 3 are the two that get skipped, and they are the two that decide whether the system saves anything or quietly costs money.</p>
+  </div>
+
+  <h3 id="c4-cavvav">DCV on CAV and on VAV &mdash; and the critical zone <span class="vb course">Course</span></h3>
+  <div class="grid g2" style="margin:1.4em 0;">
+    <div class="card">
+      <h4 style="margin-top:0;">On a CAV system &mdash; simple, and half the saving</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">Supply airflow is fixed and load is met by varying supply temperature. DCV modulates the outdoor-air damper between the base minimum and the design rate on CO<sub>2</sub>, while a separate loop holds space temperature through the chilled-water valve. <strong>Supply fan flow never changes, so DCV saves outdoor-air conditioning load and no fan energy at all.</strong> That is the whole of the CAV case, and it is worth knowing before anyone claims fan savings for it.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">On a VAV system &mdash; the problem DCV has to solve first</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">Temperature control varies each zone's supply airflow, but <strong>nothing guarantees any zone its share of outdoor air</strong>. Opening the AHU outdoor damper for one crowded meeting room raises outdoor air everywhere &mdash; to every zone except, reliably, the one that needed it. The fix is per-zone sensing: the BAS computes each zone's required outdoor-air <em>fraction</em>, and <strong>the zone with the highest fraction &mdash; the critical zone &mdash; sets the AHU</strong>. Every other zone is then slightly over-ventilated, which is the price of guaranteeing that none is under-ventilated.</p>
+    </div>
+  </div>
+
+  <h3 id="c4-exI">Worked example I &mdash; the critical zone, done properly</h3>
+  <p class="prose">The course's two-office example is the right method attached to numbers that do not reconcile (<strong>error F-3</strong>). Below is the same example recomputed from the stated inputs, which both fixes it and shows what the multiple-zone procedure actually does.</p>
+
+  <div class="work">
+    <div class="stp"><b>Breathing-zone outdoor air at design, R_p = 5 cfm/person, R_a = 0.06 cfm/ft&sup2;</b>
+      <span class="r">Zone A&nbsp;&nbsp;2,454 ft&sup2;, 26 people:&nbsp;&nbsp;26(5) + 2,454(0.06) = 130 + 147.2 = <strong>277.2 cfm</strong></span>
+      <span class="r">Zone B&nbsp;&nbsp;2,594 ft&sup2;, 90 people:&nbsp;&nbsp;90(5) + 2,594(0.06) = 450 + 155.6 = <strong>605.6 cfm</strong> (the course states 606)</span>
+      <span class="r">with the narrated 1,851 ft&sup2; Zone B gives 561 cfm, which does <em>not</em> reproduce 605 &mdash; 2,594 is the figure actually used</span></div>
+    <div class="stp"><b>Zone primary outdoor-air fractions at design supply airflow</b>
+      <span class="r">Z_A = 277.2 / 7,213 = <strong>3.84%</strong>&nbsp;&nbsp;&nbsp;Z_B = 605.6 / 7,451 = <strong>8.13%</strong></span>
+      <span class="r">&rarr; <strong>Zone B is the critical zone</strong>, not Zone A as the course concludes</span></div>
+    <div class="stp"><b>Uncorrected intake, and the system ventilation efficiency</b>
+      <span class="r">V_ou = &Sigma;R_p&middot;P_z + &Sigma;R_a&middot;A_z = 580 + 302.9 = <strong>882.9 cfm</strong> (no occupant diversity claimed)</span>
+      <span class="r">X_s = 882.9 / 14,664 = 6.02%;&nbsp;&nbsp;Z_d = 8.13% &le; 0.15 &rarr; <strong>E_v = 1.0</strong></span>
+      <span class="r">V_ot = V_ou / E_v = <strong>883 cfm design intake</strong> &mdash; the course's on-screen 503 cfm reconciles with nothing</span></div>
+    <div class="stp"><b>The same system at 50% occupancy</b>
+      <span class="r">Zone A 212.2 cfm (Z = 2.94%)&nbsp;&nbsp;&nbsp;Zone B 380.6 cfm (Z = 5.11%) &rarr; <strong>B still critical</strong></span>
+      <span class="r">V_ot = <strong>593 cfm</strong>, a saving of 290 cfm = <strong>33%</strong> of design intake</span></div>
+    <div class="stp"><b>The trap the calculation exposes</b>
+      <span class="r">Z = V_oz / V_pz. At part load VAV boxes throttle, so <strong>V_pz falls while V_oz falls more slowly</strong> &mdash; Z rises.</span>
+      <span class="r">Halve the supply airflow at 50% occupancy and Z_B goes 5.11% &rarr; <strong>10.2%</strong>: still under 0.15, but moving the wrong way.</span>
+      <span class="r">&rarr; <strong>VAV box minimum positions are a ventilation constraint, not just a comfort one.</strong></span></div>
+  </div>
+
+  <div class="res">
+    <div><span class="k">Zone A breathing-zone OA</span><span class="v">277</span><span class="u">cfm · Z = 3.84%</span></div>
+    <div class="hero"><span class="k">Zone B — critical</span><span class="v">606</span><span class="u">cfm · Z = 8.13%</span></div>
+    <div><span class="k">Design intake V<sub>ot</sub></span><span class="v">883</span><span class="u">cfm · E<sub>v</sub> = 1.0</span></div>
+    <div><span class="k">Intake at 50% occupancy</span><span class="v">593</span><span class="u">cfm · 33% saved</span></div>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">The conclusion the course draws, and why it cannot be right</b>
+    <p style="margin-bottom:0;">The lecture finds <strong>Zone A</strong> critical and sets the outdoor-air fraction to about 3%. Zone A is the <em>sparsely</em> occupied zone &mdash; 94 ft&sup2; per person against Zone B's 29 &mdash; and it has the <em>lowest</em> outdoor-air fraction of the two by more than a factor of two. Setting the AHU on Zone A's 3.84% delivers Zone B about 277 cfm against the 606 it requires: <strong>a 54% under-ventilation of the zone the whole procedure exists to protect.</strong> The method taught is correct and is worth learning exactly as stated; the example inverts it. If you take one habit from this module, take this one: <strong>after identifying the critical zone, check that it is the one you would have guessed &mdash; the densest zone, or the one with the tightest supply airflow. If it is not, find out why before you trust the answer.</strong></p>
+  </div>
+
+  <h3 id="c4-sensors">CO<sub>2</sub> sensors &mdash; types, placement, and the calibration question <span class="vb course">Course</span></h3>
+  <div class="grid g2" style="margin:1.4em 0;">
+    <div class="card">
+      <h4 style="margin-top:0;">NDIR &mdash; non-dispersive infrared</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">An infrared source shines through a gas cell; a filter isolates the CO<sub>2</sub> absorption band (&asymp; 4.26 &micro;m) and a detector reads the attenuation. More CO<sub>2</sub>, more absorption. <strong>Accuracy threats: lamp ageing and dust build-up</strong>, both of which drift slowly in one direction rather than failing outright &mdash; which is why they are rarely noticed.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">Photoacoustic</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">Modulated infrared is absorbed by CO<sub>2</sub>; the periodic heating creates a pressure wave whose amplitude scales with concentration. <strong>Accuracy threats: vibration and barometric pressure changes</strong> &mdash; so a plant-room or rooftop location is exactly the wrong one for this type.</p>
+    </div>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>Placement rules &mdash; none of which come from a code <span class="vb course">Course</span></caption>
+      <thead><tr><th style="text-align:left;">Rule</th><th style="text-align:left;">Reason</th></tr></thead>
+      <tbody>
+        <tr class="total"><td><strong>Wall mounted, located like a thermostat</strong></td><td style="text-align:left;">Preferred for multi-zone systems. LEED places them in the breathing zone, <strong>3&ndash;6 ft (0.9&ndash;1.8 m) above finished floor</strong></td></tr>
+        <tr><td>At least <strong>2 ft (0.6 m) from any occupant</strong></td><td style="text-align:left;">Breath directly on the sensor corrupts the reading &mdash; and corrupts it upward, so the system over-ventilates</td></tr>
+        <tr><td>Away from doors, outdoor intakes, exhausts and operable windows</td><td style="text-align:left;">Each of these imposes a local concentration that is not the zone's</td></tr>
+        <tr><td>One sensor per zone of variable occupancy; up to <strong>5,000 ft&sup2; (465 m&sup2;)</strong> of open office per sensor</td><td style="text-align:left;">Below that granularity the critical-zone logic has nothing to work with</td></tr>
+        <tr><td>Duct sensors are cheaper; wall sensors cost more in devices, cabling, points and programming</td><td style="text-align:left;"><strong>A return-duct sensor averages several spaces.</strong> Acceptable on a single-zone system, useless for the VAV critical-zone method above &mdash; averaging is precisely what that method exists to defeat</td></tr>
+        <tr class="total"><td><strong>Ask how the sensor calibrates</strong></td><td style="text-align:left;">Automatic baseline correction assumes the space falls to outdoor CO<sub>2</sub> when empty. <strong>That assumption fails in any 24/7 space</strong> &mdash; hospitals, control rooms, hotels &mdash; and the sensor then re-zeros itself against occupied air and under-reads permanently. Specify the calibration method, not just the accuracy</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</section>
+<section id="c4-fansec">
+  <h3 id="c4-fans">Fans &mdash; the blade type decides the motor, not just the duty <span class="vb course">Course</span></h3>
+  <p class="prose">A fan moves air by creating a pressure difference. Three families, by the direction the air leaves the impeller: <strong>centrifugal</strong> (in axially, out radially, through a scroll), <strong>axial</strong> (parallel to the shaft), and <strong>mixed flow</strong> (both, giving centrifugal-like pressure on a straight-through path). <a href="#c2-ahu">Course&nbsp;2</a> selected a fan; this module explains why the selection behaves as it does &mdash; and one characteristic below will size a motor for you whether or not you noticed it.</p>
+
+  <div class="tw">
+    <table>
+      <caption>Centrifugal blade types &mdash; the comparison that governs selection <span class="vb course">Course</span></caption>
+      <thead><tr><th style="text-align:left;"></th><th style="text-align:left;">Forward curved (FC)</th><th style="text-align:left;">Backward inclined / curved (BI/BC)</th><th style="text-align:left;">Airfoil (AF)</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Blades</strong></td><td style="text-align:left;">Many small, strongly curved, short chord; tips point <em>with</em> rotation</td><td style="text-align:left;">8&ndash;12 heavier single-thickness blades angled <em>away</em> from rotation</td><td style="text-align:left;">10&ndash;16 aerofoil-section blades, curved away from rotation</td></tr>
+        <tr><td><strong>Speed for a given duty</strong></td><td style="text-align:left;">Lowest</td><td style="text-align:left;">Higher</td><td style="text-align:left;">Highest of the three</td></tr>
+        <tr class="total"><td><strong>Power curve</strong></td><td style="text-align:left;"><strong>Overloading</strong> &mdash; power keeps rising toward free delivery</td><td style="text-align:left;"><strong>Non-overloading</strong> (load-limiting)</td><td style="text-align:left;">Non-overloading; power peaks near peak efficiency then falls</td></tr>
+        <tr><td><strong>Best efficiency point</strong></td><td style="text-align:left;">&mdash;</td><td style="text-align:left;">Mid-curve, ~40&ndash;60% of wide-open volume; also the <strong>quietest</strong> point</td><td style="text-align:left;">50&ndash;60% of wide-open volume; up to ~10% better than BC</td></tr>
+        <tr><td><strong>Housing dependence</strong></td><td style="text-align:left;"><strong>High</strong> &mdash; the scroll converts large velocity pressure to static; unstable unhoused</td><td style="text-align:left;">Moderate &mdash; needs tight inlet clearance and a concentric inlet cone</td><td style="text-align:left;">Needs close clearance and alignment</td></tr>
+        <tr><td><strong>Air quality</strong></td><td style="text-align:left;">&mdash;</td><td style="text-align:left;">Tolerates some dirt, where aerofoil blades would erode</td><td style="text-align:left;"><strong>Clean air only</strong></td></tr>
+        <tr><td><strong>Where it belongs</strong></td><td style="text-align:left;">Low-pressure packaged equipment: DX splits, package units, central station units</td><td style="text-align:left;">Medium to high flow against real resistance: purification, dust removal, pollution control</td><td style="text-align:left;">Large AHUs and clean processes where the energy saving justifies the cost</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">The overloading power curve &mdash; the one fan characteristic that sizes a motor for you</b>
+    <p>A forward-curved fan's absorbed power <strong>keeps climbing as resistance falls</strong>, all the way to free delivery. Backward-curved and aerofoil wheels do the opposite: power peaks near best efficiency and then falls away. The consequence is a commissioning fault, not a design preference.</p>
+    <div class="fml" style="margin:1em 0;">
+      <span class="eq">System resistance turns out lower than calculated &mdash; the usual direction of error, because</span>
+      <span class="eq">ESP is normally estimated generously and filters are commissioned clean:</span>
+      <span class="eq">  FC wheel  &rarr; flow rises above design AND absorbed power rises with it &rarr; <strong>motor trips</strong></span>
+      <span class="eq">  BC / AF   &rarr; flow rises above design, power is already past its peak &rarr; <strong>motor survives</strong></span>
+      <span class="wh">So an FC fan must have its motor sized for the overloading condition, not for the
+duty point &mdash; and that margin is exactly what gets removed when a motor is
+"value engineered" to the calculated absorbed power. A BC or AF selection is
+self-protecting; an FC selection is not.</span>
+    </div>
+    <p style="margin-bottom:0;">This is also the honest reading of <strong>error F-4</strong>. The narration calls FC fans the best choice for &ldquo;high pressure, low flow&rdquo; and then describes them as low-speed, low-pressure packaged-equipment fans. The second description is the right one. The overloading curve is the part of that lecture worth keeping, and it is the part that never appears in a bid evaluation.</p>
+  </div>
+
+  <div class="grid g2" style="margin:1.4em 0;">
+    <div class="card">
+      <h4 style="margin-top:0;">Why a plug fan works with a BC or AF wheel and not an FC wheel</h4>
+      <p style="font-size:var(--step--1);margin:0 0 .6em;color:var(--text-secondary);">A <strong>BC wheel discharges most of its energy as static pressure</strong>, so removing the scroll costs little. An <strong>FC wheel discharges mostly velocity pressure</strong> and needs the housing to convert it &mdash; unhoused, it is both inefficient and unstable. That single fact is why every fan array and fan wall is built from BC or aerofoil wheels.</p>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);"><strong>Select a plug fan on fan <em>static</em> pressure with no credit for outlet velocity pressure.</strong> Performance is sensitive to inlet placement and wall clearance; the discharge profile is uniform, so no long duct run is needed for regain. If it is ducted, the outlet duct should be straight and the same size as the fan outlet. Several plug fans in an array also shorten the AHU.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">Direct drive against belt drive</h4>
+      <p style="font-size:var(--step--1);margin:0 0 .6em;color:var(--text-secondary);"><strong>Direct:</strong> lower cost, fewer parts, <strong>no drive losses</strong>, no belts or separate bearings to maintain, higher reliability. Speed is fixed unless a VFD is fitted &mdash; and with a VFD on a three-phase unit it has all the flexibility of a belt drive. It may need a higher-rated motor at the fan speed, yet uses less energy overall.</p>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);"><strong>Belt:</strong> speed can be trimmed with a variable-pitch pulley, which is still the cheapest permanent correction for an oversized fan. Against that, belt losses and belt maintenance &mdash; and <a href="#c2-ahusel">the 7.4% gap in the Course&nbsp;2 AHU selection</a> is exactly this loss, showing up as a discrepancy between quoted efficiency and quoted absorbed power.</p>
+    </div>
+  </div>
+
+  <h4 id="c4-axial">The three axial families</h4>
+  <div class="tw">
+    <table>
+      <caption>Tubeaxial, vaneaxial and propeller &mdash; the guide vanes are the whole difference <span class="vb course">Course</span></caption>
+      <thead><tr><th style="text-align:left;"></th><th style="text-align:left;">Tubeaxial</th><th style="text-align:left;">Vaneaxial</th><th style="text-align:left;">Propeller</th></tr></thead>
+      <tbody>
+        <tr class="total"><td><strong>Construction</strong></td><td style="text-align:left;">Wheel in a cylindrical tube at close tip clearance. <strong>No guide vanes</strong></td><td style="text-align:left;">A tubeaxial fan <strong>plus guide vanes</strong> that straighten the swirl into static pressure</td><td style="text-align:left;">2&ndash;6 sheet-metal blades on a small hub, in a ring, orifice plate or venturi</td></tr>
+        <tr><td><strong>Hub</strong></td><td style="text-align:left;">Less than &frac12; tip diameter; 4&ndash;8 blades</td><td style="text-align:left;">More than &frac12; tip diameter; aerofoil blades, fixed, adjustable or variable pitch</td><td style="text-align:left;">Small; single-thickness blades</td></tr>
+        <tr><td><strong>Pressure</strong></td><td style="text-align:left;">Medium, about <strong>4 in. w.g. (996 Pa)</strong></td><td style="text-align:left;">Medium to high</td><td style="text-align:left;">Low</td></tr>
+        <tr><td><strong>Efficiency</strong></td><td style="text-align:left;">Up to ~65%</td><td style="text-align:left;">Up to ~85% &mdash; <strong>the most efficient fan type</strong></td><td style="text-align:left;">Least efficient axial type &mdash; see <strong>error F-8</strong></td></tr>
+        <tr><td><strong>Curve behaviour</strong></td><td style="text-align:left;">Unstable (stall) left of peak pressure</td><td style="text-align:left;">Stall dip left of peak pressure</td><td style="text-align:left;"><strong>Power rises steeply if flow is throttled</strong> &mdash; the motor can overheat</td></tr>
+        <tr><td><strong>Discharge</strong></td><td style="text-align:left;">Swirling, circular</td><td style="text-align:left;">Straightened, more uniform</td><td style="text-align:left;">Swirling</td></tr>
+        <tr><td><strong>Where it belongs</strong></td><td style="text-align:left;">Low and medium pressure ducted work where downstream distribution is not critical &mdash; ovens, paint booths, fume exhaust, make-up air, engine rooms</td><td style="text-align:left;">Compact straight-through installations; induced-draft cooling towers; boiler exhaust; <strong>emergency ventilation, because low rotating mass means fast run-up</strong>; reversible flow</td><td style="text-align:left;">Wall and roof exhausters, toilets, electrical rooms, cooling towers, air-cooled condensers. <strong>Not</strong> local exhaust, not long ductwork</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note">
+    <b class="nh">Terminology, and the one measurement that settles arguments</b>
+    <p style="margin-bottom:0;"><strong>Static pressure</strong> is what the fan develops against system resistance &mdash; positive on discharge, negative on suction, and the figure a fan is selected on alongside flow. <strong>Velocity pressure</strong> is the kinetic energy of the moving air, always positive. <strong>Total = static + velocity</strong>, and a <strong>Pitot-static tube</strong> measures all three at once: the facing port reads total, the side ports read static, and the difference is velocity pressure. The practical consequence: <strong>when a vendor quotes a total-pressure fan curve, the discharge velocity pressure is included and you must not add it again</strong> &mdash; at 10 m/s that is 60 Pa, and on a low-pressure system it is not a rounding error. The velocity-pressure relation itself is in <a href="#c2-esp">Course&nbsp;2</a>: P<sub>v</sub> = 0.602v&sup2; for standard air, or (V/4,005)&sup2; in. w.g. with V in fpm.</p>
+  </div>
+
+  <h4 id="c4-fanlaws">The fan laws</h4>
+  <p class="prose">The strongest argument in building services, because the third one is cubic. Everything about variable-speed control follows from it.</p>
 
   <div class="fml">
     <span class="eq">Q₂/Q₁ = N₂/N₁              flow scales with speed</span>
     <span class="eq">p₂/p₁ = (N₂/N₁)²           pressure with the square</span>
     <span class="eq">W₂/W₁ = (N₂/N₁)³           power with the cube</span>
     <span class="eq">SFP = fan input power / airflow                [W per L/s]</span>
+    <span class="eq">Full similarity form, which the course states and most summaries drop:</span>
+    <span class="eq">  Q₂/Q₁ = (N₂/N₁)(D₂/D₁)³      p₂/p₁ = (N₂/N₁)²(D₂/D₁)²(ρ₂/ρ₁)      W₂/W₁ = (N₂/N₁)³(D₂/D₁)⁵(ρ₂/ρ₁)</span>
+    <span class="eq">Worked, same fan, 650 → 600 rpm:  flow ×0.923   pressure ×0.852   power ×0.787 — 8% less flow, 21% less power</span>
+    <span class="eq">Worked, motor pulley 8″ → 6″:     speed ×0.75   pressure ×0.563   power ×0.422 — a 58% saving for a £20 part</span>
     <span class="wh">Valid for a fixed system curve and constant air density. They do NOT hold when the system
 resistance changes — a closing damper moves you along a different curve entirely.</span>
     <span class="src">Standard fan affinity relations. <span class="vb standard">Standard</span></span>
@@ -4748,6 +5110,41 @@ resistance changes — a closing damper moves you along a different curve entire
     <figcaption><b>The gap between the two lines is the entire economic case for variable speed.</b> One caveat that ends careers: the cubic law holds only while the <em>system curve</em> is unchanged. Throttling a damper does not follow this line — it moves the operating point up a different, steeper system curve, and the power saving largely evaporates. Speed control saves energy; dampers mostly convert it into noise.</figcaption>
   </figure>
 
+  <h4 id="c4-fanctrl">Changing the flow &mdash; six methods, ranked by what they cost you</h4>
+  <div class="tw">
+    <table>
+      <caption>Fan control methods <span class="vb course">Course</span></caption>
+      <thead><tr><th style="text-align:left;">Method</th><th style="text-align:left;">How flow changes</th><th style="text-align:left;">Verdict</th></tr></thead>
+      <tbody>
+        <tr class="total"><td><strong>VFD</strong></td><td style="text-align:left;">Varies supply frequency, therefore speed &mdash; moves along the cube law</td><td style="text-align:left;"><strong>Simple, effective, efficient across a broad range.</strong> Retrofittable to an existing motor, compact, low losses. The default</td></tr>
+        <tr><td><strong>Pulley change</strong></td><td style="text-align:left;">Sets a new fixed speed from the drive or driven pulley diameter</td><td style="text-align:left;">The cheapest <em>permanent</em> correction for an oversized fan. 8&Prime; &rarr; 6&Prime; gives speed &times;0.75 and power <strong>&times;0.42</strong></td></tr>
+        <tr><td><strong>Variable pitch</strong> (axial)</td><td style="text-align:left;">Changes the blade angle of attack</td><td style="text-align:left;">Efficient over a wide range, though the course also notes reduced efficiency at deep part load</td></tr>
+        <tr><td><strong>Inlet guide vanes</strong></td><td style="text-align:left;">Pre-swirl the air entering the impeller, reshaping the fan curve rather than adding resistance</td><td style="text-align:left;">Better than dampers. The course ties the benefit to turndown below about <strong>80% of design flow</strong></td></tr>
+        <tr><td><strong>Dampers</strong> (inlet or outlet)</td><td style="text-align:left;">Add resistance; the fan rides up its own curve at unchanged speed</td><td style="text-align:left;"><strong>Limited range and energy-inefficient</strong> &mdash; the fan still draws nearly full power and the surplus becomes noise and heat</td></tr>
+        <tr><td><strong>Series / parallel</strong></td><td style="text-align:left;">Combine fans</td><td style="text-align:left;"><strong>Series adds pressure; parallel adds flow.</strong> Parallel fans on a steep system curve can also fight each other &mdash; check the combined curve, not the individual one</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note">
+    <b class="nh">Vibration isolation &mdash; and the exception the course allows</b>
+    <p style="margin-bottom:0;">Every fan transmits some net force to its support. The course permits a centrifugal fan to be installed <strong>without isolators only where the design is careful and the fan is well balanced</strong>, and requires isolation wherever vibration is significant or has begun to damage structure. Read that as written: absence of isolators is a decision to be justified, not a default. <a href="#c2-ahu">Course&nbsp;2</a> puts spring isolators between the fan assembly and the AHU casing as standard construction, and that is the safer position.</p>
+  </div>
+
+  <h4 id="c4-fancurve">The operating point, and the selection that hunts</h4>
+  <p class="prose">The operating point is where the <strong>fan curve</strong> crosses the <strong>system curve</strong>. It moves if either moves &mdash; a dirty filter raises the system curve, a VFD lowers the fan curve. Because system resistance goes as the square of flow, doubling flow needs roughly four times the pressure and eight times the power, which is the same cube law seen from the system side.</p>
+
+  <div class="note trap">
+    <b class="nh">One crossing is a selection. Two crossings is a fault.</b>
+    <p style="margin-bottom:0;">A fan is suitable when its curve crosses the system curve <strong>exactly once</strong>. Where the curves cross <strong>twice</strong> the fan can <strong>hunt between the two points</strong> &mdash; flow and pressure oscillate, the noise signature changes audibly, and the unit is unstable and unsuitable however well it matches at the nominal duty. This happens when the duty lies in the <strong>stall region to the left of peak pressure</strong>, which is the same region <a href="#c2-ahusel">Course&nbsp;2 warns about</a> when it says to keep the duty point &ldquo;away from surge, toward the right of the curve&rdquo;. Two courses, two vocabularies, one failure. And it is invisible on a data sheet that reports only the duty point: <strong>ask for the curve, and look at the shape to the left of where you are sitting.</strong> Where a system has more than one duty point &mdash; smoke mode and normal mode, say &mdash; check the whole range, not just the design case.</p>
+  </div>
+
+  <h4 id="c4-smokefan">Smoke exhaust fans &mdash; the rating is specified, never inferred</h4>
+  <div class="note warn">
+    <b class="nh">The one fan specification that is a life-safety item</b>
+    <p style="margin-bottom:0;">A smoke-exhaust fan must carry a <strong>fire rating for a temperature and time class</strong> &mdash; under EN 12101-3 that is written as <strong>F300 (300 &deg;C for 60 minutes)</strong> or <strong>F400 (400 &deg;C for 120 minutes)</strong>, and the class required comes from the <strong>fire strategy and the Civil Defence approval</strong>, not from the mechanical designer's preference. The course's claim that a tubeaxial fan tolerates &ldquo;250 &deg;C or more&rdquo; (<strong>error F-9</strong>) is meaningless as a specification: whether a fan survives depends on motor position &mdash; in the airstream or outside it &mdash; bearing lubricant, cable rating and impeller material. <strong>Demand the certificate to the named class, for the complete assembly including motor and cabling, and check that the certified class matches the one in the approved fire strategy.</strong> A fan certified F300 in a system the strategy sizes on F400 is a non-conformance that surfaces at handover, when it is most expensive. The extract rates those fans must deliver are in <a href="#c3-smoke">Course&nbsp;3</a>.</p>
+  </div>
+
   <h3 id="c4-exF">Worked example F — DCV saving and fan turndown</h3>
   <div class="work">
     <div class="stp"><b>Outdoor air reduction at 50% occupancy</b>
@@ -4774,6 +5171,199 @@ resistance changes — a closing damper moves you along a different curve entire
   <div class="sanity">
     <b class="nh">Sanity check — be honest about which technology pays</b>
     <p style="margin-bottom:0;">In this zone, DCV avoids 627 W at design and fan turndown avoids 402 W at 80% speed — and the fan saving is available <em>whenever</em> load is below design, which is nearly always, while the DCV saving requires the space to actually be under-occupied. On a single office zone with a modest ventilation rate, <strong>variable speed on the fan is the stronger investment</strong>. DCV earns its keep in spaces with high and genuinely variable occupant density — auditoria, training rooms, prayer halls, conference centres — where the people component dominates the area component. Applying it to a lightly-occupied cellular office is a specification habit, not an analysis.</p>
+  </div>
+
+</section>
+<section id="c4-vrfsec">
+  <h3 id="c4-vrf">Variable refrigerant flow &mdash; what it is, and where it does not belong <span class="vb course">Course</span></h3>
+  <p class="prose">One outdoor unit meters refrigerant to many indoor units, and the flow to each varies with that unit's own demand. That is the whole idea, and everything else &mdash; individual zone control, simultaneous heating and cooling, heat moved from one zone to another &mdash; follows from it. Module&nbsp;2 is set in the <strong>R-410A</strong> era; newer ranges are moving to lower-GWP A2L refrigerants such as <strong>R-32</strong> under HFC phase-down, which changes the safety arithmetic at the end of this section.</p>
+
+  <div class="tw">
+    <table>
+      <caption>What VRF replaced, and the limit that drove it <span class="vb course">Course</span></caption>
+      <thead><tr><th style="text-align:left;">System</th><th style="text-align:left;">Arrangement</th><th style="text-align:left;">The limitation that ends it</th></tr></thead>
+      <tbody>
+        <tr><td><strong>DX split</strong></td><td style="text-align:left;">One indoor evaporator and blower, one outdoor compressor and condenser, joined by gas and liquid lines</td><td style="text-align:left;"><strong>IDU&ndash;ODU distance limited to about 15 m (50 ft)</strong> before capacity derates. Hard to apply in commercial or high-rise buildings; air throw fixed by the fan settings</td></tr>
+        <tr><td><strong>Multi-split</strong></td><td style="text-align:left;">One condensing unit, several evaporators, <strong>each on its own pair of pipes</strong></td><td style="text-align:left;"><strong>The whole system switches on or off from one thermostat.</strong> Fine where rooms share a thermal zone, unusable where zones have differing gains</td></tr>
+        <tr class="total"><td><strong>VRF</strong></td><td style="text-align:left;">Many IDUs on one ODU, each individually controlled, under a central controller acting as the system's brain</td><td style="text-align:left;"><strong>It does not ventilate.</strong> A separate fresh-air system is required &mdash; and in Doha that unit carries the entire latent load</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note">
+    <b class="nh">Evolution, and what actually enabled it</b>
+    <p style="margin-bottom:0;">A few IDUs per ODU in the late 1980s, <strong>4&ndash;8</strong> in the early 1990s (the multi-split era), <strong>16</strong> by the mid-1990s, <strong>32</strong> by 1999, and up to about <strong>60</strong> today &mdash; which is what makes VRF a large-building system rather than a light-commercial one. The enabling technologies are worth naming because they are what a bid evaluation should look for: <strong>inverter-driven scroll compressors</strong> replacing fixed-speed machines, <strong>EC and DC indoor fan motors</strong>, outdoor fans on inverter drives, multiple compressors per ODU, multi-segment coils, and refined <strong>refrigerant-charge and oil-return management</strong>. The refrigerant path ran R-22 &rarr; R-407C &rarr; R-410A. Note <strong>error F-11</strong>: the maximum IDU count is stated as 60 in one lecture and 48 in another, while the controller handles 64 <em>groups</em> &mdash; three different quantities, all OEM-specific.</p>
+  </div>
+
+  <h4 id="c4-cr">Combination ratio and operating diversity &mdash; two ratios that are routinely confused</h4>
+  <div class="fml">
+    <span class="eq">Combination ratio   CR = Σ IDU nominal capacity / ODU nominal capacity × 100</span>
+    <span class="eq">Operating diversity      = total cooling load (TR) / ODU capacity (TR) × 100</span>
+    <span class="wh">CR compares NAMEPLATES. Operating diversity compares REAL LOAD to real capacity.
+A system can carry CR = 120% and still be correctly sized, because the IDUs were
+selected on airflow rather than on zone load. The two ratios answer different
+questions, and the second is the one that decides whether the plant works.</span>
+    <span class="src">Definitions and both worked examples from Module 2. <span class="vb course">Course</span></span>
+  </div>
+
+  <div class="work">
+    <div class="stp"><b>Example 1 &mdash; six offices on one circuit, grouped because they share schedule and design conditions</b>
+      <span class="r">room load 3.6 TR needing 1,400 cfm; two cassettes per room at 2.56 TR / 741 cfm each</span>
+      <span class="r">per room: <strong>5.12 TR and 1,482 cfm</strong> &mdash; airflow satisfied, capacity <strong>42% above the room load</strong></span>
+      <span class="r">circuit load 3.6 &times; 6 = <strong>21.6 TR</strong>;&nbsp;&nbsp;Σ IDU nominal = 12 &times; 3.2 HP = <strong>38.4 HP</strong></span>
+      <span class="r">ODU 32 HP, vendor capacity 21.96 TR &rarr; CR = 38.4/32 = <strong>120%</strong>, operating diversity = 21.6/21.96 = <strong>98%</strong></span></div>
+    <div class="stp"><b>Why CR is 120% and nothing is wrong</b>
+      <span class="r">the IDUs were <strong>selected on airflow</strong>, which put 5.12 TR against a 3.6 TR load; the ODU was sized on the real block load</span>
+      <span class="r">CR 120% with diversity 98% is a correctly sized plant. <strong>CR 120% with diversity 140% is an undersized one.</strong> Always quote both</span></div>
+    <div class="stp"><b>&ldquo;HP&rdquo; in a VRF catalogue is a size index, not motor power</b>
+      <span class="r">2.56 TR &harr; 3.2 HP &rarr; <strong>1 HP &asymp; 0.8 TR &asymp; 2.81 kW</strong></span>
+      <span class="r">so 32 HP &ldquo;nominal&rdquo; would be 25.6 TR at that index, against the vendor's stated 21.96 TR &mdash; a <strong>14.2% derate</strong> already built into the selection</span></div>
+    <div class="stp"><b>Example 2 &mdash; pre-selection before opening the vendor software</b>
+      <span class="r">6 zones totalling 22 TR &rarr; B = 22 &times; 1.2 &times; 1.15 = <strong>30.36</strong> &rarr; round up to <strong>32 HP</strong></span>
+      <span class="r">IDUs selected on cfm and TR come to 37 HP &rarr; CR = 37/32 = <strong>116%</strong></span>
+      <span class="r">apply 85% operational diversity: 30.36 &times; 0.85 = 25.8 &rarr; ODU <strong>28 HP</strong>, CR = 37/28 = <strong>132%</strong></span>
+      <span class="r">1.2 converts TR to nominal HP; <strong>1.15 allows for high ambient and refrigerant piping</strong> &mdash; and that factor is the subject of <a href="#c4-exJ">Example&nbsp;J</a></span></div>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>Where the combination ratio is allowed to sit <span class="vb course">Course</span></caption>
+      <thead><tr><th style="text-align:left;">Case</th><th style="text-align:left;">Range and the reasoning</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Non-24/7</strong> &mdash; offices, retail</td><td style="text-align:left;"><strong>90&ndash;130%.</strong> Zones peak at different times, so the ODU need not cover the sum of zone peaks</td></tr>
+        <tr><td><strong>24/7</strong> &mdash; server rooms, hotels, critical spaces</td><td style="text-align:left;"><strong>100&ndash;110%.</strong> No diversity to exploit when everything runs at once</td></tr>
+        <tr class="total"><td><strong>Floor</strong></td><td style="text-align:left;"><strong>Keep CR above 50%.</strong> Below that the ODU compressors cycle frequently and comfort suffers. On a phased project, connect IDUs totalling <strong>at least 50% of ODU nominal in phase 1</strong> &mdash; and design the <em>final</em> system, including future IDUs, so pipe sizes and piping limits are right from day one</td></tr>
+        <tr><td><strong>Whenever CR exceeds 100%</strong></td><td style="text-align:left;"><strong>Confirm the ODU still covers the block load.</strong> A normally empty zone that becomes dense needs its own IDU sized for its peak &mdash; but the ODU is sized on the block, or it is oversized for most operating hours</td></tr>
+        <tr><td>Single-compressor ODUs</td><td style="text-align:left;">A multi-compressor ODU handles low load by <strong>staging</strong>; a single-compressor ODU cycles and can short-cycle the whole system. That is a reason to prefer modules even where one large unit would fit</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">Combination ratio is an OEM warranty limit, not a design preference</b>
+    <p style="margin-bottom:0;">The course shows a range of &ldquo;50&ndash;125%&rdquo; on screen while recommending &ldquo;90&ndash;130%&rdquo; (<strong>error F-12</strong>). Both are indicative. <strong>The allowable CR is published by the manufacturer, varies by model and by IDU type, and exceeding it voids the warranty</strong> regardless of how well the block load is covered. Get it from the OEM's selection software for the model offered, record it in the technical bid evaluation, and check it again after any IDU substitution &mdash; a late change from cassettes to ducted units can move the sum of nominal capacities enough to breach it.</p>
+  </div>
+
+  <h4 id="c4-vrfcomp">Components &mdash; and the two that decide a project</h4>
+  <div class="tw">
+    <table>
+      <caption>Indoor unit types and course capacity ranges <span class="vb course">Course</span> &middot; kW conversions <span class="vb derived">Derived</span></caption>
+      <thead><tr><th style="text-align:left;">Indoor unit</th><th class="num">TR</th><th class="num">kW</th><th style="text-align:left;">Where it goes</th></tr></thead>
+      <tbody>
+        <tr><td>Wall-mounted split</td><td class="num">0.6&ndash;2.0</td><td class="num">2.1&ndash;7.0</td><td style="text-align:left;">Switch rooms, small cellular spaces</td></tr>
+        <tr><td>One-way cassette</td><td class="num">0.8&ndash;2.0</td><td class="num">2.8&ndash;7.0</td><td style="text-align:left;">Narrow rooms, corridors</td></tr>
+        <tr><td>Two-way cassette</td><td class="num">0.8&ndash;4.0</td><td class="num">2.8&ndash;14.1</td><td style="text-align:left;">Rectangular rooms</td></tr>
+        <tr class="total"><td>Four-way cassette, standard 950 &times; 950 mm</td><td class="num">0.8&ndash;4.5</td><td class="num">2.8&ndash;15.8</td><td style="text-align:left;">Cabins and conference rooms &mdash; the default</td></tr>
+        <tr><td>Four-way cassette, compact 600 &times; 600 mm</td><td class="num">0.6&ndash;1.6</td><td class="num">2.1&ndash;5.6</td><td style="text-align:left;">Fits a standard ceiling tile module</td></tr>
+        <tr><td>Ducted, ceiling concealed</td><td class="num">0.6&ndash;8.0</td><td class="num">2.1&ndash;28.1</td><td style="text-align:left;">Large offices; the only type that gives real air distribution</td></tr>
+        <tr><td>Outdoor-air processing unit</td><td class="num">4&ndash;8</td><td class="num">14.1&ndash;28.1</td><td style="text-align:left;">Fresh air &mdash; but read the warning below before relying on it in Doha</td></tr>
+        <tr><td>Heat-recovery ventilation unit</td><td class="num" colspan="2">140&ndash;1,200 cfm (66&ndash;566 L/s)</td><td style="text-align:left;">Exhaust-to-supply energy recovery</td></tr>
+        <tr><td>AHU on a VRF circuit</td><td class="num" colspan="2">per duty</td><td style="text-align:left;">Can be arranged with <strong>separate working and standby circuits</strong> for server and UPS rooms</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid g2" style="margin:1.4em 0;">
+    <div class="card">
+      <h4 style="margin-top:0;">Outdoor modules</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">Single module <strong>6&ndash;20 HP</strong> (some vendors reach 24 HP, at a lower COP); double <strong>22&ndash;40 HP</strong>; triple <strong>42&ndash;60 HP</strong>, the maximum combination being <strong>3 &times; 20 HP</strong>. <strong>For better COP, combine 14&ndash;16 HP modules rather than using one large module</strong> &mdash; a selection rule that costs nothing to apply and is routinely ignored. All units discharge from the top except the 6 HP, which discharges from the side, and that decides the plant-area layout.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">Three-pipe heat recovery at the indoor unit</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">Most heat-recovery designs use <strong>three pipes &mdash; liquid, hot gas and suction</strong> &mdash; with each IDU branched through <strong>solenoid valves</strong>. Open liquid and suction and the unit is an <strong>evaporator</strong> (cooling); open hot gas and liquid and it is a <strong>condenser</strong> (heating). That is the entire mechanism by which one indoor unit heats while its neighbour cools, and why the branch boxes carry extra heat exchangers.</p>
+    </div>
+  </div>
+
+  <div class="tw">
+    <table>
+      <caption>Compressor arrangement decides the failure mode <span class="vb course">Course</span></caption>
+      <thead><tr><th style="text-align:left;">Arrangement</th><th style="text-align:left;">Behaviour</th><th style="text-align:left;">Redundancy</th></tr></thead>
+      <tbody>
+        <tr><td>Single variable-speed</td><td style="text-align:left;">One large inverter scroll modulates with demand</td><td style="text-align:left;"><strong>None &mdash; if it fails the system stops</strong></td></tr>
+        <tr><td>Variable-speed + fixed-speed</td><td style="text-align:left;">The inverter ramps to full, the fixed-speed machine starts, the inverter ramps back down</td><td style="text-align:left;">Partial backup</td></tr>
+        <tr class="total"><td><strong>Multiple variable-speed</strong></td><td style="text-align:left;">As many run as the load needs, at whatever speed it needs; the start sequence <strong>rotates to equalise running hours</strong>, and no hot-gas bypass is needed at part load</td><td style="text-align:left;"><strong>Best.</strong> With three compressors, one failure leaves <strong>67%</strong> capacity until repair &mdash; which on a hot day is the difference between a complaint and an evacuation</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">Heat pump against heat recovery &mdash; and the Doha verdict the course does not give</b>
+    <p>A <strong>two-pipe heat-pump</strong> VRF puts <em>every</em> indoor unit in the same mode at once: all heating or all cooling. A <strong>three-pipe heat-recovery</strong> VRF heats and cools different zones simultaneously and moves the heat rejected by the cooling zones into the heating zones through branch boxes. The narration muddles this (<strong>error F-13</strong>), and the distinction is the entire basis of the price difference.</p>
+    <p style="margin-bottom:0;"><strong>The commercial reading for Qatar.</strong> Heat recovery earns its premium only where heating and cooling are genuinely simultaneous &mdash; a deep-plan building with a cold perimeter and a hot core, or a hotel, or a hospital with tightly controlled rooms. <strong>In a Doha office the building is in cooling essentially all year and every zone is in the same mode</strong>, so the three-pipe premium buys a capability the building never uses. Ask for the estimated simultaneous heating and cooling hours before accepting a heat-recovery offer; if nobody can produce that number, the two-pipe heat pump is the correct selection and the difference belongs in the fresh-air system instead.</p>
+  </div>
+
+  <h4 id="c4-wcvrf">Water-cooled VRF &mdash; the one arrangement that dodges the ambient problem</h4>
+  <p class="prose">A condensing unit with a brazed plate heat exchanger instead of an air-cooled coil, compact enough to sit indoors. It works exactly as air-cooled VRF otherwise, and it is comparable to a four-pipe chilled water system in what it can do.</p>
+  <div class="grid g2" style="margin:1.4em 0;">
+    <div class="card">
+      <h4 style="margin-top:0;">What it buys</h4>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);"><strong>No high-ambient derating</strong> &mdash; the single largest VRF problem in this climate, removed. <strong>COP up to about 5.7.</strong> Nothing on the fa&ccedil;ade or the balconies, so better aesthetics and longer unit life. Plant space needs little ventilation and no external wall. Quieter, because there are no high-speed condenser fans.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0;">What it costs</h4>
+      <p style="font-size:var(--step--1);margin:0 0 .6em;color:var(--text-secondary);">A condenser-water loop: a <strong>cooling tower</strong> with its make-up water, treatment, blowdown and legionella regime &mdash; all of <a href="#c2-tower">Course&nbsp;2's tower section</a> arrives with it. <strong>Mandatory strainer</strong> (field supplied) and an <strong>essential flow or differential-pressure switch</strong>, plus a water thermostat, circulation pumps and adjustable flanges.</p>
+      <p style="font-size:var(--step--1);margin:0;color:var(--text-secondary);">Operating range: flow <strong>13.2&ndash;39.5 gpm (3.0&ndash;9.0 m&sup3;/h)</strong>, optimum <strong>&ge; 16 gpm (3.6 m&sup3;/h)</strong>; water inlet <strong>50&ndash;113 &deg;F (10&ndash;45 &deg;C)</strong>.</p>
+    </div>
+  </div>
+
+  <h4 id="c4-vrfpipe">Refrigerant piping &mdash; limits, and the check nobody runs</h4>
+  <div class="tw">
+    <table>
+      <caption>Indicative piping limits &mdash; every one of them OEM-specific <span class="vb course">Course</span></caption>
+      <thead><tr><th style="text-align:left;">Limit</th><th class="num">Indicative value</th></tr></thead>
+      <tbody>
+        <tr><td>Total pipe length including all branches</td><td class="num">&asymp; 1,000 m</td></tr>
+        <tr><td>Maximum run, ODU to IDU</td><td class="num">&asymp; 190 m</td></tr>
+        <tr><td>Level difference, ODU <strong>above</strong> IDU</td><td class="num">&asymp; 90 m</td></tr>
+        <tr><td>Level difference, ODU <strong>below</strong> IDU</td><td class="num">&asymp; 40 m</td></tr>
+        <tr><td>Level difference between IDUs</td><td class="num">&asymp; 30 m</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="prose">Branches are made with <strong>refnet joints</strong> &mdash; branch kits or headers that divide the flow. Those five numbers are what make VRF a whole-building system; they are also what makes the charge large, and the charge is the subject of <a href="#c4-exJ">Example&nbsp;J</a>.</p>
+
+  <h3 id="c4-exJ">Worked example J &mdash; the two VRF checks the course does not make</h3>
+  <p class="prose">Module&nbsp;2 gives a pre-sizing factor of 1.15 for &ldquo;high ambient and piping&rdquo;, and mentions refrigerant charge only as a consequence of long pipe runs. Both deserve a number.</p>
+
+  <div class="work">
+    <div class="stp"><b>Check 1 &mdash; is 1.15 enough at a Doha design ambient?</b>
+      <span class="r">the factor allows for a capacity loss of (1 &minus; 1/1.15) = <strong>13.0%</strong></span>
+      <span class="r">reversed-Carnot scaling, evaporating 6 &deg;C, condensing &asymp; ambient + 15 K, relative to the 35 &deg;C rating datum:</span>
+      <span class="r">&nbsp;&nbsp;35 &deg;C &rarr; COP 6.34 (datum)&nbsp;&nbsp;&nbsp;43 &deg;C &rarr; 5.37, <strong>&minus;15.4%</strong>&nbsp;&nbsp;&nbsp;46 &deg;C &rarr; 5.08, <strong>&minus;20.0%</strong>&nbsp;&nbsp;&nbsp;50 &deg;C &rarr; 4.73, <strong>&minus;25.4%</strong></span>
+      <span class="r">&rarr; the equivalent factor is <strong>1.25 at 46 &deg;C and 1.34 at 50 &deg;C</strong>, against the course's 1.15</span></div>
+    <div class="stp"><b>Check 2 &mdash; refrigerant concentration in the smallest room served</b>
+      <span class="r">ASHRAE 15 divides the <strong>entire circuit charge</strong> by the volume of the <strong>smallest occupied space</strong> it could leak into</span>
+      <span class="r">take a 28 kg circuit and a 15 m&sup2; office at 2.8 m: 28 / 42.0 = <strong>0.667 kg/m&sup3;</strong></span>
+      <span class="r">R-410A refrigerant concentration limit &asymp; 0.44 kg/m&sup3; &rarr; <strong>exceeded by 52%</strong></span>
+      <span class="r">minimum room for 28 kg of R-410A = 28/0.44 = <strong>63.6 m&sup3; = 22.7 m&sup2; at 2.8 m</strong></span></div>
+    <div class="stp"><b>And the same circuit on an A2L refrigerant</b>
+      <span class="r">R-32 limit &asymp; 0.061 kg/m&sup3; &rarr; 28 kg needs <strong>459 m&sup3; = 164 m&sup2; at 2.8 m</strong></span>
+      <span class="r">&rarr; a circuit of that charge <strong>cannot serve normal cellular rooms at all</strong> without leak detection, isolation, ventilation, or re-splitting the circuits</span></div>
+  </div>
+
+  <div class="res">
+    <div><span class="k">Course allowance</span><span class="v">1.15</span><span class="u">covers 13% loss</span></div>
+    <div class="hero"><span class="k">Loss at 46 °C</span><span class="v">20.0</span><span class="u">% · factor should be 1.25</span></div>
+    <div><span class="k">Loss at 50 °C</span><span class="v">25.4</span><span class="u">% · factor 1.34</span></div>
+    <div><span class="k">28 kg in a 15 m² office</span><span class="v">0.667</span><span class="u">kg/m³ · limit 0.44</span></div>
+    <div><span class="k">Minimum room, R-410A</span><span class="v">22.7</span><span class="u">m² at 2.8 m</span></div>
+    <div><span class="k">Minimum room, R-32</span><span class="v">164</span><span class="u">m² at 2.8 m</span></div>
+  </div>
+
+  <div class="note trap">
+    <b class="nh">Read both checks carefully &mdash; one is an argument, the other is a code compliance</b>
+    <p><strong>The derating figures are an argument, not an answer.</strong> Reversed-Carnot scaling assumes a constant second-law efficiency that no real machine has, and the condensing approach is an assumption. Use the numbers to justify demanding the OEM's correction tables for <strong>ambient temperature, equivalent pipe length, level difference and combination ratio</strong> &mdash; and to demand confirmation that the ODU is rated to <em>operate</em>, not merely survive, at the project design ambient. Many ranges publish a separate high-ambient or &ldquo;tropical&rdquo; model precisely because the standard one is not. <span class="vb verify">Verify</span></p>
+    <p style="margin-bottom:0;"><strong>The concentration check is not an argument. It is a safety requirement</strong>, and the course omits it entirely. Run it against the governing standard the project names &mdash; <strong>ASHRAE 15/34, EN 378 or ISO 5149</strong> &mdash; using the <em>as-installed</em> charge including the additional charge for pipe length, not the factory charge. The limits quoted above are the values this guide is working from and should be <span class="vb verify">Verify</span>&nbsp;checked against the edition in force, because they have moved and because the A2L values are set by flammability rather than toxicity. The failure mode is specific: <strong>a long-pipe VRF circuit sized purely on capacity, serving one small room somewhere on its branch, is the arrangement that breaches it</strong> &mdash; and it is discovered at commissioning, when re-splitting the circuit costs a ceiling.</p>
+  </div>
+
+  <div class="note warn">
+    <b class="nh">The VRF questions to put in every technical query</b>
+    <p style="margin-bottom:0;">&ldquo;State net cooling capacity and input power <strong>at 46 &deg;C ambient</strong> with the specified pipe run and level difference, at the offered combination ratio.&rdquo; &middot; &ldquo;State the <strong>latent</strong> capacity at the space design condition.&rdquo; &middot; &ldquo;State the <strong>as-installed refrigerant charge per circuit</strong> and the smallest room served by each.&rdquo; &middot; &ldquo;State the OEM's <strong>maximum allowable combination ratio</strong> for the offered model and IDU mix.&rdquo; Nominal VRF capacities are published at 35 &deg;C with a short level pipe run; Doha's ambient, a long riser and a real lift each take a bite, and they compound. A system selected on nominal figures is short on the day it is needed.</p>
+  </div>
+
+  <div class="note good">
+    <b class="nh">And the line that matters more than any of them: VRF does not ventilate</b>
+    <p style="margin-bottom:0;">VRF conditions <strong>recirculated room air</strong>. Outdoor air needs a dedicated unit, and in Doha that unit must be sized to take the <strong>full latent load of the outdoor air</strong> &mdash; leaving the indoor units to handle room sensible load only. This is not a preference. A VRF indoor unit modulating on a sensible thermostat raises its evaporating temperature at part load, which is precisely when it stops dehumidifying; rely on it to dry hot humid outdoor air and the space ends up cool and damp, with condensation on the coldest surfaces. <strong>Size the treated fresh-air unit on the outdoor-air latent load computed in <a href="#c1-exB2">Course&nbsp;1</a>, and check that the VRF selection was made on the sensible load only.</strong> That single division of duty is what makes a VRF design work in this climate, and getting it wrong is the most common VRF failure in the Gulf.</p>
   </div>
 
   <div class="quiz" id="c4q" data-quiz="c4">
@@ -4850,6 +5440,130 @@ resistance changes — a closing damper moves you along a different curve entire
         <label class="opt"><input type="radio" name="c4_8" value="d"><span>Neither is worth applying to an office</span></label>
       </div>
       <div class="fb" data-fb>DCV avoids 627 W but only when occupancy actually drops; fan turndown avoids 402 W at 80% speed and applies across almost the whole year. DCV comes into its own where occupant density is high and genuinely variable — auditoria, training rooms, prayer halls — not in a lightly occupied office.</div>
+    </div>
+
+    <div class="q" data-a="d">
+      <div class="qs"><span class="qn">9</span><p class="qt">Under ASHRAE 90.1 §6.4.3.8, when does DCV become <em>mandatory</em>?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c4_9" value="a"><span>Whenever design outdoor air exceeds 750 cfm</span></label>
+        <label class="opt"><input type="radio" name="c4_9" value="b"><span>Whenever the space exceeds 500 ft², regardless of occupancy</span></label>
+        <label class="opt"><input type="radio" name="c4_9" value="c"><span>Whenever the system has an air-side economizer</span></label>
+        <label class="opt"><input type="radio" name="c4_9" value="d"><span>Area &gt; 500 ft² <em>and</em> density &gt; 25 people per 1,000 ft² <em>and</em> the system has an economizer, a modulating OA damper, or design OA &gt; 3,000 cfm</span></label>
+      </div>
+      <div class="fb" data-fb>All three tests must be satisfied — 46.5 m², 26.9 people per 100 m², and one of the three system features. Note which standard this is: <strong>62.1 says how much outdoor air a zone needs; 90.1 says when you must fit DCV</strong>. And note the five exceptions, of which the fourth is the one that most often applies in the Gulf: spaces where more than 75% of the design outdoor air is make-up for air exhausted from that space — kitchens, laboratories, heavily exhausted plant rooms. The course attributes these exceptions to "ASHRAE 19.1", which does not exist.</div>
+    </div>
+
+    <div class="q" data-a="123" data-tol="0.02" data-unit="cfm">
+      <div class="qs"><span class="qn">10</span><p class="qt">A classroom is 800 ft² with 40 students at design. R<sub>p</sub> = 7.5 cfm/person, R<sub>a</sub> = 0.06 cfm/ft². What is V<sub>bz</sub> at <strong>25%</strong> occupancy?</p></div>
+      <div class="numq"><input type="number" step="1" data-in aria-label="Breathing zone outdoor air in cfm"><span class="un">cfm</span></div>
+      <div class="fb" data-fb>10 × 7.5 + 800 × 0.06 = 75 + 48 = <strong>123 cfm</strong>, against 348 cfm at design. Occupancy fell 75%; outdoor air fell 65%, because the <strong>48 cfm area component never moves</strong>. That floor is the DCV lower damper limit and it exists to dilute the building-generated contaminants — VOCs from materials and furnishings — that a CO₂ sensor cannot see.</div>
+    </div>
+
+    <div class="q" data-a="c">
+      <div class="qs"><span class="qn">11</span><p class="qt">The lecture narrates the area rate as <strong>0.6 cfm/ft²</strong> while computing with 0.06. What happens to the same classroom if you take the narrated figure?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c4_11" value="a"><span>Nothing material — the totals are dominated by the people component</span></label>
+        <label class="opt"><input type="radio" name="c4_11" value="b"><span>Design outdoor air rises 10× to 3,480 cfm</span></label>
+        <label class="opt"><input type="radio" name="c4_11" value="c"><span>The area component becomes 480 cfm — larger than the 348 cfm design total, so the DCV floor would exceed the design rate</span></label>
+        <label class="opt"><input type="radio" name="c4_11" value="d"><span>The people component has to be recalculated to suit</span></label>
+      </div>
+      <div class="fb" data-fb>300 + 480 = 780 cfm total, and the <em>floor</em> alone would be 480 against a correct design total of 348. The absurdity is the check: <strong>if the part you cannot turn down exceeds the whole requirement, an input is wrong.</strong> This is the most consequential error in Course 4 because the area component is precisely the part DCV cannot reach — get it wrong by ten and every saving estimate goes with it.</div>
+    </div>
+
+    <div class="q" data-a="1218" data-tol="0.02" data-unit="ppm">
+      <div class="qs"><span class="qn">12</span><p class="qt">That classroom at design receives 348 cfm for 40 people — 8.70 cfm/person. With N = 0.0106 cfm/person, what is the steady-state indoor–outdoor CO₂ <em>differential</em>?</p></div>
+      <div class="numq"><input type="number" step="1" data-in aria-label="CO2 differential in ppm"><span class="un">ppm</span></div>
+      <div class="fb" data-fb>ΔC = N/V₀ = 0.0106/8.70 = <strong>1,218 ppm</strong>. Two things follow. First, this zone <em>correctly ventilated to 62.1</em> sits well above the habitual 1,000 ppm setpoint — the setpoint is not a code limit. Second, the differential <strong>falls as the room empties</strong> (1,071 ppm at 50%, 862 ppm at 25%) because the fixed area component is shared among fewer people, so no single differential tracks VRP across the occupancy range. That is why the damper modulates between two limits instead of chasing one number.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">13</span><p class="qt">The course teaches a 700 ppm differential <em>and</em> the ventilation rate procedure. Why do they disagree, and which governs?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c4_13" value="a"><span>They agree; 700 ppm is the VRP expressed as a concentration</span></label>
+        <label class="opt"><input type="radio" name="c4_13" value="b"><span>700 ppm implies 15.1 cfm/person, from the older odour-dilution basis. Current VRP rates split people and area components and set R<sub>p</sub> well below that — so controlling at 700 ppm over-ventilates. Derive the differential from your own V<sub>bz</sub>/P<sub>z</sub></span></label>
+        <label class="opt"><input type="radio" name="c4_13" value="c"><span>700 ppm is a hard ASHRAE limit and overrides the VRP</span></label>
+        <label class="opt"><input type="radio" name="c4_13" value="d"><span>The VRP applies at design only; 700 ppm applies at part load</span></label>
+      </div>
+      <div class="fb" data-fb>0.0106/700×10⁻⁶ = 15.14 cfm/person. Against the course's own examples that is <strong>+74% for the classroom, +42% for office A and +125% for office B</strong>. The 700 ppm figure is the people component alone under a superseded formulation; the current VRP moved part of the requirement into the area term. Applying the old basis to a modern design over-ventilates every occupied hour — a demand control system that increases energy use.</div>
+    </div>
+
+    <div class="q" data-a="33.3" data-tol="0.02" data-unit="%">
+      <div class="qs"><span class="qn">14</span><p class="qt">Measure the outdoor-air fraction by CO₂ mass balance: return 800 ppm, supply 650 ppm, outdoor 350 ppm.</p></div>
+      <div class="numq"><input type="number" step="0.1" data-in aria-label="Outdoor air fraction in percent"><span class="un">%</span></div>
+      <div class="fb" data-fb>(800 − 650)/(800 − 350) = 150/450 = <strong>33.3%</strong> — above the 15–30% typical band. Use a <strong>single sensor sampling all three streams through solenoid valves</strong>: %OA depends on differences, so one instrument's calibration offset cancels exactly and only its repeatability matters. Three separate sensors contribute three independent offsets to a small numerator, and a few ppm of disagreement becomes several percent of outdoor-air fraction.</div>
+    </div>
+
+    <div class="q" data-a="8.13" data-tol="0.02" data-unit="%">
+      <div class="qs"><span class="qn">15</span><p class="qt">Zone B is 2,594 ft² with 90 people and 7,451 cfm supply; R<sub>p</sub> = 5, R<sub>a</sub> = 0.06. Compute its primary outdoor-air fraction Z = V<sub>oz</sub>/V<sub>pz</sub>.</p></div>
+      <div class="numq"><input type="number" step="0.01" data-in aria-label="Zone outdoor air fraction in percent"><span class="un">%</span></div>
+      <div class="fb" data-fb>V<sub>bz</sub> = 450 + 155.6 = 605.6 cfm; Z = 605.6/7,451 = <strong>8.13%</strong>, against Zone A's 3.84%. <strong>Zone B is the critical zone</strong> — the lecture concludes Zone A, which would deliver Zone B about 277 cfm against the 606 it needs, a 54% under-ventilation of the very zone the procedure exists to protect. The method is right; the example inverts it. Sanity check every critical-zone result against intuition: it should be the densest zone or the one with the tightest supply airflow.</div>
+    </div>
+
+    <div class="q" data-a="c">
+      <div class="qs"><span class="qn">16</span><p class="qt">In a VAV system with DCV, what happens to a zone's outdoor-air fraction Z when its VAV box throttles at part load?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c4_16" value="a"><span>It falls — less air means less outdoor air needed</span></label>
+        <label class="opt"><input type="radio" name="c4_16" value="b"><span>It is unchanged — Z is a design quantity</span></label>
+        <label class="opt"><input type="radio" name="c4_16" value="c"><span>It rises — V<sub>pz</sub> falls faster than V<sub>oz</sub>, so VAV box minimum positions are a ventilation constraint, not only a comfort one</span></label>
+        <label class="opt"><input type="radio" name="c4_16" value="d"><span>It rises, but only in the critical zone</span></label>
+      </div>
+      <div class="fb" data-fb>Z = V<sub>oz</sub>/V<sub>pz</sub>. The area component of V<sub>oz</sub> does not fall at all and the people component falls only with occupancy, while V<sub>pz</sub> tracks <em>cooling load</em> — which can collapse on a mild day with the room still full. Halving supply airflow at 50% occupancy takes Zone B from 5.11% to 10.2%. Set VAV minimums from the ventilation requirement as well as the comfort one, and state that on the schedule so nobody re-commissions them downward.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">17</span><p class="qt">A forward-curved fan is installed and the system resistance turns out lower than calculated. What happens, and what is the design consequence?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c4_17" value="a"><span>Flow rises and power falls — the fan self-corrects</span></label>
+        <label class="opt"><input type="radio" name="c4_17" value="b"><span>Flow rises <em>and absorbed power rises with it</em> — the overloading curve — so the motor must be sized for that condition, not for the duty point</span></label>
+        <label class="opt"><input type="radio" name="c4_17" value="c"><span>Flow is unchanged; only static pressure falls</span></label>
+        <label class="opt"><input type="radio" name="c4_17" value="d"><span>The fan stalls</span></label>
+      </div>
+      <div class="fb" data-fb>An FC wheel's power keeps climbing toward free delivery. Since ESP is normally estimated generously and filters are commissioned clean, <strong>lower-than-calculated resistance is the usual direction of error</strong> — and it trips the motor. Backward-curved and aerofoil wheels are <strong>non-overloading</strong>: power peaks near best efficiency and falls away, so they are self-protecting. That margin on an FC selection is exactly what gets removed when a motor is trimmed to the calculated absorbed power.</div>
+    </div>
+
+    <div class="q" data-a="a">
+      <div class="qs"><span class="qn">18</span><p class="qt">A vendor's fan curve crosses the system curve at <em>two</em> points. What does that mean?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c4_18" value="a"><span>The selection is unstable — the fan can hunt between the two points. The duty is in the stall region left of peak pressure and the fan is unsuitable</span></label>
+        <label class="opt"><input type="radio" name="c4_18" value="b"><span>The fan can operate at either point, so it has a wider range</span></label>
+        <label class="opt"><input type="radio" name="c4_18" value="c"><span>The system curve was drawn wrongly; redraw it</span></label>
+        <label class="opt"><input type="radio" name="c4_18" value="d"><span>It is acceptable provided the design point is the right-hand crossing</span></label>
+      </div>
+      <div class="fb" data-fb>One crossing is a selection; two is a fault. Flow and pressure oscillate, the noise signature changes audibly, and no amount of matching at the nominal duty fixes it. This is the same defect <a href="#c2-ahusel">Course 2</a> describes as operating near surge — two courses, two vocabularies, one failure. It is invisible on a data sheet reporting only the duty point, so <strong>ask for the curve and look at its shape to the left of where you are sitting</strong>.</div>
+    </div>
+
+    <div class="q" data-a="120" data-tol="0.02" data-unit="%">
+      <div class="qs"><span class="qn">19</span><p class="qt">Twelve indoor units of 3.2 HP each are connected to a 32 HP outdoor unit. Compute the combination ratio.</p></div>
+      <div class="numq"><input type="number" step="1" data-in aria-label="Combination ratio in percent"><span class="un">%</span></div>
+      <div class="fb" data-fb>38.4/32 = <strong>120%</strong> — and nothing is wrong, because the IDUs were <strong>selected on airflow</strong> (1,482 cfm against a 1,400 cfm requirement) which put 5.12 TR against a 3.6 TR room load. The ODU was sized on the real block load, giving an <strong>operating diversity of 98%</strong>. Always quote both: CR 120% with diversity 98% is a correct plant; CR 120% with diversity 140% is an undersized one. And check the CR against the OEM's published maximum — it is a warranty condition, not a preference.</div>
+    </div>
+
+    <div class="q" data-a="0.667" data-tol="0.02" data-unit="kg/m³">
+      <div class="qs"><span class="qn">20</span><p class="qt">A VRF circuit holds 28 kg of R-410A as installed. The smallest occupied room it serves is 15 m² at 2.8 m ceiling. Compute the refrigerant concentration.</p></div>
+      <div class="numq"><input type="number" step="0.001" data-in aria-label="Refrigerant concentration in kilograms per cubic metre"><span class="un">kg/m³</span></div>
+      <div class="fb" data-fb>28/42.0 = <strong>0.667 kg/m³</strong> against an R-410A limit of about 0.44 — <strong>exceeded by 52%</strong>. The minimum room that charge may serve is 63.6 m³, or 22.7 m² at 2.8 m. On an A2L such as R-32 the limit is roughly 0.061 kg/m³, so the same circuit needs 459 m³ — it cannot serve normal cellular rooms at all without leak detection, isolation, ventilation or re-splitting the circuits. <strong>The course omits this check entirely.</strong> Run it on the as-installed charge including the additional charge for pipe length, against the standard the project names.</div>
+    </div>
+
+    <div class="q" data-a="d">
+      <div class="qs"><span class="qn">21</span><p class="qt">A vendor offers three-pipe heat-recovery VRF for a Doha office instead of the two-pipe heat pump. What is the correct response?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c4_21" value="a"><span>Accept it — heat recovery is always more efficient</span></label>
+        <label class="opt"><input type="radio" name="c4_21" value="b"><span>Reject it — three-pipe systems are unreliable</span></label>
+        <label class="opt"><input type="radio" name="c4_21" value="c"><span>Accept it if the price difference is under 10%</span></label>
+        <label class="opt"><input type="radio" name="c4_21" value="d"><span>Ask for the estimated simultaneous heating and cooling hours. Heat recovery only earns its premium when zones genuinely run in opposite modes, and a Doha office is in cooling essentially all year</span></label>
+      </div>
+      <div class="fb" data-fb>Heat recovery moves heat rejected by cooling zones into heating zones through branch boxes — a real capability, and worth paying for in a deep-plan building with a cold perimeter and hot core, a hotel, or a hospital. In a Doha office <strong>every zone is in the same mode all year</strong>, so the premium buys a capability the building never uses. If nobody can produce the simultaneous-hours figure, the two-pipe heat pump is correct and the money belongs in the fresh-air unit instead.</div>
+    </div>
+
+    <div class="q" data-a="b">
+      <div class="qs"><span class="qn">22</span><p class="qt">A VRF design in Doha includes a treated fresh-air unit. How should the duty be split between it and the indoor units?</p></div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="c4_22" value="a"><span>Split the total load pro-rata by airflow</span></label>
+        <label class="opt"><input type="radio" name="c4_22" value="b"><span>The fresh-air unit takes the <em>full latent load of the outdoor air</em>; the indoor units handle room sensible load only</span></label>
+        <label class="opt"><input type="radio" name="c4_22" value="c"><span>The indoor units take the latent load because they run continuously</span></label>
+        <label class="opt"><input type="radio" name="c4_22" value="d"><span>Either, provided total capacity matches the block load</span></label>
+      </div>
+      <div class="fb" data-fb>A VRF indoor unit modulating on a sensible thermostat <strong>raises its evaporating temperature at part load — exactly when it stops dehumidifying</strong>. Rely on it to dry hot humid outdoor air and the space ends up cool and damp, with condensation on the coldest surfaces. Size the fresh-air unit on the outdoor-air latent load from <a href="#c1-exB2">Course 1</a> and confirm the VRF selection was made on sensible load only. This division of duty is the single most common VRF failure in the Gulf.</div>
     </div>
 
     <div class="quiz-ft">
@@ -5140,6 +5854,12 @@ resistance changes — a closing damper moves you along a different curve entire
 <section id="r-src">
   <h3>Sources &amp; limits of this guide</h3>
   <div class="note good">
+    <b class="nh">How this guide was produced &mdash; Course 4</b>
+    <p><strong>Course 4 is built from the course's own material</strong>: study notes covering all 16 lectures of Module&nbsp;1 (demand control ventilation, VAV and fans) and all 8 of Module&nbsp;2 (variable refrigerant flow), written from the lecture narration with the course's own arithmetic re-checked line by line. The graded assignments and the course glossary reading are not included and are not reflected here. <strong>Neither module carried confidential project material.</strong></p>
+    <p style="margin-bottom:0;">Every figure was recomputed before publication, and three results are the guide's rather than the course's. The <strong>700 ppm differential and the ventilation rate procedure do not agree</strong> &mdash; controlling at 700 ppm delivers 42&ndash;125% more outdoor air than the VRP rates the same lectures specify, because the two come from different eras of 62.1. The <strong>critical-zone example is inverted</strong>: recomputing from the stated inputs makes Zone&nbsp;B critical at 8.13% against Zone&nbsp;A's 3.84%, and the lecture's conclusion would under-ventilate Zone&nbsp;B by 54%. And the <strong>1.15 high-ambient factor covers a 13% capacity loss against roughly 20% at 46 &deg;C</strong> on reversed-Carnot scaling. The refrigerant concentration check at <a href="#c4-exJ">Example&nbsp;J</a> is absent from the course entirely.</p>
+  </div>
+
+  <div class="note good">
     <b class="nh">How this guide was produced &mdash; Course 2</b>
     <p><strong>Course 2 is built from the course's own material</strong>: the Part&nbsp;1 review guide of all six modules, covering equipment construction and certification, the AHRI rating conditions, the worked AHU, pipe, duct, ESP and insulation calculations, and the consolidated register of defects in the lecture material. The guide's Course&nbsp;2 panel was previously reconstructed from published course descriptions and was wrong about the course's shape &mdash; it recorded two modules where there are six.</p>
     <p style="margin-bottom:0;">Every worked figure was recomputed before publication. The AHU fan power does not reconcile with the stated fan efficiency, and the gap is shown and explained rather than repeated; the cooling tower's 54&nbsp;mL/s nominal ton is reconciled to the familiar 3&nbsp;GPM/ton and its unstated basis identified; the condensation-control thickness reproduces the lecture value to 0.1&nbsp;mm, and is then re-run at Gulf humidity where the lecture's method returns no solution at all. <strong>Each of the six modules also carried confidential project analysis. Those sections were excluded from this guide entirely and were not read.</strong></p>
@@ -5158,8 +5878,8 @@ resistance changes — a closing damper moves you along a different curve entire
   </div>
 
   <div class="note trap">
-    <b class="nh">Course 4 is still reconstructed</b>
-    <p style="margin-bottom:0;">No material was available for <em>Cutting-edge Technology</em>. That panel follows the published course description, the codes it names, and established design method &mdash; its statements carry <strong>no Course tag</strong>, and nothing in it should be taken as a record of what was actually taught. The same applies to its module count. Every value that would normally be read from a copyrighted handbook table remains tagged <span class="vb verify">Verify</span> and editable throughout the guide. <strong>Replace those before any figure here reaches a deliverable.</strong></p>
+    <b class="nh">What is still not verified, now that all four courses are in</b>
+    <p style="margin-bottom:0;">No panel is reconstructed any longer. What remains is narrower and more specific: <strong>every value that belongs to a copyrighted handbook table or to a particular code edition is tagged <span class="vb verify">Verify</span></strong> and must be read from the document your contract names before it reaches a deliverable. That set includes the ASHRAE Fundamentals Ch.&nbsp;14 design conditions, the Ch.&nbsp;21 duct-design roughness and fitting coefficients, the 62.1 occupancy-category rates, the 90.1 thresholds and section numbers, the ASHRAE&nbsp;34 refrigerant concentration limits used in <a href="#c4-exJ">Example&nbsp;J</a>, the ASHRAE&nbsp;169 climate-zone designation, and every QCS provision. <strong>The method in this guide transfers. The table values do not.</strong> Two further limits worth stating plainly: the practice questions are authored here, not taken from the graded assessments, and where the course material and an international standard disagree, this guide follows the standard and says so.</p>
   </div>
 
   <h4>Verification performed</h4>
@@ -5169,6 +5889,7 @@ resistance changes — a closing damper moves you along a different curve entire
     <li>Psychrometric routines were checked against ASHRAE reference values: p<sub>ws</sub>(25 °C) = 3.16922 kPa against a published 3.1698 kPa.</li>
     <li>Results were cross-checked against independent rules of thumb — m²/TR, GPM/TR, duct velocity, specific fan power — each stated in the relevant sanity-check block.</li>
     <li>The classical ESHF/ADP graphical construction was checked against the rigorous mass-and-energy solution and agrees within 0.20 K.</li>
+    <li><strong>Course 4 content was checked against the lecture material itself</strong> &mdash; the CO<sub>2</sub> mass balance reproduces all four of the course's cases (13.25 cfm/person, 707 ppm, 1,460 ppm, 424 ppm), both ventilation-rate examples reconcile only at R<sub>a</sub> = 0.06 cfm/ft&sup2;, the %OA worked cases return 20% and 33.3%, the affinity-law cases return &times;0.787 and &times;0.422, and both VRF selections return CR 120% / diversity 98% and CR 116% / 132%. Fifteen defects are recorded in <a href="#c4-errors">Where the course material is wrong</a>.</li>
     <li><strong>Course 2 content was checked against the lecture material itself</strong> &mdash; the AHU air power (7.19 kW at 9.911 m&sup3;/s and 725.7 Pa) exposes a 7.4% gap between the stated 80.3% fan efficiency and the stated 9.67 kW absorbed power, which is a drive loss and should be declared as one; the tower's nominal ton reconciles to 2.97 GPM/ton against the classic 3; the tower water balance, the equivalent-diameter formula (437.5 mm against a stated 438), the section A&ndash;B ESP total (7.48 Pa) and the condensation thickness (32.48 mm against a stated 32.4) all reproduce; and twelve defects in the course material are recorded in <a href="#c2-errors">Where the course material is wrong</a>.</li>
     <li><strong>Course 1 content was checked against the lecture material itself</strong> &mdash; the five-part worked calculation reconciles to 0.005%, the bypass-factor correlation is consistent across Modules 2 and 3 (0.1<sup>1.5</sup> = 0.0316 &asymp; 0.032 for a 6-row coil), and roughly sixty defects in the course material were identified and are recorded in <a href="#c1-errors">Where the course material is wrong</a>.</li>
   </ul>
