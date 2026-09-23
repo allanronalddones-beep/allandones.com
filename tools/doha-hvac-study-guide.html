@@ -420,8 +420,9 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
     <nav class="tabs" role="tablist" aria-label="Course sections">
       <button class="tab" role="tab" id="tab-overview" aria-controls="panel-overview" aria-selected="true" data-panel="overview">Overview</button>
       <button class="tab" role="tab" id="tab-c1" aria-controls="panel-c1" aria-selected="false" data-panel="c1"><span class="tnum">C1</span>Heat Load</button>
-      <button class="tab" role="tab" id="tab-c2" aria-controls="panel-c2" aria-selected="false" data-panel="c2"><span class="tnum">C2</span>Equipment</button>
-      <button class="tab" role="tab" id="tab-c3" aria-controls="panel-c3" aria-selected="false" data-panel="c3"><span class="tnum">C3</span>Life Safety</button>
+      <!-- Tabs follow Coursera's course order. Panel keys are stable storage keys, not course numbers: c3 = Life Safety (course 2), c2 = Equipment (course 3). -->
+      <button class="tab" role="tab" id="tab-c3" aria-controls="panel-c3" aria-selected="false" data-panel="c3"><span class="tnum">C2</span>Life Safety</button>
+      <button class="tab" role="tab" id="tab-c2" aria-controls="panel-c2" aria-selected="false" data-panel="c2"><span class="tnum">C3</span>Equipment</button>
       <button class="tab" role="tab" id="tab-c4" aria-controls="panel-c4" aria-selected="false" data-panel="c4"><span class="tnum">C4</span>Technology</button>
       <button class="tab" role="tab" id="tab-ref" aria-controls="panel-ref" aria-selected="false" data-panel="ref">Reference</button>
     </nav>
@@ -461,22 +462,22 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
     <a href="#c1m3q"><span class="rm">?</span>Quiz M3</a>
   </div>
   <div class="rail-group" data-rail="c2" hidden>
-    <h4>C2 · Equipment</h4>
+    <h4>C3 · Equipment</h4>
     <a href="#c2-intro"><span class="rm">M1</span>High side &amp; low side</a>
     <a href="#c2-plant"><span class="rm">·</span>Plant schematic</a>
     <a href="#c2-chiller"><span class="rm">·</span>Chillers &amp; cooling towers</a>
     <a href="#c2-pump"><span class="rm">·</span>Pumping arrangements</a>
     <a href="#c2-exD"><span class="rm">D</span>Worked: plant sizing</a>
     <a href="#c2-duct"><span class="rm">·</span>Bid evaluation points</a>
-    <a href="#c2q"><span class="rm">?</span>Quiz C2</a>
+    <a href="#c2q"><span class="rm">?</span>Quiz C3</a>
   </div>
   <div class="rail-group" data-rail="c3" hidden>
-    <h4>C3 · Life safety</h4>
+    <h4>C2 · Life safety</h4>
     <a href="#c3-intro"><span class="rm">M1</span>Ventilation &amp; IAQ</a>
     <a href="#c3-stack"><span class="rm">·</span>Stack &amp; wind effect</a>
     <a href="#c3-press"><span class="rm">M2</span>Pressurization</a>
     <a href="#c3-exE"><span class="rm">E</span>Worked: life safety</a>
-    <a href="#c3q"><span class="rm">?</span>Quiz C3</a>
+    <a href="#c3q"><span class="rm">?</span>Quiz C2</a>
   </div>
   <div class="rail-group" data-rail="c4" hidden>
     <h4>C4 · Technology</h4>
@@ -637,7 +638,7 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
 </section>
 <section id="s-map">
   <h2>Specialization map</h2>
-  <p class="prose">Four courses, nine modules. The order is not arbitrary — each course consumes the output of the one before it. A heat load error in C1 does not stay in C1; it propagates into the chiller you select in C2 and the fan you specify in C4.</p>
+  <p class="prose">Four courses, nine modules, numbered in Coursera's order. The design dependency runs differently: C1's load feeds the equipment in C3 and the fans in C4, while C2 is sized by code and stands apart. A heat load error in C1 does not stay in C1; it propagates into the chiller you select in C3 and the fan you specify in C4.</p>
 
   <div class="tw">
     <table>
@@ -645,8 +646,8 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
       <thead><tr><th>Course</th><th style="text-align:left;">Modules</th><th style="text-align:left;">Governing method</th><th style="text-align:left;">Output it hands forward</th></tr></thead>
       <tbody>
         <tr><td><strong>C1</strong> Basics of Air Conditioning &amp; Heat Load</td><td style="text-align:left;">3</td><td style="text-align:left;">Psychrometry; CLTD/CLF/SCL</td><td style="text-align:left;">Zone loads, airflow, coil duty, ADP</td></tr>
-        <tr><td><strong>C2</strong> Equipment Selection, Design &amp; Sizing</td><td style="text-align:left;">2</td><td style="text-align:left;">Block load, diversity, hydraulics</td><td style="text-align:left;">Chiller, pump, tower, duct, ESP</td></tr>
-        <tr><td><strong>C3</strong> Ventilation, Life Safety &amp; Smoke Extraction</td><td style="text-align:left;">2</td><td style="text-align:left;">NFPA 92; ASHRAE 62.1; NBC</td><td style="text-align:left;">Pressurization and extract rates</td></tr>
+        <tr><td><strong>C2</strong> Ventilation, Life Safety &amp; Smoke Extraction</td><td style="text-align:left;">2</td><td style="text-align:left;">NFPA 92; ASHRAE 62.1; NBC</td><td style="text-align:left;">Pressurization and extract rates</td></tr>
+        <tr><td><strong>C3</strong> Equipment Selection, Design &amp; Sizing</td><td style="text-align:left;">2</td><td style="text-align:left;">Block load, diversity, hydraulics</td><td style="text-align:left;">Chiller, pump, tower, duct, ESP</td></tr>
         <tr><td><strong>C4</strong> Cutting-edge Technology</td><td style="text-align:left;">2</td><td style="text-align:left;">DCV; VRF; fan laws</td><td style="text-align:left;">Part-load and energy strategy</td></tr>
       </tbody>
     </table>
@@ -689,11 +690,11 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
         <text class="svg-lbl-sm" x="222" y="130" fill="#a9bde0">the foundation everything uses</text>
 
         <rect x="208" y="274" width="176" height="52" rx="9" fill="rgba(34,211,238,0.10)" stroke="#22d3ee" stroke-width="1.3"/>
-        <text class="svg-ttl" x="222" y="296" fill="#22d3ee">C2 · Equipment</text>
+        <text class="svg-ttl" x="222" y="296" fill="#22d3ee">C3 · Equipment</text>
         <text class="svg-lbl-sm" x="222" y="312" fill="#a9bde0">turning load into hardware</text>
 
         <rect x="208" y="436" width="176" height="52" rx="9" fill="rgba(91,157,250,0.10)" stroke="#5b9dfa" stroke-width="1.3"/>
-        <text class="svg-ttl" x="222" y="458" fill="#5b9dfa">C3 · Life Safety</text>
+        <text class="svg-ttl" x="222" y="458" fill="#5b9dfa">C2 · Life Safety</text>
         <text class="svg-lbl-sm" x="222" y="474" fill="#a9bde0">code-driven, not comfort-driven</text>
 
         <rect x="208" y="582" width="176" height="52" rx="9" fill="rgba(47,126,240,0.10)" stroke="#2f7ef0" stroke-width="1.3"/>
@@ -739,7 +740,7 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
         </g>
       </svg>
     </div>
-    <figcaption><b>Reading it:</b> the branch order is the dependency order. C1 M2 produces the load that C2 M1 turns into a chiller; C1 M3 produces the airflow that C2 M2 turns into a duct and C4 M2 turns into a fan power. C3 is the one branch that does not descend from the load — it is sized by code, from occupancy and geometry, and is often the branch that gets reviewed last and found wanting.</figcaption>
+    <figcaption><b>Reading it:</b> the branches run in dependency order, not Coursera's course order. C1 M2 produces the load that C3 M1 turns into a chiller; C1 M3 produces the airflow that C3 M2 turns into a duct and C4 M2 turns into a fan power. C2 is the one branch that does not descend from the load — it is sized by code, from occupancy and geometry, and is often the branch that gets reviewed last and found wanting.</figcaption>
   </figure>
 </section>
 
@@ -844,7 +845,7 @@ footer.pg{border-top:1px solid var(--card-border); margin-top:56px; padding:26px
 
   <div class="note warn">
     <b class="nh">The review question that catches most chiller submittals</b>
-    <p style="margin-bottom:0;">A vendor quotes COP or kW/TR at <strong>AHRI 550/590 standard conditions — 29.4 °C entering condenser water</strong>. Worked example D in Course 2 arrives at 40.6 °C entering condenser water for a Doha tower on a design day. That is an 11 K gap, and chiller power rises steeply with condenser temperature. If the submittal does not carry a performance point at <em>your</em> condenser water temperature, the efficiency number in it is not the efficiency you will buy.</p>
+    <p style="margin-bottom:0;">A vendor quotes COP or kW/TR at <strong>AHRI 550/590 standard conditions — 29.4 °C entering condenser water</strong>. Worked example D in Course 3 arrives at 40.6 °C entering condenser water for a Doha tower on a design day. That is an 11 K gap, and chiller power rises steeply with condenser temperature. If the submittal does not carry a performance point at <em>your</em> condenser water temperature, the efficiency number in it is not the efficiency you will buy.</p>
   </div>
 
   <h3 id="c1-psychart">Reading the psychrometric chart</h3>
@@ -1578,7 +1579,7 @@ The ESHF line is drawn from the room state; where it strikes the saturation curv
   </div>
 
   <div class="sanity">
-    <b class="nh">Selection verdict — carry these forward to Course 2</b>
+    <b class="nh">Selection verdict — carry these forward to Course 3</b>
     <p style="margin-bottom:0;">Fan, duct and VAV box: <strong>601 L/s (1 274 CFM)</strong> from Case 1. Coil and chiller: <strong>3.02 TR (10.62 kW)</strong> from Case 2, at ADP 11.27 °C and coil SHR 0.693. Specify both duties on the equipment schedule. A supplier given only the total tonnage will select a coil with a sensible heat ratio near 0.75–0.80 by default, and it will not hold the room at 50% RH on a September morning in Doha.</p>
   </div>
 
@@ -1672,7 +1673,7 @@ The ESHF line is drawn from the room state; where it strikes the saturation curv
 
 <section id="c2-intro">
   <div class="mod-head">
-    <p class="eyebrow">Course 2 · Modules 1–2</p>
+    <p class="eyebrow">Course 3 · Modules 1–2</p>
     <h2>Equipment selection, design &amp; sizing</h2>
     <p class="lede">Course 1 produced a zone duty. This course turns it into hardware you can put on a schedule and defend in a bid evaluation — a chiller, a tower, two pump circuits, a duct and a fan — and shows where the numbers a vendor quotes stop meaning what you think they mean.</p>
     <div class="tag-row">
@@ -1894,7 +1895,7 @@ colder condenser water and a more efficient chiller. Range is set by the flow yo
   </div>
 
   <div class="quiz" id="c2q" data-quiz="c2">
-    <div class="quiz-hd"><b>Course 2 — practice questions</b><span class="sc" data-score>Not started</span></div>
+    <div class="quiz-hd"><b>Course 3 — practice questions</b><span class="sc" data-score>Not started</span></div>
 
     <div class="q" data-a="b">
       <div class="qs"><span class="qn">1</span><p class="qt">A cooling tower is selected for a 5 K approach at a 30.6 °C design wet bulb. What is the leaving water temperature, and can a larger tower beat it?</p></div>
@@ -1988,7 +1989,7 @@ colder condenser water and a more efficient chiller. Range is set by the flow yo
 
 <section id="c3-intro">
   <div class="mod-head">
-    <p class="eyebrow">Course 3 · Modules 1–2</p>
+    <p class="eyebrow">Course 2 · Modules 1–2</p>
     <h2>Ventilation, life safety &amp; smoke extraction</h2>
     <p class="lede">The one branch of the specialization that is not sized by thermal load. These systems are sized by code, geometry and fire size, they are tested by a witnessed procedure rather than a performance curve, and they are the systems most likely to fail at handover because nobody checked the criteria until the authority arrived.</p>
     <div class="tag-row">
@@ -2152,7 +2153,7 @@ z = height from fire to smoke-layer interface, m      ṁ_p = plume mass flow, k
   </div>
 
   <div class="quiz" id="c3q" data-quiz="c3">
-    <div class="quiz-hd"><b>Course 3 — practice questions</b><span class="sc" data-score>Not started</span></div>
+    <div class="quiz-hd"><b>Course 2 — practice questions</b><span class="sc" data-score>Not started</span></div>
 
     <div class="q" data-a="c">
       <div class="qs"><span class="qn">1</span><p class="qt">In Doha during the cooling season, which way does the stack effect drive infiltration in a tall building?</p></div>
@@ -2501,7 +2502,7 @@ resistance changes — a closing damper moves you along a different curve entire
       <li><label><input type="checkbox"><span class="ct">Lighting and equipment power densities agreed, with diversity stated separately</span></label></li>
       <li><label><input type="checkbox"><span class="ct">Ventilation rate procedure inputs recorded: R<sub>p</sub>, R<sub>a</sub>, E<sub>z</sub> and the zone/system distinction</span></label></li>
       <li><label><input type="checkbox"><span class="ct">Infiltration rate and building pressurisation assumption stated</span></label></li>
-      <li><label><input type="checkbox"><span class="ct">Perimeter/interior split and diversity factor stated explicitly in the basis of design<em>Course 2 moved plant size by a factor of 1.63 on these two assumptions alone.</em></span></label></li>
+      <li><label><input type="checkbox"><span class="ct">Perimeter/interior split and diversity factor stated explicitly in the basis of design<em>Course 3 moved plant size by a factor of 1.63 on these two assumptions alone.</em></span></label></li>
       <li><label><input type="checkbox"><span class="ct">Chilled water and condenser water design temperatures and ΔT agreed<em>Wide ΔT is a commissioning commitment, not just an energy saving.</em></span></label></li>
       <li><label><input type="checkbox"><span class="ct">Spare capacity and future-load allowance defined and separated from calculation margin<em>Two margins stacked silently is how plant ends up 40% oversized.</em></span></label></li>
     </ul>
@@ -2738,8 +2739,8 @@ resistance changes — a closing damper moves you along a different curve entire
   <ul class="srcs">
     <li><a href="https://www.coursera.org/specializations/design-of-ventilation-and-air-conditioning-system-for-buildings" target="_blank" rel="noopener noreferrer">Design of Ventilation &amp; Air Conditioning System for Buildings — specialization</a></li>
     <li><a href="https://www.coursera.org/learn/designing-air-conditioning-systems-and-heat-load-calculation" target="_blank" rel="noopener noreferrer">C1 — Basics of Air Conditioning &amp; Heat Load Calculation</a></li>
-    <li><a href="https://www.coursera.org/learn/air-conditioning-equipment-selection--design-and-sizing" target="_blank" rel="noopener noreferrer">C2 — Air Conditioning Equipment Selection, Design and Sizing</a></li>
-    <li><a href="https://www.coursera.org/learn/ventilation-life-safety-and-smoke-extraction-in-building" target="_blank" rel="noopener noreferrer">C3 — Ventilation, Life Safety, and Smoke Extraction in Building</a></li>
+    <li><a href="https://www.coursera.org/learn/ventilation-life-safety-and-smoke-extraction-in-building" target="_blank" rel="noopener noreferrer">C2 — Ventilation, Life Safety, and Smoke Extraction in Building</a></li>
+    <li><a href="https://www.coursera.org/learn/air-conditioning-equipment-selection--design-and-sizing" target="_blank" rel="noopener noreferrer">C3 — Air Conditioning Equipment Selection, Design and Sizing</a></li>
     <li><a href="https://www.coursera.org/learn/cutting-edge-technology-in-air-conditioning-system" target="_blank" rel="noopener noreferrer">C4 — Cutting-edge Technology in Air Conditioning System</a></li>
   </ul>
   <p class="srcs" style="margin-top:1em;">Course structure was corroborated from public listings; the pages themselves were unreachable from the build environment. This guide is not affiliated with, endorsed by, or derived from Coursera or L&amp;T EduTech course material.</p>
